@@ -70,7 +70,10 @@
             <span class="status-pill">Agenda ativa</span>
             <span class="status-pill">Mobile em evolucao</span>
           </div>
-          <button id="install-help-button" class="primary-button" type="button">Como instalar</button>
+          <div class="install-actions">
+            <a class="primary-button download-link" href="VIDA_NOVA_APP.zip" download>Baixar arquivo</a>
+            <button id="install-help-button" class="primary-button" type="button">Como instalar</button>
+          </div>
         </section>
 
         <header class="hero" id="dashboard">
@@ -407,6 +410,7 @@
               <div class="detail-card"><span class="metric-label">Looks da semana</span><strong>4 montados</strong></div>
               <div class="detail-card"><span class="metric-label">Pecas-chave</span><strong>Blazer, jeans, vestido</strong></div>
             </div>
+            <ul id="wardrobe-preview-list" class="mini-list module-preview-list"></ul>
             <ul class="mini-list">
               <li>Catalogar pecas favoritas e combinar por ocasiao</li>
               <li>Mapear o que falta antes de comprar</li>
@@ -426,6 +430,7 @@
               <div class="detail-card"><span class="metric-label">Rotina da semana</span><strong>Cozinha, quartos, roupas</strong></div>
               <div class="detail-card"><span class="metric-label">Compras da casa</span><strong>8 itens pendentes</strong></div>
             </div>
+            <ul id="home-preview-list" class="mini-list module-preview-list"></ul>
             <ul class="mini-list">
               <li>Limpeza por zonas com prioridade visivel</li>
               <li>Planejamento de compras, estoque e reposicao</li>
@@ -445,6 +450,7 @@
               <div class="detail-card"><span class="metric-label">Como estou</span><strong>Energia media, buscando ritmo</strong></div>
               <div class="detail-card"><span class="metric-label">Para onde vou</span><strong>Mais constancia, saude e imagem</strong></div>
             </div>
+            <ul id="body-preview-list" class="mini-list module-preview-list"></ul>
             <ul class="mini-list">
               <li>Registrar sensacao atual, meta e pequenas vitorias</li>
               <li>Organizar cuidados com pele, cabelo, corpo e descanso</li>
@@ -464,6 +470,7 @@
               <div class="detail-card"><span class="metric-label">Destino</span><strong>Gramado</strong></div>
               <div class="detail-card"><span class="metric-label">Orcamento</span><strong>R$ 3.500 alvo</strong></div>
             </div>
+            <ul id="travel-preview-list" class="mini-list module-preview-list"></ul>
             <ul class="mini-list">
               <li>Prever transporte, hospedagem, alimentacao e extras</li>
               <li>Checklist de documentos, malas e roteiro</li>
@@ -483,6 +490,7 @@
               <div class="detail-card"><span class="metric-label">Meta do mes</span><strong>4 cultos, 20 leituras</strong></div>
               <div class="detail-card"><span class="metric-label">Estado atual</span><strong>3 cultos, 18 leituras</strong></div>
             </div>
+            <ul id="spiritual-preview-list" class="mini-list module-preview-list"></ul>
             <ul class="mini-list">
               <li>Leitura biblica, devocional, pedidos e respostas</li>
               <li>Livros cristos, cultos e metas espirituais acompanhadas</li>
@@ -586,6 +594,16 @@
         </div>
         <p id="calendar-modal-empty" class="module-note">Nada cadastrado para este dia.</p>
         <ul id="calendar-modal-list" class="task-list"></ul>
+        <div class="calendar-modal-extra">
+          <div class="mirror-block">
+            <strong>Tarefas da rotina</strong>
+            <ul id="calendar-modal-tasks" class="dashboard-preview-list"></ul>
+          </div>
+          <div class="mirror-block">
+            <strong>Top 10 do dia</strong>
+            <ul id="calendar-modal-top10" class="dashboard-preview-list"></ul>
+          </div>
+        </div>
         <form id="calendar-modal-form" class="editor-form">
           <label>
             Data
