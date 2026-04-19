@@ -70,6 +70,7 @@
             <span class="status-pill">Agenda ativa</span>
             <span class="status-pill">Mobile em evolucao</span>
           </div>
+          <button id="install-help-button" class="primary-button" type="button">Como instalar</button>
         </section>
 
         <header class="hero" id="dashboard">
@@ -326,6 +327,40 @@
                   <span class="metric-label">Situacao</span>
                   <strong id="finance-status-display">Ajustar planejamento</strong>
                 </div>
+                <div class="detail-card">
+                  <span class="metric-label">Poupanca</span>
+                  <strong id="finance-savings-display">R$ 0,00</strong>
+                </div>
+                <div class="detail-card">
+                  <span class="metric-label">Gastos fixos</span>
+                  <strong id="finance-fixed-display">R$ 0,00</strong>
+                </div>
+                <div class="detail-card">
+                  <span class="metric-label">Variaveis</span>
+                  <strong id="finance-variable-display">R$ 0,00</strong>
+                </div>
+                <div class="detail-card">
+                  <span class="metric-label">Impulsivos</span>
+                  <strong id="finance-impulse-display">R$ 0,00</strong>
+                </div>
+              </div>
+              <form id="finance-entry-form" class="finance-entry-form">
+                <select id="finance-entry-type" class="module-input" aria-label="Tipo financeiro">
+                  <option value="income">Entrada</option>
+                  <option value="fixed">Saida fixa</option>
+                  <option value="variable">Saida variavel</option>
+                  <option value="impulse">Gasto impulsivo</option>
+                  <option value="savings">Poupanca</option>
+                  <option value="planning">Planejamento mensal</option>
+                </select>
+                <input id="finance-entry-amount" class="module-input" type="number" min="0" step="0.01" placeholder="Valor" />
+                <input id="finance-entry-title" class="module-input" type="text" placeholder="Descricao do lancamento" />
+                <button type="submit">Cadastrar</button>
+              </form>
+              <ul id="finance-records-list" class="task-list compact-list"></ul>
+              <div class="finance-planning-box">
+                <span class="metric-label">Planejamento mensal</span>
+                <p id="finance-planning-preview" class="module-note">Nenhum planejamento registrado.</p>
               </div>
               <div class="calculator-card">
                 <div class="panel-heading calculator-heading">
@@ -360,13 +395,13 @@
             </div>
           </article>
 
-          <article class="panel module-card wardrobe-card" id="imagem">
+          <article class="panel module-card wardrobe-card module-open-card" id="imagem" data-module="wardrobe">
             <div class="panel-heading">
               <div>
                 <p class="eyebrow">Imagem e estilo</p>
                 <h3>Guarda-roupa inteligente</h3>
               </div>
-              <span class="tag">Premium</span>
+              <button class="ghost-button module-open-button" type="button" data-module="wardrobe">Abrir</button>
             </div>
             <div class="structured-card-grid">
               <div class="detail-card"><span class="metric-label">Looks da semana</span><strong>4 montados</strong></div>
@@ -379,13 +414,13 @@
             </ul>
           </article>
 
-          <article class="panel module-card home-card" id="casa">
+          <article class="panel module-card home-card module-open-card" id="casa" data-module="home">
             <div class="panel-heading">
               <div>
                 <p class="eyebrow">Casa</p>
                 <h3>Gestao da casa</h3>
               </div>
-              <span class="tag">Leve</span>
+              <button class="ghost-button module-open-button" type="button" data-module="home">Abrir</button>
             </div>
             <div class="structured-card-grid">
               <div class="detail-card"><span class="metric-label">Rotina da semana</span><strong>Cozinha, quartos, roupas</strong></div>
@@ -398,13 +433,13 @@
             </ul>
           </article>
 
-          <article class="panel module-card body-card">
+          <article class="panel module-card body-card module-open-card" data-module="body">
             <div class="panel-heading">
               <div>
                 <p class="eyebrow">Corpo e autocuidado</p>
                 <h3>Como estou e para onde vou</h3>
               </div>
-              <span class="tag">Evolucao</span>
+              <button class="ghost-button module-open-button" type="button" data-module="body">Abrir</button>
             </div>
             <div class="structured-card-grid">
               <div class="detail-card"><span class="metric-label">Como estou</span><strong>Energia media, buscando ritmo</strong></div>
@@ -417,13 +452,13 @@
             </ul>
           </article>
 
-          <article class="panel module-card travel-card">
+          <article class="panel module-card travel-card module-open-card" data-module="travel">
             <div class="panel-heading">
               <div>
                 <p class="eyebrow">Viagens</p>
                 <h3>Planejador de viagens</h3>
               </div>
-              <span class="tag">Sonhos</span>
+              <button class="ghost-button module-open-button" type="button" data-module="travel">Abrir</button>
             </div>
             <div class="structured-card-grid">
               <div class="detail-card"><span class="metric-label">Destino</span><strong>Gramado</strong></div>
@@ -436,13 +471,13 @@
             </ul>
           </article>
 
-          <article class="panel module-card spiritual-card" id="espiritual">
+          <article class="panel module-card spiritual-card module-open-card" id="espiritual" data-module="spiritual">
             <div class="panel-heading">
               <div>
                 <p class="eyebrow">Vida espiritual</p>
                 <h3>Metas com Deus</h3>
               </div>
-              <span class="tag">Diario</span>
+              <button class="ghost-button module-open-button" type="button" data-module="spiritual">Abrir</button>
             </div>
             <div class="structured-card-grid">
               <div class="detail-card"><span class="metric-label">Meta do mes</span><strong>4 cultos, 20 leituras</strong></div>
@@ -536,6 +571,110 @@
             <button class="primary-button" type="submit">Salvar bloco</button>
           </div>
         </form>
+      </section>
+    </div>
+
+    <div id="calendar-modal" class="editor-modal hidden" aria-hidden="true">
+      <div class="editor-backdrop" data-close-calendar="true"></div>
+      <section class="editor-sheet calendar-modal-sheet" role="dialog" aria-modal="true">
+        <div class="editor-topbar">
+          <div>
+            <p class="eyebrow">Agenda do dia</p>
+            <h2 id="calendar-modal-title">Compromissos</h2>
+          </div>
+          <button id="calendar-modal-close" class="ghost-button" type="button">Fechar</button>
+        </div>
+        <p id="calendar-modal-empty" class="module-note">Nada cadastrado para este dia.</p>
+        <ul id="calendar-modal-list" class="task-list"></ul>
+        <form id="calendar-modal-form" class="editor-form">
+          <label>
+            Data
+            <input id="calendar-modal-date" type="date" />
+          </label>
+          <label>
+            Hora
+            <input id="calendar-modal-time" type="time" />
+          </label>
+          <label>
+            Titulo
+            <input id="calendar-modal-title-input" type="text" placeholder="Compromisso" />
+          </label>
+          <label>
+            Local
+            <input id="calendar-modal-location" type="text" placeholder="Local" />
+          </label>
+          <label>
+            Descricao
+            <textarea id="calendar-modal-description" rows="4" placeholder="Descricao completa do compromisso"></textarea>
+          </label>
+          <div class="editor-actions">
+            <button class="primary-button" type="submit">Salvar compromisso</button>
+          </div>
+        </form>
+      </section>
+    </div>
+
+    <div id="module-modal" class="editor-modal hidden" aria-hidden="true">
+      <div class="editor-backdrop" data-close-module="true"></div>
+      <section class="editor-sheet" role="dialog" aria-modal="true">
+        <div class="editor-topbar">
+          <div>
+            <p class="eyebrow">Cadastro do modulo</p>
+            <h2 id="module-modal-title">Modulo</h2>
+          </div>
+          <button id="module-modal-close" class="ghost-button" type="button">Fechar</button>
+        </div>
+        <p id="module-modal-copy" class="module-note">Cadastre seus itens aqui.</p>
+        <form id="module-modal-form" class="editor-form">
+          <label>
+            Titulo
+            <input id="module-entry-title" type="text" placeholder="Titulo do item" />
+          </label>
+          <label>
+            Categoria
+            <input id="module-entry-category" type="text" placeholder="Categoria ou tipo" />
+          </label>
+          <label>
+            Descricao
+            <textarea id="module-entry-description" rows="4" placeholder="Detalhes do item"></textarea>
+          </label>
+          <div class="editor-actions">
+            <button class="primary-button" type="submit">Cadastrar item</button>
+          </div>
+        </form>
+        <ul id="module-modal-list" class="task-list"></ul>
+      </section>
+    </div>
+
+    <div id="install-modal" class="editor-modal hidden" aria-hidden="true">
+      <div class="editor-backdrop" data-close-install="true"></div>
+      <section class="editor-sheet" role="dialog" aria-modal="true">
+        <div class="editor-topbar">
+          <div>
+            <p class="eyebrow">Instalacao</p>
+            <h2>Como instalar o app</h2>
+          </div>
+          <button id="install-modal-close" class="ghost-button" type="button">Fechar</button>
+        </div>
+        <div class="install-guide-grid">
+          <article class="detail-card">
+            <span class="metric-label">Mac</span>
+            <p>Abra no Chrome ou Edge, clique no icone de instalar na barra e confirme.</p>
+          </article>
+          <article class="detail-card">
+            <span class="metric-label">Windows</span>
+            <p>Abra no Chrome ou Edge, use “Instalar app” no menu do navegador e confirme.</p>
+          </article>
+          <article class="detail-card">
+            <span class="metric-label">Android</span>
+            <p>No Chrome, abra o site publicado e use “Adicionar a tela inicial” ou “Instalar app”.</p>
+          </article>
+          <article class="detail-card">
+            <span class="metric-label">iPhone / iPad</span>
+            <p>No Safari, toque em Compartilhar e depois em “Adicionar a Tela de Inicio”.</p>
+          </article>
+        </div>
+        <p class="module-note">A instalacao real depende de um link publicado com HTTPS. No arquivo local ou preview quebrado do navegador, isso nao aparece de forma confiavel.</p>
       </section>
     </div>
 

@@ -64,7 +64,7 @@ const agendaDescriptionInput = document.querySelector("#agenda-description-input
 const agendaEventsList = document.querySelector("#agenda-events-list");
 const agendaSummaryInput = document.querySelector("#agenda-summary-input");
 const installBanner = document.querySelector("#install-banner");
-const installButton = document.querySelector("#install-button");
+const installHelpButton = document.querySelector("#install-help-button");
 const userGreeting = document.querySelector("#user-greeting");
 const logoutButton = document.querySelector("#logout-button");
 const financeIncomeInput = document.querySelector("#finance-income-input");
@@ -79,6 +79,39 @@ const financeBalanceHero = document.querySelector("#finance-balance-hero");
 const financeCaption = document.querySelector("#finance-caption");
 const calculatorDisplay = document.querySelector("#calculator-display");
 const calculatorKeys = document.querySelectorAll(".calc-key");
+const financeEntryForm = document.querySelector("#finance-entry-form");
+const financeEntryType = document.querySelector("#finance-entry-type");
+const financeEntryAmount = document.querySelector("#finance-entry-amount");
+const financeEntryTitle = document.querySelector("#finance-entry-title");
+const financeRecordsList = document.querySelector("#finance-records-list");
+const financePlanningPreview = document.querySelector("#finance-planning-preview");
+const financeSavingsDisplay = document.querySelector("#finance-savings-display");
+const financeFixedDisplay = document.querySelector("#finance-fixed-display");
+const financeVariableDisplay = document.querySelector("#finance-variable-display");
+const financeImpulseDisplay = document.querySelector("#finance-impulse-display");
+const moduleOpenButtons = document.querySelectorAll(".module-open-button");
+const calendarModal = document.querySelector("#calendar-modal");
+const calendarModalClose = document.querySelector("#calendar-modal-close");
+const calendarModalTitle = document.querySelector("#calendar-modal-title");
+const calendarModalEmpty = document.querySelector("#calendar-modal-empty");
+const calendarModalList = document.querySelector("#calendar-modal-list");
+const calendarModalForm = document.querySelector("#calendar-modal-form");
+const calendarModalDate = document.querySelector("#calendar-modal-date");
+const calendarModalTime = document.querySelector("#calendar-modal-time");
+const calendarModalTitleInput = document.querySelector("#calendar-modal-title-input");
+const calendarModalLocation = document.querySelector("#calendar-modal-location");
+const calendarModalDescription = document.querySelector("#calendar-modal-description");
+const moduleModal = document.querySelector("#module-modal");
+const moduleModalClose = document.querySelector("#module-modal-close");
+const moduleModalTitle = document.querySelector("#module-modal-title");
+const moduleModalCopy = document.querySelector("#module-modal-copy");
+const moduleModalForm = document.querySelector("#module-modal-form");
+const moduleModalList = document.querySelector("#module-modal-list");
+const moduleEntryTitle = document.querySelector("#module-entry-title");
+const moduleEntryCategory = document.querySelector("#module-entry-category");
+const moduleEntryDescription = document.querySelector("#module-entry-description");
+const installModal = document.querySelector("#install-modal");
+const installModalClose = document.querySelector("#install-modal-close");
 const editableCards = document.querySelectorAll(".editable-card");
 const editorModal = document.querySelector("#editor-modal");
 const editorForm = document.querySelector("#editor-form");
@@ -109,9 +142,12 @@ let calendarCursor = new Date();
 let selectedDateKey = formatDateKey(new Date());
 let agendaStore = JSON.parse(localStorage.getItem("ela-em-ordem:agenda-events") || "{}");
 let financeStore = JSON.parse(
-  localStorage.getItem("ela-em-ordem:finance") || '{"income":0,"expense":0,"goal":0}',
+  localStorage.getItem("ela-em-ordem:finance") ||
+    '{"goal":0,"records":[]}',
 );
 let calculatorExpression = "0";
+let moduleStore = JSON.parse(localStorage.getItem("vida-nova:modules") || "{}");
+let activeModule = null;
 
 const editableCardDefaults = Array.from(editableCards).reduce((defaults, card) => {
   defaults[card.dataset.cardId] = extractCardData(card);
@@ -270,17 +306,27 @@ function saveFinanceStore() {
 }
 
 function renderFinance() {
-  const income = Number(financeStore.income || 0);
-  const expense = Number(financeStore.expense || 0);
+  const records = financeStore.records || [];
+  const income = records
+    .filter((entry) => entry.type === "income")
+    .reduce((total, entry) => total + Number(entry.amount || 0), 0);
+  const fixed = records
+    .filter((entry) => entry.type === "fixed")
+    .reduce((total, entry) => total + Number(entry.amount || 0), 0);
+  const variable = records
+    .filter((entry) => entry.type === "variable")
+    .reduce((total, entry) => total + Number(entry.amount || 0), 0);
+  const impulse = records
+    .filter((entry) => entry.type === "impulse")
+    .reduce((total, entry) => total + Number(entry.amount || 0), 0);
+  const savings = records
+    .filter((entry) => entry.type === "savings")
+    .reduce((total, entry) => total + Number(entry.amount || 0), 0);
+  const planningItems = records.filter((entry) => entry.type === "planning");
+  const expense = fixed + variable + impulse + savings;
   const goal = Number(financeStore.goal || 0);
   const balance = income - expense;
 
-  if (financeIncomeInput) {
-    financeIncomeInput.value = income || "";
-  }
-  if (financeExpenseInput) {
-    financeExpenseInput.value = expense || "";
-  }
   if (financeGoalInput) {
     financeGoalInput.value = goal || "";
   }
@@ -296,6 +342,18 @@ function renderFinance() {
   if (financeGoalDisplay) {
     financeGoalDisplay.textContent = formatCurrency(goal);
   }
+  if (financeSavingsDisplay) {
+    financeSavingsDisplay.textContent = formatCurrency(savings);
+  }
+  if (financeFixedDisplay) {
+    financeFixedDisplay.textContent = formatCurrency(fixed);
+  }
+  if (financeVariableDisplay) {
+    financeVariableDisplay.textContent = formatCurrency(variable);
+  }
+  if (financeImpulseDisplay) {
+    financeImpulseDisplay.textContent = formatCurrency(impulse);
+  }
   if (financeStatusDisplay) {
     financeStatusDisplay.textContent =
       balance >= goal && goal > 0
@@ -310,6 +368,146 @@ function renderFinance() {
   if (financeCaption) {
     financeCaption.textContent = `Entradas ${formatCurrency(income)} | Saidas ${formatCurrency(expense)}`;
   }
+  if (financePlanningPreview) {
+    financePlanningPreview.textContent = planningItems.length
+      ? planningItems[planningItems.length - 1].title
+      : "Nenhum planejamento registrado.";
+  }
+  if (financeRecordsList) {
+    financeRecordsList.innerHTML = records.length
+      ? records
+          .slice()
+          .reverse()
+          .slice(0, 6)
+          .map(
+            (entry) =>
+              `<li class="task-item"><span class="task-text"><strong>${escapeHtml(entry.title)}</strong><small>${escapeHtml(entry.type)} | ${formatCurrency(entry.amount)}</small></span></li>`,
+          )
+          .join("")
+      : '<li class="task-item"><span class="task-text">Nenhum lancamento cadastrado.</span></li>';
+  }
+}
+
+function getModuleItems(moduleKey) {
+  if (!moduleStore[moduleKey]) {
+    moduleStore[moduleKey] = [];
+  }
+  return moduleStore[moduleKey];
+}
+
+function saveModuleStore() {
+  localStorage.setItem("vida-nova:modules", JSON.stringify(moduleStore));
+}
+
+const moduleConfig = {
+  wardrobe: {
+    title: "Guarda-roupa inteligente",
+    copy: "Cadastre looks, pecas, faltas, desejos e observacoes do guarda-roupa.",
+  },
+  home: {
+    title: "Gestao da casa",
+    copy: "Cadastre tarefas, rotinas, compras e observacoes da casa.",
+  },
+  body: {
+    title: "Corpo e autocuidado",
+    copy: "Cadastre estado atual, metas, rotinas e marcos de autocuidado.",
+  },
+  travel: {
+    title: "Planejador de viagens",
+    copy: "Cadastre destinos, custos, listas e etapas da viagem.",
+  },
+  spiritual: {
+    title: "Metas com Deus",
+    copy: "Cadastre metas espirituais, leituras, cultos, pedidos e reflexoes.",
+  },
+};
+
+function openModuleModal(moduleKey) {
+  activeModule = moduleKey;
+  const config = moduleConfig[moduleKey];
+  if (!config || !moduleModal) {
+    return;
+  }
+
+  moduleModalTitle.textContent = config.title;
+  moduleModalCopy.textContent = config.copy;
+  renderModuleList();
+  moduleModal.classList.remove("hidden");
+  moduleModal.setAttribute("aria-hidden", "false");
+}
+
+function closeModuleModal() {
+  if (!moduleModal) {
+    return;
+  }
+  moduleModal.classList.add("hidden");
+  moduleModal.setAttribute("aria-hidden", "true");
+  activeModule = null;
+}
+
+function renderModuleList() {
+  if (!activeModule || !moduleModalList) {
+    return;
+  }
+
+  const items = getModuleItems(activeModule);
+  moduleModalList.innerHTML = items.length
+    ? items
+        .map(
+          (item) =>
+            `<li class="task-item"><span class="task-text"><strong>${escapeHtml(item.title)}</strong><small>${escapeHtml(item.category || "Sem categoria")} | ${escapeHtml(item.description || "Sem descricao")}</small></span></li>`,
+        )
+        .join("")
+    : '<li class="task-item"><span class="task-text">Nada cadastrado ainda.</span></li>';
+}
+
+function openCalendarModal(dateKey) {
+  if (!calendarModal) {
+    return;
+  }
+  selectedDateKey = dateKey;
+  const dayData = ensureAgendaDay(dateKey);
+  calendarModalTitle.textContent = formatDisplayDate(dateKey);
+  calendarModalDate.value = dateKey;
+  calendarModalList.innerHTML = dayData.events.length
+    ? dayData.events
+        .slice()
+        .sort((a, b) => (a.time || "").localeCompare(b.time || ""))
+        .map(
+          (eventItem) =>
+            `<li class="task-item"><span class="task-text"><strong>${escapeHtml(eventItem.time || "--:--")} - ${escapeHtml(eventItem.title)}</strong><small>${escapeHtml(eventItem.location || "Sem local")} | ${escapeHtml(eventItem.description || "Sem descricao")}</small></span></li>`,
+        )
+        .join("")
+    : "";
+  calendarModalEmpty.hidden = dayData.events.length > 0;
+  calendarModal.classList.remove("hidden");
+  calendarModal.setAttribute("aria-hidden", "false");
+  renderAgendaEvents();
+  renderCalendar();
+}
+
+function closeCalendarModal() {
+  if (!calendarModal) {
+    return;
+  }
+  calendarModal.classList.add("hidden");
+  calendarModal.setAttribute("aria-hidden", "true");
+}
+
+function openInstallModal() {
+  if (!installModal) {
+    return;
+  }
+  installModal.classList.remove("hidden");
+  installModal.setAttribute("aria-hidden", "false");
+}
+
+function closeInstallModal() {
+  if (!installModal) {
+    return;
+  }
+  installModal.classList.add("hidden");
+  installModal.setAttribute("aria-hidden", "true");
 }
 
 function renderDashboardMirror() {
@@ -492,6 +690,7 @@ function renderCalendar() {
       selectedDateKey = dateKey;
       renderCalendar();
       renderAgendaEvents();
+      openCalendarModal(dateKey);
     });
 
     calendarGrid.appendChild(button);
@@ -532,34 +731,11 @@ function setupInstallPrompt() {
   window.addEventListener("beforeinstallprompt", (event) => {
     event.preventDefault();
     deferredInstallPrompt = event;
-
-    if (installBanner) {
-      installBanner.hidden = false;
-    }
   });
 
   window.addEventListener("appinstalled", () => {
     deferredInstallPrompt = null;
-    if (installBanner) {
-      installBanner.hidden = true;
-    }
   });
-
-  if (installButton) {
-    installButton.addEventListener("click", async () => {
-      if (!deferredInstallPrompt) {
-        return;
-      }
-
-      deferredInstallPrompt.prompt();
-      await deferredInstallPrompt.userChoice;
-      deferredInstallPrompt = null;
-
-      if (installBanner) {
-        installBanner.hidden = true;
-      }
-    });
-  }
 }
 
 function setTheme(theme) {
@@ -920,21 +1096,41 @@ if (logoutButton) {
   });
 }
 
-[financeIncomeInput, financeExpenseInput, financeGoalInput].forEach((input) => {
-  if (!input) {
-    return;
-  }
-
-  input.addEventListener("input", () => {
-    financeStore = {
-      income: Number(financeIncomeInput?.value || 0),
-      expense: Number(financeExpenseInput?.value || 0),
-      goal: Number(financeGoalInput?.value || 0),
-    };
+if (financeGoalInput) {
+  financeGoalInput.addEventListener("input", () => {
+    financeStore.goal = Number(financeGoalInput.value || 0);
     saveFinanceStore();
     renderFinance();
   });
-});
+}
+
+if (financeEntryForm) {
+  financeEntryForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+    const type = financeEntryType.value;
+    const amount = Number(financeEntryAmount.value || 0);
+    const title = financeEntryTitle.value.trim();
+
+    if (!title || !amount) {
+      return;
+    }
+
+    if (!financeStore.records) {
+      financeStore.records = [];
+    }
+
+    financeStore.records.push({
+      id: crypto.randomUUID(),
+      type,
+      amount,
+      title,
+    });
+
+    saveFinanceStore();
+    renderFinance();
+    financeEntryForm.reset();
+  });
+}
 
 if (calculatorDisplay) {
   calculatorKeys.forEach((key) => {
@@ -961,6 +1157,112 @@ if (calculatorDisplay) {
 
       calculatorDisplay.textContent = calculatorExpression;
     });
+  });
+}
+
+moduleOpenButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    openModuleModal(button.dataset.module);
+  });
+});
+
+if (moduleModalForm) {
+  moduleModalForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+    if (!activeModule) {
+      return;
+    }
+
+    const title = moduleEntryTitle.value.trim();
+    if (!title) {
+      return;
+    }
+
+    getModuleItems(activeModule).push({
+      id: crypto.randomUUID(),
+      title,
+      category: moduleEntryCategory.value.trim(),
+      description: moduleEntryDescription.value.trim(),
+    });
+
+    saveModuleStore();
+    renderModuleList();
+    moduleModalForm.reset();
+  });
+}
+
+if (moduleModalClose) {
+  moduleModalClose.addEventListener("click", closeModuleModal);
+}
+
+if (moduleModal) {
+  moduleModal.addEventListener("click", (event) => {
+    if (event.target.dataset.closeModule === "true") {
+      closeModuleModal();
+    }
+  });
+}
+
+if (calendarModalClose) {
+  calendarModalClose.addEventListener("click", closeCalendarModal);
+}
+
+if (calendarModal) {
+  calendarModal.addEventListener("click", (event) => {
+    if (event.target.dataset.closeCalendar === "true") {
+      closeCalendarModal();
+    }
+  });
+}
+
+if (calendarModalForm) {
+  calendarModalForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+    const targetDate = calendarModalDate.value || selectedDateKey;
+    const title = calendarModalTitleInput.value.trim();
+
+    if (!title) {
+      return;
+    }
+
+    ensureAgendaDay(targetDate).events.push({
+      id: crypto.randomUUID(),
+      time: calendarModalTime.value || "",
+      title,
+      location: calendarModalLocation.value.trim(),
+      description: calendarModalDescription.value.trim(),
+    });
+
+    selectedDateKey = targetDate;
+    saveAgendaStore();
+    renderAgendaEvents();
+    renderCalendar();
+    openCalendarModal(targetDate);
+    calendarModalForm.reset();
+  });
+}
+
+if (installHelpButton) {
+  installHelpButton.addEventListener("click", async () => {
+    if (deferredInstallPrompt) {
+      deferredInstallPrompt.prompt();
+      await deferredInstallPrompt.userChoice;
+      deferredInstallPrompt = null;
+      return;
+    }
+    openInstallModal();
+  });
+}
+
+if (installModalClose) {
+  installModalClose.addEventListener("click", closeInstallModal);
+}
+
+if (installModal) {
+  installModal.addEventListener("click", (event) => {
+    if (event.target.dataset.closeInstall === "true") {
+      closeInstallModal();
+    }
   });
 }
 

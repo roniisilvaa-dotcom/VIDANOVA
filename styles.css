@@ -275,6 +275,10 @@ a {
   font-size: 0.84rem;
 }
 
+.install-banner .primary-button {
+  flex-shrink: 0;
+}
+
 .mobile-nav {
   display: none;
 }
@@ -471,6 +475,10 @@ a {
   line-height: 1.6;
 }
 
+.compact-list .task-item {
+  grid-template-columns: 1fr;
+}
+
 .agenda-panel {
   margin-bottom: 18px;
   background:
@@ -486,6 +494,10 @@ a {
 
 .agenda-hero-heading {
   margin-bottom: 20px;
+}
+
+.calendar-modal-sheet {
+  width: min(860px, calc(100vw - 24px));
 }
 
 .calendar-card,
@@ -629,6 +641,15 @@ a {
   box-shadow: var(--shadow);
 }
 
+.module-open-card {
+  transition: transform 160ms ease, box-shadow 160ms ease;
+}
+
+.module-open-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 28px 60px rgba(83, 53, 79, 0.16);
+}
+
 .summary-input,
 .module-input,
 #agenda-description-input {
@@ -646,6 +667,24 @@ a {
 .finance-layout {
   display: grid;
   gap: 16px;
+}
+
+.finance-entry-form {
+  display: grid;
+  grid-template-columns: 170px 150px 1fr auto;
+  gap: 10px;
+  align-items: end;
+}
+
+.finance-entry-form button {
+  min-height: 50px;
+  padding: 0 18px;
+  border: none;
+  border-radius: 14px;
+  background: linear-gradient(135deg, var(--berry), #dd7ea2);
+  color: white;
+  font: inherit;
+  cursor: pointer;
 }
 
 .finance-form-grid,
@@ -697,6 +736,19 @@ a {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 10px;
+}
+
+.install-guide-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.install-guide-grid p {
+  margin: 8px 0 0;
+  color: var(--muted);
+  line-height: 1.55;
 }
 
 .calc-key {
@@ -1000,6 +1052,7 @@ body[data-theme="dark"] .mirror-block,
 body[data-theme="dark"] .detail-card,
 body[data-theme="dark"] .calculator-card,
 body[data-theme="dark"] .calc-key,
+body[data-theme="dark"] .finance-entry-form button,
 body[data-theme="dark"] .task-form input,
 body[data-theme="dark"] .mini-list li,
 body[data-theme="dark"] .schedule-item,
@@ -1430,6 +1483,7 @@ select {
     grid-template-columns: 1fr;
   }
 
+  .finance-entry-form,
   .finance-form-grid,
   .structured-card-grid,
   .finance-detail-grid {
@@ -1472,6 +1526,7 @@ select {
 
   .task-form,
   .agenda-form,
+  .finance-entry-form,
   .finance-form-grid,
   .structured-card-grid,
   .finance-detail-grid,
@@ -1545,5 +1600,9 @@ select {
 
   .calculator-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .install-guide-grid {
+    grid-template-columns: 1fr;
   }
 }
