@@ -116,7 +116,7 @@ function renderTopTen() {
   });
 }
 
-mobileGreeting.textContent = `Ela em Ordem, ${session.name}`;
+mobileGreeting.textContent = `Vida Nova, ${session.name}`;
 mobileDateLabel.textContent = today.toLocaleDateString("pt-BR", {
   day: "2-digit",
   month: "long",

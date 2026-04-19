@@ -40,20 +40,45 @@ const topTenForm = document.querySelector("#top-ten-form");
 const topTenInput = document.querySelector("#top-ten-input");
 const topTenList = document.querySelector("#top-ten-list");
 const topTenCount = document.querySelector("#top-ten-count");
+const dashboardTop10Preview = document.querySelector("#dashboard-top10-preview");
+const dashboardNotesPreview = document.querySelector("#dashboard-notes-preview");
+const summarySpotlight = document.querySelector("#summary-spotlight");
+const focusCount = document.querySelector("#focus-count");
+const focusProgress = document.querySelector("#focus-progress");
+const agendaNextTitle = document.querySelector("#agenda-next-title");
+const agendaNextMeta = document.querySelector("#agenda-next-meta");
+const graphRoutine = document.querySelector("#graph-routine");
+const graphAgenda = document.querySelector("#graph-agenda");
+const graphTop10 = document.querySelector("#graph-top10");
 const calendarMonthLabel = document.querySelector("#calendar-month-label");
 const calendarGrid = document.querySelector("#calendar-grid");
 const calendarPrev = document.querySelector("#calendar-prev");
 const calendarNext = document.querySelector("#calendar-next");
 const selectedDateLabel = document.querySelector("#selected-date-label");
 const agendaForm = document.querySelector("#agenda-form");
+const agendaDateInput = document.querySelector("#agenda-date-input");
 const agendaTimeInput = document.querySelector("#agenda-time-input");
 const agendaTitleInput = document.querySelector("#agenda-title-input");
+const agendaLocationInput = document.querySelector("#agenda-location-input");
+const agendaDescriptionInput = document.querySelector("#agenda-description-input");
 const agendaEventsList = document.querySelector("#agenda-events-list");
 const agendaSummaryInput = document.querySelector("#agenda-summary-input");
 const installBanner = document.querySelector("#install-banner");
 const installButton = document.querySelector("#install-button");
 const userGreeting = document.querySelector("#user-greeting");
 const logoutButton = document.querySelector("#logout-button");
+const financeIncomeInput = document.querySelector("#finance-income-input");
+const financeExpenseInput = document.querySelector("#finance-expense-input");
+const financeGoalInput = document.querySelector("#finance-goal-input");
+const financeIncomeDisplay = document.querySelector("#finance-income-display");
+const financeExpenseDisplay = document.querySelector("#finance-expense-display");
+const financeBalanceDisplay = document.querySelector("#finance-balance-display");
+const financeGoalDisplay = document.querySelector("#finance-goal-display");
+const financeStatusDisplay = document.querySelector("#finance-status-display");
+const financeBalanceHero = document.querySelector("#finance-balance-hero");
+const financeCaption = document.querySelector("#finance-caption");
+const calculatorDisplay = document.querySelector("#calculator-display");
+const calculatorKeys = document.querySelectorAll(".calc-key");
 const editableCards = document.querySelectorAll(".editable-card");
 const editorModal = document.querySelector("#editor-modal");
 const editorForm = document.querySelector("#editor-form");
@@ -83,6 +108,10 @@ let deferredInstallPrompt = null;
 let calendarCursor = new Date();
 let selectedDateKey = formatDateKey(new Date());
 let agendaStore = JSON.parse(localStorage.getItem("ela-em-ordem:agenda-events") || "{}");
+let financeStore = JSON.parse(
+  localStorage.getItem("ela-em-ordem:finance") || '{"income":0,"expense":0,"goal":0}',
+);
+let calculatorExpression = "0";
 
 const editableCardDefaults = Array.from(editableCards).reduce((defaults, card) => {
   defaults[card.dataset.cardId] = extractCardData(card);
@@ -121,6 +150,12 @@ function renderVerse() {
 function updateTaskProgress() {
   const doneCount = tasks.filter((task) => task.done).length;
   taskProgress.textContent = `${doneCount} de ${tasks.length}`;
+  if (focusCount) {
+    focusCount.textContent = `${tasks.length} tarefas`;
+  }
+  if (focusProgress) {
+    focusProgress.textContent = `${doneCount} concluidas`;
+  }
 }
 
 function renderTasks() {
@@ -161,6 +196,7 @@ function renderTasks() {
   });
 
   updateTaskProgress();
+  renderDashboardMirror();
 }
 
 function renderTopTen() {
@@ -207,10 +243,116 @@ function renderTopTen() {
   });
 
   topTenCount.textContent = `${topTenItems.length} de 10`;
+  renderDashboardMirror();
 }
 
 function saveTopTen() {
   localStorage.setItem("ela-em-ordem:top-ten", JSON.stringify(topTenItems));
+}
+
+function formatCurrency(value) {
+  return new Intl.NumberFormat("pt-BR", {
+    style: "currency",
+    currency: "BRL",
+  }).format(Number(value || 0));
+}
+
+function escapeHtml(value) {
+  return String(value)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;");
+}
+
+function saveFinanceStore() {
+  localStorage.setItem("ela-em-ordem:finance", JSON.stringify(financeStore));
+}
+
+function renderFinance() {
+  const income = Number(financeStore.income || 0);
+  const expense = Number(financeStore.expense || 0);
+  const goal = Number(financeStore.goal || 0);
+  const balance = income - expense;
+
+  if (financeIncomeInput) {
+    financeIncomeInput.value = income || "";
+  }
+  if (financeExpenseInput) {
+    financeExpenseInput.value = expense || "";
+  }
+  if (financeGoalInput) {
+    financeGoalInput.value = goal || "";
+  }
+  if (financeIncomeDisplay) {
+    financeIncomeDisplay.textContent = formatCurrency(income);
+  }
+  if (financeExpenseDisplay) {
+    financeExpenseDisplay.textContent = formatCurrency(expense);
+  }
+  if (financeBalanceDisplay) {
+    financeBalanceDisplay.textContent = formatCurrency(balance);
+  }
+  if (financeGoalDisplay) {
+    financeGoalDisplay.textContent = formatCurrency(goal);
+  }
+  if (financeStatusDisplay) {
+    financeStatusDisplay.textContent =
+      balance >= goal && goal > 0
+        ? "Meta coberta"
+        : balance > 0
+          ? "Saldo positivo"
+          : "Ajustar planejamento";
+  }
+  if (financeBalanceHero) {
+    financeBalanceHero.textContent = formatCurrency(balance);
+  }
+  if (financeCaption) {
+    financeCaption.textContent = `Entradas ${formatCurrency(income)} | Saidas ${formatCurrency(expense)}`;
+  }
+}
+
+function renderDashboardMirror() {
+  if (dashboardTop10Preview) {
+    const previewItems = topTenItems.slice(0, 4);
+    dashboardTop10Preview.innerHTML = previewItems.length
+      ? previewItems
+          .map(
+            (item) =>
+              `<li class="${item.done ? "is-done" : ""}">${escapeHtml(item.text)}</li>`,
+          )
+          .join("")
+      : "<li>Nenhuma prioridade adicionada ainda.</li>";
+  }
+
+  if (dashboardNotesPreview) {
+    const noteText = (localStorage.getItem("ela-em-ordem:notes") || "").trim();
+    dashboardNotesPreview.textContent = noteText
+      ? `${noteText.slice(0, 140)}${noteText.length > 140 ? "..." : ""}`
+      : "Suas anotacoes aparecem aqui.";
+  }
+
+  if (summarySpotlight) {
+    const summary = ensureAgendaDay(selectedDateKey).summary?.trim() || "";
+    summarySpotlight.textContent = summary
+      ? `${summary.slice(0, 80)}${summary.length > 80 ? "..." : ""}`
+      : "Seu resumo aparece aqui";
+  }
+
+  if (graphRoutine) {
+    const doneTasks = tasks.filter((task) => task.done).length;
+    graphRoutine.style.width = `${tasks.length ? (doneTasks / tasks.length) * 100 : 12}%`;
+  }
+
+  if (graphAgenda) {
+    const currentEvents = ensureAgendaDay(selectedDateKey).events.length;
+    graphAgenda.style.width = `${Math.min(100, 15 + currentEvents * 18)}%`;
+  }
+
+  if (graphTop10) {
+    const doneTop10 = topTenItems.filter((item) => item.done).length;
+    graphTop10.style.width = `${topTenItems.length ? (doneTop10 / topTenItems.length) * 100 : 10}%`;
+  }
 }
 
 function formatDateKey(date) {
@@ -248,6 +390,9 @@ function renderAgendaEvents() {
   const dayData = ensureAgendaDay(selectedDateKey);
   selectedDateLabel.textContent = formatDisplayDate(selectedDateKey);
   agendaSummaryInput.value = dayData.summary || "";
+  if (agendaDateInput) {
+    agendaDateInput.value = selectedDateKey;
+  }
   agendaEventsList.innerHTML = "";
 
   dayData.events
@@ -265,7 +410,10 @@ function renderAgendaEvents() {
 
       const text = document.createElement("span");
       text.className = "task-text";
-      text.textContent = `${eventItem.time || "--:--"} - ${eventItem.title}`;
+      text.innerHTML = `
+        <strong>${escapeHtml(eventItem.time || "--:--")} - ${escapeHtml(eventItem.title)}</strong>
+        <small>${escapeHtml(eventItem.location || "Sem local")} | ${escapeHtml(eventItem.description || "Sem descricao")}</small>
+      `;
 
       const remove = document.createElement("button");
       remove.type = "button";
@@ -283,6 +431,9 @@ function renderAgendaEvents() {
       item.append(time, text, remove);
       agendaEventsList.appendChild(item);
     });
+
+  renderNextAgendaCard();
+  renderDashboardMirror();
 }
 
 function renderCalendar() {
@@ -345,6 +496,26 @@ function renderCalendar() {
 
     calendarGrid.appendChild(button);
   }
+}
+
+function renderNextAgendaCard() {
+  if (!agendaNextTitle || !agendaNextMeta) {
+    return;
+  }
+
+  const events = ensureAgendaDay(selectedDateKey).events
+    .slice()
+    .sort((a, b) => (a.time || "").localeCompare(b.time || ""));
+
+  if (!events.length) {
+    agendaNextTitle.textContent = "Nenhum compromisso";
+    agendaNextMeta.textContent = formatDisplayDate(selectedDateKey);
+    return;
+  }
+
+  const nextEvent = events[0];
+  agendaNextTitle.textContent = nextEvent.title;
+  agendaNextMeta.textContent = `${nextEvent.time || "--:--"} | ${nextEvent.location || "Sem local"}`;
 }
 
 function registerServiceWorker() {
@@ -651,6 +822,7 @@ if (notesInput) {
   notesInput.value = localStorage.getItem("ela-em-ordem:notes") || "";
   notesInput.addEventListener("input", () => {
     localStorage.setItem("ela-em-ordem:notes", notesInput.value);
+    renderDashboardMirror();
   });
 }
 
@@ -679,6 +851,7 @@ if (agendaSummaryInput) {
   agendaSummaryInput.addEventListener("input", () => {
     ensureAgendaDay(selectedDateKey).summary = agendaSummaryInput.value;
     saveAgendaStore();
+    renderDashboardMirror();
   });
 }
 
@@ -686,23 +859,43 @@ if (agendaForm) {
   agendaForm.addEventListener("submit", (event) => {
     event.preventDefault();
 
+    const targetDate = agendaDateInput.value || selectedDateKey;
     const title = agendaTitleInput.value.trim();
     const time = agendaTimeInput.value || "";
+    const location = agendaLocationInput.value.trim();
+    const description = agendaDescriptionInput.value.trim();
 
     if (!title) {
       return;
     }
 
-    ensureAgendaDay(selectedDateKey).events.push({
+    ensureAgendaDay(targetDate).events.push({
       id: crypto.randomUUID(),
       time,
       title,
+      location,
+      description,
     });
 
+    selectedDateKey = targetDate;
     saveAgendaStore();
     renderAgendaEvents();
     renderCalendar();
     agendaForm.reset();
+  });
+}
+
+if (agendaDateInput) {
+  agendaDateInput.addEventListener("change", () => {
+    if (!agendaDateInput.value) {
+      return;
+    }
+
+    selectedDateKey = agendaDateInput.value;
+    const [year, month] = selectedDateKey.split("-").map(Number);
+    calendarCursor = new Date(year, month - 1, 1);
+    renderCalendar();
+    renderAgendaEvents();
   });
 }
 
@@ -724,6 +917,50 @@ if (logoutButton) {
   logoutButton.addEventListener("click", () => {
     localStorage.removeItem("ela-em-ordem:session");
     window.location.href = "./login.html";
+  });
+}
+
+[financeIncomeInput, financeExpenseInput, financeGoalInput].forEach((input) => {
+  if (!input) {
+    return;
+  }
+
+  input.addEventListener("input", () => {
+    financeStore = {
+      income: Number(financeIncomeInput?.value || 0),
+      expense: Number(financeExpenseInput?.value || 0),
+      goal: Number(financeGoalInput?.value || 0),
+    };
+    saveFinanceStore();
+    renderFinance();
+  });
+});
+
+if (calculatorDisplay) {
+  calculatorKeys.forEach((key) => {
+    key.addEventListener("click", () => {
+      const action = key.dataset.calcAction;
+      const value = key.dataset.calcValue;
+
+      if (action === "clear") {
+        calculatorExpression = "0";
+      } else if (action === "equals") {
+        try {
+          // Limited to calculator button input only.
+          const result = Function(`"use strict"; return (${calculatorExpression})`)();
+          calculatorExpression = String(Number.isFinite(result) ? result : 0);
+        } catch {
+          calculatorExpression = "Erro";
+        }
+      } else if (value) {
+        calculatorExpression =
+          calculatorExpression === "0" || calculatorExpression === "Erro"
+            ? value
+            : `${calculatorExpression}${value}`;
+      }
+
+      calculatorDisplay.textContent = calculatorExpression;
+    });
   });
 }
 
@@ -779,5 +1016,7 @@ renderTasks();
 renderTopTen();
 renderCalendar();
 renderAgendaEvents();
+renderFinance();
+renderDashboardMirror();
 registerServiceWorker();
 setupInstallPrompt();

@@ -1,6 +1,6 @@
 {
-  "name": "Ela em Ordem",
-  "short_name": "Ela em Ordem",
+  "name": "Vida Nova",
+  "short_name": "Vida Nova",
   "description": "Planner web feminino com agenda, rotina, financas, espiritualidade e organizacao pessoal.",
   "start_url": "./login.html",
   "display": "standalone",

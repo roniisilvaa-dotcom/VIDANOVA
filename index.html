@@ -3,11 +3,11 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Ela em Ordem</title>
+    <title>Vida Nova</title>
     <meta name="theme-color" content="#c55b84" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-    <meta name="apple-mobile-web-app-title" content="Ela em Ordem" />
+    <meta name="apple-mobile-web-app-title" content="Vida Nova" />
     <meta
       name="description"
       content="Planner web feminino com rotina, agenda, financas, espiritualidade e organizacao da vida."
@@ -20,10 +20,10 @@
     <div class="app-shell">
       <aside class="sidebar">
         <div class="brand">
-          <div class="brand-mark">EO</div>
+          <div class="brand-mark">VN</div>
           <div>
             <p class="eyebrow">Planner Premium</p>
-            <h1>Ela em Ordem</h1>
+            <h1>Vida Nova</h1>
           </div>
         </div>
 
@@ -57,49 +57,69 @@
           <button id="logout-button" class="ghost-button" type="button">Sair</button>
         </section>
 
-        <section class="install-banner" id="install-banner" hidden>
+        <section class="install-banner" id="install-banner">
           <div>
-            <p class="eyebrow">Acesso no celular</p>
-            <h3>Instale na tela inicial</h3>
+            <p class="eyebrow">Versao atual</p>
+            <h3>Primeira versao visual do produto em foco</h3>
             <p class="install-copy">
-              Use como app no celular com acesso rapido e visual de tela cheia.
+              Esta base esta pronta para web e adaptacao mobile. A publicacao em link real e o proximo passo para testar instalacao com seguranca.
             </p>
           </div>
-          <button id="install-button" class="primary-button" type="button">
-            Instalar app
-          </button>
+          <div class="status-pills">
+            <span class="status-pill">Web pronta</span>
+            <span class="status-pill">Agenda ativa</span>
+            <span class="status-pill">Mobile em evolucao</span>
+          </div>
         </section>
 
         <header class="hero" id="dashboard">
-          <div>
+          <div class="hero-main-card">
             <p class="eyebrow">SaaS de organizacao da vida feminina</p>
             <h2>Um painel para organizar rotina, casa, financas, imagem, corpo e espiritualidade.</h2>
             <p class="hero-copy">
-              Primeira versao visual do produto com foco em clareza, acolhimento
-              e constancia no dia a dia.
+              Um dashboard para a mulher ver o dia, sentir clareza e organizar tudo em um lugar so.
             </p>
+            <div class="hero-graph">
+              <div class="graph-row">
+                <span>Rotina</span>
+                <div class="graph-bar"><i id="graph-routine"></i></div>
+              </div>
+              <div class="graph-row">
+                <span>Agenda</span>
+                <div class="graph-bar"><i id="graph-agenda"></i></div>
+              </div>
+              <div class="graph-row">
+                <span>Top 10</span>
+                <div class="graph-bar"><i id="graph-top10"></i></div>
+              </div>
+            </div>
           </div>
-          <div class="hero-stats">
-            <article class="stat-card warm editable-card" data-card-id="focus-stat" data-card-type="text">
+          <div class="hero-stats dashboard-grid" data-grid-id="hero-stats">
+            <article class="stat-card warm">
               <span>Foco do dia</span>
-              <strong>07 tarefas</strong>
-              <small>3 concluidas</small>
+              <strong id="focus-count">0 tarefas</strong>
+              <small id="focus-progress">0 concluidas</small>
             </article>
-            <article class="stat-card mint editable-card" data-card-id="spiritual-stat" data-card-type="text">
-              <span>Rotina espiritual</span>
-              <strong>18/30</strong>
-              <small>leituras no mes</small>
+            <article class="stat-card mint">
+              <span>Agenda principal</span>
+              <strong id="agenda-next-title">Nenhum compromisso</strong>
+              <small id="agenda-next-meta">Escolha um dia no calendario</small>
             </article>
-            <article class="stat-card rose editable-card" data-card-id="budget-stat" data-card-type="text">
-              <span>Orcamento pessoal</span>
-              <strong>R$ 1.950</strong>
-              <small>saldo planejado</small>
+            <article class="stat-card rose">
+              <span>Financeiro do mes</span>
+              <strong id="finance-balance-hero">R$ 0,00</strong>
+              <small id="finance-caption">Sem movimentacao registrada</small>
+            </article>
+            <article class="stat-card sky">
+              <span>Resumo bom amor</span>
+              <strong id="summary-spotlight">Seu resumo aparece aqui</strong>
+              <small id="notes-preview">As anotacoes mais importantes sobem para o topo</small>
             </article>
           </div>
         </header>
 
         <section class="grid dashboard-grid">
-          <article class="panel panel-highlight verse-panel editable-card" data-card-id="verse-panel" data-card-type="text">
+          <article class="panel panel-highlight verse-panel">
             <div class="panel-heading">
               <div>
                 <p class="eyebrow">Versiculo diario</p>
@@ -135,6 +155,23 @@
             </form>
 
             <ul id="task-list" class="task-list"></ul>
+          </article>
+
+          <article class="panel mirror-panel">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">Espelho do dashboard</p>
+                <h3>O que esta em foco</h3>
+              </div>
+            </div>
+            <div class="mirror-block">
+              <strong>Top 10 de hoje</strong>
+              <ul id="dashboard-top10-preview" class="dashboard-preview-list"></ul>
+            </div>
+            <div class="mirror-block">
+              <strong>Anotacoes em destaque</strong>
+              <p id="dashboard-notes-preview" class="mirror-copy">Suas anotacoes aparecem aqui.</p>
+            </div>
           </article>
 
         </section>
@@ -183,22 +220,16 @@
                 <div class="panel-heading agenda-subheading">
                   <div>
                     <p class="eyebrow">Agenda do dia</p>
-                    <h3>Compromissos</h3>
+                    <h3>Compromissos completos</h3>
                   </div>
                 </div>
 
                 <form id="agenda-form" class="agenda-form">
-                  <input
-                    id="agenda-time-input"
-                    type="time"
-                    aria-label="Horario do compromisso"
-                  />
-                  <input
-                    id="agenda-title-input"
-                    type="text"
-                    placeholder="Adicionar compromisso"
-                    aria-label="Titulo do compromisso"
-                  />
+                  <input id="agenda-date-input" type="date" aria-label="Data do compromisso" />
+                  <input id="agenda-time-input" type="time" aria-label="Horario do compromisso" />
+                  <input id="agenda-title-input" type="text" placeholder="Titulo do compromisso" aria-label="Titulo do compromisso" />
+                  <input id="agenda-location-input" type="text" placeholder="Local" aria-label="Local do compromisso" />
+                  <textarea id="agenda-description-input" rows="3" placeholder="Descricao, observacoes ou detalhes"></textarea>
                   <button type="submit">Salvar</button>
                 </form>
 
@@ -249,35 +280,87 @@
         </section>
 
         <section class="grid module-grid">
-          <article class="panel module-card finance-card editable-card" id="financas" data-card-id="finance-panel" data-card-type="mixed">
+          <article class="panel module-card finance-card" id="financas">
             <div class="panel-heading">
               <div>
                 <p class="eyebrow">Financas</p>
-                <h3>Controle financeiro</h3>
+                <h3>Controle financeiro inteligente</h3>
               </div>
               <span class="tag">Consciente</span>
             </div>
-            <div class="metric-row">
-              <div>
-                <span class="metric-label">Entradas</span>
-                <strong>R$ 6.850</strong>
+            <div class="finance-layout">
+              <div class="metric-row">
+                <div>
+                  <span class="metric-label">Entradas</span>
+                  <strong id="finance-income-display">R$ 0,00</strong>
+                </div>
+                <div>
+                  <span class="metric-label">Saidas</span>
+                  <strong id="finance-expense-display">R$ 0,00</strong>
+                </div>
+                <div>
+                  <span class="metric-label">Fluxo</span>
+                  <strong id="finance-balance-display">R$ 0,00</strong>
+                </div>
               </div>
-              <div>
-                <span class="metric-label">Fixos</span>
-                <strong>R$ 1.920</strong>
+              <div class="finance-form-grid">
+                <label>
+                  Entradas
+                  <input id="finance-income-input" class="module-input" type="number" min="0" step="0.01" placeholder="0,00" />
+                </label>
+                <label>
+                  Saidas
+                  <input id="finance-expense-input" class="module-input" type="number" min="0" step="0.01" placeholder="0,00" />
+                </label>
+                <label>
+                  Reserva desejada
+                  <input id="finance-goal-input" class="module-input" type="number" min="0" step="0.01" placeholder="0,00" />
+                </label>
               </div>
-              <div>
-                <span class="metric-label">Variaveis</span>
-                <strong>R$ 1.145</strong>
+              <div class="finance-detail-grid">
+                <div class="detail-card">
+                  <span class="metric-label">Meta</span>
+                  <strong id="finance-goal-display">R$ 0,00</strong>
+                </div>
+                <div class="detail-card">
+                  <span class="metric-label">Situacao</span>
+                  <strong id="finance-status-display">Ajustar planejamento</strong>
+                </div>
+              </div>
+              <div class="calculator-card">
+                <div class="panel-heading calculator-heading">
+                  <div>
+                    <p class="eyebrow">Calculadora</p>
+                    <h3>Conta rapida</h3>
+                  </div>
+                </div>
+                <div class="calculator-display" id="calculator-display">0</div>
+                <div class="calculator-grid">
+                  <button class="calc-key" type="button" data-calc-action="clear">AC</button>
+                  <button class="calc-key" type="button" data-calc-value="(">(</button>
+                  <button class="calc-key" type="button" data-calc-value=")">)</button>
+                  <button class="calc-key calc-operator" type="button" data-calc-value="/">/</button>
+                  <button class="calc-key" type="button" data-calc-value="7">7</button>
+                  <button class="calc-key" type="button" data-calc-value="8">8</button>
+                  <button class="calc-key" type="button" data-calc-value="9">9</button>
+                  <button class="calc-key calc-operator" type="button" data-calc-value="*">x</button>
+                  <button class="calc-key" type="button" data-calc-value="4">4</button>
+                  <button class="calc-key" type="button" data-calc-value="5">5</button>
+                  <button class="calc-key" type="button" data-calc-value="6">6</button>
+                  <button class="calc-key calc-operator" type="button" data-calc-value="-">-</button>
+                  <button class="calc-key" type="button" data-calc-value="1">1</button>
+                  <button class="calc-key" type="button" data-calc-value="2">2</button>
+                  <button class="calc-key" type="button" data-calc-value="3">3</button>
+                  <button class="calc-key calc-operator" type="button" data-calc-value="+">+</button>
+                  <button class="calc-key" type="button" data-calc-value="0">0</button>
+                  <button class="calc-key" type="button" data-calc-value=".">.</button>
+                  <button class="calc-key calc-equals" type="button" data-calc-action="equals">=</button>
+                </div>
               </div>
             </div>
-            <p class="module-note">
-              Planejamento mensal, gastos impulsivos, metas de poupanca e
-              visao de saldo.
-            </p>
           </article>
 
-          <article class="panel module-card wardrobe-card editable-card" id="imagem" data-card-id="wardrobe-panel" data-card-type="list">
+          <article class="panel module-card wardrobe-card" id="imagem">
             <div class="panel-heading">
               <div>
                 <p class="eyebrow">Imagem e estilo</p>
@@ -285,14 +368,18 @@
               </div>
               <span class="tag">Premium</span>
             </div>
+            <div class="structured-card-grid">
+              <div class="detail-card"><span class="metric-label">Looks da semana</span><strong>4 montados</strong></div>
+              <div class="detail-card"><span class="metric-label">Pecas-chave</span><strong>Blazer, jeans, vestido</strong></div>
+            </div>
             <ul class="mini-list">
-              <li>Looks prontos para semana</li>
-              <li>Pecas que faltam no armario</li>
-              <li>Wishlist sem compra compulsiva</li>
+              <li>Catalogar pecas favoritas e combinar por ocasiao</li>
+              <li>Mapear o que falta antes de comprar</li>
+              <li>Separar lista de desejo e lista de necessidade</li>
             </ul>
           </article>
 
-          <article class="panel module-card home-card editable-card" id="casa" data-card-id="home-panel" data-card-type="list">
+          <article class="panel module-card home-card" id="casa">
             <div class="panel-heading">
               <div>
                 <p class="eyebrow">Casa</p>
@@ -300,14 +387,18 @@
               </div>
               <span class="tag">Leve</span>
             </div>
+            <div class="structured-card-grid">
+              <div class="detail-card"><span class="metric-label">Rotina da semana</span><strong>Cozinha, quartos, roupas</strong></div>
+              <div class="detail-card"><span class="metric-label">Compras da casa</span><strong>8 itens pendentes</strong></div>
+            </div>
             <ul class="mini-list">
-              <li>Limpeza por zonas</li>
-              <li>Lista de compras da semana</li>
-              <li>Rotina da cozinha e lavanderia</li>
+              <li>Limpeza por zonas com prioridade visivel</li>
+              <li>Planejamento de compras, estoque e reposicao</li>
+              <li>Checklist da cozinha, lavanderia e manutencao</li>
             </ul>
           </article>
 
-          <article class="panel module-card body-card editable-card" data-card-id="body-panel" data-card-type="list">
+          <article class="panel module-card body-card">
             <div class="panel-heading">
               <div>
                 <p class="eyebrow">Corpo e autocuidado</p>
@@ -315,14 +406,18 @@
               </div>
               <span class="tag">Evolucao</span>
             </div>
+            <div class="structured-card-grid">
+              <div class="detail-card"><span class="metric-label">Como estou</span><strong>Energia media, buscando ritmo</strong></div>
+              <div class="detail-card"><span class="metric-label">Para onde vou</span><strong>Mais constancia, saude e imagem</strong></div>
+            </div>
             <ul class="mini-list">
-              <li>Energia de hoje: media</li>
-              <li>Meta corporal: constancia e saude</li>
-              <li>Cuidados da semana: 4 de 6</li>
+              <li>Registrar sensacao atual, meta e pequenas vitorias</li>
+              <li>Organizar cuidados com pele, cabelo, corpo e descanso</li>
+              <li>Acompanhar constancia semanal e progresso visual</li>
             </ul>
           </article>
 
-          <article class="panel module-card travel-card editable-card" data-card-id="travel-panel" data-card-type="list">
+          <article class="panel module-card travel-card">
             <div class="panel-heading">
               <div>
                 <p class="eyebrow">Viagens</p>
@@ -330,14 +425,18 @@
               </div>
               <span class="tag">Sonhos</span>
             </div>
+            <div class="structured-card-grid">
+              <div class="detail-card"><span class="metric-label">Destino</span><strong>Gramado</strong></div>
+              <div class="detail-card"><span class="metric-label">Orcamento</span><strong>R$ 3.500 alvo</strong></div>
+            </div>
             <ul class="mini-list">
-              <li>Destino desejado: Gramado</li>
-              <li>Orcamento alvo: R$ 3.500</li>
-              <li>Checklist de documentos e malas</li>
+              <li>Prever transporte, hospedagem, alimentacao e extras</li>
+              <li>Checklist de documentos, malas e roteiro</li>
+              <li>Calculadora de custo e poupanca da viagem</li>
             </ul>
           </article>
 
-          <article class="panel module-card spiritual-card editable-card" id="espiritual" data-card-id="spiritual-panel" data-card-type="list">
+          <article class="panel module-card spiritual-card" id="espiritual">
             <div class="panel-heading">
               <div>
                 <p class="eyebrow">Vida espiritual</p>
@@ -345,10 +444,14 @@
               </div>
               <span class="tag">Diario</span>
             </div>
+            <div class="structured-card-grid">
+              <div class="detail-card"><span class="metric-label">Meta do mes</span><strong>4 cultos, 20 leituras</strong></div>
+              <div class="detail-card"><span class="metric-label">Estado atual</span><strong>3 cultos, 18 leituras</strong></div>
+            </div>
             <ul class="mini-list">
-              <li>Cultos no mes: 3 de 4</li>
-              <li>Leitura biblica: 18 dias</li>
-              <li>Livro cristao atual: Em andamento</li>
+              <li>Leitura biblica, devocional, pedidos e respostas</li>
+              <li>Livros cristos, cultos e metas espirituais acompanhadas</li>
+              <li>Versiculo diario e espaco para oracao e reflexao</li>
             </ul>
           </article>
         </section>
