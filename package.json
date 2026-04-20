@@ -14,7 +14,7 @@
     "agenda",
     "financas",
     "rotina",
-    "organização",
+    "organizacao",
     "PWA"
   ],
   "author": "Vida Nova",
@@ -24,7 +24,7 @@
     "cors": "^2.8.5",
     "express": "^4.18.2",
     "jsonwebtoken": "^9.0.0",
-    "sqlite3": "^5.1.6"
+    "pg": "^8.13.1"
   },
   "devDependencies": {
     "nodemon": "^3.0.1"
