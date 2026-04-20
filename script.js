@@ -106,6 +106,13 @@ const initialAgendaEvents = {
   },
 };
 
+const defaultCalendars = [
+  { id: "pessoal", name: "Pessoal", color: "#4285f4", visible: true },
+  { id: "trabalho", name: "Trabalho", color: "#34a853", visible: true },
+  { id: "casa", name: "Casa", color: "#fbbc04", visible: true },
+  { id: "espiritual", name: "Espiritual", color: "#a142f4", visible: true },
+];
+
 const initialFinanceRecords = [
   { id: crypto.randomUUID(), title: "Anuidade", date: "2025-03-02", type: "planning", category: "Pessoal", amount: 41.66, installments: 1, startMonth: 2, color: "#ffc885" },
   { id: crypto.randomUUID(), title: "Google drive", date: "2026-03-26", type: "planning", category: "Pessoal", amount: 49.99, installments: 1, startMonth: 2, color: "#ffc885" },
@@ -147,15 +154,27 @@ const graphAgenda = document.querySelector("#graph-agenda");
 const graphFinance = document.querySelector("#graph-finance");
 const calendarMonthLabel = document.querySelector("#calendar-month-label");
 const calendarMiniLabel = document.querySelector("#calendar-mini-label");
+const calendarList = document.querySelector("#calendar-list");
+const calendarAddButton = document.querySelector("#calendar-add-button");
+const agendaCreateButton = document.querySelector("#agenda-create-button");
+const agendaSearchInput = document.querySelector("#agenda-search-input");
 const calendarGrid = document.querySelector("#calendar-grid");
 const calendarMiniGrid = document.querySelector("#calendar-mini-grid");
 const calendarPrev = document.querySelector("#calendar-prev");
 const calendarNext = document.querySelector("#calendar-next");
 const calendarToday = document.querySelector("#calendar-today");
+const calendarDayViewButton = document.querySelector("#calendar-day-view");
 const calendarMonthViewButton = document.querySelector("#calendar-month-view");
 const calendarWeekViewButton = document.querySelector("#calendar-week-view");
+const calendarYearViewButton = document.querySelector("#calendar-year-view");
+const calendarScheduleViewButton = document.querySelector("#calendar-schedule-view");
+const calendarCustomViewButton = document.querySelector("#calendar-custom-view");
+const calendarCustomDaysInput = document.querySelector("#calendar-custom-days-input");
+const customDaysField = document.querySelector("#custom-days-field");
 const calendarMonthShell = document.querySelector("#calendar-month-shell");
 const weekViewShell = document.querySelector("#week-view-shell");
+const yearViewShell = document.querySelector("#year-view-shell");
+const scheduleViewShell = document.querySelector("#schedule-view-shell");
 const weekViewHeader = document.querySelector("#week-view-header");
 const weekColumns = document.querySelector("#week-columns");
 const weekHoursColumn = document.querySelector("#week-hours-column");
@@ -167,7 +186,10 @@ const agendaEndTimeInput = document.querySelector("#agenda-end-time-input");
 const agendaTitleInput = document.querySelector("#agenda-title-input");
 const agendaLocationInput = document.querySelector("#agenda-location-input");
 const agendaLinkInput = document.querySelector("#agenda-link-input");
+const agendaGuestsInput = document.querySelector("#agenda-guests-input");
+const agendaCalendarInput = document.querySelector("#agenda-calendar-input");
 const agendaCategoryInput = document.querySelector("#agenda-category-input");
+const agendaRecurrenceInput = document.querySelector("#agenda-recurrence-input");
 const agendaColorInput = document.querySelector("#agenda-color-input");
 const agendaDescriptionInput = document.querySelector("#agenda-description-input");
 const agendaEventsList = document.querySelector("#agenda-events-list");
@@ -228,7 +250,10 @@ const calendarModalEndTime = document.querySelector("#calendar-modal-end-time");
 const calendarModalTitleInput = document.querySelector("#calendar-modal-title-input");
 const calendarModalLocation = document.querySelector("#calendar-modal-location");
 const calendarModalLink = document.querySelector("#calendar-modal-link");
+const calendarModalGuests = document.querySelector("#calendar-modal-guests");
+const calendarModalCalendar = document.querySelector("#calendar-modal-calendar");
 const calendarModalCategory = document.querySelector("#calendar-modal-category");
+const calendarModalRecurrence = document.querySelector("#calendar-modal-recurrence");
 const calendarModalColor = document.querySelector("#calendar-modal-color");
 const calendarModalDescription = document.querySelector("#calendar-modal-description");
 const moduleModal = document.querySelector("#module-modal");
@@ -309,6 +334,9 @@ let calendarCursor = new Date();
 let selectedDateKey = formatDateKey(new Date());
 let agendaView = localStorage.getItem("ela-em-ordem:agenda-view") || "week";
 let agendaStore = JSON.parse(localStorage.getItem("ela-em-ordem:agenda-events") || "{}");
+let calendarStore = JSON.parse(localStorage.getItem("vida-nova:calendar-store") || "null") || defaultCalendars.map((calendar) => ({ ...calendar }));
+let agendaSearchQuery = localStorage.getItem("vida-nova:agenda-search") || "";
+let customAgendaDays = Number(localStorage.getItem("vida-nova:custom-days") || 4);
 
 // Load initial demo events if agenda is empty
 if (Object.keys(agendaStore).length === 0) {
@@ -497,6 +525,9 @@ function collectCloudState() {
       getComputedStyle(document.documentElement).getPropertyValue("--berry").trim() ||
       "#c55b84",
     agendaView,
+    calendarStore,
+    agendaSearchQuery,
+    customAgendaDays,
     financeFilter: activeFinanceFilter,
     cards: getSavedCardsState(),
     gridOrders: getSavedGridOrders(),
@@ -520,6 +551,9 @@ function createEmptyCloudState() {
     layout: localStorage.getItem("ela-em-ordem:layout") || "soft",
     accentColor: localStorage.getItem("vida-nova:accent-color") || "#c55b84",
     agendaView: "week",
+    calendarStore: defaultCalendars.map((calendar) => ({ ...calendar })),
+    agendaSearchQuery: "",
+    customAgendaDays: 4,
     financeFilter: "all",
     cards: {},
     gridOrders: {},
@@ -550,6 +584,11 @@ function applyCloudState(state) {
   };
   moduleStore = state.moduleStore && typeof state.moduleStore === "object" ? state.moduleStore : {};
   agendaView = state.agendaView || "week";
+  calendarStore = Array.isArray(state.calendarStore) && state.calendarStore.length
+    ? state.calendarStore
+    : defaultCalendars.map((calendar) => ({ ...calendar }));
+  agendaSearchQuery = state.agendaSearchQuery || "";
+  customAgendaDays = Number(state.customAgendaDays || 4);
   activeFinanceFilter = state.financeFilter || "all";
 
   localStorage.setItem("ela-em-ordem:agenda-events", JSON.stringify(agendaStore));
@@ -560,6 +599,9 @@ function applyCloudState(state) {
   localStorage.setItem("ela-em-ordem:layout", state.layout || "soft");
   localStorage.setItem("vida-nova:accent-color", state.accentColor || "#c55b84");
   localStorage.setItem("ela-em-ordem:agenda-view", agendaView);
+  localStorage.setItem("vida-nova:calendar-store", JSON.stringify(calendarStore));
+  localStorage.setItem("vida-nova:agenda-search", agendaSearchQuery);
+  localStorage.setItem("vida-nova:custom-days", String(customAgendaDays));
   localStorage.setItem("ela-em-ordem:finance-filter", activeFinanceFilter);
 
   editableCards.forEach((card) => {
@@ -1098,6 +1140,132 @@ function renderModuleCards() {
   });
 }
 
+function saveCalendarStore() {
+  localStorage.setItem("vida-nova:calendar-store", JSON.stringify(calendarStore));
+  scheduleCloudSync();
+}
+
+function getCalendarById(calendarId) {
+  return (
+    calendarStore.find((calendar) => calendar.id === calendarId) ||
+    calendarStore[0] ||
+    { id: "pessoal", name: "Pessoal", color: "#4285f4", visible: true }
+  );
+}
+
+function getVisibleCalendarIds() {
+  return new Set(calendarStore.filter((calendar) => calendar.visible).map((calendar) => calendar.id));
+}
+
+function eventMatchesSearch(eventItem) {
+  if (!agendaSearchQuery.trim()) {
+    return true;
+  }
+
+  const search = agendaSearchQuery.trim().toLowerCase();
+  const haystack = [
+    eventItem.title,
+    eventItem.description,
+    eventItem.location,
+    eventItem.link,
+    eventItem.category,
+    eventItem.calendarName,
+    ...(Array.isArray(eventItem.guests) ? eventItem.guests : []),
+  ]
+    .filter(Boolean)
+    .join(" ")
+    .toLowerCase();
+
+  return haystack.includes(search);
+}
+
+function getFilteredEventsForDate(dateKey) {
+  const visibleCalendars = getVisibleCalendarIds();
+  return ensureAgendaDay(dateKey).events.filter((eventItem) => {
+    const calendarId = eventItem.calendarId || "pessoal";
+    return visibleCalendars.has(calendarId) && eventMatchesSearch(eventItem);
+  });
+}
+
+function getDatesInCurrentRange() {
+  if (agendaView === "month" || agendaView === "year") {
+    const year = calendarCursor.getFullYear();
+    const month = calendarCursor.getMonth();
+    const totalDays = new Date(year, month + 1, 0).getDate();
+    return Array.from({ length: totalDays }, (_, index) =>
+      formatDateKey(new Date(year, month, index + 1)),
+    );
+  }
+
+  if (agendaView === "schedule") {
+    const start = getWeekStart(selectedDateKey);
+    return Array.from({ length: 14 }, (_, index) => {
+      const date = new Date(start);
+      date.setDate(start.getDate() + index);
+      return formatDateKey(date);
+    });
+  }
+
+  const start = getWeekStart(selectedDateKey);
+  const daysToShow =
+    agendaView === "day" ? 1 : agendaView === "custom" ? Math.max(2, Math.min(10, customAgendaDays)) : 7;
+
+  return Array.from({ length: daysToShow }, (_, index) => {
+    const date = new Date(start);
+    date.setDate(start.getDate() + index);
+    return formatDateKey(date);
+  });
+}
+
+function getEventsInRange(dateKeys) {
+  return dateKeys.flatMap((dateKey) =>
+    getFilteredEventsForDate(dateKey).map((eventItem) => ({ ...eventItem, dateKey })),
+  );
+}
+
+function renderCalendarSelectors() {
+  if (agendaCalendarInput) {
+    agendaCalendarInput.innerHTML = calendarStore
+      .map(
+        (calendar) =>
+          `<option value="${escapeHtml(calendar.id)}">${escapeHtml(calendar.name)}</option>`,
+      )
+      .join("");
+  }
+
+  if (calendarModalCalendar) {
+    calendarModalCalendar.innerHTML = calendarStore
+      .map(
+        (calendar) =>
+          `<option value="${escapeHtml(calendar.id)}">${escapeHtml(calendar.name)}</option>`,
+      )
+      .join("");
+  }
+}
+
+function renderCalendarList() {
+  if (!calendarList) {
+    return;
+  }
+
+  calendarList.innerHTML = calendarStore
+    .map(
+      (calendar) => `
+        <label class="calendar-list-item">
+          <span class="calendar-list-main">
+            <input type="checkbox" data-calendar-toggle="${escapeHtml(calendar.id)}" ${
+              calendar.visible ? "checked" : ""
+            } />
+            <span class="calendar-swatch" style="background:${escapeHtml(calendar.color)}"></span>
+            <span>${escapeHtml(calendar.name)}</span>
+          </span>
+          <button class="calendar-options-button" type="button" data-calendar-edit="${escapeHtml(calendar.id)}">•••</button>
+        </label>
+      `,
+    )
+    .join("");
+}
+
 function openCalendarModal(dateKey, prefill = {}) {
   if (!calendarModal) {
     return;
@@ -1118,11 +1286,20 @@ function openCalendarModal(dateKey, prefill = {}) {
   if (calendarModalLink) {
     calendarModalLink.value = prefill.link || "";
   }
+  if (calendarModalGuests) {
+    calendarModalGuests.value = Array.isArray(prefill.guests) ? prefill.guests.join(", ") : "";
+  }
+  if (calendarModalCalendar) {
+    calendarModalCalendar.value = prefill.calendarId || calendarStore[0]?.id || "pessoal";
+  }
   if (calendarModalCategory) {
     calendarModalCategory.value = prefill.category || "Pessoal";
   }
+  if (calendarModalRecurrence) {
+    calendarModalRecurrence.value = prefill.recurrence || "none";
+  }
   if (calendarModalColor) {
-    calendarModalColor.value = prefill.color || "#c55b84";
+    calendarModalColor.value = prefill.color || getCalendarById(prefill.calendarId).color || "#4285f4";
   }
   if (calendarModalDescription) {
     calendarModalDescription.value = prefill.description || "";
@@ -1131,17 +1308,19 @@ function openCalendarModal(dateKey, prefill = {}) {
     calendarModalTitleInput.value = prefill.title || "";
   }
   calendarModalList.innerHTML = "";
-  if (dayData.events.length) {
-    dayData.events
+  const visibleEvents = getFilteredEventsForDate(dateKey);
+  if (visibleEvents.length) {
+    visibleEvents
       .slice()
       .sort((a, b) => (a.time || "").localeCompare(b.time || ""))
       .forEach((eventItem) => {
+        const calendar = getCalendarById(eventItem.calendarId);
         const item = document.createElement("li");
         item.className = "task-item";
 
         const text = document.createElement("span");
         text.className = "task-text";
-        text.innerHTML = `<strong><span class="event-color-dot" style="background:${escapeHtml(eventItem.color || "#c55b84")}"></span>${escapeHtml(formatTimeRange(eventItem.time, eventItem.endTime))} - ${escapeHtml(eventItem.title)}</strong><small>${escapeHtml(eventItem.category || "Pessoal")} | ${escapeHtml(eventItem.location || "Sem local")} | ${escapeHtml(eventItem.description || "Sem descricao")}${eventItem.link ? ` | <a href="${escapeHtml(eventItem.link)}" target="_blank" rel="noreferrer">abrir link</a>` : ""}</small>`;
+        text.innerHTML = `<strong><span class="event-color-dot" style="background:${escapeHtml(eventItem.color || calendar.color)}"></span>${escapeHtml(formatTimeRange(eventItem.time, eventItem.endTime))} - ${escapeHtml(eventItem.title)}</strong><small>${escapeHtml(calendar.name)} | ${escapeHtml(eventItem.category || "Pessoal")} | ${escapeHtml(eventItem.location || "Sem local")}${eventItem.guests?.length ? ` | ${escapeHtml(eventItem.guests.join(", "))}` : ""}${eventItem.link ? ` | <a href="${escapeHtml(eventItem.link)}" target="_blank" rel="noreferrer">abrir link</a>` : ""}</small>`;
 
         const remove = document.createElement("button");
         remove.type = "button";
@@ -1206,7 +1385,7 @@ function openCalendarModal(dateKey, prefill = {}) {
         '<li class="task-item"><span class="task-text">Nenhuma tarefa cadastrada para este dia.</span></li>';
     }
   }
-  calendarModalEmpty.hidden = dayData.events.length > 0 || dayData.tasks.length > 0;
+  calendarModalEmpty.hidden = visibleEvents.length > 0 || dayData.tasks.length > 0;
   if (calendarModalTasks) {
     calendarModalTasks.innerHTML = tasks.length
       ? tasks
@@ -1318,14 +1497,57 @@ function ensureAgendaDay(dateKey) {
   }
 
   agendaStore[dateKey].events = agendaStore[dateKey].events.map((eventItem) => ({
-    color: "#c55b84",
+    color: "#4285f4",
     category: "Pessoal",
     endTime: eventItem.time || "09:00",
     link: "",
+    guests: [],
+    recurrence: "none",
+    calendarId: eventItem.category === "Trabalho" ? "trabalho" : "pessoal",
     ...eventItem,
   }));
 
   return agendaStore[dateKey];
+}
+
+function parseNaturalLanguageEvent(inputValue, baseDateKey = selectedDateKey) {
+  const text = String(inputValue || "").trim();
+  const lowered = text.toLowerCase();
+  const result = {
+    title: text,
+    dateKey: baseDateKey,
+    time: "",
+    endTime: "",
+  };
+
+  const tomorrow = /amanh[ãa]/.test(lowered);
+  const today = /\bhoje\b/.test(lowered);
+  const hourMatch = lowered.match(/(?:às|as)?\s*(\d{1,2})(?:[:h](\d{2}))?/);
+
+  const date = new Date(`${baseDateKey}T12:00:00`);
+  if (tomorrow) {
+    date.setDate(date.getDate() + 1);
+  } else if (today) {
+    // base date already selected
+  }
+
+  if (hourMatch) {
+    const hours = Number(hourMatch[1]);
+    const minutes = Number(hourMatch[2] || 0);
+    result.time = `${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}`;
+    const end = new Date(2000, 0, 1, hours, minutes + 60);
+    result.endTime = `${String(end.getHours()).padStart(2, "0")}:${String(end.getMinutes()).padStart(2, "0")}`;
+  }
+
+  result.dateKey = formatDateKey(date);
+  result.title = text
+    .replace(/amanh[ãa]/gi, "")
+    .replace(/\bhoje\b/gi, "")
+    .replace(/(?:às|as)?\s*\d{1,2}(?:[:h]\d{2})?/gi, "")
+    .replace(/\s+/g, " ")
+    .trim() || text;
+
+  return result;
 }
 
 function saveAgendaStore() {
@@ -1346,10 +1568,11 @@ function renderAgendaEvents() {
   }
   agendaEventsList.innerHTML = "";
 
-  dayData.events
+  getFilteredEventsForDate(selectedDateKey)
     .slice()
-    .sort((a, b) => a.time.localeCompare(b.time))
+    .sort((a, b) => (a.time || "").localeCompare(b.time || ""))
     .forEach((eventItem) => {
+      const calendar = getCalendarById(eventItem.calendarId);
       const item = document.createElement("li");
       item.className = "task-item";
 
@@ -1362,8 +1585,8 @@ function renderAgendaEvents() {
       const text = document.createElement("span");
       text.className = "task-text";
       text.innerHTML = `
-        <strong><span class="event-color-dot" style="background:${escapeHtml(eventItem.color || "#c55b84")}"></span>${escapeHtml(formatTimeRange(eventItem.time, eventItem.endTime))} - ${escapeHtml(eventItem.title)}</strong>
-        <small>${escapeHtml(eventItem.category || "Pessoal")} | ${escapeHtml(eventItem.location || "Sem local")} | ${escapeHtml(eventItem.description || "Sem descricao")}${eventItem.link ? ` | <a href="${escapeHtml(eventItem.link)}" target="_blank" rel="noreferrer">abrir link</a>` : ""}</small>
+        <strong><span class="event-color-dot" style="background:${escapeHtml(eventItem.color || calendar.color)}"></span>${escapeHtml(formatTimeRange(eventItem.time, eventItem.endTime))} - ${escapeHtml(eventItem.title)}</strong>
+        <small>${escapeHtml(calendar.name)} | ${escapeHtml(eventItem.category || "Pessoal")} | ${escapeHtml(eventItem.location || "Sem local")} | ${escapeHtml(eventItem.description || "Sem descricao")}${eventItem.link ? ` | <a href="${escapeHtml(eventItem.link)}" target="_blank" rel="noreferrer">abrir link</a>` : ""}</small>
       `;
 
       const remove = document.createElement("button");
@@ -1386,6 +1609,8 @@ function renderAgendaEvents() {
   renderNextAgendaCard();
   renderDashboardMirror();
   renderWeekView();
+  renderScheduleView();
+  renderYearView();
 }
 
 function renderMiniCalendar() {
@@ -1439,7 +1664,7 @@ function renderMiniCalendar() {
       calendarCursor = new Date(date.getFullYear(), date.getMonth(), 1);
       renderCalendar();
       renderAgendaEvents();
-      if (agendaView === "week") {
+      if (["week", "day", "custom"].includes(agendaView)) {
         openCalendarModal(dateKey);
       }
     });
@@ -1465,21 +1690,59 @@ function renderCalendar() {
     year: "numeric",
   });
 
-  if (agendaView === "week") {
+  if (["week", "day", "custom"].includes(agendaView)) {
     const weekStart = getWeekStart(selectedDateKey);
-    const weekEnd = new Date(weekStart);
-    weekEnd.setDate(weekStart.getDate() + 6);
-    calendarMonthLabel.textContent = `${weekStart.toLocaleDateString("pt-BR", { day: "2-digit", month: "short" })} - ${weekEnd.toLocaleDateString("pt-BR", { day: "2-digit", month: "short", year: "numeric" })}`;
+    const daysCount =
+      agendaView === "day" ? 1 : agendaView === "custom" ? Math.max(2, Math.min(10, customAgendaDays)) : 7;
+    const rangeEnd = new Date(weekStart);
+    rangeEnd.setDate(weekStart.getDate() + daysCount - 1);
+    calendarMonthLabel.textContent = `${weekStart.toLocaleDateString("pt-BR", { day: "2-digit", month: "short" })} - ${rangeEnd.toLocaleDateString("pt-BR", { day: "2-digit", month: "short", year: "numeric" })}`;
+  } else if (agendaView === "year") {
+    calendarMonthLabel.textContent = String(year);
+  } else if (agendaView === "schedule") {
+    const range = getDatesInCurrentRange();
+    const first = new Date(`${range[0]}T12:00:00`);
+    const last = new Date(`${range[range.length - 1]}T12:00:00`);
+    calendarMonthLabel.textContent = `${first.toLocaleDateString("pt-BR", {
+      day: "2-digit",
+      month: "short",
+    })} - ${last.toLocaleDateString("pt-BR", {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+    })}`;
   }
 
   renderMiniCalendar();
 
   if (calendarMonthShell && weekViewShell && calendarMonthViewButton && calendarWeekViewButton) {
     const isMonthView = agendaView === "month";
+    const isGridRangeView = ["week", "day", "custom"].includes(agendaView);
     calendarMonthShell.classList.toggle("hidden", !isMonthView);
-    weekViewShell.classList.toggle("hidden", isMonthView);
+    weekViewShell.classList.toggle("hidden", !isGridRangeView);
+    if (yearViewShell) {
+      yearViewShell.classList.toggle("hidden", agendaView !== "year");
+    }
+    if (scheduleViewShell) {
+      scheduleViewShell.classList.toggle("hidden", agendaView !== "schedule");
+    }
     calendarMonthViewButton.classList.toggle("is-active", isMonthView);
-    calendarWeekViewButton.classList.toggle("is-active", !isMonthView);
+    calendarWeekViewButton.classList.toggle("is-active", agendaView === "week");
+    if (calendarDayViewButton) {
+      calendarDayViewButton.classList.toggle("is-active", agendaView === "day");
+    }
+    if (calendarYearViewButton) {
+      calendarYearViewButton.classList.toggle("is-active", agendaView === "year");
+    }
+    if (calendarScheduleViewButton) {
+      calendarScheduleViewButton.classList.toggle("is-active", agendaView === "schedule");
+    }
+    if (calendarCustomViewButton) {
+      calendarCustomViewButton.classList.toggle("is-active", agendaView === "custom");
+    }
+    if (customDaysField) {
+      customDaysField.classList.toggle("is-visible", agendaView === "custom");
+    }
   }
 
   calendarGrid.innerHTML = "";
@@ -1490,6 +1753,7 @@ function renderCalendar() {
     const date = new Date(year, month, isCurrentMonth ? dayNumber : 1);
     const dateKey = isCurrentMonth ? formatDateKey(date) : "";
     const dayData = isCurrentMonth ? ensureAgendaDay(dateKey) : null;
+    const visibleEvents = isCurrentMonth ? getFilteredEventsForDate(dateKey) : [];
 
     const button = document.createElement("button");
     button.type = "button";
@@ -1511,7 +1775,7 @@ function renderCalendar() {
       button.classList.add("is-selected");
     }
 
-    const eventCount = dayData.events.length;
+    const eventCount = visibleEvents.length;
     const taskCount = dayData.tasks.length;
     const metaParts = [];
     if (eventCount) {
@@ -1520,7 +1784,7 @@ function renderCalendar() {
     if (taskCount) {
       metaParts.push(`${taskCount} tarefa${taskCount > 1 ? "s" : ""}`);
     }
-    const eventDots = dayData.events
+    const eventDots = visibleEvents
       .slice(0, 3)
       .map(
         (eventItem) =>
@@ -1549,13 +1813,19 @@ function renderWeekView() {
     return;
   }
 
+  if (!["week", "day", "custom"].includes(agendaView)) {
+    return;
+  }
+
   const weekStart = getWeekStart(selectedDateKey);
+  const daysToShow =
+    agendaView === "day" ? 1 : agendaView === "custom" ? Math.max(2, Math.min(10, customAgendaDays)) : 7;
   const hours = Array.from({ length: 17 }, (_, index) => 6 + index);
   weekHoursColumn.innerHTML = hours
     .map((hour) => `<div class="week-hour-label">${String(hour).padStart(2, "0")}:00</div>`)
     .join("");
 
-  weekViewHeader.innerHTML = `<div class="week-corner-spacer" aria-hidden="true"></div>${Array.from({ length: 7 }, (_, dayIndex) => {
+  weekViewHeader.innerHTML = `<div class="week-corner-spacer" aria-hidden="true"></div>${Array.from({ length: daysToShow }, (_, dayIndex) => {
     const date = new Date(weekStart);
     date.setDate(weekStart.getDate() + dayIndex);
     const dateKey = formatDateKey(date);
@@ -1567,12 +1837,15 @@ function renderWeekView() {
     </button>`;
   }).join("")}`;
 
-  weekColumns.innerHTML = Array.from({ length: 7 }, (_, dayIndex) => {
+  const todayKey = formatDateKey(new Date());
+  const now = new Date();
+  const currentTop = ((now.getHours() * 60 + now.getMinutes() - 360) / 15) * 20;
+
+  weekColumns.innerHTML = Array.from({ length: daysToShow }, (_, dayIndex) => {
     const date = new Date(weekStart);
     date.setDate(weekStart.getDate() + dayIndex);
     const dateKey = formatDateKey(date);
-    const dayData = ensureAgendaDay(dateKey);
-    const blocks = dayData.events
+    const blocks = getFilteredEventsForDate(dateKey)
       .slice()
       .sort((a, b) => String(a.time || "").localeCompare(String(b.time || "")))
       .map((eventItem) => {
@@ -1581,7 +1854,7 @@ function renderWeekView() {
         const minutesFromStart = Math.max(0, startTotal - 360);
         const top = (minutesFromStart / 15) * 20;
         const height = Math.max(20, (getEventDurationMinutes(eventItem) / 15) * 20);
-        const baseColor = eventItem.color || "#c55b84";
+        const baseColor = eventItem.color || getCalendarById(eventItem.calendarId).color || "#4285f4";
         return `<button type="button" class="week-event-block" data-event-date="${dateKey}" data-event-id="${escapeHtml(eventItem.id)}" style="top:${top}px;height:${height}px;background:${toSoftColor(baseColor, 0.24)};border-color:${escapeHtml(baseColor)}">
           <strong>${escapeHtml(eventItem.title)}</strong>
           <small>${escapeHtml(formatTimeRange(eventItem.time, eventItem.endTime))}${eventItem.location ? ` • ${escapeHtml(eventItem.location)}` : ""}</small>
@@ -1589,11 +1862,73 @@ function renderWeekView() {
       })
       .join("");
 
+    const currentIndicator =
+      dateKey === todayKey && currentTop >= 0
+        ? `<div class="current-time-indicator" style="top:${currentTop}px"><span></span></div>`
+        : "";
+
     return `<div class="week-day-column" data-week-column="${dateKey}">
       <button type="button" class="week-column-hit" data-week-date="${dateKey}" aria-label="Abrir dia ${dateKey}"></button>
+      ${currentIndicator}
       ${blocks}
     </div>`;
   }).join("");
+}
+
+function renderYearView() {
+  if (!yearViewShell) {
+    return;
+  }
+
+  const year = calendarCursor.getFullYear();
+  yearViewShell.innerHTML = Array.from({ length: 12 }, (_, monthIndex) => {
+    const firstDay = new Date(year, monthIndex, 1);
+    const totalDays = new Date(year, monthIndex + 1, 0).getDate();
+    const previewDays = Array.from({ length: Math.min(31, totalDays) }, (_, index) => {
+      const dateKey = formatDateKey(new Date(year, monthIndex, index + 1));
+      const visibleCount = getFilteredEventsForDate(dateKey).length;
+      return `<button type="button" class="year-month-day${visibleCount ? " has-events" : ""}" data-year-date="${dateKey}">${index + 1}</button>`;
+    }).join("");
+
+    return `<article class="year-month-card">
+      <strong>${firstDay.toLocaleDateString("pt-BR", { month: "long" })}</strong>
+      <div class="year-month-grid">${previewDays}</div>
+    </article>`;
+  }).join("");
+}
+
+function renderScheduleView() {
+  if (!scheduleViewShell) {
+    return;
+  }
+
+  const events = getEventsInRange(getDatesInCurrentRange())
+    .sort((left, right) => {
+      const leftStamp = `${left.dateKey} ${left.time || "00:00"}`;
+      const rightStamp = `${right.dateKey} ${right.time || "00:00"}`;
+      return leftStamp.localeCompare(rightStamp);
+    });
+
+  scheduleViewShell.innerHTML = events.length
+    ? events
+        .map((eventItem) => {
+          const calendar = getCalendarById(eventItem.calendarId);
+          return `<article class="schedule-event-card">
+            <div class="schedule-event-date">
+              <strong>${formatDisplayDate(eventItem.dateKey)}</strong>
+              <small>${escapeHtml(formatTimeRange(eventItem.time, eventItem.endTime))}</small>
+            </div>
+            <div class="schedule-event-content">
+              <span class="event-color-dot" style="background:${escapeHtml(eventItem.color || calendar.color)}"></span>
+              <div>
+                <strong>${escapeHtml(eventItem.title)}</strong>
+                <small>${escapeHtml(calendar.name)} | ${escapeHtml(eventItem.location || "Sem local")}</small>
+              </div>
+            </div>
+          </article>`;
+        })
+        .join("")
+    : `<div class="schedule-empty-state">Nenhum evento encontrado neste periodo.</div>`;
 }
 
 function renderNextAgendaCard() {
@@ -1601,7 +1936,7 @@ function renderNextAgendaCard() {
     return;
   }
 
-  const events = ensureAgendaDay(selectedDateKey).events
+  const events = getFilteredEventsForDate(selectedDateKey)
     .slice()
     .sort((a, b) => (a.time || "").localeCompare(b.time || ""));
 
@@ -2154,14 +2489,21 @@ if (agendaForm) {
   agendaForm.addEventListener("submit", (event) => {
     event.preventDefault();
 
-    const targetDate = agendaDateInput.value || selectedDateKey;
-    const title = agendaTitleInput.value.trim();
-    const time = agendaTimeInput.value || "";
-    const endTime = agendaEndTimeInput.value || "";
+    const parsed = parseNaturalLanguageEvent(agendaTitleInput.value, agendaDateInput.value || selectedDateKey);
+    const targetDate = agendaDateInput.value || parsed.dateKey || selectedDateKey;
+    const title = parsed.title.trim();
+    const time = agendaTimeInput.value || parsed.time || "";
+    const endTime = agendaEndTimeInput.value || parsed.endTime || "";
     const location = agendaLocationInput.value.trim();
     const link = agendaLinkInput.value.trim();
+    const guests = agendaGuestsInput?.value
+      .split(",")
+      .map((guest) => guest.trim())
+      .filter(Boolean);
+    const calendarId = agendaCalendarInput?.value || calendarStore[0]?.id || "pessoal";
     const category = agendaCategoryInput.value || "Pessoal";
-    const color = agendaColorInput.value || "#c55b84";
+    const color = agendaColorInput.value || getCalendarById(calendarId).color || "#4285f4";
+    const recurrence = agendaRecurrenceInput?.value || "none";
     const description = agendaDescriptionInput.value.trim();
 
     if (!title) {
@@ -2175,6 +2517,9 @@ if (agendaForm) {
       title,
       location,
       link,
+      guests,
+      calendarId,
+      recurrence,
       category,
       color,
       description,
@@ -2184,7 +2529,11 @@ if (agendaForm) {
     saveAgendaStore();
     renderAgendaEvents();
     renderCalendar();
+    renderScheduleView();
     agendaForm.reset();
+    if (agendaCalendarInput) {
+      agendaCalendarInput.value = calendarStore[0]?.id || "pessoal";
+    }
   });
 }
 
@@ -2206,9 +2555,19 @@ if (calendarPrev) {
   calendarPrev.addEventListener("click", () => {
     if (agendaView === "month") {
       calendarCursor = new Date(calendarCursor.getFullYear(), calendarCursor.getMonth() - 1, 1);
+    } else if (agendaView === "year") {
+      calendarCursor = new Date(calendarCursor.getFullYear() - 1, 0, 1);
+    } else if (agendaView === "schedule") {
+      const current = new Date(`${selectedDateKey}T12:00:00`);
+      current.setDate(current.getDate() - 14);
+      selectedDateKey = formatDateKey(current);
+      calendarCursor = new Date(current);
     } else {
       const current = new Date(`${selectedDateKey}T12:00:00`);
-      current.setDate(current.getDate() - 7);
+      current.setDate(
+        current.getDate() -
+          (agendaView === "day" ? 1 : agendaView === "custom" ? Math.max(2, Math.min(10, customAgendaDays)) : 7),
+      );
       selectedDateKey = formatDateKey(current);
       calendarCursor = new Date(current);
     }
@@ -2222,9 +2581,19 @@ if (calendarNext) {
   calendarNext.addEventListener("click", () => {
     if (agendaView === "month") {
       calendarCursor = new Date(calendarCursor.getFullYear(), calendarCursor.getMonth() + 1, 1);
+    } else if (agendaView === "year") {
+      calendarCursor = new Date(calendarCursor.getFullYear() + 1, 0, 1);
+    } else if (agendaView === "schedule") {
+      const current = new Date(`${selectedDateKey}T12:00:00`);
+      current.setDate(current.getDate() + 14);
+      selectedDateKey = formatDateKey(current);
+      calendarCursor = new Date(current);
     } else {
       const current = new Date(`${selectedDateKey}T12:00:00`);
-      current.setDate(current.getDate() + 7);
+      current.setDate(
+        current.getDate() +
+          (agendaView === "day" ? 1 : agendaView === "custom" ? Math.max(2, Math.min(10, customAgendaDays)) : 7),
+      );
       selectedDateKey = formatDateKey(current);
       calendarCursor = new Date(current);
     }
@@ -2255,6 +2624,17 @@ if (calendarMonthViewButton) {
   });
 }
 
+if (calendarDayViewButton) {
+  calendarDayViewButton.addEventListener("click", () => {
+    agendaView = "day";
+    localStorage.setItem("ela-em-ordem:agenda-view", agendaView);
+    scheduleCloudSync();
+    renderCalendar();
+    renderWeekView();
+    renderAgendaEvents();
+  });
+}
+
 if (calendarWeekViewButton) {
   calendarWeekViewButton.addEventListener("click", () => {
     agendaView = "week";
@@ -2262,6 +2642,142 @@ if (calendarWeekViewButton) {
     scheduleCloudSync();
     renderCalendar();
     renderWeekView();
+  });
+}
+
+if (calendarYearViewButton) {
+  calendarYearViewButton.addEventListener("click", () => {
+    agendaView = "year";
+    localStorage.setItem("ela-em-ordem:agenda-view", agendaView);
+    scheduleCloudSync();
+    renderCalendar();
+    renderYearView();
+  });
+}
+
+if (calendarScheduleViewButton) {
+  calendarScheduleViewButton.addEventListener("click", () => {
+    agendaView = "schedule";
+    localStorage.setItem("ela-em-ordem:agenda-view", agendaView);
+    scheduleCloudSync();
+    renderCalendar();
+    renderScheduleView();
+  });
+}
+
+if (calendarCustomViewButton) {
+  calendarCustomViewButton.addEventListener("click", () => {
+    agendaView = "custom";
+    localStorage.setItem("ela-em-ordem:agenda-view", agendaView);
+    scheduleCloudSync();
+    renderCalendar();
+    renderWeekView();
+    renderAgendaEvents();
+  });
+}
+
+if (calendarCustomDaysInput) {
+  calendarCustomDaysInput.value = String(customAgendaDays);
+  calendarCustomDaysInput.addEventListener("input", () => {
+    customAgendaDays = Math.max(2, Math.min(10, Number(calendarCustomDaysInput.value || 4)));
+    localStorage.setItem("vida-nova:custom-days", String(customAgendaDays));
+    if (agendaView === "custom") {
+      renderCalendar();
+      renderWeekView();
+      renderAgendaEvents();
+    }
+    scheduleCloudSync();
+  });
+}
+
+if (agendaSearchInput) {
+  agendaSearchInput.value = agendaSearchQuery;
+  agendaSearchInput.addEventListener("input", () => {
+    agendaSearchQuery = agendaSearchInput.value;
+    localStorage.setItem("vida-nova:agenda-search", agendaSearchQuery);
+    renderAgendaEvents();
+    renderCalendar();
+    renderWeekView();
+    renderScheduleView();
+    renderYearView();
+    scheduleCloudSync();
+  });
+}
+
+if (agendaCalendarInput) {
+  agendaCalendarInput.addEventListener("change", () => {
+    const calendar = getCalendarById(agendaCalendarInput.value);
+    if (agendaColorInput && calendar?.color) {
+      agendaColorInput.value = calendar.color;
+    }
+  });
+}
+
+if (calendarModalCalendar) {
+  calendarModalCalendar.addEventListener("change", () => {
+    const calendar = getCalendarById(calendarModalCalendar.value);
+    if (calendarModalColor && calendar?.color) {
+      calendarModalColor.value = calendar.color;
+    }
+  });
+}
+
+if (agendaCreateButton) {
+  agendaCreateButton.addEventListener("click", () => {
+    openCalendarModal(selectedDateKey);
+  });
+}
+
+if (calendarAddButton) {
+  calendarAddButton.addEventListener("click", () => {
+    const name = window.prompt("Nome do calendario");
+    if (!name) {
+      return;
+    }
+    const nextId = `calendar-${crypto.randomUUID()}`;
+    calendarStore.push({
+      id: nextId,
+      name: name.trim(),
+      color: "#7c4dff",
+      visible: true,
+    });
+    saveCalendarStore();
+    renderCalendarSelectors();
+    renderCalendarList();
+  });
+}
+
+if (calendarList) {
+  calendarList.addEventListener("click", (event) => {
+    const toggle = event.target.closest("[data-calendar-toggle]");
+    if (toggle) {
+      const calendar = calendarStore.find((item) => item.id === toggle.dataset.calendarToggle);
+      if (calendar) {
+        calendar.visible = toggle.checked;
+        saveCalendarStore();
+        renderCalendarList();
+        renderCalendar();
+        renderAgendaEvents();
+      }
+      return;
+    }
+
+    const editButton = event.target.closest("[data-calendar-edit]");
+    if (editButton) {
+      const calendar = calendarStore.find((item) => item.id === editButton.dataset.calendarEdit);
+      if (!calendar) {
+        return;
+      }
+      const nextName = window.prompt("Editar nome do calendario", calendar.name);
+      if (nextName) {
+        calendar.name = nextName.trim();
+        saveCalendarStore();
+      }
+      renderCalendarSelectors();
+      renderCalendarList();
+      renderAgendaEvents();
+      renderCalendar();
+    }
   });
 }
 
@@ -2464,21 +2980,30 @@ if (calendarModalForm) {
   calendarModalForm.addEventListener("submit", (event) => {
     event.preventDefault();
     const targetDate = calendarModalDate.value || selectedDateKey;
-    const title = calendarModalTitleInput.value.trim();
+    const parsed = parseNaturalLanguageEvent(calendarModalTitleInput.value, targetDate);
+    const title = parsed.title.trim();
 
     if (!title) {
       return;
     }
 
+    const calendarId = calendarModalCalendar?.value || calendarStore[0]?.id || "pessoal";
+
     ensureAgendaDay(targetDate).events.push({
       id: crypto.randomUUID(),
-      time: calendarModalTime.value || "",
-      endTime: calendarModalEndTime.value || "",
+      time: calendarModalTime.value || parsed.time || "",
+      endTime: calendarModalEndTime.value || parsed.endTime || "",
       title,
       location: calendarModalLocation.value.trim(),
       link: calendarModalLink.value.trim(),
+      guests: calendarModalGuests?.value
+        .split(",")
+        .map((guest) => guest.trim())
+        .filter(Boolean),
+      calendarId,
       category: calendarModalCategory.value || "Pessoal",
-      color: calendarModalColor.value || "#c55b84",
+      recurrence: calendarModalRecurrence?.value || "none",
+      color: calendarModalColor.value || getCalendarById(calendarId).color || "#4285f4",
       description: calendarModalDescription.value.trim(),
     });
 
@@ -2592,6 +3117,45 @@ if (weekColumns) {
   });
 }
 
+if (yearViewShell) {
+  yearViewShell.addEventListener("click", (event) => {
+    const button = event.target.closest("[data-year-date]");
+    if (!button) {
+      return;
+    }
+    selectedDateKey = button.dataset.yearDate;
+    calendarCursor = new Date(`${selectedDateKey}T12:00:00`);
+    agendaView = "month";
+    renderCalendar();
+    renderAgendaEvents();
+  });
+}
+
+document.addEventListener("keydown", (event) => {
+  if (event.target.closest("input, textarea, select")) {
+    return;
+  }
+
+  if (event.key === "c") {
+    event.preventDefault();
+    openCalendarModal(selectedDateKey);
+  }
+
+  if (event.key === "t") {
+    event.preventDefault();
+    const today = new Date();
+    selectedDateKey = formatDateKey(today);
+    calendarCursor = new Date(today.getFullYear(), today.getMonth(), 1);
+    renderCalendar();
+    renderAgendaEvents();
+  }
+
+  if (event.key === "/") {
+    event.preventDefault();
+    agendaSearchInput?.focus();
+  }
+});
+
 editorClose.addEventListener("click", closeEditor);
 
 editorModal.addEventListener("click", (event) => {
@@ -2648,6 +3212,8 @@ async function bootApp() {
 restoreGridOrders();
 restoreSavedCards();
 initializeDragAndDrop();
+renderCalendarSelectors();
+renderCalendarList();
 setActivePage(window.location.hash.replace("#", "") || "dashboard", false);
 renderVerse();
   renderTasks();

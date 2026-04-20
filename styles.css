@@ -574,11 +574,123 @@ a {
   grid-template-columns: 1fr;
 }
 
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 .agenda-panel {
   margin-bottom: 18px;
   background:
     linear-gradient(135deg, rgba(207, 230, 255, 0.5), rgba(255, 255, 255, 0.9)),
     linear-gradient(180deg, rgba(255, 255, 255, 0.72), rgba(255, 255, 255, 0.84));
+}
+
+.agenda-google-shell {
+  display: grid;
+  grid-template-columns: 280px minmax(0, 1fr) 360px;
+  gap: 20px;
+  align-items: start;
+}
+
+.agenda-left-rail {
+  display: grid;
+  gap: 16px;
+  position: sticky;
+  top: 18px;
+}
+
+.agenda-sidebar-card {
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.78);
+  box-shadow: var(--shadow);
+}
+
+.agenda-create-button {
+  min-height: 56px;
+  padding: 0 22px;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow: var(--shadow);
+  color: var(--ink);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.calendar-google-header {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 16px;
+  align-items: center;
+  padding: 18px 18px 14px;
+  border-bottom: 1px solid var(--line);
+}
+
+.calendar-google-left,
+.calendar-google-center,
+.calendar-google-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.calendar-google-center {
+  justify-content: center;
+}
+
+.google-calendar-card {
+  padding: 0;
+  overflow: hidden;
+}
+
+.agenda-search {
+  width: min(100%, 420px);
+}
+
+.agenda-search input {
+  width: 100%;
+  padding: 12px 16px;
+  border-radius: 14px;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.88);
+  color: var(--ink);
+  font: inherit;
+}
+
+.google-views {
+  flex-wrap: wrap;
+}
+
+.custom-days-field {
+  display: none;
+  align-items: center;
+  gap: 8px;
+  color: var(--muted);
+  font-size: 0.86rem;
+}
+
+.custom-days-field.is-visible {
+  display: inline-flex;
+}
+
+.custom-days-field input {
+  width: 68px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.88);
+  color: var(--ink);
 }
 
 .agenda-layout {
@@ -609,6 +721,11 @@ a {
   border: 1px solid var(--line);
   border-radius: 24px;
   background: rgba(255, 255, 255, 0.7);
+}
+
+.google-calendar-experience {
+  grid-template-columns: 1fr;
+  padding: 0 18px 18px;
 }
 
 .agenda-events-card .task-text {
@@ -679,6 +796,42 @@ a {
   font-family: Georgia, "Times New Roman", serif;
 }
 
+.calendar-list {
+  display: grid;
+  gap: 8px;
+}
+
+.calendar-list-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.68);
+}
+
+.calendar-list-main {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.calendar-swatch {
+  width: 12px;
+  height: 12px;
+  border-radius: 999px;
+  flex-shrink: 0;
+}
+
+.calendar-options-button {
+  border: none;
+  background: transparent;
+  color: var(--muted);
+  font: inherit;
+  cursor: pointer;
+}
+
 .calendar-mini-weekdays,
 .calendar-mini-grid,
 .calendar-weekdays,
@@ -741,6 +894,81 @@ a {
 .calendar-main-stage {
   min-width: 0;
 }
+
+.year-view-shell {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.year-month-card {
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.76);
+}
+
+.year-month-card strong {
+  display: block;
+  margin-bottom: 12px;
+  text-transform: capitalize;
+}
+
+.year-month-grid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 6px;
+}
+
+.year-month-day {
+  min-height: 34px;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  background: rgba(43, 34, 50, 0.06);
+  color: var(--ink);
+  font: inherit;
+  cursor: pointer;
+}
+
+.year-month-day.has-events {
+  background: rgba(66, 133, 244, 0.18);
+  border-color: rgba(66, 133, 244, 0.26);
+}
+
+.schedule-view-shell {
+  display: grid;
+  gap: 12px;
+}
+
+.schedule-event-card {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 16px;
+  padding: 16px 18px;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.76);
+}
+
+.schedule-event-date,
+.schedule-event-content {
+  display: grid;
+  gap: 4px;
+}
+
+.schedule-event-content {
+  grid-template-columns: auto 1fr;
+  align-items: start;
+}
+
+.schedule-empty-state {
+  padding: 28px;
+  border: 1px dashed var(--line);
+  border-radius: 18px;
+  color: var(--muted);
+  text-align: center;
+}
+
 .calendar-weekdays {
   margin-bottom: 12px;
   color: var(--muted);
@@ -796,6 +1024,11 @@ a {
 .agenda-side {
   display: grid;
   gap: 18px;
+}
+
+.google-agenda-side {
+  position: sticky;
+  top: 18px;
 }
 
 .summary-input {
@@ -969,6 +1202,26 @@ a {
     ),
     rgba(255, 255, 255, 0.82);
   overflow: hidden;
+}
+
+.current-time-indicator {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: #d93025;
+  z-index: 2;
+}
+
+.current-time-indicator span {
+  position: absolute;
+  top: 50%;
+  left: -6px;
+  width: 12px;
+  height: 12px;
+  border-radius: 999px;
+  background: #d93025;
+  transform: translateY(-50%);
 }
 
 .week-column-hit {
@@ -2269,6 +2522,15 @@ select {
     grid-template-columns: 1fr;
   }
 
+  .agenda-google-shell {
+    grid-template-columns: 1fr;
+  }
+
+  .agenda-left-rail,
+  .google-agenda-side {
+    position: static;
+  }
+
   .calendar-experience {
     grid-template-columns: 1fr;
   }
@@ -2295,6 +2557,10 @@ select {
 
   .finance-entry-form-premium > button {
     grid-column: span 2;
+  }
+
+  .year-view-shell {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   body[data-layout="magazine"] .module-grid .finance-card,
@@ -2336,6 +2602,11 @@ select {
     align-items: flex-start;
   }
 
+  .calendar-google-header {
+    grid-template-columns: 1fr;
+    align-items: flex-start;
+  }
+
   .task-form,
   .agenda-form,
   .finance-entry-form,
@@ -2367,6 +2638,11 @@ select {
 
   .calendar-toolbar strong {
     text-align: left;
+  }
+
+  .schedule-event-card,
+  .year-view-shell {
+    grid-template-columns: 1fr;
   }
 
   .finance-entry-form-premium {
