@@ -28,20 +28,13 @@ const initialTasks = [
   { id: crypto.randomUUID(), text: "Leitura biblica e oracao", done: true },
 ];
 
-const verseText = document.querySelector("#daily-verse-text");
-const verseReference = document.querySelector("#daily-verse-reference");
-const newVerseButton = document.querySelector("#new-verse-button");
+const headlineVerseText = document.querySelector("#headline-verse-text");
+const headlineVerseReference = document.querySelector("#headline-verse-reference");
 const taskForm = document.querySelector("#task-form");
 const taskInput = document.querySelector("#task-input");
 const taskList = document.querySelector("#task-list");
 const taskProgress = document.querySelector("#task-progress");
 const notesInput = document.querySelector("#notes-input");
-const topTenForm = document.querySelector("#top-ten-form");
-const topTenInput = document.querySelector("#top-ten-input");
-const topTenList = document.querySelector("#top-ten-list");
-const topTenCount = document.querySelector("#top-ten-count");
-const dashboardTop10Preview = document.querySelector("#dashboard-top10-preview");
-const dashboardNotesPreview = document.querySelector("#dashboard-notes-preview");
 const summarySpotlight = document.querySelector("#summary-spotlight");
 const focusCount = document.querySelector("#focus-count");
 const focusProgress = document.querySelector("#focus-progress");
@@ -49,22 +42,34 @@ const agendaNextTitle = document.querySelector("#agenda-next-title");
 const agendaNextMeta = document.querySelector("#agenda-next-meta");
 const graphRoutine = document.querySelector("#graph-routine");
 const graphAgenda = document.querySelector("#graph-agenda");
-const graphTop10 = document.querySelector("#graph-top10");
+const graphFinance = document.querySelector("#graph-finance");
 const calendarMonthLabel = document.querySelector("#calendar-month-label");
 const calendarGrid = document.querySelector("#calendar-grid");
 const calendarPrev = document.querySelector("#calendar-prev");
 const calendarNext = document.querySelector("#calendar-next");
+const calendarMonthViewButton = document.querySelector("#calendar-month-view");
+const calendarWeekViewButton = document.querySelector("#calendar-week-view");
+const calendarMonthShell = document.querySelector("#calendar-month-shell");
+const weekViewShell = document.querySelector("#week-view-shell");
+const weekViewHeader = document.querySelector("#week-view-header");
+const weekColumns = document.querySelector("#week-columns");
+const weekHoursColumn = document.querySelector("#week-hours-column");
 const selectedDateLabel = document.querySelector("#selected-date-label");
 const agendaForm = document.querySelector("#agenda-form");
 const agendaDateInput = document.querySelector("#agenda-date-input");
 const agendaTimeInput = document.querySelector("#agenda-time-input");
+const agendaEndTimeInput = document.querySelector("#agenda-end-time-input");
 const agendaTitleInput = document.querySelector("#agenda-title-input");
 const agendaLocationInput = document.querySelector("#agenda-location-input");
+const agendaLinkInput = document.querySelector("#agenda-link-input");
+const agendaCategoryInput = document.querySelector("#agenda-category-input");
+const agendaColorInput = document.querySelector("#agenda-color-input");
 const agendaDescriptionInput = document.querySelector("#agenda-description-input");
 const agendaEventsList = document.querySelector("#agenda-events-list");
 const agendaSummaryInput = document.querySelector("#agenda-summary-input");
 const installBanner = document.querySelector("#install-banner");
 const installHelpButton = document.querySelector("#install-help-button");
+const installChromeButton = document.querySelector("#install-chrome-button");
 const userGreeting = document.querySelector("#user-greeting");
 const logoutButton = document.querySelector("#logout-button");
 const financeIncomeInput = document.querySelector("#finance-income-input");
@@ -77,18 +82,28 @@ const financeGoalDisplay = document.querySelector("#finance-goal-display");
 const financeStatusDisplay = document.querySelector("#finance-status-display");
 const financeBalanceHero = document.querySelector("#finance-balance-hero");
 const financeCaption = document.querySelector("#finance-caption");
+const financePanelBalance = document.querySelector("#finance-panel-balance");
+const financePanelCaption = document.querySelector("#finance-panel-caption");
 const calculatorDisplay = document.querySelector("#calculator-display");
 const calculatorKeys = document.querySelectorAll(".calc-key");
 const financeEntryForm = document.querySelector("#finance-entry-form");
 const financeEntryType = document.querySelector("#finance-entry-type");
+const financeEntryCategory = document.querySelector("#finance-entry-category");
 const financeEntryAmount = document.querySelector("#finance-entry-amount");
 const financeEntryTitle = document.querySelector("#finance-entry-title");
+const financeEntryDate = document.querySelector("#finance-entry-date");
+const financeEntryInstallments = document.querySelector("#finance-entry-installments");
+const financeEntryStartMonth = document.querySelector("#finance-entry-start-month");
+const financeEntryColor = document.querySelector("#finance-entry-color");
 const financeRecordsList = document.querySelector("#finance-records-list");
+const financeTableBody = document.querySelector("#finance-table-body");
 const financePlanningPreview = document.querySelector("#finance-planning-preview");
 const financeSavingsDisplay = document.querySelector("#finance-savings-display");
 const financeFixedDisplay = document.querySelector("#finance-fixed-display");
 const financeVariableDisplay = document.querySelector("#finance-variable-display");
 const financeImpulseDisplay = document.querySelector("#finance-impulse-display");
+const financeNotesInput = document.querySelector("#finance-notes-input");
+const financeComparisonGrid = document.querySelector("#finance-comparison-grid");
 const moduleOpenButtons = document.querySelectorAll(".module-open-button");
 const moduleOpenCards = document.querySelectorAll(".module-open-card");
 const calendarModal = document.querySelector("#calendar-modal");
@@ -96,11 +111,18 @@ const calendarModalClose = document.querySelector("#calendar-modal-close");
 const calendarModalTitle = document.querySelector("#calendar-modal-title");
 const calendarModalEmpty = document.querySelector("#calendar-modal-empty");
 const calendarModalList = document.querySelector("#calendar-modal-list");
+const calendarTaskForm = document.querySelector("#calendar-task-form");
+const calendarTaskInput = document.querySelector("#calendar-task-input");
+const calendarDayTaskList = document.querySelector("#calendar-day-task-list");
 const calendarModalForm = document.querySelector("#calendar-modal-form");
 const calendarModalDate = document.querySelector("#calendar-modal-date");
 const calendarModalTime = document.querySelector("#calendar-modal-time");
+const calendarModalEndTime = document.querySelector("#calendar-modal-end-time");
 const calendarModalTitleInput = document.querySelector("#calendar-modal-title-input");
 const calendarModalLocation = document.querySelector("#calendar-modal-location");
+const calendarModalLink = document.querySelector("#calendar-modal-link");
+const calendarModalCategory = document.querySelector("#calendar-modal-category");
+const calendarModalColor = document.querySelector("#calendar-modal-color");
 const calendarModalDescription = document.querySelector("#calendar-modal-description");
 const moduleModal = document.querySelector("#module-modal");
 const moduleModalClose = document.querySelector("#module-modal-close");
@@ -113,8 +135,11 @@ const moduleEntryCategory = document.querySelector("#module-entry-category");
 const moduleEntryDescription = document.querySelector("#module-entry-description");
 const installModal = document.querySelector("#install-modal");
 const installModalClose = document.querySelector("#install-modal-close");
+const installModalChromeButton = document.querySelector("#install-modal-chrome-button");
 const calendarModalTasks = document.querySelector("#calendar-modal-tasks");
-const calendarModalTop10 = document.querySelector("#calendar-modal-top10");
+const financeFilterButtons = document.querySelectorAll("[data-finance-filter]");
+const interactiveStats = document.querySelectorAll(".interactive-stat");
+const editCardButtons = document.querySelectorAll("[data-edit-card]");
 const modulePreviewLists = {
   wardrobe: document.querySelector("#wardrobe-preview-list"),
   home: document.querySelector("#home-preview-list"),
@@ -146,11 +171,12 @@ let tasks = [...initialTasks];
 let verseIndex = new Date().getDate() % verses.length;
 let activeCard = null;
 let draggedCard = null;
-let topTenItems = JSON.parse(localStorage.getItem("ela-em-ordem:top-ten") || "[]");
 let deferredInstallPrompt = null;
 let calendarCursor = new Date();
 let selectedDateKey = formatDateKey(new Date());
+let agendaView = localStorage.getItem("ela-em-ordem:agenda-view") || "month";
 let agendaStore = JSON.parse(localStorage.getItem("ela-em-ordem:agenda-events") || "{}");
+let activeFinanceFilter = localStorage.getItem("ela-em-ordem:finance-filter") || "all";
 let financeStore = JSON.parse(localStorage.getItem("ela-em-ordem:finance") || "{}");
 let calculatorExpression = "0";
 let moduleStore = JSON.parse(localStorage.getItem("vida-nova:modules") || "{}");
@@ -160,6 +186,7 @@ financeStore = {
   planIncome: Number(financeStore.planIncome || 0),
   planExpense: Number(financeStore.planExpense || 0),
   goal: Number(financeStore.goal || 0),
+  notes: String(financeStore.notes || ""),
   records: Array.isArray(financeStore.records) ? financeStore.records : [],
 };
 
@@ -193,8 +220,12 @@ function hydrateSessionUI(session) {
 
 function renderVerse() {
   const verse = verses[verseIndex];
-  verseText.textContent = `"${verse.text}"`;
-  verseReference.textContent = verse.reference;
+  if (headlineVerseText) {
+    headlineVerseText.textContent = verse.text;
+  }
+  if (headlineVerseReference) {
+    headlineVerseReference.textContent = verse.reference;
+  }
 }
 
 function updateTaskProgress() {
@@ -249,57 +280,6 @@ function renderTasks() {
   renderDashboardMirror();
 }
 
-function renderTopTen() {
-  if (!topTenList || !topTenCount) {
-    return;
-  }
-
-  topTenList.innerHTML = "";
-
-  topTenItems.forEach((item) => {
-    const listItem = document.createElement("li");
-    listItem.className = `task-item${item.done ? " done" : ""}`;
-
-    const toggleButton = document.createElement("button");
-    toggleButton.type = "button";
-    toggleButton.className = "task-check";
-    toggleButton.setAttribute("aria-label", "Concluir prioridade");
-    toggleButton.addEventListener("click", () => {
-      topTenItems = topTenItems.map((currentItem) =>
-        currentItem.id === item.id
-          ? { ...currentItem, done: !currentItem.done }
-          : currentItem,
-      );
-      saveTopTen();
-      renderTopTen();
-    });
-
-    const text = document.createElement("span");
-    text.className = "task-text";
-    text.textContent = item.text;
-
-    const removeButton = document.createElement("button");
-    removeButton.type = "button";
-    removeButton.className = "task-remove";
-    removeButton.textContent = "Remover";
-    removeButton.addEventListener("click", () => {
-      topTenItems = topTenItems.filter((currentItem) => currentItem.id !== item.id);
-      saveTopTen();
-      renderTopTen();
-    });
-
-    listItem.append(toggleButton, text, removeButton);
-    topTenList.appendChild(listItem);
-  });
-
-  topTenCount.textContent = `${topTenItems.length} de 10`;
-  renderDashboardMirror();
-}
-
-function saveTopTen() {
-  localStorage.setItem("ela-em-ordem:top-ten", JSON.stringify(topTenItems));
-}
-
 function formatCurrency(value) {
   return new Intl.NumberFormat("pt-BR", {
     style: "currency",
@@ -319,8 +299,46 @@ function saveFinanceStore() {
   localStorage.setItem("ela-em-ordem:finance", JSON.stringify(financeStore));
 }
 
+function formatTimeRange(startTime, endTime) {
+  if (!startTime && !endTime) {
+    return "--:--";
+  }
+  if (!endTime) {
+    return startTime || "--:--";
+  }
+  return `${startTime || "--:--"} - ${endTime}`;
+}
+
+function getEventDurationMinutes(eventItem) {
+  const [startHour = 0, startMinute = 0] = String(eventItem.time || "00:00")
+    .split(":")
+    .map(Number);
+  const [endHour = startHour, endMinute = startMinute + 30] = String(
+    eventItem.endTime || eventItem.time || "00:30",
+  )
+    .split(":")
+    .map(Number);
+  const startTotal = startHour * 60 + startMinute;
+  const endTotal = endHour * 60 + endMinute;
+  return Math.max(15, endTotal - startTotal);
+}
+
+function getWeekStart(dateKey) {
+  const [year, month, day] = dateKey.split("-").map(Number);
+  const date = new Date(year, month - 1, day);
+  const weekStart = new Date(date);
+  weekStart.setDate(date.getDate() - date.getDay());
+  weekStart.setHours(0, 0, 0, 0);
+  return weekStart;
+}
+
 function renderFinance() {
+  const monthLabels = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"];
   const records = financeStore.records || [];
+  const filteredRecords =
+    activeFinanceFilter === "all"
+      ? records
+      : records.filter((entry) => entry.type === activeFinanceFilter);
   const recordedIncome = records
     .filter((entry) => entry.type === "income")
     .reduce((total, entry) => total + Number(entry.amount || 0), 0);
@@ -353,6 +371,9 @@ function renderFinance() {
   }
   if (financeGoalInput) {
     financeGoalInput.value = goal || "";
+  }
+  if (financeNotesInput) {
+    financeNotesInput.value = financeStore.notes || "";
   }
   if (financeIncomeDisplay) {
     financeIncomeDisplay.textContent = formatCurrency(income);
@@ -389,53 +410,107 @@ function renderFinance() {
   if (financeBalanceHero) {
     financeBalanceHero.textContent = formatCurrency(balance);
   }
+  if (financePanelBalance) {
+    financePanelBalance.textContent = formatCurrency(balance);
+  }
   if (financeCaption) {
     financeCaption.textContent =
       records.length > 0
         ? `Lancamentos ativos: entradas ${formatCurrency(recordedIncome)} | saidas ${formatCurrency(recordedExpense)}`
         : `Planejamento base: entradas ${formatCurrency(planIncome)} | saidas ${formatCurrency(planExpense)}`;
   }
+  if (financePanelCaption) {
+    financePanelCaption.textContent =
+      records.length > 0
+        ? `Lancamentos ativos: entradas ${formatCurrency(recordedIncome)} | saidas ${formatCurrency(recordedExpense)}`
+        : `Planejamento base: entradas ${formatCurrency(planIncome)} | saidas ${formatCurrency(planExpense)}`;
+  }
   if (financePlanningPreview) {
     financePlanningPreview.textContent = planningItems.length
-      ? planningItems[planningItems.length - 1].title
+      ? `${planningItems[planningItems.length - 1].title} | ${planningItems.length} planejamento(s) ativo(s)`
       : "Nenhum planejamento registrado.";
   }
+  financeFilterButtons.forEach((button) => {
+    button.classList.toggle("is-active", button.dataset.financeFilter === activeFinanceFilter);
+  });
+  if (financeTableBody) {
+    financeTableBody.innerHTML = "";
+
+    if (!filteredRecords.length) {
+      financeTableBody.innerHTML =
+        '<tr><td colspan="18">Nenhum lancamento cadastrado ainda.</td></tr>';
+    } else {
+      filteredRecords
+        .slice()
+        .reverse()
+        .forEach((entry) => {
+          const row = document.createElement("tr");
+          const dateText = entry.date
+            ? new Date(`${entry.date}T12:00:00`).toLocaleDateString("pt-BR")
+            : "--/--/----";
+          const installments = Number(entry.installments || 1);
+          const installmentAmount = Number(entry.amount || 0) / Math.max(1, installments);
+          const startMonth = Number.isFinite(Number(entry.startMonth))
+            ? Number(entry.startMonth)
+            : entry.date
+              ? new Date(`${entry.date}T12:00:00`).getMonth()
+              : 0;
+          const monthCells = monthLabels
+            .map((_, index) => {
+              const active = index >= startMonth && index < startMonth + installments;
+              return `<td><span class="finance-month-mark${active ? " is-active" : ""}"></span></td>`;
+            })
+            .join("");
+
+          row.innerHTML = `
+            <td><span class="finance-badge" style="background:${escapeHtml(entry.color || "#ffd166")}">${escapeHtml(entry.title)}</span><br><small>${escapeHtml(entry.category || "Sem categoria")}</small></td>
+            <td>${dateText}</td>
+            <td>${formatCurrency(entry.amount)}</td>
+            <td>${installments}</td>
+            <td>${formatCurrency(installmentAmount)}</td>
+            ${monthCells}
+            <td><button type="button" class="task-remove finance-remove-button" data-finance-id="${escapeHtml(entry.id)}">Excluir</button></td>
+          `;
+          financeTableBody.appendChild(row);
+      });
+    }
+  }
+
+  if (financeComparisonGrid) {
+    const monthlyTotals = monthLabels.map((label, index) => {
+      const monthRecords = records.filter((entry) => {
+        const date = entry.date ? new Date(`${entry.date}T12:00:00`) : null;
+        return date ? date.getMonth() === index : Number(entry.startMonth || 0) === index;
+      });
+      const monthIncome = monthRecords
+        .filter((entry) => entry.type === "income")
+        .reduce((total, entry) => total + Number(entry.amount || 0), 0);
+      const monthExpense = monthRecords
+        .filter((entry) => entry.type !== "income")
+        .reduce((total, entry) => total + Number(entry.amount || 0), 0);
+      return {
+        label,
+        income: monthIncome,
+        expense: monthExpense,
+        balance: monthIncome - monthExpense,
+      };
+    });
+
+    financeComparisonGrid.innerHTML = monthlyTotals
+      .map(
+        (month) => `
+          <article class="detail-card">
+            <span class="metric-label">${month.label}</span>
+            <strong>${formatCurrency(month.balance)}</strong>
+            <small>Entradas ${formatCurrency(month.income)} | Saidas ${formatCurrency(month.expense)}</small>
+          </article>
+        `,
+      )
+      .join("");
+  }
+
   if (financeRecordsList) {
     financeRecordsList.innerHTML = "";
-
-    if (!records.length) {
-      financeRecordsList.innerHTML =
-        '<li class="task-item"><span class="task-text">Nenhum lancamento cadastrado.</span></li>';
-      return;
-    }
-
-    records
-      .slice()
-      .reverse()
-      .slice(0, 6)
-      .forEach((entry) => {
-        const item = document.createElement("li");
-        item.className = "task-item";
-
-        const text = document.createElement("span");
-        text.className = "task-text";
-        text.innerHTML = `<strong>${escapeHtml(entry.title)}</strong><small>${escapeHtml(entry.type)} | ${formatCurrency(entry.amount)}</small>`;
-
-        const remove = document.createElement("button");
-        remove.type = "button";
-        remove.className = "task-remove";
-        remove.textContent = "Excluir";
-        remove.addEventListener("click", () => {
-          financeStore.records = financeStore.records.filter(
-            (currentEntry) => currentEntry.id !== entry.id,
-          );
-          saveFinanceStore();
-          renderFinance();
-        });
-
-        item.append(text, remove);
-        financeRecordsList.appendChild(item);
-      });
   }
 }
 
@@ -565,6 +640,9 @@ function openCalendarModal(dateKey) {
   const dayData = ensureAgendaDay(dateKey);
   calendarModalTitle.textContent = formatDisplayDate(dateKey);
   calendarModalDate.value = dateKey;
+  if (calendarModalColor) {
+    calendarModalColor.value = "#c55b84";
+  }
   calendarModalList.innerHTML = "";
   if (dayData.events.length) {
     dayData.events
@@ -576,7 +654,7 @@ function openCalendarModal(dateKey) {
 
         const text = document.createElement("span");
         text.className = "task-text";
-        text.innerHTML = `<strong>${escapeHtml(eventItem.time || "--:--")} - ${escapeHtml(eventItem.title)}</strong><small>${escapeHtml(eventItem.location || "Sem local")} | ${escapeHtml(eventItem.description || "Sem descricao")}</small>`;
+        text.innerHTML = `<strong><span class="event-color-dot" style="background:${escapeHtml(eventItem.color || "#c55b84")}"></span>${escapeHtml(formatTimeRange(eventItem.time, eventItem.endTime))} - ${escapeHtml(eventItem.title)}</strong><small>${escapeHtml(eventItem.category || "Pessoal")} | ${escapeHtml(eventItem.location || "Sem local")} | ${escapeHtml(eventItem.description || "Sem descricao")}${eventItem.link ? ` | <a href="${escapeHtml(eventItem.link)}" target="_blank" rel="noreferrer">abrir link</a>` : ""}</small>`;
 
         const remove = document.createElement("button");
         remove.type = "button";
@@ -596,7 +674,52 @@ function openCalendarModal(dateKey) {
         calendarModalList.appendChild(item);
       });
   }
-  calendarModalEmpty.hidden = dayData.events.length > 0;
+  if (calendarDayTaskList) {
+    calendarDayTaskList.innerHTML = "";
+    if (dayData.tasks.length) {
+      dayData.tasks.forEach((task) => {
+        const item = document.createElement("li");
+        item.className = `task-item${task.done ? " done" : ""}`;
+
+        const toggle = document.createElement("button");
+        toggle.type = "button";
+        toggle.className = "task-check";
+        toggle.setAttribute("aria-label", "Concluir tarefa do dia");
+        toggle.addEventListener("click", () => {
+          agendaStore[dateKey].tasks = agendaStore[dateKey].tasks.map((currentTask) =>
+            currentTask.id === task.id ? { ...currentTask, done: !currentTask.done } : currentTask,
+          );
+          saveAgendaStore();
+          openCalendarModal(dateKey);
+          renderCalendar();
+        });
+
+        const text = document.createElement("span");
+        text.className = "task-text";
+        text.textContent = task.text;
+
+        const remove = document.createElement("button");
+        remove.type = "button";
+        remove.className = "task-remove";
+        remove.textContent = "Excluir";
+        remove.addEventListener("click", () => {
+          agendaStore[dateKey].tasks = agendaStore[dateKey].tasks.filter(
+            (currentTask) => currentTask.id !== task.id,
+          );
+          saveAgendaStore();
+          openCalendarModal(dateKey);
+          renderCalendar();
+        });
+
+        item.append(toggle, text, remove);
+        calendarDayTaskList.appendChild(item);
+      });
+    } else {
+      calendarDayTaskList.innerHTML =
+        '<li class="task-item"><span class="task-text">Nenhuma tarefa cadastrada para este dia.</span></li>';
+    }
+  }
+  calendarModalEmpty.hidden = dayData.events.length > 0 || dayData.tasks.length > 0;
   if (calendarModalTasks) {
     calendarModalTasks.innerHTML = tasks.length
       ? tasks
@@ -606,16 +729,6 @@ function openCalendarModal(dateKey) {
           )
           .join("")
       : "<li>Nenhuma tarefa cadastrada.</li>";
-  }
-  if (calendarModalTop10) {
-    calendarModalTop10.innerHTML = topTenItems.length
-      ? topTenItems
-          .map(
-            (item) =>
-              `<li class="${item.done ? "is-done" : ""}">${escapeHtml(item.text)}</li>`,
-          )
-          .join("")
-      : "<li>Nenhuma prioridade cadastrada.</li>";
   }
   calendarModal.classList.remove("hidden");
   calendarModal.setAttribute("aria-hidden", "false");
@@ -639,6 +752,17 @@ function openInstallModal() {
   installModal.setAttribute("aria-hidden", "false");
 }
 
+async function triggerInstallFlow() {
+  if (deferredInstallPrompt) {
+    deferredInstallPrompt.prompt();
+    await deferredInstallPrompt.userChoice;
+    deferredInstallPrompt = null;
+    return;
+  }
+
+  openInstallModal();
+}
+
 function closeInstallModal() {
   if (!installModal) {
     return;
@@ -648,25 +772,6 @@ function closeInstallModal() {
 }
 
 function renderDashboardMirror() {
-  if (dashboardTop10Preview) {
-    const previewItems = topTenItems.slice(0, 4);
-    dashboardTop10Preview.innerHTML = previewItems.length
-      ? previewItems
-          .map(
-            (item) =>
-              `<li class="${item.done ? "is-done" : ""}">${escapeHtml(item.text)}</li>`,
-          )
-          .join("")
-      : "<li>Nenhuma prioridade adicionada ainda.</li>";
-  }
-
-  if (dashboardNotesPreview) {
-    const noteText = (localStorage.getItem("ela-em-ordem:notes") || "").trim();
-    dashboardNotesPreview.textContent = noteText
-      ? `${noteText.slice(0, 140)}${noteText.length > 140 ? "..." : ""}`
-      : "Suas anotacoes aparecem aqui.";
-  }
-
   if (summarySpotlight) {
     const summary = ensureAgendaDay(selectedDateKey).summary?.trim() || "";
     summarySpotlight.textContent = summary
@@ -684,9 +789,16 @@ function renderDashboardMirror() {
     graphAgenda.style.width = `${Math.min(100, 15 + currentEvents * 18)}%`;
   }
 
-  if (graphTop10) {
-    const doneTop10 = topTenItems.filter((item) => item.done).length;
-    graphTop10.style.width = `${topTenItems.length ? (doneTop10 / topTenItems.length) * 100 : 10}%`;
+  if (graphFinance) {
+    const records = financeStore.records || [];
+    const income = records
+      .filter((entry) => entry.type === "income")
+      .reduce((total, entry) => total + Number(entry.amount || 0), 0);
+    const expense = records
+      .filter((entry) => entry.type !== "income")
+      .reduce((total, entry) => total + Number(entry.amount || 0), 0);
+    const ratio = income > 0 ? Math.max(10, Math.min(100, ((income - expense) / income) * 100)) : 10;
+    graphFinance.style.width = `${ratio}%`;
   }
 }
 
@@ -707,8 +819,24 @@ function formatDisplayDate(dateKey) {
 
 function ensureAgendaDay(dateKey) {
   if (!agendaStore[dateKey]) {
-    agendaStore[dateKey] = { summary: "", events: [] };
+    agendaStore[dateKey] = { summary: "", events: [], tasks: [] };
   }
+
+  if (!Array.isArray(agendaStore[dateKey].events)) {
+    agendaStore[dateKey].events = [];
+  }
+
+  if (!Array.isArray(agendaStore[dateKey].tasks)) {
+    agendaStore[dateKey].tasks = [];
+  }
+
+  agendaStore[dateKey].events = agendaStore[dateKey].events.map((eventItem) => ({
+    color: "#c55b84",
+    category: "Pessoal",
+    endTime: eventItem.time || "09:00",
+    link: "",
+    ...eventItem,
+  }));
 
   return agendaStore[dateKey];
 }
@@ -746,8 +874,8 @@ function renderAgendaEvents() {
       const text = document.createElement("span");
       text.className = "task-text";
       text.innerHTML = `
-        <strong>${escapeHtml(eventItem.time || "--:--")} - ${escapeHtml(eventItem.title)}</strong>
-        <small>${escapeHtml(eventItem.location || "Sem local")} | ${escapeHtml(eventItem.description || "Sem descricao")}</small>
+        <strong><span class="event-color-dot" style="background:${escapeHtml(eventItem.color || "#c55b84")}"></span>${escapeHtml(formatTimeRange(eventItem.time, eventItem.endTime))} - ${escapeHtml(eventItem.title)}</strong>
+        <small>${escapeHtml(eventItem.category || "Pessoal")} | ${escapeHtml(eventItem.location || "Sem local")} | ${escapeHtml(eventItem.description || "Sem descricao")}${eventItem.link ? ` | <a href="${escapeHtml(eventItem.link)}" target="_blank" rel="noreferrer">abrir link</a>` : ""}</small>
       `;
 
       const remove = document.createElement("button");
@@ -769,6 +897,7 @@ function renderAgendaEvents() {
 
   renderNextAgendaCard();
   renderDashboardMirror();
+  renderWeekView();
 }
 
 function renderCalendar() {
@@ -787,6 +916,21 @@ function renderCalendar() {
     month: "long",
     year: "numeric",
   });
+
+  if (agendaView === "week") {
+    const weekStart = getWeekStart(selectedDateKey);
+    const weekEnd = new Date(weekStart);
+    weekEnd.setDate(weekStart.getDate() + 6);
+    calendarMonthLabel.textContent = `${weekStart.toLocaleDateString("pt-BR", { day: "2-digit", month: "short" })} - ${weekEnd.toLocaleDateString("pt-BR", { day: "2-digit", month: "short", year: "numeric" })}`;
+  }
+
+  if (calendarMonthShell && weekViewShell && calendarMonthViewButton && calendarWeekViewButton) {
+    const isMonthView = agendaView === "month";
+    calendarMonthShell.classList.toggle("hidden", !isMonthView);
+    weekViewShell.classList.toggle("hidden", isMonthView);
+    calendarMonthViewButton.classList.toggle("is-active", isMonthView);
+    calendarWeekViewButton.classList.toggle("is-active", !isMonthView);
+  }
 
   calendarGrid.innerHTML = "";
 
@@ -818,9 +962,25 @@ function renderCalendar() {
     }
 
     const eventCount = dayData.events.length;
+    const taskCount = dayData.tasks.length;
+    const metaParts = [];
+    if (eventCount) {
+      metaParts.push(`${eventCount} compromisso${eventCount > 1 ? "s" : ""}`);
+    }
+    if (taskCount) {
+      metaParts.push(`${taskCount} tarefa${taskCount > 1 ? "s" : ""}`);
+    }
+    const eventDots = dayData.events
+      .slice(0, 3)
+      .map(
+        (eventItem) =>
+          `<span class="event-color-dot" style="background:${escapeHtml(eventItem.color || "#c55b84")}"></span>`,
+      )
+      .join("");
     button.innerHTML = `
       <span class="calendar-day-number">${dayNumber}</span>
-      <span class="calendar-day-meta">${eventCount ? `${eventCount} compromisso${eventCount > 1 ? "s" : ""}` : "Livre"}</span>
+      <span class="calendar-day-dots">${eventDots}</span>
+      <span class="calendar-day-meta">${metaParts.length ? metaParts.join(" • ") : "Livre"}</span>
     `;
 
     button.addEventListener("click", () => {
@@ -832,6 +992,56 @@ function renderCalendar() {
 
     calendarGrid.appendChild(button);
   }
+}
+
+function renderWeekView() {
+  if (!weekColumns || !weekHoursColumn || !weekViewHeader) {
+    return;
+  }
+
+  const weekStart = getWeekStart(selectedDateKey);
+  const hours = Array.from({ length: 17 }, (_, index) => 6 + index);
+  weekHoursColumn.innerHTML = hours
+    .map((hour) => `<div class="week-hour-label">${String(hour).padStart(2, "0")}:00</div>`)
+    .join("");
+
+  weekViewHeader.innerHTML = Array.from({ length: 7 }, (_, dayIndex) => {
+    const date = new Date(weekStart);
+    date.setDate(weekStart.getDate() + dayIndex);
+    const dateKey = formatDateKey(date);
+    const isSelected = dateKey === selectedDateKey;
+    return `<button type="button" class="week-day-head${isSelected ? " is-selected" : ""}" data-week-date="${dateKey}">
+      <span>${date.toLocaleDateString("pt-BR", { weekday: "short" })}</span>
+      <strong>${date.toLocaleDateString("pt-BR", { day: "2-digit", month: "2-digit" })}</strong>
+    </button>`;
+  }).join("");
+
+  weekColumns.innerHTML = Array.from({ length: 7 }, (_, dayIndex) => {
+    const date = new Date(weekStart);
+    date.setDate(weekStart.getDate() + dayIndex);
+    const dateKey = formatDateKey(date);
+    const dayData = ensureAgendaDay(dateKey);
+    const blocks = dayData.events
+      .slice()
+      .sort((a, b) => String(a.time || "").localeCompare(String(b.time || "")))
+      .map((eventItem) => {
+        const [startHour = 6, startMinute = 0] = String(eventItem.time || "06:00").split(":").map(Number);
+        const startTotal = startHour * 60 + startMinute;
+        const minutesFromStart = Math.max(0, startTotal - 360);
+        const top = (minutesFromStart / 15) * 20;
+        const height = Math.max(20, (getEventDurationMinutes(eventItem) / 15) * 20);
+        return `<button type="button" class="week-event-block" data-event-date="${dateKey}" data-event-id="${escapeHtml(eventItem.id)}" style="top:${top}px;height:${height}px;background:${escapeHtml(eventItem.color || "#c55b84")}">
+          <strong>${escapeHtml(eventItem.title)}</strong>
+          <small>${escapeHtml(formatTimeRange(eventItem.time, eventItem.endTime))}</small>
+        </button>`;
+      })
+      .join("");
+
+    return `<div class="week-day-column" data-week-column="${dateKey}">
+      <button type="button" class="week-column-hit" data-week-date="${dateKey}" aria-label="Abrir dia ${dateKey}"></button>
+      ${blocks}
+    </div>`;
+  }).join("");
 }
 
 function renderNextAgendaCard() {
@@ -851,7 +1061,7 @@ function renderNextAgendaCard() {
 
   const nextEvent = events[0];
   agendaNextTitle.textContent = nextEvent.title;
-  agendaNextMeta.textContent = `${nextEvent.time || "--:--"} | ${nextEvent.location || "Sem local"}`;
+  agendaNextMeta.textContent = `${formatTimeRange(nextEvent.time, nextEvent.endTime)} | ${nextEvent.location || "Sem local"}`;
 }
 
 function registerServiceWorker() {
@@ -1108,9 +1318,25 @@ layoutButtons.forEach((button) => {
   });
 });
 
-newVerseButton.addEventListener("click", () => {
-  verseIndex = (verseIndex + 1) % verses.length;
-  renderVerse();
+interactiveStats.forEach((card) => {
+  card.addEventListener("click", () => {
+    const target = document.querySelector(card.dataset.scrollTarget || "");
+    if (target) {
+      target.scrollIntoView({ behavior: "smooth", block: "start" });
+      if ("focus" in target) {
+        target.focus({ preventScroll: true });
+      }
+    }
+  });
+});
+
+editCardButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    const card = document.querySelector(`[data-card-id="${button.dataset.editCard}"]`);
+    if (card) {
+      openEditor(card);
+    }
+  });
 });
 
 taskForm.addEventListener("submit", (event) => {
@@ -1139,27 +1365,6 @@ if (notesInput) {
   });
 }
 
-if (topTenForm) {
-  topTenForm.addEventListener("submit", (event) => {
-    event.preventDefault();
-
-    const value = topTenInput.value.trim();
-    if (!value || topTenItems.length >= 10) {
-      return;
-    }
-
-    topTenItems.unshift({
-      id: crypto.randomUUID(),
-      text: value,
-      done: false,
-    });
-
-    saveTopTen();
-    renderTopTen();
-    topTenInput.value = "";
-  });
-}
-
 if (agendaSummaryInput) {
   agendaSummaryInput.addEventListener("input", () => {
     ensureAgendaDay(selectedDateKey).summary = agendaSummaryInput.value;
@@ -1175,7 +1380,11 @@ if (agendaForm) {
     const targetDate = agendaDateInput.value || selectedDateKey;
     const title = agendaTitleInput.value.trim();
     const time = agendaTimeInput.value || "";
+    const endTime = agendaEndTimeInput.value || "";
     const location = agendaLocationInput.value.trim();
+    const link = agendaLinkInput.value.trim();
+    const category = agendaCategoryInput.value || "Pessoal";
+    const color = agendaColorInput.value || "#c55b84";
     const description = agendaDescriptionInput.value.trim();
 
     if (!title) {
@@ -1185,8 +1394,12 @@ if (agendaForm) {
     ensureAgendaDay(targetDate).events.push({
       id: crypto.randomUUID(),
       time,
+      endTime,
       title,
       location,
+      link,
+      category,
+      color,
       description,
     });
 
@@ -1214,15 +1427,51 @@ if (agendaDateInput) {
 
 if (calendarPrev) {
   calendarPrev.addEventListener("click", () => {
-    calendarCursor = new Date(calendarCursor.getFullYear(), calendarCursor.getMonth() - 1, 1);
+    if (agendaView === "month") {
+      calendarCursor = new Date(calendarCursor.getFullYear(), calendarCursor.getMonth() - 1, 1);
+    } else {
+      const current = new Date(`${selectedDateKey}T12:00:00`);
+      current.setDate(current.getDate() - 7);
+      selectedDateKey = formatDateKey(current);
+      calendarCursor = new Date(current);
+    }
     renderCalendar();
+    renderWeekView();
+    renderAgendaEvents();
   });
 }
 
 if (calendarNext) {
   calendarNext.addEventListener("click", () => {
-    calendarCursor = new Date(calendarCursor.getFullYear(), calendarCursor.getMonth() + 1, 1);
+    if (agendaView === "month") {
+      calendarCursor = new Date(calendarCursor.getFullYear(), calendarCursor.getMonth() + 1, 1);
+    } else {
+      const current = new Date(`${selectedDateKey}T12:00:00`);
+      current.setDate(current.getDate() + 7);
+      selectedDateKey = formatDateKey(current);
+      calendarCursor = new Date(current);
+    }
     renderCalendar();
+    renderWeekView();
+    renderAgendaEvents();
+  });
+}
+
+if (calendarMonthViewButton) {
+  calendarMonthViewButton.addEventListener("click", () => {
+    agendaView = "month";
+    localStorage.setItem("ela-em-ordem:agenda-view", agendaView);
+    renderCalendar();
+    renderWeekView();
+  });
+}
+
+if (calendarWeekViewButton) {
+  calendarWeekViewButton.addEventListener("click", () => {
+    agendaView = "week";
+    localStorage.setItem("ela-em-ordem:agenda-view", agendaView);
+    renderCalendar();
+    renderWeekView();
   });
 }
 
@@ -1263,6 +1512,9 @@ if (financeEntryForm) {
     const type = financeEntryType.value;
     const amount = Number(financeEntryAmount.value || 0);
     const title = financeEntryTitle.value.trim();
+    const installments = Math.max(1, Number(financeEntryInstallments?.value || 1));
+    const date = financeEntryDate?.value || "";
+    const startMonth = Number(financeEntryStartMonth?.value || (date ? new Date(`${date}T12:00:00`).getMonth() : 0));
 
     if (!title || !amount) {
       return;
@@ -1277,6 +1529,11 @@ if (financeEntryForm) {
       type,
       amount,
       title,
+      category: financeEntryCategory?.value.trim() || "Sem categoria",
+      color: financeEntryColor?.value || "#ffd166",
+      date,
+      installments,
+      startMonth,
     });
 
     saveFinanceStore();
@@ -1284,6 +1541,34 @@ if (financeEntryForm) {
     financeEntryForm.reset();
   });
 }
+
+if (financeNotesInput) {
+  financeNotesInput.addEventListener("input", () => {
+    financeStore.notes = financeNotesInput.value;
+    saveFinanceStore();
+  });
+}
+
+document.addEventListener("click", (event) => {
+  const button = event.target.closest(".finance-remove-button");
+  if (!button) {
+    return;
+  }
+
+  financeStore.records = financeStore.records.filter(
+    (currentEntry) => currentEntry.id !== button.dataset.financeId,
+  );
+  saveFinanceStore();
+  renderFinance();
+});
+
+financeFilterButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    activeFinanceFilter = button.dataset.financeFilter || "all";
+    localStorage.setItem("ela-em-ordem:finance-filter", activeFinanceFilter);
+    renderFinance();
+  });
+});
 
 if (calculatorDisplay) {
   calculatorKeys.forEach((key) => {
@@ -1391,8 +1676,12 @@ if (calendarModalForm) {
     ensureAgendaDay(targetDate).events.push({
       id: crypto.randomUUID(),
       time: calendarModalTime.value || "",
+      endTime: calendarModalEndTime.value || "",
       title,
       location: calendarModalLocation.value.trim(),
+      link: calendarModalLink.value.trim(),
+      category: calendarModalCategory.value || "Pessoal",
+      color: calendarModalColor.value || "#c55b84",
       description: calendarModalDescription.value.trim(),
     });
 
@@ -1405,17 +1694,48 @@ if (calendarModalForm) {
   });
 }
 
-if (installHelpButton) {
-  installHelpButton.addEventListener("click", async () => {
-    if (deferredInstallPrompt) {
-      deferredInstallPrompt.prompt();
-      await deferredInstallPrompt.userChoice;
-      deferredInstallPrompt = null;
+if (calendarTaskForm) {
+  calendarTaskForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+    const targetDate = calendarModalDate?.value || selectedDateKey;
+    const text = calendarTaskInput?.value.trim();
+
+    if (!text) {
       return;
     }
+
+    ensureAgendaDay(targetDate).tasks.push({
+      id: crypto.randomUUID(),
+      text,
+      done: false,
+    });
+
+    selectedDateKey = targetDate;
+    saveAgendaStore();
+    openCalendarModal(targetDate);
+    renderCalendar();
+    renderAgendaEvents();
+    calendarTaskForm.reset();
+  });
+}
+
+if (installHelpButton) {
+  installHelpButton.addEventListener("click", () => {
     openInstallModal();
   });
 }
+
+if (installChromeButton) {
+  installChromeButton.addEventListener("click", async () => {
+    await triggerInstallFlow();
+  });
+}
+
+if (installModalChromeButton) {
+  installModalChromeButton.addEventListener("click", async () => {
+    await triggerInstallFlow();
+  });
+  }
 
 if (installModalClose) {
   installModalClose.addEventListener("click", closeInstallModal);
@@ -1425,6 +1745,41 @@ if (installModal) {
   installModal.addEventListener("click", (event) => {
     if (event.target.dataset.closeInstall === "true") {
       closeInstallModal();
+    }
+  });
+}
+
+if (weekViewHeader) {
+  weekViewHeader.addEventListener("click", (event) => {
+    const button = event.target.closest("[data-week-date]");
+    if (!button) {
+      return;
+    }
+    selectedDateKey = button.dataset.weekDate;
+    calendarCursor = new Date(`${selectedDateKey}T12:00:00`);
+    renderCalendar();
+    renderAgendaEvents();
+    openCalendarModal(selectedDateKey);
+  });
+}
+
+if (weekColumns) {
+  weekColumns.addEventListener("click", (event) => {
+    const eventBlock = event.target.closest("[data-event-date]");
+    if (eventBlock) {
+      selectedDateKey = eventBlock.dataset.eventDate;
+      renderAgendaEvents();
+      openCalendarModal(selectedDateKey);
+      return;
+    }
+
+    const column = event.target.closest("[data-week-date]");
+    if (column) {
+      selectedDateKey = column.dataset.weekDate;
+      calendarCursor = new Date(`${selectedDateKey}T12:00:00`);
+      renderCalendar();
+      renderAgendaEvents();
+      openCalendarModal(selectedDateKey);
     }
   });
 }
@@ -1478,7 +1833,6 @@ restoreSavedCards();
 initializeDragAndDrop();
 renderVerse();
 renderTasks();
-renderTopTen();
 renderCalendar();
 renderAgendaEvents();
 renderFinance();

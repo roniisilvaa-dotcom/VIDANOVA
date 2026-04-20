@@ -155,6 +155,13 @@ a {
   box-shadow: var(--shadow);
 }
 
+.quick-controls {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
 .preferences-card h2 {
   margin-bottom: 16px;
   font-size: 1.25rem;
@@ -359,6 +366,10 @@ a {
   background: linear-gradient(135deg, #ef8da9, #ffc885);
 }
 
+.hidden {
+  display: none !important;
+}
+
 .hero-stats {
   display: grid;
   gap: 14px;
@@ -368,6 +379,17 @@ a {
   padding: 18px;
   border-radius: var(--radius-md);
   box-shadow: var(--shadow);
+}
+
+.interactive-stat {
+  cursor: pointer;
+  transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+}
+
+.interactive-stat:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 26px 60px rgba(83, 53, 79, 0.16);
+  border-color: rgba(197, 91, 132, 0.22);
 }
 
 .editable-card {
@@ -400,6 +422,11 @@ a {
 
 .editable-card:hover::after {
   opacity: 1;
+}
+
+.card-edit-button {
+  position: relative;
+  z-index: 1;
 }
 
 .draggable-card {
@@ -551,10 +578,20 @@ a {
 
 .calendar-toolbar {
   display: grid;
-  grid-template-columns: auto 1fr auto;
+  grid-template-columns: auto auto 1fr auto;
   gap: 12px;
   align-items: center;
   margin-bottom: 16px;
+}
+
+.calendar-view-switcher {
+  display: flex;
+  gap: 8px;
+}
+
+.calendar-view-switcher .ghost-button.is-active {
+  background: linear-gradient(135deg, var(--berry), #dd7ea2);
+  color: white;
 }
 
 .calendar-toolbar strong {
@@ -615,6 +652,12 @@ a {
   font-weight: 700;
 }
 
+.calendar-day-dots {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+
 .calendar-day-meta {
   display: block;
   color: var(--muted);
@@ -660,6 +703,15 @@ a {
   font: inherit;
 }
 
+.agenda-form select {
+  width: 100%;
+  padding: 14px 16px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.85);
+  font: inherit;
+}
+
 .agenda-form button {
   padding: 14px 18px;
   border: none;
@@ -668,6 +720,128 @@ a {
   color: white;
   cursor: pointer;
   box-shadow: var(--shadow);
+}
+
+.color-field {
+  display: grid;
+  gap: 8px;
+  font-weight: 600;
+}
+
+.color-field input[type="color"] {
+  width: 100%;
+  min-height: 50px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.85);
+}
+
+.week-view-shell {
+  display: grid;
+  gap: 12px;
+}
+
+.week-view-header {
+  display: grid;
+  grid-template-columns: 64px repeat(7, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.week-day-head {
+  min-height: 66px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.82);
+  color: var(--ink);
+  cursor: pointer;
+  font: inherit;
+}
+
+.week-day-head.is-selected {
+  background: linear-gradient(135deg, rgba(248, 191, 211, 0.86), rgba(255, 255, 255, 0.96));
+}
+
+.week-day-head span,
+.week-day-head strong {
+  display: block;
+}
+
+.week-view-body {
+  display: grid;
+  grid-template-columns: 64px minmax(0, 1fr);
+  gap: 8px;
+}
+
+.week-hours-column {
+  display: grid;
+  grid-template-rows: repeat(17, 80px);
+  gap: 4px;
+}
+
+.week-hour-label {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  color: var(--muted);
+  font-size: 0.78rem;
+}
+
+.week-columns {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.week-day-column {
+  position: relative;
+  min-height: 1360px;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background:
+    repeating-linear-gradient(
+      to bottom,
+      rgba(89, 62, 87, 0.05) 0,
+      rgba(89, 62, 87, 0.05) 1px,
+      transparent 1px,
+      transparent 20px
+    ),
+    rgba(255, 255, 255, 0.82);
+}
+
+.week-column-hit {
+  position: absolute;
+  inset: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+.week-event-block {
+  position: absolute;
+  left: 6px;
+  right: 6px;
+  z-index: 1;
+  border: none;
+  border-radius: 14px;
+  color: white;
+  text-align: left;
+  padding: 8px;
+  cursor: pointer;
+  box-shadow: 0 12px 22px rgba(34, 22, 31, 0.18);
+}
+
+.week-event-block strong,
+.week-event-block small {
+  display: block;
+  color: inherit;
+}
+
+.event-color-dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  margin-right: 8px;
 }
 
 .module-open-card {
@@ -698,11 +872,68 @@ a {
   gap: 16px;
 }
 
+.finance-chip-row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.finance-chip {
+  padding: 10px 14px;
+  border-radius: 14px 14px 0 0;
+  background: rgba(255, 221, 141, 0.5);
+  color: var(--ink);
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  border: none;
+  cursor: pointer;
+  font: inherit;
+}
+
+.finance-chip.is-active {
+  background: rgba(187, 232, 182, 0.85);
+}
+
+.finance-workspace {
+  display: grid;
+  grid-template-columns: minmax(0, 1.9fr) minmax(280px, 0.85fr);
+  gap: 18px;
+  align-items: start;
+}
+
+.finance-main-board,
+.finance-side-board {
+  display: grid;
+  gap: 14px;
+}
+
+.finance-summary-row {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  padding: 16px;
+  border-radius: 20px;
+  border: 1px solid rgba(123, 151, 118, 0.14);
+  background: linear-gradient(135deg, rgba(213, 243, 203, 0.9), rgba(248, 255, 245, 0.9));
+}
+
+.finance-summary-row strong {
+  font-size: 1.45rem;
+}
+
 .finance-entry-form {
   display: grid;
   grid-template-columns: 170px 150px 1fr auto;
   gap: 10px;
   align-items: end;
+}
+
+.finance-entry-form-premium {
+  grid-template-columns: 1.2fr 150px 150px 1fr 140px 120px 120px 96px auto;
+  padding: 16px;
+  border: 1px solid rgba(89, 62, 87, 0.12);
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.84);
 }
 
 .finance-entry-form button {
@@ -730,6 +961,13 @@ a {
   font-weight: 600;
 }
 
+.finance-plan-grid {
+  padding: 16px;
+  border: 1px solid rgba(89, 62, 87, 0.12);
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.68);
+}
+
 .detail-card {
   padding: 14px;
   border: 1px solid var(--line);
@@ -741,6 +979,142 @@ a {
   display: block;
   line-height: 1.35;
   word-break: break-word;
+}
+
+.finance-table-shell {
+  overflow: auto;
+  border: 1px solid rgba(89, 62, 87, 0.12);
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.84);
+}
+
+.finance-table {
+  width: 100%;
+  min-width: 1200px;
+  border-collapse: collapse;
+  font-size: 0.92rem;
+}
+
+.finance-table th,
+.finance-table td {
+  padding: 11px 10px;
+  border-bottom: 1px solid rgba(89, 62, 87, 0.08);
+  text-align: left;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+.finance-table thead th {
+  position: sticky;
+  top: 0;
+  background: rgba(243, 247, 237, 0.98);
+  z-index: 1;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.finance-table tbody tr:hover {
+  background: rgba(248, 252, 242, 0.82);
+}
+
+.finance-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 10px;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  background: rgba(255, 224, 138, 0.5);
+}
+
+.finance-month-mark {
+  width: 18px;
+  height: 18px;
+  border-radius: 6px;
+  border: 1px solid rgba(111, 132, 175, 0.3);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.7);
+}
+
+.finance-month-mark.is-active {
+  background: #4b6bff;
+  border-color: #4b6bff;
+  color: white;
+}
+
+.finance-month-mark.is-active::after {
+  content: "✓";
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+.finance-note-card {
+  padding: 18px;
+  border-radius: 24px;
+  background: linear-gradient(180deg, rgba(255, 244, 171, 0.92), rgba(255, 248, 198, 0.92));
+  border: 1px solid rgba(219, 187, 95, 0.25);
+}
+
+.finance-notes-input {
+  min-height: 220px;
+  background: transparent;
+  border: none;
+  padding: 0;
+  resize: vertical;
+  box-shadow: none;
+}
+
+.finance-notes-input:focus {
+  outline: none;
+}
+
+.finance-planning-box {
+  display: grid;
+  gap: 10px;
+  padding: 18px;
+  border-radius: 24px;
+  border: 1px solid rgba(89, 62, 87, 0.12);
+  background: rgba(255, 255, 255, 0.8);
+}
+
+.finance-planning-box strong {
+  font-size: 1.8rem;
+}
+
+.finance-planning-box small {
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.finance-comparison-card {
+  padding: 18px;
+  border-radius: 24px;
+  border: 1px solid rgba(89, 62, 87, 0.12);
+  background: rgba(255, 255, 255, 0.8);
+}
+
+.finance-comparison-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.finance-comparison-grid small {
+  display: block;
+  margin-top: 6px;
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+.finance-color-field {
+  min-width: 96px;
+}
+
+.finance-color-input {
+  min-height: 50px;
 }
 
 .calculator-card {
@@ -784,6 +1158,15 @@ a {
   margin: 8px 0 0;
   color: var(--muted);
   line-height: 1.55;
+}
+
+.install-cta {
+  min-height: 50px;
+  border: 1px solid var(--line);
+}
+
+.install-actions-modal {
+  margin-bottom: 14px;
 }
 
 .calc-key {
@@ -1190,6 +1573,7 @@ body[data-layout="magazine"] .module-grid .spiritual-card {
 }
 
 .editor-form input,
+.editor-form select,
 .editor-form textarea {
   width: 100%;
   padding: 14px 16px;
@@ -1510,11 +1894,16 @@ select {
   .dashboard-grid,
   .planning-grid,
   .module-grid,
-  .bottom-grid {
+  .bottom-grid,
+  .quick-controls {
     grid-template-columns: 1fr;
   }
 
   .agenda-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .finance-workspace {
     grid-template-columns: 1fr;
   }
 
@@ -1523,6 +1912,14 @@ select {
   .structured-card-grid,
   .finance-detail-grid {
     grid-template-columns: 1fr 1fr;
+  }
+
+  .finance-entry-form-premium {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .finance-comparison-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   body[data-layout="magazine"] .module-grid .finance-card,
@@ -1559,6 +1956,12 @@ select {
     align-items: flex-start;
   }
 
+  .install-actions {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
   .task-form,
   .agenda-form,
   .finance-entry-form,
@@ -1568,6 +1971,32 @@ select {
   .metric-row,
   .editor-actions {
     grid-template-columns: 1fr;
+  }
+
+  .finance-entry-form-premium {
+    grid-template-columns: 1fr;
+  }
+
+  .week-view-header {
+    grid-template-columns: 52px repeat(7, minmax(110px, 1fr));
+    overflow: auto;
+  }
+
+  .week-view-body {
+    grid-template-columns: 52px minmax(770px, 1fr);
+    overflow: auto;
+  }
+
+  .finance-comparison-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .finance-chip-row {
+    gap: 8px;
+  }
+
+  .finance-chip {
+    border-radius: 14px;
   }
 
   .hero h2 {
