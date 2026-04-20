@@ -1,0 +1,59 @@
+# Dependências Node.js
+node_modules/
+npm-debug.log
+yarn-error.log
+package-lock.json
+yarn.lock
+
+# Variáveis de ambiente
+.env
+.env.local
+.env.*.local
+
+# Banco de dados
+*.db
+*.sqlite
+*.sqlite3
+vida-nova.db
+
+# OS
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Logs
+logs/
+*.log
+
+# Build e dist
+dist/
+build/
+.cache/
+
+# Arquivos temporários
+tmp/
+temp/
+.tmp/
+
+# IDE
+*.swp
+*.swo
+*~
+
+# Backup
+*.bak
+*.backup
+
+# Node
+.node_modules.tar.gz
+
+# Vercel
+.vercel/
+
+# Render
+.render/
+
+# Variáveis sensíveis
+.env.production
+secrets.json

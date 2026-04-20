@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<browserconfig>
+  <msapplication>
+    <tile>
+      <square150x150logo src="icon.svg"/>
+      <TileColor>#c55b84</TileColor>
+    </tile>
+    <notification>
+      <polling-uri src=""/>
+      <polling-uri2 src=""/>
+      <polling-uri3 src=""/>
+      <polling-uri4 src=""/>
+      <polling-uri5 src=""/>
+      <frequency>30</frequency>
+      <lastchanged>2024-01-01T00:00:00Z</lastchanged>
+    </notification>
+  </msapplication>
+</browserconfig>

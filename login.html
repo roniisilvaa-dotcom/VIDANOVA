@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no" />
+    <title>Entrar | Vida Nova</title>
+    
+    <!-- Theme Colors -->
+    <meta name="theme-color" content="#c55b84" />
+    <meta name="msapplication-TileColor" content="#c55b84" />
+    
+    <!-- iOS Web App Meta Tags -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Vida Nova" />
+    <link rel="apple-touch-icon" href="icon.svg" />
+    
+    <!-- Android Web App Meta Tags -->
+    <meta name="mobile-web-app-capable" content="yes" />
+    
+    <!-- Windows/Microsoft -->
+    <meta name="application-name" content="Vida Nova" />
+    <meta name="msapplication-starturl" content="./login.html" />
+    
+    <!-- Description -->
+    <meta name="description" content="Acesso mobile do planner Vida Nova para rotina, agenda, financas e organizacao da vida." />
+    
+    <!-- Security Headers -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="icon" href="icon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body class="auth-body">
+    <main class="auth-shell">
+      <section class="auth-panel">
+        <p class="eyebrow">Planner web com acesso no celular</p>
+        <h1>Vida Nova</h1>
+        <p class="auth-copy">
+          Uma entrada pensada para a mulher acessar pelo celular, instalar na
+          tela inicial e voltar todos os dias para cuidar da vida, da casa, da
+          rotina e da espiritualidade.
+        </p>
+        <ul class="auth-list">
+          <li>Agenda, rotina e prioridades do dia</li>
+          <li>Financas, imagem, casa e autocuidado</li>
+          <li>Vida espiritual com versiculo diario</li>
+          <li>Experiencia mobile com instalacao na tela inicial</li>
+        </ul>
+      </section>
+
+      <section class="auth-form-card">
+        <div>
+          <p class="eyebrow">Acesso da usuaria</p>
+          <h2>Entrar no app</h2>
+        </div>
+
+        <form id="login-form" class="auth-form">
+          <label>
+            Nome
+            <input id="login-name" type="text" placeholder="Seu nome" required />
+          </label>
+
+          <label>
+            E-mail
+            <input id="login-email" type="email" placeholder="voce@email.com" required />
+          </label>
+
+          <div class="auth-actions">
+            <button class="primary-button" type="submit">Entrar agora</button>
+            <button id="demo-access" class="secondary-button" type="button">
+              Acessar demonstracao
+            </button>
+          </div>
+        </form>
+
+        <p class="auth-note">
+          Esta e a estrutura inicial do acesso mobile. Depois ligamos isso a
+          login real, assinatura e Kiwify.
+        </p>
+      </section>
+    </main>
+
+    <script src="login.js"></script>
+  </body>
+</html>
