@@ -65,6 +65,7 @@
           <a href="#corpo" data-page-link="corpo">Autocuidado</a>
           <a href="#viagens" data-page-link="viagens">Viagens</a>
           <a href="#espiritual" data-page-link="espiritual">Espiritual</a>
+          <a href="#configuracoes" data-page-link="configuracoes">Configuracoes</a>
         </nav>
 
         <section class="membership-card">
@@ -85,7 +86,11 @@
             <p class="eyebrow">Acesso da usuaria</p>
             <h3 id="user-greeting">Bem-vinda</h3>
           </div>
-          <button id="logout-button" class="ghost-button" type="button">Sair</button>
+          <div class="topbar-actions">
+            <button id="settings-button" class="ghost-button" type="button">Configuracoes</button>
+            <div class="topbar-avatar" id="topbar-avatar" aria-hidden="true">VN</div>
+            <button id="logout-button" class="ghost-button" type="button">Sair</button>
+          </div>
         </section>
 
         <section class="panel verse-banner">
@@ -690,6 +695,145 @@
             </ul>
           </article>
         </section>
+
+        <section class="page-view" data-page-view="configuracoes" id="configuracoes">
+          <section class="panel settings-panel">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">Conta e experiencia</p>
+                <h3>Configuracoes do app</h3>
+              </div>
+              <span class="tag">Personalize do seu jeito</span>
+            </div>
+
+            <div class="settings-grid">
+              <article class="settings-card">
+                <div class="panel-heading">
+                  <div>
+                    <p class="eyebrow">Perfil</p>
+                    <h3>Dados da usuaria</h3>
+                  </div>
+                </div>
+
+                <div class="profile-hero">
+                  <div class="profile-avatar" id="settings-avatar-preview">VN</div>
+                  <div class="profile-copy">
+                    <strong id="settings-profile-name">Vida Nova</strong>
+                    <small id="settings-profile-email">Seu email aparece aqui</small>
+                  </div>
+                </div>
+
+                <form id="settings-profile-form" class="settings-form">
+                  <label class="avatar-upload-field">
+                    Foto do perfil
+                    <input id="settings-avatar-input" type="file" accept="image/*" />
+                  </label>
+                  <label>
+                    Nome
+                    <input id="settings-name-input" type="text" placeholder="Seu nome" />
+                  </label>
+                  <label>
+                    Email
+                    <input id="settings-email-input" type="email" placeholder="seuemail@provedor.com" />
+                  </label>
+                  <label>
+                    Link de renovacao do pacote
+                    <input id="settings-subscription-url" type="url" placeholder="https://..." />
+                  </label>
+                  <div class="settings-inline-actions">
+                    <button class="primary-button" type="submit">Salvar perfil</button>
+                    <button id="settings-renew-button" class="ghost-button" type="button">Renovar pacote</button>
+                  </div>
+                  <p id="settings-profile-feedback" class="settings-feedback"></p>
+                </form>
+              </article>
+
+              <article class="settings-card">
+                <div class="panel-heading">
+                  <div>
+                    <p class="eyebrow">Seguranca</p>
+                    <h3>Senha e acesso</h3>
+                  </div>
+                </div>
+
+                <form id="settings-password-form" class="settings-form">
+                  <label>
+                    Nova senha
+                    <input id="settings-password-input" type="password" placeholder="Minimo de 6 caracteres" />
+                  </label>
+                  <label>
+                    Confirmar nova senha
+                    <input id="settings-password-confirm-input" type="password" placeholder="Repita a senha" />
+                  </label>
+                  <div class="settings-inline-actions">
+                    <button class="primary-button" type="submit">Atualizar senha</button>
+                  </div>
+                  <p id="settings-password-feedback" class="settings-feedback"></p>
+                </form>
+              </article>
+
+              <article class="settings-card">
+                <div class="panel-heading">
+                  <div>
+                    <p class="eyebrow">Aparencia</p>
+                    <h3>Cor, tema e layout</h3>
+                  </div>
+                </div>
+
+                <div class="settings-form settings-appearance">
+                  <div class="preference-group">
+                    <span class="preference-label">Tema</span>
+                    <div class="toggle-row">
+                      <button class="preference-button" type="button" data-theme-choice="light">Claro</button>
+                      <button class="preference-button" type="button" data-theme-choice="dark">Escuro</button>
+                    </div>
+                  </div>
+
+                  <div class="preference-group">
+                    <span class="preference-label">Layout</span>
+                    <div class="layout-switcher">
+                      <button class="preference-button" type="button" data-layout-choice="soft">Suave</button>
+                      <button class="preference-button" type="button" data-layout-choice="focus">Foco</button>
+                      <button class="preference-button" type="button" data-layout-choice="magazine">Editorial</button>
+                    </div>
+                  </div>
+
+                  <label class="accent-color-field">
+                    Cor principal do app
+                    <input id="settings-accent-color" type="color" value="#c55b84" />
+                  </label>
+                  <p class="settings-feedback">Essas mudancas valem tanto para web quanto para mobile na mesma conta.</p>
+                </div>
+              </article>
+
+              <article class="settings-card">
+                <div class="panel-heading">
+                  <div>
+                    <p class="eyebrow">Assinatura</p>
+                    <h3>Pacote e renovacao</h3>
+                  </div>
+                </div>
+
+                <div class="subscription-summary">
+                  <div class="detail-card">
+                    <span class="metric-label">Status</span>
+                    <strong id="settings-subscription-status">Conta ativa</strong>
+                  </div>
+                  <div class="detail-card">
+                    <span class="metric-label">Renovacao</span>
+                    <strong id="settings-renewal-label">Configurar link</strong>
+                  </div>
+                </div>
+
+                <div class="settings-inline-actions">
+                  <button id="settings-open-renewal" class="primary-button" type="button">Abrir renovacao</button>
+                  <button id="settings-open-install" class="ghost-button" type="button">Instalar app</button>
+                </div>
+                <p class="settings-feedback">Use o link de renovacao da Kiwify ou do seu checkout para que a cliente consiga renovar por aqui.</p>
+              </article>
+            </div>
+          </section>
+        </section>
         </div>
       </main>
     </div>
@@ -699,6 +843,7 @@
       <a href="#agenda" data-page-link="agenda">Agenda</a>
       <a href="#financas" data-page-link="financas">Financas</a>
       <a href="#espiritual" data-page-link="espiritual">Espiritual</a>
+      <a href="#configuracoes" data-page-link="configuracoes">Config</a>
     </nav>
 
     <div id="editor-modal" class="editor-modal hidden" aria-hidden="true">

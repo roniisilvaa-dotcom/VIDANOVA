@@ -87,11 +87,23 @@ async function initDb() {
       name TEXT NOT NULL,
       email TEXT UNIQUE NOT NULL,
       password TEXT NOT NULL,
+      avatar_url TEXT,
+      subscription_url TEXT,
       subscription_active BOOLEAN DEFAULT FALSE,
       subscription_expires TIMESTAMPTZ,
       created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
       updated_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
     )
+  `);
+
+  await query(`
+    ALTER TABLE users
+    ADD COLUMN IF NOT EXISTS avatar_url TEXT
+  `);
+
+  await query(`
+    ALTER TABLE users
+    ADD COLUMN IF NOT EXISTS subscription_url TEXT
   `);
 
   await query(`
@@ -141,7 +153,9 @@ async function findUserByEmail(email) {
 async function findUserById(id) {
   if (isUsingDatabase) {
     const result = await query(
-      `SELECT id, name, email, subscription_active FROM users WHERE id = $1`,
+      `SELECT id, name, email, avatar_url, subscription_url, subscription_active
+       FROM users
+       WHERE id = $1`,
       [id],
     );
     return result.rows[0] || null;
@@ -158,17 +172,19 @@ async function findUserById(id) {
     id: user.id,
     name: user.name,
     email: user.email,
+    avatar_url: user.avatar_url || "",
+    subscription_url: user.subscription_url || "",
     subscription_active: user.subscription_active,
   };
 }
 
-async function createUser({ name, email, password }) {
+async function createUser({ name, email, password, avatarUrl = "", subscriptionUrl = "" }) {
   if (isUsingDatabase) {
     const result = await query(
-      `INSERT INTO users (name, email, password)
-       VALUES ($1, $2, $3)
-       RETURNING id, name, email, subscription_active`,
-      [name, email, password],
+      `INSERT INTO users (name, email, password, avatar_url, subscription_url)
+       VALUES ($1, $2, $3, $4, $5)
+       RETURNING id, name, email, avatar_url, subscription_url, subscription_active`,
+      [name, email, password, avatarUrl, subscriptionUrl],
     );
 
     return result.rows[0];
@@ -180,6 +196,8 @@ async function createUser({ name, email, password }) {
     name,
     email,
     password,
+    avatar_url: avatarUrl,
+    subscription_url: subscriptionUrl,
     subscription_active: false,
     subscription_expires: null,
     created_at: new Date().toISOString(),
@@ -193,8 +211,32 @@ async function createUser({ name, email, password }) {
     id: user.id,
     name: user.name,
     email: user.email,
+    avatar_url: user.avatar_url || "",
+    subscription_url: user.subscription_url || "",
     subscription_active: user.subscription_active,
   };
+}
+
+async function emailInUse(email, excludedUserId = null) {
+  if (!email) {
+    return false;
+  }
+
+  if (isUsingDatabase) {
+    const result = excludedUserId
+      ? await query(`SELECT id FROM users WHERE email = $1 AND id <> $2 LIMIT 1`, [
+          email,
+          excludedUserId,
+        ])
+      : await query(`SELECT id FROM users WHERE email = $1 LIMIT 1`, [email]);
+
+    return Boolean(result.rows[0]);
+  }
+
+  const store = await readStore();
+  return store.users.some(
+    (user) => user.email === email && (excludedUserId === null || user.id !== excludedUserId),
+  );
 }
 
 async function getUserWithPasswordById(id) {
@@ -297,7 +339,10 @@ async function getUserData(userId, dataType) {
   return data;
 }
 
-async function updateUserProfile(userId, { name, password }) {
+async function updateUserProfile(
+  userId,
+  { name, email, password, avatarUrl, subscriptionUrl },
+) {
   if (isUsingDatabase) {
     const updates = [];
     const params = [];
@@ -312,6 +357,21 @@ async function updateUserProfile(userId, { name, password }) {
       updates.push(`password = $${params.length}`);
     }
 
+    if (email) {
+      params.push(normalizeEmail(email));
+      updates.push(`email = $${params.length}`);
+    }
+
+    if (avatarUrl !== undefined) {
+      params.push(avatarUrl || "");
+      updates.push(`avatar_url = $${params.length}`);
+    }
+
+    if (subscriptionUrl !== undefined) {
+      params.push(subscriptionUrl || "");
+      updates.push(`subscription_url = $${params.length}`);
+    }
+
     if (!updates.length) {
       return null;
     }
@@ -321,7 +381,7 @@ async function updateUserProfile(userId, { name, password }) {
       `UPDATE users
        SET ${updates.join(", ")}, updated_at = CURRENT_TIMESTAMP
        WHERE id = $${params.length}
-       RETURNING id, name, email, subscription_active`,
+       RETURNING id, name, email, avatar_url, subscription_url, subscription_active`,
       params,
     );
 
@@ -343,6 +403,18 @@ async function updateUserProfile(userId, { name, password }) {
     user.password = password;
   }
 
+  if (email) {
+    user.email = normalizeEmail(email);
+  }
+
+  if (avatarUrl !== undefined) {
+    user.avatar_url = avatarUrl || "";
+  }
+
+  if (subscriptionUrl !== undefined) {
+    user.subscription_url = subscriptionUrl || "";
+  }
+
   user.updated_at = new Date().toISOString();
   await writeStore(store);
 
@@ -350,6 +422,8 @@ async function updateUserProfile(userId, { name, password }) {
     id: user.id,
     name: user.name,
     email: user.email,
+    avatar_url: user.avatar_url || "",
+    subscription_url: user.subscription_url || "",
     subscription_active: user.subscription_active,
   };
 }
@@ -386,8 +460,7 @@ app.post("/api/auth/register", async (req, res) => {
         .json({ error: "Senha deve ter no mínimo 6 caracteres" });
     }
 
-    const existingUser = await findUserByEmail(normalizedEmail);
-    if (existingUser) {
+    if (await emailInUse(normalizedEmail)) {
       return res.status(400).json({ error: "Email já cadastrado" });
     }
 
@@ -396,6 +469,8 @@ app.post("/api/auth/register", async (req, res) => {
       name: String(name).trim(),
       email: normalizedEmail,
       password: hashedPassword,
+      avatarUrl: "",
+      subscriptionUrl: "",
     });
 
     const token = jwt.sign(
@@ -460,6 +535,8 @@ app.post("/api/auth/login", async (req, res) => {
         id: user.id,
         name: user.name,
         email: user.email,
+        avatar_url: user.avatar_url || "",
+        subscription_url: user.subscription_url || "",
         subscription_active: user.subscription_active,
       },
       storageMode: isUsingDatabase ? "neon" : "fallback",
@@ -547,8 +624,9 @@ app.post("/api/data/get", async (req, res) => {
 
 app.post("/api/user/update", async (req, res) => {
   try {
-    const { token, name, password } = req.body;
+    const { token, name, email, password, avatarUrl, subscriptionUrl } = req.body;
     const decoded = getTokenPayload(token);
+    const normalizedEmail = normalizeEmail(email);
 
     if (password && password.length < 6) {
       return res
@@ -556,10 +634,17 @@ app.post("/api/user/update", async (req, res) => {
         .json({ error: "Senha deve ter no mínimo 6 caracteres" });
     }
 
+    if (normalizedEmail && (await emailInUse(normalizedEmail, decoded.id))) {
+      return res.status(400).json({ error: "Este email já está em uso." });
+    }
+
     const hashedPassword = password ? await bcrypt.hash(password, 10) : null;
     const user = await updateUserProfile(decoded.id, {
       name,
+      email: normalizedEmail,
       password: hashedPassword,
+      avatarUrl,
+      subscriptionUrl,
     });
 
     if (!user) {

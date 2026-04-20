@@ -177,6 +177,8 @@ const installHelpButton = document.querySelector("#install-help-button");
 const installChromeButton = document.querySelector("#install-chrome-button");
 const userGreeting = document.querySelector("#user-greeting");
 const logoutButton = document.querySelector("#logout-button");
+const settingsButton = document.querySelector("#settings-button");
+const topbarAvatar = document.querySelector("#topbar-avatar");
 const financeIncomeInput = document.querySelector("#finance-income-input");
 const financeExpenseInput = document.querySelector("#finance-expense-input");
 const financeGoalInput = document.querySelector("#finance-goal-input");
@@ -267,6 +269,25 @@ const themeButtons = document.querySelectorAll("[data-theme-choice]");
 const layoutButtons = document.querySelectorAll("[data-layout-choice]");
 const pageLinks = document.querySelectorAll("[data-page-link]");
 const pageViews = document.querySelectorAll("[data-page-view]");
+const settingsProfileForm = document.querySelector("#settings-profile-form");
+const settingsPasswordForm = document.querySelector("#settings-password-form");
+const settingsNameInput = document.querySelector("#settings-name-input");
+const settingsEmailInput = document.querySelector("#settings-email-input");
+const settingsAvatarInput = document.querySelector("#settings-avatar-input");
+const settingsAvatarPreview = document.querySelector("#settings-avatar-preview");
+const settingsProfileName = document.querySelector("#settings-profile-name");
+const settingsProfileEmail = document.querySelector("#settings-profile-email");
+const settingsSubscriptionUrl = document.querySelector("#settings-subscription-url");
+const settingsProfileFeedback = document.querySelector("#settings-profile-feedback");
+const settingsPasswordInput = document.querySelector("#settings-password-input");
+const settingsPasswordConfirmInput = document.querySelector("#settings-password-confirm-input");
+const settingsPasswordFeedback = document.querySelector("#settings-password-feedback");
+const settingsAccentColor = document.querySelector("#settings-accent-color");
+const settingsRenewButton = document.querySelector("#settings-renew-button");
+const settingsOpenRenewal = document.querySelector("#settings-open-renewal");
+const settingsOpenInstall = document.querySelector("#settings-open-install");
+const settingsSubscriptionStatus = document.querySelector("#settings-subscription-status");
+const settingsRenewalLabel = document.querySelector("#settings-renewal-label");
 const customizableGrids = document.querySelectorAll(".customizable-grid");
 const draggableCards = document.querySelectorAll(".draggable-card");
 const isTouchDevice =
@@ -304,6 +325,7 @@ let currentSession = null;
 let syncTimeoutId = null;
 let syncInFlight = null;
 let isHydratingCloudState = false;
+let pendingAvatarData = "";
 
 financeStore = {
   planIncome: Number(financeStore.planIncome || 0),
@@ -368,6 +390,61 @@ function persistUserSession(user, token = getAuthToken()) {
   currentSession = user;
 }
 
+function getSessionInitials(session = currentSession) {
+  const source = String(session?.name || "Vida Nova").trim();
+  return source
+    .split(/\s+/)
+    .slice(0, 2)
+    .map((part) => part[0]?.toUpperCase() || "")
+    .join("") || "VN";
+}
+
+function renderAvatar(target, avatarUrl, fallbackText = getSessionInitials()) {
+  if (!target) {
+    return;
+  }
+
+  if (avatarUrl) {
+    target.classList.add("has-image");
+    target.innerHTML = `<img src="${escapeHtml(avatarUrl)}" alt="Foto do perfil" />`;
+    return;
+  }
+
+  target.classList.remove("has-image");
+  target.textContent = fallbackText;
+}
+
+function mixColor(hex, ratio = 0.3) {
+  const value = String(hex || "#c55b84").replace("#", "");
+  const normalized =
+    value.length === 3
+      ? value
+          .split("")
+          .map((char) => `${char}${char}`)
+          .join("")
+      : value.padEnd(6, "0").slice(0, 6);
+
+  const channel = (index) => {
+    const base = Number.parseInt(normalized.slice(index, index + 2), 16);
+    const mixed = Math.round(base + (255 - base) * ratio);
+    return mixed.toString(16).padStart(2, "0");
+  };
+
+  return `#${channel(0)}${channel(2)}${channel(4)}`;
+}
+
+function setFeedback(element, message, type = "") {
+  if (!element) {
+    return;
+  }
+
+  element.textContent = message || "";
+  element.classList.remove("is-success", "is-error");
+  if (type) {
+    element.classList.add(type === "error" ? "is-error" : "is-success");
+  }
+}
+
 async function apiPost(url, payload) {
   const response = await fetch(url, {
     method: "POST",
@@ -415,6 +492,10 @@ function collectCloudState() {
     notes: notesInput?.value || localStorage.getItem("ela-em-ordem:notes") || "",
     theme: document.body.dataset.theme || localStorage.getItem("ela-em-ordem:theme") || "light",
     layout: document.body.dataset.layout || localStorage.getItem("ela-em-ordem:layout") || "soft",
+    accentColor:
+      localStorage.getItem("vida-nova:accent-color") ||
+      getComputedStyle(document.documentElement).getPropertyValue("--berry").trim() ||
+      "#c55b84",
     agendaView,
     financeFilter: activeFinanceFilter,
     cards: getSavedCardsState(),
@@ -437,6 +518,7 @@ function createEmptyCloudState() {
     notes: "",
     theme: localStorage.getItem("ela-em-ordem:theme") || "light",
     layout: localStorage.getItem("ela-em-ordem:layout") || "soft",
+    accentColor: localStorage.getItem("vida-nova:accent-color") || "#c55b84",
     agendaView: "week",
     financeFilter: "all",
     cards: {},
@@ -476,6 +558,7 @@ function applyCloudState(state) {
   localStorage.setItem("ela-em-ordem:notes", state.notes || "");
   localStorage.setItem("ela-em-ordem:theme", state.theme || "light");
   localStorage.setItem("ela-em-ordem:layout", state.layout || "soft");
+  localStorage.setItem("vida-nova:accent-color", state.accentColor || "#c55b84");
   localStorage.setItem("ela-em-ordem:agenda-view", agendaView);
   localStorage.setItem("ela-em-ordem:finance-filter", activeFinanceFilter);
 
@@ -546,14 +629,6 @@ async function initializeAuthenticatedState() {
   } catch (error) {
     console.error("Erro ao carregar dados da conta:", error);
   }
-}
-
-function hydrateSessionUI(session) {
-  if (!session || !userGreeting) {
-    return;
-  }
-
-  userGreeting.textContent = `Bem-vinda, ${session.name}`;
 }
 
 function renderVerse() {
@@ -1541,6 +1616,51 @@ function renderNextAgendaCard() {
   agendaNextMeta.textContent = `${formatTimeRange(nextEvent.time, nextEvent.endTime)} | ${nextEvent.location || "Sem local"}`;
 }
 
+function hydrateSessionUI(session) {
+  if (!session) {
+    return;
+  }
+
+  if (userGreeting) {
+    userGreeting.textContent = `Bem-vinda, ${session.name}`;
+  }
+
+  renderAvatar(topbarAvatar, session.avatar_url, getSessionInitials(session));
+  renderAvatar(settingsAvatarPreview, session.avatar_url, getSessionInitials(session));
+
+  if (settingsProfileName) {
+    settingsProfileName.textContent = session.name || "Vida Nova";
+  }
+  if (settingsProfileEmail) {
+    settingsProfileEmail.textContent = session.email || "Seu email aparece aqui";
+  }
+  if (settingsNameInput) {
+    settingsNameInput.value = session.name || "";
+  }
+  if (settingsEmailInput) {
+    settingsEmailInput.value = session.email || "";
+  }
+  if (settingsSubscriptionUrl) {
+    settingsSubscriptionUrl.value = session.subscription_url || "";
+  }
+  if (settingsSubscriptionStatus) {
+    settingsSubscriptionStatus.textContent = session.subscription_active
+      ? "Conta ativa"
+      : "Aguardando ativacao";
+  }
+  if (settingsRenewalLabel) {
+    settingsRenewalLabel.textContent = session.subscription_url
+      ? "Link pronto para abrir"
+      : "Configurar link";
+  }
+  if (settingsRenewButton) {
+    settingsRenewButton.disabled = !session.subscription_url;
+  }
+  if (settingsOpenRenewal) {
+    settingsOpenRenewal.disabled = !session.subscription_url;
+  }
+}
+
 function registerServiceWorker() {
   if (!("serviceWorker" in navigator) || window.location.protocol === "file:") {
     return;
@@ -1570,6 +1690,31 @@ function setTheme(theme) {
     button.classList.toggle("is-active", button.dataset.themeChoice === theme);
   });
   scheduleCloudSync();
+}
+
+function setAccentColor(color, shouldSync = true) {
+  const nextColor =
+    typeof color === "string" && /^#([0-9a-f]{3}|[0-9a-f]{6})$/i.test(color.trim())
+      ? color.trim()
+      : "#c55b84";
+  const glowColor = mixColor(nextColor, 0.36);
+
+  document.documentElement.style.setProperty("--berry", nextColor);
+  document.documentElement.style.setProperty("--berry-glow", glowColor);
+  localStorage.setItem("vida-nova:accent-color", nextColor);
+
+  const themeMeta = document.querySelector('meta[name="theme-color"]');
+  if (themeMeta) {
+    themeMeta.setAttribute("content", nextColor);
+  }
+
+  if (settingsAccentColor) {
+    settingsAccentColor.value = nextColor;
+  }
+
+  if (shouldSync) {
+    scheduleCloudSync();
+  }
 }
 
 function setLayout(layout) {
@@ -1798,6 +1943,141 @@ layoutButtons.forEach((button) => {
     setLayout(button.dataset.layoutChoice);
   });
 });
+
+if (settingsAccentColor) {
+  settingsAccentColor.addEventListener("input", () => {
+    setAccentColor(settingsAccentColor.value);
+  });
+}
+
+if (settingsButton) {
+  settingsButton.addEventListener("click", () => {
+    setActivePage("configuracoes");
+  });
+}
+
+if (settingsAvatarInput) {
+  settingsAvatarInput.addEventListener("change", async () => {
+    const file = settingsAvatarInput.files?.[0];
+    if (!file) {
+      return;
+    }
+
+    if (file.size > 1024 * 1024) {
+      setFeedback(settingsProfileFeedback, "Escolha uma imagem de ate 1 MB.", "error");
+      settingsAvatarInput.value = "";
+      return;
+    }
+
+    try {
+      pendingAvatarData = await new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(String(reader.result || ""));
+        reader.onerror = () => reject(new Error("Falha ao ler a imagem."));
+        reader.readAsDataURL(file);
+      });
+
+      renderAvatar(settingsAvatarPreview, pendingAvatarData, getSessionInitials());
+      renderAvatar(topbarAvatar, pendingAvatarData, getSessionInitials());
+      setFeedback(settingsProfileFeedback, "Foto pronta para salvar no perfil.", "success");
+    } catch (error) {
+      setFeedback(settingsProfileFeedback, "Nao foi possivel ler a foto.", "error");
+    }
+  });
+}
+
+if (settingsProfileForm) {
+  settingsProfileForm.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    const name = settingsNameInput?.value.trim() || "";
+    const email = settingsEmailInput?.value.trim() || "";
+    const subscriptionUrl = settingsSubscriptionUrl?.value.trim() || "";
+
+    if (!name || !email) {
+      setFeedback(settingsProfileFeedback, "Preencha nome e email para salvar o perfil.", "error");
+      return;
+    }
+
+    try {
+      const response = await apiPost("/api/user/update", {
+        token: getAuthToken(),
+        name,
+        email,
+        avatarUrl: pendingAvatarData || currentSession?.avatar_url || "",
+        subscriptionUrl,
+      });
+
+      persistUserSession(response.user, getAuthToken());
+      pendingAvatarData = response.user.avatar_url || "";
+      hydrateSessionUI(response.user);
+      scheduleCloudSync();
+      setFeedback(settingsProfileFeedback, "Perfil atualizado com sucesso.", "success");
+    } catch (error) {
+      setFeedback(settingsProfileFeedback, error.message, "error");
+    }
+  });
+}
+
+if (settingsPasswordForm) {
+  settingsPasswordForm.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    const password = settingsPasswordInput?.value || "";
+    const confirmPassword = settingsPasswordConfirmInput?.value || "";
+
+    if (!password) {
+      setFeedback(settingsPasswordFeedback, "Digite a nova senha.", "error");
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      setFeedback(settingsPasswordFeedback, "As senhas nao conferem.", "error");
+      return;
+    }
+
+    try {
+      await apiPost("/api/user/update", {
+        token: getAuthToken(),
+        password,
+      });
+
+      settingsPasswordForm.reset();
+      setFeedback(settingsPasswordFeedback, "Senha atualizada com sucesso.", "success");
+    } catch (error) {
+      setFeedback(settingsPasswordFeedback, error.message, "error");
+    }
+  });
+}
+
+function openRenewalLink() {
+  const renewalUrl = settingsSubscriptionUrl?.value.trim() || currentSession?.subscription_url || "";
+  if (!renewalUrl) {
+    setFeedback(
+      settingsProfileFeedback,
+      "Cadastre primeiro o link de renovacao da Kiwify ou do seu checkout.",
+      "error",
+    );
+    setActivePage("configuracoes");
+    return;
+  }
+
+  window.open(renewalUrl, "_blank", "noopener,noreferrer");
+}
+
+if (settingsRenewButton) {
+  settingsRenewButton.addEventListener("click", openRenewalLink);
+}
+
+if (settingsOpenRenewal) {
+  settingsOpenRenewal.addEventListener("click", openRenewalLink);
+}
+
+if (settingsOpenInstall) {
+  settingsOpenInstall.addEventListener("click", () => {
+    openInstallModal();
+  });
+}
 
 interactiveStats.forEach((card) => {
   card.addEventListener("click", () => {
@@ -2363,6 +2643,7 @@ async function bootApp() {
 
   setTheme(localStorage.getItem("ela-em-ordem:theme") || "light");
   setLayout(localStorage.getItem("ela-em-ordem:layout") || "soft");
+  setAccentColor(localStorage.getItem("vida-nova:accent-color") || "#c55b84", false);
   hydrateSessionUI(requireSession());
 restoreGridOrders();
 restoreSavedCards();
