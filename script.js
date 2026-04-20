@@ -1881,18 +1881,43 @@ function renderYearView() {
   }
 
   const year = calendarCursor.getFullYear();
+  const todayKey = formatDateKey(new Date());
+  const weekdayLabels = ["D", "S", "T", "Q", "Q", "S", "S"];
+
   yearViewShell.innerHTML = Array.from({ length: 12 }, (_, monthIndex) => {
     const firstDay = new Date(year, monthIndex, 1);
+    const firstWeekday = firstDay.getDay();
     const totalDays = new Date(year, monthIndex + 1, 0).getDate();
-    const previewDays = Array.from({ length: Math.min(31, totalDays) }, (_, index) => {
-      const dateKey = formatDateKey(new Date(year, monthIndex, index + 1));
+    const cells = [];
+
+    for (let index = 0; index < firstWeekday; index += 1) {
+      cells.push('<span class="year-month-empty" aria-hidden="true"></span>');
+    }
+
+    for (let day = 1; day <= totalDays; day += 1) {
+      const dateKey = formatDateKey(new Date(year, monthIndex, day));
       const visibleCount = getFilteredEventsForDate(dateKey).length;
-      return `<button type="button" class="year-month-day${visibleCount ? " has-events" : ""}" data-year-date="${dateKey}">${index + 1}</button>`;
-    }).join("");
+      const isToday = dateKey === todayKey;
+      const isSelected = dateKey === selectedDateKey;
+      const label = new Date(`${dateKey}T12:00:00`).toLocaleDateString("pt-BR", {
+        day: "2-digit",
+        month: "long",
+        year: "numeric",
+      });
+
+      cells.push(
+        `<button type="button" class="year-month-day${visibleCount ? " has-events" : ""}${isToday ? " is-today" : ""}${isSelected ? " is-selected" : ""}" data-year-date="${dateKey}" aria-label="${label}">${day}</button>`,
+      );
+    }
+
+    while (cells.length % 7 !== 0) {
+      cells.push('<span class="year-month-empty" aria-hidden="true"></span>');
+    }
 
     return `<article class="year-month-card">
       <strong>${firstDay.toLocaleDateString("pt-BR", { month: "long" })}</strong>
-      <div class="year-month-grid">${previewDays}</div>
+      <div class="year-month-weekdays">${weekdayLabels.map((label) => `<span>${label}</span>`).join("")}</div>
+      <div class="year-month-grid">${cells.join("")}</div>
     </article>`;
   }).join("");
 }
