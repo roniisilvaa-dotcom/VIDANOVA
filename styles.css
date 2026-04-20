@@ -129,6 +129,13 @@ a {
   background: rgba(255, 255, 255, 0.55);
 }
 
+.sidebar-nav a.is-active,
+.mobile-nav a.is-active {
+  background: linear-gradient(135deg, rgba(197, 91, 132, 0.92), rgba(239, 141, 169, 0.9));
+  color: white;
+  box-shadow: var(--shadow);
+}
+
 .sidebar-nav a:hover {
   background: rgba(255, 255, 255, 0.92);
 }
@@ -220,6 +227,19 @@ a {
   padding: 28px;
 }
 
+.page-stack {
+  display: grid;
+}
+
+.page-view {
+  display: none;
+  gap: 18px;
+}
+
+.page-view.is-active {
+  display: grid;
+}
+
 .app-topbar {
   display: flex;
   align-items: center;
@@ -236,6 +256,30 @@ a {
 .app-topbar h3 {
   margin: 0;
   font-family: Georgia, "Times New Roman", serif;
+}
+
+.verse-banner {
+  margin-bottom: 18px;
+  background:
+    linear-gradient(130deg, rgba(255, 239, 231, 0.97), rgba(255, 255, 255, 0.85)),
+    linear-gradient(130deg, var(--peach), var(--rose));
+}
+
+.verse-banner-copy {
+  display: grid;
+  gap: 8px;
+}
+
+.verse-banner-copy strong {
+  font-size: 1.15rem;
+  line-height: 1.55;
+  color: var(--ink);
+}
+
+.verse-banner-copy small {
+  color: var(--berry);
+  font-weight: 700;
+  letter-spacing: 0.04em;
 }
 
 .install-banner {

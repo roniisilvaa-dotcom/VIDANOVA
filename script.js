@@ -131,6 +131,7 @@ const initialFinanceRecords = [
 
 const headlineVerseText = document.querySelector("#headline-verse-text");
 const headlineVerseReference = document.querySelector("#headline-verse-reference");
+const changeVerseButton = document.querySelector("#change-verse-button");
 const taskForm = document.querySelector("#task-form");
 const taskInput = document.querySelector("#task-input");
 const taskList = document.querySelector("#task-list");
@@ -264,6 +265,8 @@ const editorListGroup = document.querySelector("#editor-list-group");
 const editorReset = document.querySelector("#editor-reset");
 const themeButtons = document.querySelectorAll("[data-theme-choice]");
 const layoutButtons = document.querySelectorAll("[data-layout-choice]");
+const pageLinks = document.querySelectorAll("[data-page-link]");
+const pageViews = document.querySelectorAll("[data-page-view]");
 const customizableGrids = document.querySelectorAll(".customizable-grid");
 const draggableCards = document.querySelectorAll(".draggable-card");
 const isTouchDevice =
@@ -296,6 +299,7 @@ let financeStore = JSON.parse(localStorage.getItem("ela-em-ordem:finance") || "{
 let calculatorExpression = "0";
 let moduleStore = JSON.parse(localStorage.getItem("vida-nova:modules") || "{}");
 let activeModule = null;
+let activePage = "dashboard";
 let currentSession = null;
 let syncTimeoutId = null;
 let syncInFlight = null;
@@ -560,6 +564,33 @@ function renderVerse() {
   if (headlineVerseReference) {
     headlineVerseReference.textContent = verse.reference;
   }
+}
+
+if (changeVerseButton) {
+  changeVerseButton.addEventListener("click", () => {
+    verseIndex = (verseIndex + 1) % verses.length;
+    renderVerse();
+  });
+}
+
+function setActivePage(pageName, syncHash = true) {
+  const availablePages = Array.from(pageViews).map((view) => view.dataset.pageView);
+  const nextPage = availablePages.includes(pageName) ? pageName : "dashboard";
+  activePage = nextPage;
+
+  pageViews.forEach((view) => {
+    view.classList.toggle("is-active", view.dataset.pageView === nextPage);
+  });
+
+  pageLinks.forEach((link) => {
+    link.classList.toggle("is-active", link.dataset.pageLink === nextPage);
+  });
+
+  if (syncHash && window.location.hash !== `#${nextPage}`) {
+    history.replaceState(null, "", `#${nextPage}`);
+  }
+
+  window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
 function updateTaskProgress() {
@@ -1772,11 +1803,26 @@ interactiveStats.forEach((card) => {
   card.addEventListener("click", () => {
     const target = document.querySelector(card.dataset.scrollTarget || "");
     if (target) {
+      const targetPage = target.closest("[data-page-view]")?.dataset.pageView;
+      if (targetPage) {
+        setActivePage(targetPage);
+      }
       target.scrollIntoView({ behavior: "smooth", block: "start" });
       if ("focus" in target) {
         target.focus({ preventScroll: true });
       }
     }
+  });
+});
+
+pageLinks.forEach((link) => {
+  link.addEventListener("click", (event) => {
+    const page = link.dataset.pageLink;
+    if (!page) {
+      return;
+    }
+    event.preventDefault();
+    setActivePage(page);
   });
 });
 
@@ -2318,10 +2364,11 @@ async function bootApp() {
   setTheme(localStorage.getItem("ela-em-ordem:theme") || "light");
   setLayout(localStorage.getItem("ela-em-ordem:layout") || "soft");
   hydrateSessionUI(requireSession());
-  restoreGridOrders();
-  restoreSavedCards();
-  initializeDragAndDrop();
-  renderVerse();
+restoreGridOrders();
+restoreSavedCards();
+initializeDragAndDrop();
+setActivePage(window.location.hash.replace("#", "") || "dashboard", false);
+renderVerse();
   renderTasks();
   renderCalendar();
   renderAgendaEvents();
