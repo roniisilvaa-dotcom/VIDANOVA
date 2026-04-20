@@ -20,7 +20,7 @@ npm start
 http://localhost:3001
 ```
 
-**Pronto!** App rodando localmente com banco de dados SQLite.
+**Pronto!** App rodando localmente com banco de dados PostgreSQL/Neon.
 
 ---
 
@@ -90,15 +90,15 @@ fetch('/api/data/get', {
 
 ### Como Funciona
 
-1. **Banco de Dados Local** (SQLite)
-   - Para desenvolvimento e testes
-   - Arquivo único: `vida-nova.db`
-   - Backup fácil
+1. **Banco de Dados Principal** (PostgreSQL / Neon)
+   - Mesma estrutura para local e produção
+   - Multiusuário de verdade
+   - Melhor para Render e para app com assinatura
 
-2. **Banco de Dados em Produção** (PostgreSQL)
-   - Quando fizer deploy em Render
-   - Automático e seguro
-   - Suporta muitos usuários
+2. **Hospedagem do App** (Render)
+   - Seu Node/Express roda no Render
+   - O banco fica separado no Neon
+   - Mais seguro do que usar arquivo local
 
 ### Estrutura do Banco
 
@@ -159,19 +159,22 @@ No painel do Render:
 3. Gere `JWT_SECRET` forte: https://openssl.rand-hex 32
 4. Salve
 
-### Passo 4: Banco de Dados
+### Passo 4: Banco de Dados Neon
 
-#### Opção A: SQLite (Simples)
-- Usa arquivo local
-- Pronto para começar
-- Sem custos
+1. Crie uma conta em [Neon](https://neon.com/)
+2. Crie um projeto Postgres grátis
+3. Copie a connection string
+4. No Render, abra seu Web Service
+5. Em "Environment", adicione:
+   - `DATABASE_URL`
+   - `JWT_SECRET`
+6. Salve e faça novo deploy
 
-#### Opção B: PostgreSQL (Recomendado)
-1. No painel Render, clique "New +"
-2. Selecione "PostgreSQL"
-3. Configure com free tier
-4. Copie connection string
-5. Cole em `DATABASE_URL` no web service
+Exemplo de `DATABASE_URL`:
+
+```env
+DATABASE_URL=postgresql://USER:PASSWORD@HOST/DBNAME?sslmode=require
+```
 
 ### Passo 5: Deploy
 
