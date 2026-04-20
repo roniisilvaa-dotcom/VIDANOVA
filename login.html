@@ -54,13 +54,18 @@
       <section class="auth-form-card">
         <div>
           <p class="eyebrow">Acesso da usuaria</p>
-          <h2>Entrar no app</h2>
+          <h2 id="auth-title">Entrar no app</h2>
+        </div>
+
+        <div class="auth-mode-switch" role="tablist" aria-label="Modo de autenticacao">
+          <button id="mode-login" class="secondary-button is-active" type="button">Entrar</button>
+          <button id="mode-register" class="secondary-button" type="button">Criar conta</button>
         </div>
 
         <form id="login-form" class="auth-form">
-          <label>
+          <label id="name-field" class="auth-field hidden-field">
             Nome
-            <input id="login-name" type="text" placeholder="Seu nome" required />
+            <input id="login-name" type="text" placeholder="Seu nome completo" />
           </label>
 
           <label>
@@ -68,8 +73,20 @@
             <input id="login-email" type="email" placeholder="voce@email.com" required />
           </label>
 
+          <label>
+            Senha
+            <input id="login-password" type="password" placeholder="Digite sua senha" required minlength="6" />
+          </label>
+
+          <label id="confirm-password-field" class="auth-field hidden-field">
+            Confirmar senha
+            <input id="login-confirm-password" type="password" placeholder="Repita sua senha" minlength="6" />
+          </label>
+
+          <p id="auth-feedback" class="auth-feedback" role="status" aria-live="polite"></p>
+
           <div class="auth-actions">
-            <button class="primary-button" type="submit">Entrar agora</button>
+            <button id="auth-submit" class="primary-button" type="submit">Entrar agora</button>
             <button id="demo-access" class="secondary-button" type="button">
               Acessar demonstracao
             </button>
@@ -77,8 +94,8 @@
         </form>
 
         <p class="auth-note">
-          Esta e a estrutura inicial do acesso mobile. Depois ligamos isso a
-          login real, assinatura e Kiwify.
+          Agora o acesso pode ser feito com conta individual. A integracao com
+          assinatura e liberacao automatica do pagamento pode entrar em seguida.
         </p>
       </section>
     </main>

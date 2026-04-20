@@ -270,6 +270,11 @@ const isTouchDevice =
   window.matchMedia("(pointer: coarse)").matches ||
   "ontouchstart" in window ||
   navigator.maxTouchPoints > 0;
+const AUTH_TOKEN_KEY = "vida-nova:auth-token";
+const AUTH_USER_KEY = "vida-nova:auth-user";
+const LEGACY_SESSION_KEY = "ela-em-ordem:session";
+const CLOUD_STATE_TYPE = "app_state";
+const CLOUD_STATE_KEY = "main";
 
 let tasks = [...initialTasks];
 let verseIndex = new Date().getDate() % verses.length;
@@ -291,6 +296,10 @@ let financeStore = JSON.parse(localStorage.getItem("ela-em-ordem:finance") || "{
 let calculatorExpression = "0";
 let moduleStore = JSON.parse(localStorage.getItem("vida-nova:modules") || "{}");
 let activeModule = null;
+let currentSession = null;
+let syncTimeoutId = null;
+let syncInFlight = null;
+let isHydratingCloudState = false;
 
 financeStore = {
   planIncome: Number(financeStore.planIncome || 0),
@@ -306,18 +315,233 @@ const editableCardDefaults = Array.from(editableCards).reduce((defaults, card) =
 }, {});
 
 function requireSession() {
-  const session = localStorage.getItem("ela-em-ordem:session");
-  if (!session) {
-    const guestSession = {
-      name: "Visitante",
-      email: "demo@elaemordem.app",
-      createdAt: new Date().toISOString(),
-    };
-    localStorage.setItem("ela-em-ordem:session", JSON.stringify(guestSession));
-    return guestSession;
+  const savedUser = localStorage.getItem(AUTH_USER_KEY);
+  const token = localStorage.getItem(AUTH_TOKEN_KEY);
+
+  if (!savedUser || !token) {
+    window.location.href = "./login.html";
+    throw new Error("Sessao nao encontrada");
   }
 
-  return JSON.parse(session);
+  const session = JSON.parse(savedUser);
+  localStorage.setItem(
+    LEGACY_SESSION_KEY,
+    JSON.stringify({
+      id: session.id,
+      name: session.name,
+      email: session.email,
+      createdAt: new Date().toISOString(),
+    }),
+  );
+  currentSession = session;
+  return session;
+}
+
+function getAuthToken() {
+  return localStorage.getItem(AUTH_TOKEN_KEY) || "";
+}
+
+function clearAuthSession() {
+  localStorage.removeItem(AUTH_TOKEN_KEY);
+  localStorage.removeItem(AUTH_USER_KEY);
+  localStorage.removeItem(LEGACY_SESSION_KEY);
+}
+
+function persistUserSession(user, token = getAuthToken()) {
+  localStorage.setItem(AUTH_USER_KEY, JSON.stringify(user));
+  if (token) {
+    localStorage.setItem(AUTH_TOKEN_KEY, token);
+  }
+  localStorage.setItem(
+    LEGACY_SESSION_KEY,
+    JSON.stringify({
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      createdAt: new Date().toISOString(),
+    }),
+  );
+  currentSession = user;
+}
+
+async function apiPost(url, payload) {
+  const response = await fetch(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(payload),
+  });
+
+  const data = await response.json().catch(() => ({}));
+
+  if (!response.ok) {
+    throw new Error(data.error || "Erro na comunicacao com o servidor.");
+  }
+
+  return data;
+}
+
+function getSavedCardsState() {
+  return Array.from(editableCards).reduce((savedCards, card) => {
+    const value = localStorage.getItem(`ela-em-ordem:${card.dataset.cardId}`);
+    if (value) {
+      savedCards[card.dataset.cardId] = JSON.parse(value);
+    }
+    return savedCards;
+  }, {});
+}
+
+function getSavedGridOrders() {
+  return Array.from(customizableGrids).reduce((savedGrids, grid) => {
+    const value = localStorage.getItem(`ela-em-ordem:grid:${grid.dataset.gridId}`);
+    if (value) {
+      savedGrids[grid.dataset.gridId] = JSON.parse(value);
+    }
+    return savedGrids;
+  }, {});
+}
+
+function collectCloudState() {
+  return {
+    tasks,
+    agendaStore,
+    financeStore,
+    moduleStore,
+    notes: notesInput?.value || localStorage.getItem("ela-em-ordem:notes") || "",
+    theme: document.body.dataset.theme || localStorage.getItem("ela-em-ordem:theme") || "light",
+    layout: document.body.dataset.layout || localStorage.getItem("ela-em-ordem:layout") || "soft",
+    agendaView,
+    financeFilter: activeFinanceFilter,
+    cards: getSavedCardsState(),
+    gridOrders: getSavedGridOrders(),
+  };
+}
+
+function createEmptyCloudState() {
+  return {
+    tasks: [],
+    agendaStore: {},
+    financeStore: {
+      planIncome: 0,
+      planExpense: 0,
+      goal: 0,
+      notes: "",
+      records: [],
+    },
+    moduleStore: {},
+    notes: "",
+    theme: localStorage.getItem("ela-em-ordem:theme") || "light",
+    layout: localStorage.getItem("ela-em-ordem:layout") || "soft",
+    agendaView: "week",
+    financeFilter: "all",
+    cards: {},
+    gridOrders: {},
+  };
+}
+
+function applyCloudState(state) {
+  if (!state || typeof state !== "object") {
+    return;
+  }
+
+  isHydratingCloudState = true;
+
+  tasks = Array.isArray(state.tasks) ? state.tasks : [...initialTasks];
+  agendaStore =
+    state.agendaStore && Object.keys(state.agendaStore).length > 0
+      ? state.agendaStore
+      : { ...initialAgendaEvents };
+  financeStore = {
+    planIncome: Number(state.financeStore?.planIncome || 0),
+    planExpense: Number(state.financeStore?.planExpense || 0),
+    goal: Number(state.financeStore?.goal || 0),
+    notes: String(state.financeStore?.notes || ""),
+    records:
+      Array.isArray(state.financeStore?.records)
+        ? state.financeStore.records
+        : [...initialFinanceRecords],
+  };
+  moduleStore = state.moduleStore && typeof state.moduleStore === "object" ? state.moduleStore : {};
+  agendaView = state.agendaView || "week";
+  activeFinanceFilter = state.financeFilter || "all";
+
+  localStorage.setItem("ela-em-ordem:agenda-events", JSON.stringify(agendaStore));
+  localStorage.setItem("ela-em-ordem:finance", JSON.stringify(financeStore));
+  localStorage.setItem("vida-nova:modules", JSON.stringify(moduleStore));
+  localStorage.setItem("ela-em-ordem:notes", state.notes || "");
+  localStorage.setItem("ela-em-ordem:theme", state.theme || "light");
+  localStorage.setItem("ela-em-ordem:layout", state.layout || "soft");
+  localStorage.setItem("ela-em-ordem:agenda-view", agendaView);
+  localStorage.setItem("ela-em-ordem:finance-filter", activeFinanceFilter);
+
+  editableCards.forEach((card) => {
+    localStorage.removeItem(`ela-em-ordem:${card.dataset.cardId}`);
+  });
+  Object.entries(state.cards || {}).forEach(([cardId, cardState]) => {
+    localStorage.setItem(`ela-em-ordem:${cardId}`, JSON.stringify(cardState));
+  });
+
+  customizableGrids.forEach((grid) => {
+    localStorage.removeItem(`ela-em-ordem:grid:${grid.dataset.gridId}`);
+  });
+  Object.entries(state.gridOrders || {}).forEach(([gridId, gridState]) => {
+    localStorage.setItem(`ela-em-ordem:grid:${gridId}`, JSON.stringify(gridState));
+  });
+
+  isHydratingCloudState = false;
+}
+
+function scheduleCloudSync() {
+  if (isHydratingCloudState || !getAuthToken()) {
+    return;
+  }
+
+  window.clearTimeout(syncTimeoutId);
+  syncTimeoutId = window.setTimeout(() => {
+    syncInFlight = apiPost("/api/data/save", {
+      token: getAuthToken(),
+      dataType: CLOUD_STATE_TYPE,
+      dataKey: CLOUD_STATE_KEY,
+      dataValue: collectCloudState(),
+    }).catch((error) => {
+      console.error("Erro ao sincronizar dados:", error);
+    });
+  }, 250);
+}
+
+async function initializeAuthenticatedState() {
+  const token = getAuthToken();
+  if (!token) {
+    window.location.href = "./login.html";
+    return;
+  }
+
+  try {
+    const verifyResponse = await apiPost("/api/auth/verify", { token });
+    persistUserSession(verifyResponse.user, token);
+  } catch (error) {
+    clearAuthSession();
+    window.location.href = "./login.html";
+    return;
+  }
+
+  try {
+    const response = await apiPost("/api/data/get", {
+      token,
+      dataType: CLOUD_STATE_TYPE,
+    });
+    const savedState = response.data?.[CLOUD_STATE_KEY];
+
+    if (savedState) {
+      applyCloudState(savedState);
+    } else {
+      applyCloudState(createEmptyCloudState());
+      scheduleCloudSync();
+    }
+  } catch (error) {
+    console.error("Erro ao carregar dados da conta:", error);
+  }
 }
 
 function hydrateSessionUI(session) {
@@ -388,6 +612,7 @@ function renderTasks() {
 
   updateTaskProgress();
   renderDashboardMirror();
+  scheduleCloudSync();
 }
 
 function formatCurrency(value) {
@@ -430,6 +655,7 @@ function getRoundedTimeFromOffset(offsetY) {
 
 function saveFinanceStore() {
   localStorage.setItem("ela-em-ordem:finance", JSON.stringify(financeStore));
+  scheduleCloudSync();
 }
 
 function formatTimeRange(startTime, endTime) {
@@ -656,6 +882,7 @@ function getModuleItems(moduleKey) {
 
 function saveModuleStore() {
   localStorage.setItem("vida-nova:modules", JSON.stringify(moduleStore));
+  scheduleCloudSync();
 }
 
 const moduleConfig = {
@@ -997,6 +1224,7 @@ function ensureAgendaDay(dateKey) {
 
 function saveAgendaStore() {
   localStorage.setItem("ela-em-ordem:agenda-events", JSON.stringify(agendaStore));
+  scheduleCloudSync();
 }
 
 function renderAgendaEvents() {
@@ -1310,6 +1538,7 @@ function setTheme(theme) {
   themeButtons.forEach((button) => {
     button.classList.toggle("is-active", button.dataset.themeChoice === theme);
   });
+  scheduleCloudSync();
 }
 
 function setLayout(layout) {
@@ -1319,6 +1548,7 @@ function setLayout(layout) {
   layoutButtons.forEach((button) => {
     button.classList.toggle("is-active", button.dataset.layoutChoice === layout);
   });
+  scheduleCloudSync();
 }
 
 function extractCardData(card) {
@@ -1415,6 +1645,7 @@ function applyCardData(card, data) {
 
 function saveCardState(card) {
   localStorage.setItem(`ela-em-ordem:${card.dataset.cardId}`, JSON.stringify(extractCardData(card)));
+  scheduleCloudSync();
 }
 
 function saveGridOrder(grid) {
@@ -1423,6 +1654,7 @@ function saveGridOrder(grid) {
     .filter(Boolean);
 
   localStorage.setItem(`ela-em-ordem:grid:${grid.dataset.gridId}`, JSON.stringify(order));
+  scheduleCloudSync();
 }
 
 function restoreGridOrders() {
@@ -1580,6 +1812,7 @@ if (notesInput) {
   notesInput.addEventListener("input", () => {
     localStorage.setItem("ela-em-ordem:notes", notesInput.value);
     renderDashboardMirror();
+    scheduleCloudSync();
   });
 }
 
@@ -1690,6 +1923,7 @@ if (calendarMonthViewButton) {
   calendarMonthViewButton.addEventListener("click", () => {
     agendaView = "month";
     localStorage.setItem("ela-em-ordem:agenda-view", agendaView);
+    scheduleCloudSync();
     renderCalendar();
     renderWeekView();
   });
@@ -1699,14 +1933,21 @@ if (calendarWeekViewButton) {
   calendarWeekViewButton.addEventListener("click", () => {
     agendaView = "week";
     localStorage.setItem("ela-em-ordem:agenda-view", agendaView);
+    scheduleCloudSync();
     renderCalendar();
     renderWeekView();
   });
 }
 
 if (logoutButton) {
-  logoutButton.addEventListener("click", () => {
-    localStorage.removeItem("ela-em-ordem:session");
+  logoutButton.addEventListener("click", async () => {
+    try {
+      await apiPost("/api/auth/logout", { token: getAuthToken() });
+    } catch (error) {
+      console.error("Erro ao encerrar sessao:", error);
+    }
+
+    clearAuthSession();
     window.location.href = "./login.html";
   });
 }
@@ -1795,6 +2036,7 @@ financeFilterButtons.forEach((button) => {
   button.addEventListener("click", () => {
     activeFinanceFilter = button.dataset.financeFilter || "all";
     localStorage.setItem("ela-em-ordem:finance-filter", activeFinanceFilter);
+    scheduleCloudSync();
     renderFinance();
   });
 });
@@ -2062,21 +2304,36 @@ editorReset.addEventListener("click", () => {
     list: original.list.join("\n"),
   });
   localStorage.removeItem(`ela-em-ordem:${activeCard.dataset.cardId}`);
+  scheduleCloudSync();
   openEditor(activeCard);
 });
 
-setTheme(localStorage.getItem("ela-em-ordem:theme") || "light");
-setLayout(localStorage.getItem("ela-em-ordem:layout") || "soft");
-hydrateSessionUI(requireSession());
-restoreGridOrders();
-restoreSavedCards();
-initializeDragAndDrop();
-renderVerse();
-renderTasks();
-renderCalendar();
-renderAgendaEvents();
-renderFinance();
-renderDashboardMirror();
-renderModuleCards();
-registerServiceWorker();
-setupInstallPrompt();
+async function bootApp() {
+  await initializeAuthenticatedState();
+
+  if (notesInput) {
+    notesInput.value = localStorage.getItem("ela-em-ordem:notes") || "";
+  }
+
+  setTheme(localStorage.getItem("ela-em-ordem:theme") || "light");
+  setLayout(localStorage.getItem("ela-em-ordem:layout") || "soft");
+  hydrateSessionUI(requireSession());
+  restoreGridOrders();
+  restoreSavedCards();
+  initializeDragAndDrop();
+  renderVerse();
+  renderTasks();
+  renderCalendar();
+  renderAgendaEvents();
+  renderFinance();
+  renderDashboardMirror();
+  renderModuleCards();
+  registerServiceWorker();
+  setupInstallPrompt();
+}
+
+bootApp().catch((error) => {
+  console.error("Erro ao iniciar o app:", error);
+  clearAuthSession();
+  window.location.href = "./login.html";
+});
