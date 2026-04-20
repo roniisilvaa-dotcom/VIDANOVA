@@ -2,18 +2,47 @@
 <html lang="pt-BR">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no" />
     <title>Vida Nova</title>
+    
+    <!-- Theme Colors -->
     <meta name="theme-color" content="#c55b84" />
+    <meta name="msapplication-TileColor" content="#c55b84" />
+    <meta name="msapplication-TileImage" content="icon.svg" />
+    
+    <!-- iOS Web App Meta Tags -->
     <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta name="apple-mobile-web-app-title" content="Vida Nova" />
-    <meta
-      name="description"
-      content="Planner web feminino com rotina, agenda, financas, espiritualidade e organizacao da vida."
-    />
+    <link rel="apple-touch-icon" href="icon.svg" />
+    
+    <!-- Android Web App Meta Tags -->
+    <meta name="mobile-web-app-capable" content="yes" />
+    
+    <!-- Windows/Microsoft -->
+    <meta name="application-name" content="Vida Nova" />
+    <meta name="msapplication-starturl" content="./index.html" />
+    <meta name="msapplication-config" content="browserconfig.xml" />
+    
+    <!-- Description and SEO -->
+    <meta name="description" content="Planner web feminino com rotina, agenda, financas, espiritualidade e organizacao da vida." />
+    <meta name="author" content="Vida Nova" />
+    <meta name="keywords" content="planner, agenda, finanças, rotina, organização, feminino" />
+    <meta name="robots" content="index, follow" />
+    
+    <!-- Security Headers -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; manifest-src 'self';" />
+    
+    <!-- Preload critical resources -->
+    <link rel="preload" href="styles.css" as="style" />
+    <link rel="preload" href="script.js" as="script" />
+    
+    <!-- PWA Manifest -->
     <link rel="manifest" href="manifest.webmanifest" />
     <link rel="icon" href="icon.svg" type="image/svg+xml" />
+    
+    <!-- Stylesheets -->
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
@@ -53,6 +82,10 @@
           <div>
             <p class="eyebrow">Acesso da usuaria</p>
             <h3 id="user-greeting">Bem-vinda</h3>
+            <div class="topbar-verse">
+              <strong id="headline-verse-text">Entrega o teu caminho ao Senhor; confia nele, e ele o fara.</strong>
+              <small id="headline-verse-reference">Salmos 37:5</small>
+            </div>
           </div>
           <button id="logout-button" class="ghost-button" type="button">Sair</button>
         </section>
@@ -98,10 +131,9 @@
         <header class="hero" id="dashboard">
           <div class="hero-main-card">
             <p class="eyebrow">SaaS de organizacao da vida feminina</p>
-            <h2 id="headline-verse-text">Entrega o teu caminho ao Senhor; confia nele, e ele o fara.</h2>
+            <h2>Um painel para organizar rotina, casa, financas, imagem, corpo e espiritualidade.</h2>
             <p class="hero-copy">
-              <strong id="headline-verse-reference">Salmos 37:5</strong><br />
-              Um painel para organizar rotina, casa, financas, imagem, corpo e espiritualidade em um lugar so.
+              Um painel para dar clareza ao dia, acompanhar compromissos, enxergar o dinheiro e manter a vida em ordem em um lugar so.
             </p>
             <div class="hero-graph">
               <div class="graph-row">
@@ -178,34 +210,64 @@
           <div class="agenda-layout">
             <section class="calendar-card">
               <div class="calendar-toolbar">
-                <div class="calendar-view-switcher">
-                  <button id="calendar-month-view" class="ghost-button is-active" type="button">Mes</button>
-                  <button id="calendar-week-view" class="ghost-button" type="button">Semana</button>
+                <div class="calendar-toolbar-left">
+                  <button id="calendar-today" class="ghost-button" type="button">Hoje</button>
+                  <div class="calendar-view-switcher">
+                    <button id="calendar-month-view" class="ghost-button" type="button">Mes</button>
+                    <button id="calendar-week-view" class="ghost-button is-active" type="button">Semana</button>
+                  </div>
                 </div>
-                <button id="calendar-prev" class="ghost-button" type="button">Anterior</button>
                 <strong id="calendar-month-label">Mes</strong>
-                <button id="calendar-next" class="ghost-button" type="button">Proximo</button>
-              </div>
-
-              <div id="calendar-month-shell">
-                <div class="calendar-weekdays">
-                <span>Dom</span>
-                <span>Seg</span>
-                <span>Ter</span>
-                <span>Qua</span>
-                <span>Qui</span>
-                <span>Sex</span>
-                <span>Sab</span>
+                <div class="calendar-toolbar-right">
+                  <button id="calendar-prev" class="ghost-button" type="button" aria-label="Semana anterior">Anterior</button>
+                  <button id="calendar-next" class="ghost-button" type="button" aria-label="Proxima semana">Proximo</button>
                 </div>
-
-                <div id="calendar-grid" class="calendar-grid"></div>
               </div>
 
-              <div id="week-view-shell" class="week-view-shell hidden">
-                <div class="week-view-header" id="week-view-header"></div>
-                <div class="week-view-body">
-                  <div class="week-hours-column" id="week-hours-column"></div>
-                  <div class="week-columns" id="week-columns"></div>
+              <div class="calendar-experience">
+                <aside class="calendar-mini-sidebar">
+                  <div class="calendar-mini-heading">
+                    <p class="eyebrow">Navegacao</p>
+                    <strong id="calendar-mini-label">Mes</strong>
+                  </div>
+                  <div class="calendar-mini-weekdays">
+                    <span>D</span>
+                    <span>S</span>
+                    <span>T</span>
+                    <span>Q</span>
+                    <span>Q</span>
+                    <span>S</span>
+                    <span>S</span>
+                  </div>
+                  <div id="calendar-mini-grid" class="calendar-mini-grid"></div>
+                  <div class="calendar-mini-note">
+                    <strong>Como usar</strong>
+                    <p>Clique no horario da semana para abrir o cadastro do compromisso ja com a data selecionada.</p>
+                  </div>
+                </aside>
+
+                <div class="calendar-main-stage">
+                  <div id="calendar-month-shell">
+                    <div class="calendar-weekdays">
+                    <span>Dom</span>
+                    <span>Seg</span>
+                    <span>Ter</span>
+                    <span>Qua</span>
+                    <span>Qui</span>
+                    <span>Sex</span>
+                    <span>Sab</span>
+                    </div>
+
+                    <div id="calendar-grid" class="calendar-grid"></div>
+                  </div>
+
+                  <div id="week-view-shell" class="week-view-shell">
+                    <div class="week-view-header" id="week-view-header"></div>
+                    <div class="week-view-body">
+                      <div class="week-hours-column" id="week-hours-column"></div>
+                      <div class="week-columns" id="week-columns"></div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </section>

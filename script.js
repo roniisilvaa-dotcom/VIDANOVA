@@ -28,6 +28,107 @@ const initialTasks = [
   { id: crypto.randomUUID(), text: "Leitura biblica e oracao", done: true },
 ];
 
+const initialAgendaEvents = {
+  "2026-04-13": {
+    summary: "",
+    events: [
+      { id: crypto.randomUUID(), title: "Reunião Camila", time: "10:00", endTime: "11:00", location: "", color: "#a6d4ff", category: "Trabalho" },
+      { id: crypto.randomUUID(), title: "Preparo atendimento Valeria", time: "11:00", endTime: "12:45", location: "", color: "#f8bfd3", category: "Trabalho" },
+      { id: crypto.randomUUID(), title: "Almoço", time: "12:00", endTime: "1:00", location: "", color: "#e0d5ff", category: "Pessoal" },
+      { id: crypto.randomUUID(), title: "Preparo atendimento Valeria", time: "12:45", endTime: "1:30", location: "", color: "#f8bfd3", category: "Trabalho" },
+      { id: crypto.randomUUID(), title: "Editar Youtube + capas + thumbnail", time: "2:30", endTime: "5:30", location: "", color: "#f8bfd3", category: "Trabalho" },
+      { id: crypto.randomUUID(), title: "Confeccao 10", time: "7:00", endTime: "9:00", location: "", color: "#bfe8d6", category: "Pessoal" },
+      { id: crypto.randomUUID(), title: "Dormir, 9:30pm", time: "21:30", endTime: "23:00", location: "", color: "#a6d4ff", category: "Pessoal" },
+    ],
+    tasks: [],
+  },
+  "2026-04-14": {
+    summary: "",
+    events: [
+      { id: crypto.randomUUID(), title: "Reunião Origem Chem. 9:59am", time: "09:00", endTime: "10:30", location: "", color: "#f8bfd3", category: "Trabalho" },
+      { id: crypto.randomUUID(), title: "Editar shorts", time: "10:15", endTime: "11:00", location: "", color: "#f8bfd3", category: "Trabalho" },
+      { id: crypto.randomUUID(), title: "Programar/ Youtube (shorts)", time: "11:00", endTime: "12:00", location: "", color: "#a6d4ff", category: "Trabalho" },
+      { id: crypto.randomUUID(), title: "Almoço", time: "12:00", endTime: "1:00", location: "", color: "#e0d5ff", category: "Pessoal" },
+      { id: crypto.randomUUID(), title: "Sessão I | Consultoria de imagem - Valéria Maia", time: "1:00", endTime: "2:30", location: "", color: "#a6d4ff", category: "Trabalho" },
+      { id: crypto.randomUUID(), title: "Ação Afiliadas - Ação Afiliadas GE", time: "2:30", endTime: "5:30", location: "", color: "#f8bfd3", category: "Trabalho" },
+      { id: crypto.randomUUID(), title: "Dormir, 9:30pm", time: "21:30", endTime: "23:00", location: "", color: "#a6d4ff", category: "Pessoal" },
+    ],
+    tasks: [],
+  },
+  "2026-04-15": {
+    summary: "",
+    events: [
+      { id: crypto.randomUUID(), title: "Projeto Marlene (não terminei)", time: "9:45", endTime: "10:00", location: "", color: "#bfe8d6", category: "Trabalho" },
+      { id: crypto.randomUUID(), title: "Editar shorts", time: "10:15", endTime: "11:00", location: "", color: "#f8bfd3", category: "Trabalho" },
+      { id: crypto.randomUUID(), title: "Programar/ Youtube (shorts)", time: "11:00", endTime: "12:00", location: "", color: "#a6d4ff", category: "Trabalho" },
+      { id: crypto.randomUUID(), title: "Almoço", time: "12:00", endTime: "1:00", location: "", color: "#e0d5ff", category: "Pessoal" },
+      { id: crypto.randomUUID(), title: "Projeto Marlene Oliveira", time: "1:00", endTime: "3:00", location: "", color: "#bfe8d6", category: "Trabalho" },
+      { id: crypto.randomUUID(), title: "Visitar lar no hospital", time: "6:00", endTime: "9:30", location: "", color: "#f8bfd3", category: "Pessoal" },
+      { id: crypto.randomUUID(), title: "Dormir, 11pm", time: "23:00", endTime: "23:59", location: "", color: "#a6d4ff", category: "Pessoal" },
+    ],
+    tasks: [],
+  },
+  "2026-04-16": {
+    summary: "",
+    events: [
+      { id: crypto.randomUUID(), title: "SESSÃO 10 | Giselly Ramos | Formação/Mentoria na 11", time: "10:00", endTime: "11:00", location: "", color: "#a6d4ff", category: "Trabalho" },
+      { id: crypto.randomUUID(), title: "Laços de Moda - Laços de Moda", time: "12:00", endTime: "1:00", location: "", color: "#f8bfd3", category: "Trabalho" },
+      { id: crypto.randomUUID(), title: "Almoço", time: "12:00", endTime: "1:00", location: "", color: "#e0d5ff", category: "Pessoal" },
+      { id: crypto.randomUUID(), title: "Programar shorts - tiktok", time: "1:00", endTime: "5:00", location: "", color: "#f8bfd3", category: "Trabalho" },
+      { id: crypto.randomUUID(), title: "Cuidado", time: "6:00", endTime: "7:30", location: "", color: "#ddd2ff", category: "Pessoal" },
+      { id: crypto.randomUUID(), title: "Dormir, 11:30pm", time: "23:30", endTime: "23:59", location: "", color: "#a6d4ff", category: "Pessoal" },
+    ],
+    tasks: [],
+  },
+  "2026-04-17": {
+    summary: "",
+    events: [
+      { id: crypto.randomUUID(), title: "Laços de Moda - Laços de Moda", time: "12:00", endTime: "1:00", location: "", color: "#f8bfd3", category: "Trabalho" },
+      { id: crypto.randomUUID(), title: "Almoço", time: "12:00", endTime: "1:00", location: "", color: "#e0d5ff", category: "Pessoal" },
+    ],
+    tasks: [],
+  },
+  "2026-04-18": {
+    summary: "",
+    events: [
+      { id: crypto.randomUUID(), title: "Cuido", time: "6:00", endTime: "10:30", location: "", color: "#a6d4ff", category: "Pessoal" },
+    ],
+    tasks: [],
+  },
+  "2026-04-19": {
+    summary: "",
+    events: [
+      { id: crypto.randomUUID(), title: "Tarefa pendente", time: "8:00", endTime: "9:00", location: "", color: "#a6d4ff", category: "Pessoal" },
+      { id: crypto.randomUUID(), title: "Lavar e secar cabelo, 9:30", time: "09:30", endTime: "11:00", location: "", color: "#ddd2ff", category: "Pessoal" },
+      { id: crypto.randomUUID(), title: "Dormir, 11:30pm", time: "23:30", endTime: "23:59", location: "", color: "#a6d4ff", category: "Pessoal" },
+    ],
+    tasks: [],
+  },
+};
+
+const initialFinanceRecords = [
+  { id: crypto.randomUUID(), title: "Anuidade", date: "2025-03-02", type: "planning", category: "Pessoal", amount: 41.66, installments: 1, startMonth: 2, color: "#ffc885" },
+  { id: crypto.randomUUID(), title: "Google drive", date: "2026-03-26", type: "planning", category: "Pessoal", amount: 49.99, installments: 1, startMonth: 2, color: "#ffc885" },
+  { id: crypto.randomUUID(), title: "IOF compra internacional", date: "2026-03-23", type: "planning", category: "Pessoal", amount: 3.65, installments: 1, startMonth: 2, color: "#ffc885" },
+  { id: crypto.randomUUID(), title: "Presente mae do Roni", date: "2026-03-20", type: "planning", category: "Pessoal", amount: 228.9, installments: 1, startMonth: 2, color: "#ffc885" },
+  { id: crypto.randomUUID(), title: "Opus clip", date: "2026-03-20", type: "variable", category: "Pessoal", amount: 105.04, installments: 1, startMonth: 2, color: "#ffc885" },
+  { id: crypto.randomUUID(), title: "Telefone Vivo", date: "2026-03-13", type: "fixed", category: "Pessoal", amount: 105.04, installments: 1, startMonth: 2, color: "#ffc885" },
+  { id: crypto.randomUUID(), title: "Greatpages", date: "2026-03-07", type: "planning", category: "Pessoal", amount: 69.9, installments: 1, startMonth: 2, color: "#ffc885" },
+  { id: crypto.randomUUID(), title: "Trafego (meta)", date: "2026-03-04", type: "planning", category: "Pessoal", amount: 150.3, installments: 1, startMonth: 2, color: "#ffc885" },
+  { id: crypto.randomUUID(), title: "Microsoft", date: "2026-03-04", type: "planning", category: "Pessoal", amount: 12, installments: 1, startMonth: 2, color: "#ffc885" },
+  { id: crypto.randomUUID(), title: "Simple Organic", date: "2026-03-04", type: "variable", category: "Pessoal", amount: 192.8, installments: 2, startMonth: 2, color: "#ffc885" },
+  { id: crypto.randomUUID(), title: "IOF compra internacional", date: "2026-03-04", type: "planning", category: "Pessoal", amount: 1.89, installments: 1, startMonth: 2, color: "#ffc885" },
+  { id: crypto.randomUUID(), title: "IOF compra internacional", date: "2026-03-04", type: "variable", category: "Pessoal", amount: 251.43, installments: 1, startMonth: 2, color: "#ffc885" },
+  { id: crypto.randomUUID(), title: "Icloud", date: "2026-03-03", type: "planning", category: "Pessoal", amount: 19.9, installments: 1, startMonth: 2, color: "#ffc885" },
+  { id: crypto.randomUUID(), title: "Posto Dakota", date: "2026-03-03", type: "variable", category: "Pessoal", amount: 150, installments: 1, startMonth: 2, color: "#ffc885" },
+  { id: crypto.randomUUID(), title: "Iphone", date: "2026-03-03", type: "planning", category: "Pessoal", amount: 19.69, installments: 1, startMonth: 2, color: "#ffc885" },
+  { id: crypto.randomUUID(), title: "Sorvete 4D", date: "2026-03-03", type: "impulse", category: "Pessoal", amount: 54.25, installments: 1, startMonth: 2, color: "#ffc885" },
+  { id: crypto.randomUUID(), title: "Compra shopping China", date: "2026-03-03", type: "variable", category: "Pessoal", amount: 7183.93, installments: 1, startMonth: 2, color: "#ffc885" },
+  { id: crypto.randomUUID(), title: "Móveis escritório", date: "2026-02-08", type: "planning", category: "Pessoal", amount: 224.96, installments: 2, startMonth: 1, color: "#ffc885" },
+  { id: crypto.randomUUID(), title: "Móveis escritório", date: "2026-02-04", type: "planning", category: "Pessoal", amount: 111.06, installments: 2, startMonth: 1, color: "#ffc885" },
+  { id: crypto.randomUUID(), title: "Móveis escritório", date: "2026-02-03", type: "planning", category: "Pessoal", amount: 353.2, installments: 2, startMonth: 1, color: "#ffc885" },
+];
+
 const headlineVerseText = document.querySelector("#headline-verse-text");
 const headlineVerseReference = document.querySelector("#headline-verse-reference");
 const taskForm = document.querySelector("#task-form");
@@ -44,9 +145,12 @@ const graphRoutine = document.querySelector("#graph-routine");
 const graphAgenda = document.querySelector("#graph-agenda");
 const graphFinance = document.querySelector("#graph-finance");
 const calendarMonthLabel = document.querySelector("#calendar-month-label");
+const calendarMiniLabel = document.querySelector("#calendar-mini-label");
 const calendarGrid = document.querySelector("#calendar-grid");
+const calendarMiniGrid = document.querySelector("#calendar-mini-grid");
 const calendarPrev = document.querySelector("#calendar-prev");
 const calendarNext = document.querySelector("#calendar-next");
+const calendarToday = document.querySelector("#calendar-today");
 const calendarMonthViewButton = document.querySelector("#calendar-month-view");
 const calendarWeekViewButton = document.querySelector("#calendar-week-view");
 const calendarMonthShell = document.querySelector("#calendar-month-shell");
@@ -174,8 +278,14 @@ let draggedCard = null;
 let deferredInstallPrompt = null;
 let calendarCursor = new Date();
 let selectedDateKey = formatDateKey(new Date());
-let agendaView = localStorage.getItem("ela-em-ordem:agenda-view") || "month";
+let agendaView = localStorage.getItem("ela-em-ordem:agenda-view") || "week";
 let agendaStore = JSON.parse(localStorage.getItem("ela-em-ordem:agenda-events") || "{}");
+
+// Load initial demo events if agenda is empty
+if (Object.keys(agendaStore).length === 0) {
+  agendaStore = { ...initialAgendaEvents };
+}
+
 let activeFinanceFilter = localStorage.getItem("ela-em-ordem:finance-filter") || "all";
 let financeStore = JSON.parse(localStorage.getItem("ela-em-ordem:finance") || "{}");
 let calculatorExpression = "0";
@@ -187,7 +297,7 @@ financeStore = {
   planExpense: Number(financeStore.planExpense || 0),
   goal: Number(financeStore.goal || 0),
   notes: String(financeStore.notes || ""),
-  records: Array.isArray(financeStore.records) ? financeStore.records : [],
+  records: Array.isArray(financeStore.records) && financeStore.records.length > 0 ? financeStore.records : [...initialFinanceRecords],
 };
 
 const editableCardDefaults = Array.from(editableCards).reduce((defaults, card) => {
@@ -293,6 +403,29 @@ function escapeHtml(value) {
     .replaceAll("<", "&lt;")
     .replaceAll(">", "&gt;")
     .replaceAll('"', "&quot;");
+}
+
+function toSoftColor(hex, alpha = 0.24) {
+  const value = String(hex || "#c55b84").replace("#", "");
+  const normalized =
+    value.length === 3
+      ? value
+          .split("")
+          .map((char) => `${char}${char}`)
+          .join("")
+      : value.padEnd(6, "0").slice(0, 6);
+  const red = Number.parseInt(normalized.slice(0, 2), 16);
+  const green = Number.parseInt(normalized.slice(2, 4), 16);
+  const blue = Number.parseInt(normalized.slice(4, 6), 16);
+  return `rgba(${red}, ${green}, ${blue}, ${alpha})`;
+}
+
+function getRoundedTimeFromOffset(offsetY) {
+  const minutesFromStart = Math.max(0, Math.round(offsetY / 20) * 15);
+  const totalMinutes = 360 + minutesFromStart;
+  const hours = Math.floor(totalMinutes / 60);
+  const minutes = totalMinutes % 60;
+  return `${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}`;
 }
 
 function saveFinanceStore() {
@@ -632,7 +765,7 @@ function renderModuleCards() {
   });
 }
 
-function openCalendarModal(dateKey) {
+function openCalendarModal(dateKey, prefill = {}) {
   if (!calendarModal) {
     return;
   }
@@ -640,8 +773,29 @@ function openCalendarModal(dateKey) {
   const dayData = ensureAgendaDay(dateKey);
   calendarModalTitle.textContent = formatDisplayDate(dateKey);
   calendarModalDate.value = dateKey;
+  if (calendarModalTime) {
+    calendarModalTime.value = prefill.time || "";
+  }
+  if (calendarModalEndTime) {
+    calendarModalEndTime.value = prefill.endTime || "";
+  }
+  if (calendarModalLocation) {
+    calendarModalLocation.value = prefill.location || "";
+  }
+  if (calendarModalLink) {
+    calendarModalLink.value = prefill.link || "";
+  }
+  if (calendarModalCategory) {
+    calendarModalCategory.value = prefill.category || "Pessoal";
+  }
   if (calendarModalColor) {
-    calendarModalColor.value = "#c55b84";
+    calendarModalColor.value = prefill.color || "#c55b84";
+  }
+  if (calendarModalDescription) {
+    calendarModalDescription.value = prefill.description || "";
+  }
+  if (calendarModalTitleInput) {
+    calendarModalTitleInput.value = prefill.title || "";
   }
   calendarModalList.innerHTML = "";
   if (dayData.events.length) {
@@ -900,6 +1054,66 @@ function renderAgendaEvents() {
   renderWeekView();
 }
 
+function renderMiniCalendar() {
+  if (!calendarMiniGrid || !calendarMiniLabel) {
+    return;
+  }
+
+  const year = calendarCursor.getFullYear();
+  const month = calendarCursor.getMonth();
+  const firstDay = new Date(year, month, 1);
+  const startOffset = firstDay.getDay();
+  const totalDays = new Date(year, month + 1, 0).getDate();
+  const todayKey = formatDateKey(new Date());
+
+  calendarMiniLabel.textContent = firstDay.toLocaleDateString("pt-BR", {
+    month: "long",
+    year: "numeric",
+  });
+
+  calendarMiniGrid.innerHTML = "";
+
+  for (let index = 0; index < 42; index += 1) {
+    const dayNumber = index - startOffset + 1;
+    const isCurrentMonth = dayNumber > 0 && dayNumber <= totalDays;
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "calendar-mini-day";
+
+    if (!isCurrentMonth) {
+      button.classList.add("is-muted");
+      button.disabled = true;
+      button.textContent = "";
+      calendarMiniGrid.appendChild(button);
+      continue;
+    }
+
+    const date = new Date(year, month, dayNumber);
+    const dateKey = formatDateKey(date);
+    button.textContent = String(dayNumber);
+
+    if (dateKey === selectedDateKey) {
+      button.classList.add("is-selected");
+    }
+
+    if (dateKey === todayKey) {
+      button.classList.add("is-today");
+    }
+
+    button.addEventListener("click", () => {
+      selectedDateKey = dateKey;
+      calendarCursor = new Date(date.getFullYear(), date.getMonth(), 1);
+      renderCalendar();
+      renderAgendaEvents();
+      if (agendaView === "week") {
+        openCalendarModal(dateKey);
+      }
+    });
+
+    calendarMiniGrid.appendChild(button);
+  }
+}
+
 function renderCalendar() {
   if (!calendarGrid || !calendarMonthLabel) {
     return;
@@ -923,6 +1137,8 @@ function renderCalendar() {
     weekEnd.setDate(weekStart.getDate() + 6);
     calendarMonthLabel.textContent = `${weekStart.toLocaleDateString("pt-BR", { day: "2-digit", month: "short" })} - ${weekEnd.toLocaleDateString("pt-BR", { day: "2-digit", month: "short", year: "numeric" })}`;
   }
+
+  renderMiniCalendar();
 
   if (calendarMonthShell && weekViewShell && calendarMonthViewButton && calendarWeekViewButton) {
     const isMonthView = agendaView === "month";
@@ -1005,16 +1221,17 @@ function renderWeekView() {
     .map((hour) => `<div class="week-hour-label">${String(hour).padStart(2, "0")}:00</div>`)
     .join("");
 
-  weekViewHeader.innerHTML = Array.from({ length: 7 }, (_, dayIndex) => {
+  weekViewHeader.innerHTML = `<div class="week-corner-spacer" aria-hidden="true"></div>${Array.from({ length: 7 }, (_, dayIndex) => {
     const date = new Date(weekStart);
     date.setDate(weekStart.getDate() + dayIndex);
     const dateKey = formatDateKey(date);
     const isSelected = dateKey === selectedDateKey;
     return `<button type="button" class="week-day-head${isSelected ? " is-selected" : ""}" data-week-date="${dateKey}">
       <span>${date.toLocaleDateString("pt-BR", { weekday: "short" })}</span>
-      <strong>${date.toLocaleDateString("pt-BR", { day: "2-digit", month: "2-digit" })}</strong>
+      <strong>${date.toLocaleDateString("pt-BR", { day: "2-digit" })}</strong>
+      <small>${date.toLocaleDateString("pt-BR", { month: "short" })}</small>
     </button>`;
-  }).join("");
+  }).join("")}`;
 
   weekColumns.innerHTML = Array.from({ length: 7 }, (_, dayIndex) => {
     const date = new Date(weekStart);
@@ -1030,9 +1247,10 @@ function renderWeekView() {
         const minutesFromStart = Math.max(0, startTotal - 360);
         const top = (minutesFromStart / 15) * 20;
         const height = Math.max(20, (getEventDurationMinutes(eventItem) / 15) * 20);
-        return `<button type="button" class="week-event-block" data-event-date="${dateKey}" data-event-id="${escapeHtml(eventItem.id)}" style="top:${top}px;height:${height}px;background:${escapeHtml(eventItem.color || "#c55b84")}">
+        const baseColor = eventItem.color || "#c55b84";
+        return `<button type="button" class="week-event-block" data-event-date="${dateKey}" data-event-id="${escapeHtml(eventItem.id)}" style="top:${top}px;height:${height}px;background:${toSoftColor(baseColor, 0.24)};border-color:${escapeHtml(baseColor)}">
           <strong>${escapeHtml(eventItem.title)}</strong>
-          <small>${escapeHtml(formatTimeRange(eventItem.time, eventItem.endTime))}</small>
+          <small>${escapeHtml(formatTimeRange(eventItem.time, eventItem.endTime))}${eventItem.location ? ` • ${escapeHtml(eventItem.location)}` : ""}</small>
         </button>`;
       })
       .join("");
@@ -1457,6 +1675,17 @@ if (calendarNext) {
   });
 }
 
+if (calendarToday) {
+  calendarToday.addEventListener("click", () => {
+    const today = new Date();
+    selectedDateKey = formatDateKey(today);
+    calendarCursor = new Date(today.getFullYear(), today.getMonth(), 1);
+    renderCalendar();
+    renderWeekView();
+    renderAgendaEvents();
+  });
+}
+
 if (calendarMonthViewButton) {
   calendarMonthViewButton.addEventListener("click", () => {
     agendaView = "month";
@@ -1779,7 +2008,18 @@ if (weekColumns) {
       calendarCursor = new Date(`${selectedDateKey}T12:00:00`);
       renderCalendar();
       renderAgendaEvents();
-      openCalendarModal(selectedDateKey);
+      const bounds = column.getBoundingClientRect();
+      const offsetY = Math.max(0, event.clientY - bounds.top);
+      const startTime = getRoundedTimeFromOffset(offsetY);
+      const [hours, minutes] = startTime.split(":").map(Number);
+      const endDate = new Date(2000, 0, 1, hours, minutes + 30);
+      const endTime = `${String(endDate.getHours()).padStart(2, "0")}:${String(
+        endDate.getMinutes(),
+      ).padStart(2, "0")}`;
+      openCalendarModal(selectedDateKey, {
+        time: startTime,
+        endTime,
+      });
     }
   });
 }
