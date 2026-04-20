@@ -641,35 +641,61 @@ function scheduleCloudSync() {
 
 async function initializeAuthenticatedState() {
   const token = getAuthToken();
-  if (!token) {
-    window.location.href = "./login.html";
+  const legacySession = JSON.parse(localStorage.getItem(LEGACY_SESSION_KEY) || "null");
+  
+  // Se não houver token, usar sessão legada ou demo
+  if (!token && !legacySession) {
+    // Modo demo - criar sessão de demonstração
+    const demoSession = {
+      id: "demo-user",
+      name: "Visitante",
+      email: "demo@vidanova.app",
+      createdAt: new Date().toISOString(),
+    };
+    persistUserSession(demoSession, "demo-token");
     return;
   }
 
-  try {
-    const verifyResponse = await apiPost("/api/auth/verify", { token });
-    persistUserSession(verifyResponse.user, token);
-  } catch (error) {
-    clearAuthSession();
-    window.location.href = "./login.html";
-    return;
-  }
-
-  try {
-    const response = await apiPost("/api/data/get", {
-      token,
-      dataType: CLOUD_STATE_TYPE,
-    });
-    const savedState = response.data?.[CLOUD_STATE_KEY];
-
-    if (savedState) {
-      applyCloudState(savedState);
-    } else {
-      applyCloudState(createEmptyCloudState());
-      scheduleCloudSync();
+  // Tentar verificar token com servidor (com fallback para offline)
+  if (token) {
+    try {
+      const verifyResponse = await apiPost("/api/auth/verify", { token });
+      persistUserSession(verifyResponse.user, token);
+    } catch (error) {
+      console.warn("Servidor indisponível. Usando modo offline.", error);
+      // Continuar com sessão legada ou demo
+      if (legacySession) {
+        persistUserSession(legacySession, token);
+      }
     }
-  } catch (error) {
-    console.error("Erro ao carregar dados da conta:", error);
+  } else if (legacySession) {
+    // Usar sessão previamente salva
+    persistUserSession(legacySession);
+  }
+
+  // Tentar carregar dados da nuvem (com fallback para localStorage)
+  if (token) {
+    try {
+      const response = await apiPost("/api/data/get", {
+        token,
+        dataType: CLOUD_STATE_TYPE,
+      });
+      const savedState = response.data?.[CLOUD_STATE_KEY];
+
+      if (savedState) {
+        applyCloudState(savedState);
+      } else {
+        applyCloudState(createEmptyCloudState());
+        scheduleCloudSync();
+      }
+    } catch (error) {
+      console.warn("Não foi possível carregar dados da nuvem. Usando localStorage.", error);
+      // Fallback para dados locais
+      const localState = JSON.parse(localStorage.getItem("vida-nova:cloud-state") || "null");
+      if (localState) {
+        applyCloudState(localState);
+      }
+    }
   }
 }
 
