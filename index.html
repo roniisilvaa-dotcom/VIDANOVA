@@ -1214,5 +1214,22 @@
     </div>
 
     <script src="script.agenda-fix.js"></script>
-  </body>
+  
+<script>
+document.querySelectorAll('[data-dashboard-open]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const page = btn.getAttribute('data-dashboard-open');
+    document.querySelectorAll('.page-view').forEach(p => {
+      p.classList.remove('is-active');
+    });
+    const target = document.querySelector(`[data-page-view="${page}"]`);
+    if (target) {
+      target.classList.add('is-active');
+      window.scrollTo(0, 0);
+    }
+  });
+});
+</script>
+
+</body>
 </html>
