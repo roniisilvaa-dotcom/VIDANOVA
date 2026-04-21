@@ -304,6 +304,10 @@ const persistFields = document.querySelectorAll("[data-persist-key]");
 const tabShells = document.querySelectorAll("[data-tab-group]");
 const dreamVisionUpload = document.querySelector("#dream-vision-upload");
 const dreamVisionGallery = document.querySelector("#dream-vision-gallery");
+const plannerDreamVisionUpload = document.querySelector("#planner-dream-vision-upload");
+const plannerDreamVisionGallery = document.querySelector("#planner-dream-vision-gallery");
+const plannerTaskForms = document.querySelectorAll(".planner-task-form");
+const plannerTaskLists = document.querySelectorAll("[data-planner-list]");
 const projectUploads = document.querySelectorAll("[data-project-upload]");
 const projectGalleries = document.querySelectorAll("[data-project-gallery]");
 const settingsProfileForm = document.querySelector("#settings-profile-form");
@@ -359,6 +363,7 @@ let activeFinanceFilter = localStorage.getItem("ela-em-ordem:finance-filter") ||
 let financeStore = JSON.parse(localStorage.getItem("ela-em-ordem:finance") || "{}");
 let calculatorExpression = "0";
 let moduleStore = JSON.parse(localStorage.getItem("vida-nova:modules") || "{}");
+let plannerBoardStore = JSON.parse(localStorage.getItem("vida-nova:planner-boards") || "{}");
 let activeModule = null;
 let activePage = "dashboard";
 let currentSession = null;
@@ -3079,27 +3084,35 @@ function setupPersistedFields() {
     }
     field.addEventListener("input", () => {
       localStorage.setItem(`vida-nova:field:${key}`, field.value);
+      scheduleCloudSync();
     });
   });
 }
 
-function getStoredDreamVisionImages() {
-  return JSON.parse(localStorage.getItem("vida-nova:dream-vision-images") || "[]");
+function getDreamVisionStorageKey(scope = "main") {
+  return scope === "planner" ? "vida-nova:planner-dream-vision-images" : "vida-nova:dream-vision-images";
 }
 
-function saveDreamVisionImages(images) {
-  localStorage.setItem("vida-nova:dream-vision-images", JSON.stringify(images));
+function getStoredDreamVisionImages(scope = "main") {
+  return JSON.parse(localStorage.getItem(getDreamVisionStorageKey(scope)) || "[]");
 }
 
-function renderDreamVisionGallery(images = getStoredDreamVisionImages()) {
-  if (!dreamVisionGallery) {
+function saveDreamVisionImages(images, scope = "main") {
+  localStorage.setItem(getDreamVisionStorageKey(scope), JSON.stringify(images));
+  scheduleCloudSync();
+}
+
+function renderDreamVisionGallery(images = getStoredDreamVisionImages(), scope = "main") {
+  const targetGallery = scope === "planner" ? plannerDreamVisionGallery : dreamVisionGallery;
+
+  if (!targetGallery) {
     return;
   }
 
-  dreamVisionGallery.innerHTML = "";
+  targetGallery.innerHTML = "";
 
   if (!images.length) {
-    dreamVisionGallery.innerHTML =
+    targetGallery.innerHTML =
       '<div class="dream-empty-state">Adicione imagens do seu mural de sonhos para montar sua visao.</div>';
     return;
   }
@@ -3109,9 +3122,102 @@ function renderDreamVisionGallery(images = getStoredDreamVisionImages()) {
     card.className = "dream-vision-card";
     card.innerHTML = `
       <img src="${escapeHtml(image.src)}" alt="${escapeHtml(image.name || `Imagem ${index + 1}`)}" />
-      <button type="button" class="task-remove dream-remove-button" data-dream-remove="${index}">Remover</button>
+      <button type="button" class="task-remove dream-remove-button" data-dream-remove="${index}" data-dream-scope="${scope}">Remover</button>
     `;
-    dreamVisionGallery.appendChild(card);
+    targetGallery.appendChild(card);
+  });
+}
+
+function savePlannerBoardStore() {
+  localStorage.setItem("vida-nova:planner-boards", JSON.stringify(plannerBoardStore));
+  scheduleCloudSync();
+}
+
+function getPlannerBoard(boardKey) {
+  if (!plannerBoardStore[boardKey]) {
+    plannerBoardStore[boardKey] = [];
+  }
+  return plannerBoardStore[boardKey];
+}
+
+function renderPlannerBoards() {
+  plannerTaskLists.forEach((list) => {
+    const boardKey = list.dataset.plannerList;
+    const items = getPlannerBoard(boardKey);
+    list.innerHTML = "";
+
+    if (!items.length) {
+      list.innerHTML = '<li class="planner-task-empty">Nenhuma tarefa ainda. Adicione a primeira prioridade.</li>';
+      return;
+    }
+
+    items.forEach((item) => {
+      const entry = document.createElement("li");
+      entry.className = `planner-task-card${item.done ? " is-done" : ""}`;
+      entry.innerHTML = `
+        <button type="button" class="planner-task-check" data-planner-toggle="${escapeHtml(boardKey)}:${escapeHtml(item.id)}" aria-label="Marcar tarefa"></button>
+        <span class="planner-task-text">${escapeHtml(item.text)}</span>
+        <button type="button" class="task-remove" data-planner-remove="${escapeHtml(boardKey)}:${escapeHtml(item.id)}">Excluir</button>
+      `;
+      list.appendChild(entry);
+    });
+  });
+}
+
+function setupPlannerBoards() {
+  renderPlannerBoards();
+
+  plannerTaskForms.forEach((form) => {
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
+      const boardKey = form.dataset.plannerBoard;
+      const input = form.querySelector(".planner-task-input");
+      const text = input?.value.trim() || "";
+
+      if (!boardKey || !text) {
+        return;
+      }
+
+      getPlannerBoard(boardKey).unshift({
+        id: crypto.randomUUID(),
+        text,
+        done: false,
+      });
+
+      if (input) {
+        input.value = "";
+      }
+
+      savePlannerBoardStore();
+      renderPlannerBoards();
+    });
+  });
+
+  plannerTaskLists.forEach((list) => {
+    list.addEventListener("click", (event) => {
+      const toggleButton = event.target.closest("[data-planner-toggle]");
+      if (toggleButton) {
+        const [boardKey, itemId] = String(toggleButton.dataset.plannerToggle || "").split(":");
+        const items = getPlannerBoard(boardKey);
+        const task = items.find((entry) => entry.id === itemId);
+        if (task) {
+          task.done = !task.done;
+          savePlannerBoardStore();
+          renderPlannerBoards();
+        }
+        return;
+      }
+
+      const removeButton = event.target.closest("[data-planner-remove]");
+      if (!removeButton) {
+        return;
+      }
+
+      const [boardKey, itemId] = String(removeButton.dataset.plannerRemove || "").split(":");
+      plannerBoardStore[boardKey] = getPlannerBoard(boardKey).filter((entry) => entry.id !== itemId);
+      savePlannerBoardStore();
+      renderPlannerBoards();
+    });
   });
 }
 
@@ -3183,53 +3289,60 @@ function setupTabs() {
 }
 
 function setupDreamVisionUpload() {
-  if (!dreamVisionUpload || !dreamVisionGallery) {
-    return;
-  }
-  renderDreamVisionGallery();
+  const uploadConfigs = [
+    { input: dreamVisionUpload, gallery: dreamVisionGallery, scope: "main" },
+    { input: plannerDreamVisionUpload, gallery: plannerDreamVisionGallery, scope: "planner" },
+  ];
 
-  dreamVisionUpload.addEventListener("change", () => {
-    const files = Array.from(dreamVisionUpload.files || []).filter((file) =>
-      file.type.startsWith("image/"),
-    );
-
-    Promise.all(
-      files.map(
-        (file) =>
-          new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.onload = () =>
-              resolve({
-                name: file.name,
-                src: String(reader.result || ""),
-              });
-            reader.onerror = () => reject(new Error("Falha ao carregar imagem do mural."));
-            reader.readAsDataURL(file);
-          }),
-      ),
-    )
-      .then((images) => {
-        const stored = getStoredDreamVisionImages();
-        const nextImages = [...stored, ...images].slice(-12);
-        saveDreamVisionImages(nextImages);
-        renderDreamVisionGallery(nextImages);
-        dreamVisionUpload.value = "";
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  });
-
-  dreamVisionGallery.addEventListener("click", (event) => {
-    const removeButton = event.target.closest("[data-dream-remove]");
-    if (!removeButton) {
+  uploadConfigs.forEach(({ input, gallery, scope }) => {
+    if (!input || !gallery) {
       return;
     }
 
-    const removeIndex = Number(removeButton.dataset.dreamRemove);
-    const nextImages = getStoredDreamVisionImages().filter((_, index) => index !== removeIndex);
-    saveDreamVisionImages(nextImages);
-    renderDreamVisionGallery(nextImages);
+    renderDreamVisionGallery(getStoredDreamVisionImages(scope), scope);
+
+    input.addEventListener("change", () => {
+      const files = Array.from(input.files || []).filter((file) => file.type.startsWith("image/"));
+
+      Promise.all(
+        files.map(
+          (file) =>
+            new Promise((resolve, reject) => {
+              const reader = new FileReader();
+              reader.onload = () =>
+                resolve({
+                  name: file.name,
+                  src: String(reader.result || ""),
+                });
+              reader.onerror = () => reject(new Error("Falha ao carregar imagem do mural."));
+              reader.readAsDataURL(file);
+            }),
+        ),
+      )
+        .then((images) => {
+          const stored = getStoredDreamVisionImages(scope);
+          const nextImages = [...stored, ...images].slice(-12);
+          saveDreamVisionImages(nextImages, scope);
+          renderDreamVisionGallery(nextImages, scope);
+          input.value = "";
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    });
+
+    gallery.addEventListener("click", (event) => {
+      const removeButton = event.target.closest("[data-dream-remove]");
+      if (!removeButton) {
+        return;
+      }
+
+      const removeIndex = Number(removeButton.dataset.dreamRemove);
+      const removeScope = removeButton.dataset.dreamScope || scope;
+      const nextImages = getStoredDreamVisionImages(removeScope).filter((_, index) => index !== removeIndex);
+      saveDreamVisionImages(nextImages, removeScope);
+      renderDreamVisionGallery(nextImages, removeScope);
+    });
   });
 }
 
@@ -3617,6 +3730,7 @@ async function bootApp() {
   renderDashboardMirror();
   renderModuleCards();
   setupPersistedFields();
+  setupPlannerBoards();
   setupTabs();
   setupDreamVisionUpload();
   setupProjectUploads();
