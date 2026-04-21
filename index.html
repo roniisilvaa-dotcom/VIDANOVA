@@ -1,70 +1,1218 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-<head>
-<meta charset="UTF-8">
-<title>Vida Nova</title>
-<link rel="stylesheet" href="styles.css">
-</head>
-
-<body>
-
-<div class="app-shell">
-
-  <aside class="sidebar">
-    <div class="brand">
-      <div class="brand-mark">VN</div>
-      <h1>Vida Nova</h1>
-    </div>
-
-    <nav class="sidebar-nav">
-      <a href="#" onclick="openPlanner()">Planner</a>
-    </nav>
-  </aside>
-
-  <main class="main-content">
-
-    <div class="app-topbar">
-      <h3>✨ Vida Nova</h3>
-    </div>
-
-    <!-- DASHBOARD ORIGINAL MANTIDO -->
-    <div id="home-view" class="page-view is-active">
-      <div class="panel">
-        <h2>Dashboard</h2>
-        <p>Seu layout original continua aqui.</p>
-      </div>
-    </div>
-
-    <!-- NOVO PLANNER SEM QUEBRAR O LAYOUT -->
-    <div id="planner-view" class="page-view">
-
-      <div class="panel">
-        <h2>📌 Foco do mês</h2>
-        <input placeholder="Meta 1">
-        <input placeholder="Meta 2">
-      </div>
-
-      <div class="panel">
-        <h2>📅 Semanas</h2>
-        <div class="grid">
-          <div class="panel" contenteditable="true">Semana 1</div>
-          <div class="panel" contenteditable="true">Semana 2</div>
-          <div class="panel" contenteditable="true">Semana 3</div>
-          <div class="panel" contenteditable="true">Semana 4</div>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no" />
+    <title>Vida Nova</title>
+    
+    <!-- Theme Colors -->
+    <meta name="theme-color" content="#c55b84" />
+    <meta name="msapplication-TileColor" content="#c55b84" />
+    <meta name="msapplication-TileImage" content="icon.svg" />
+    
+    <!-- iOS Web App Meta Tags -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Vida Nova" />
+    <link rel="apple-touch-icon" href="icon.svg" />
+    
+    <!-- Android Web App Meta Tags -->
+    <meta name="mobile-web-app-capable" content="yes" />
+    
+    <!-- Windows/Microsoft -->
+    <meta name="application-name" content="Vida Nova" />
+    <meta name="msapplication-starturl" content="./index.html" />
+    <meta name="msapplication-config" content="browserconfig.xml" />
+    
+    <!-- Description and SEO -->
+    <meta name="description" content="Planner web feminino com rotina, agenda, financas, espiritualidade e organizacao da vida." />
+    <meta name="author" content="Vida Nova" />
+    <meta name="keywords" content="planner, agenda, finanças, rotina, organização, feminino" />
+    <meta name="robots" content="index, follow" />
+    
+    <!-- Security Headers -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; manifest-src 'self';" />
+    
+    <!-- Preload critical resources -->
+    <link rel="preload" href="styles.agenda-fix.css" as="style" />
+    <link rel="preload" href="script.js" as="script" />
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="icon" href="icon.svg" type="image/svg+xml" />
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand">
+          <div class="brand-mark">VN</div>
+          <div>
+            <p class="eyebrow">Planner Premium</p>
+            <h1>Vida Nova</h1>
+          </div>
         </div>
-      </div>
 
-      <div class="panel">
-        <h2>🔔 Resumo</h2>
-        <textarea></textarea>
-      </div>
+        <nav class="sidebar-nav">
+          <a href="#dashboard" data-page-link="dashboard">Dashboard</a>
+          <a href="#agenda" data-page-link="agenda">Agenda</a>
+          <a href="#sonhos" data-page-link="sonhos">Sonhos e Metas</a>
+          <a href="#estudos" data-page-link="estudos">Estudos e Projetos</a>
+          <a href="#financas" data-page-link="financas">Financas</a>
+          <a href="#imagem" data-page-link="imagem">Imagem</a>
+          <a href="#casa" data-page-link="casa">Alimentacao e Lar</a>
+          <a href="#corpo" data-page-link="corpo">Autocuidado</a>
+          <a href="#viagens" data-page-link="viagens">Viagens</a>
+          <a href="#espiritual" data-page-link="espiritual">Espiritual</a>
+          <a href="#configuracoes" data-page-link="configuracoes">Configuracoes</a>
+        </nav>
 
+        <section class="membership-card">
+          <p class="eyebrow">Visao do dia</p>
+          <h2>Prioridade principal</h2>
+          <p>Se cuidar sem abandonar a rotina, a casa e as metas.</p>
+          <div class="pill-row">
+            <span class="pill">Agenda</span>
+            <span class="pill">Rotina</span>
+            <span class="pill">Paz</span>
+          </div>
+        </section>
+      </aside>
+
+      <main class="main-content">
+        <section class="app-topbar">
+          <div class="topbar-profile">
+            <div class="topbar-avatar topbar-avatar-large" id="topbar-avatar" aria-hidden="true">VN</div>
+            <div class="topbar-profile-copy">
+            <button id="home-button" class="home-link-button" type="button">Vida Nova</button>
+            <p class="eyebrow">Acesso da usuaria</p>
+            <h3 id="user-greeting">Bem-vinda</h3>
+              <p id="topbar-email" class="topbar-email">Seu email aparece aqui</p>
+              <span id="topbar-plan" class="tag">Conta ativa</span>
+            </div>
+          </div>
+          <div class="topbar-actions">
+            <button id="settings-button" class="ghost-button icon-only-button" type="button" aria-label="Abrir configuracoes" title="Configuracoes">
+              <span aria-hidden="true">⚙</span>
+            </button>
+            <button id="logout-button" class="ghost-button" type="button">Sair</button>
+          </div>
+        </section>
+
+        <section class="panel verse-banner">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">Versiculo do dia</p>
+              <h3>Palavra para hoje</h3>
+            </div>
+            <button id="change-verse-button" class="ghost-button" type="button">Trocar versiculo</button>
+          </div>
+          <div class="verse-banner-copy">
+            <strong id="headline-verse-text">Entrega o teu caminho ao Senhor; confia nele, e ele o fara.</strong>
+            <small id="headline-verse-reference">Salmos 37:5</small>
+          </div>
+        </section>
+
+        <section class="preferences-card quick-controls hidden-home-control" aria-hidden="true">
+          <div class="preference-group">
+            <span class="preference-label">Tema</span>
+            <div class="toggle-row">
+              <button class="preference-button" type="button" data-theme-choice="light">Claro</button>
+              <button class="preference-button" type="button" data-theme-choice="dark">Escuro</button>
+            </div>
+          </div>
+          <div class="preference-group">
+            <span class="preference-label">Layout</span>
+            <div class="layout-switcher">
+              <button class="preference-button" type="button" data-layout-choice="soft">Suave</button>
+              <button class="preference-button" type="button" data-layout-choice="focus">Foco</button>
+              <button class="preference-button" type="button" data-layout-choice="magazine">Editorial</button>
+            </div>
+          </div>
+        </section>
+
+        <section class="install-banner hidden-home-control" id="install-banner" aria-hidden="true">
+          <div>
+            <p class="eyebrow">Versao atual</p>
+            <h3>Primeira versao visual do produto em foco</h3>
+            <p class="install-copy">
+              Esta base esta pronta para web e adaptacao mobile. A publicacao em link real e o proximo passo para testar instalacao com seguranca.
+            </p>
+          </div>
+          <div class="status-pills">
+            <span class="status-pill">Web pronta</span>
+            <span class="status-pill">Agenda ativa</span>
+            <span class="status-pill">Mobile em evolucao</span>
+          </div>
+          <div class="install-actions">
+            <a class="primary-button download-link" href="VIDA_NOVA_APP.zip" download>Baixar ZIP para Mac/Windows</a>
+            <button id="install-chrome-button" class="ghost-button install-cta" type="button">Instalar no Chrome</button>
+            <button id="install-help-button" class="primary-button" type="button">Como instalar</button>
+          </div>
+        </section>
+
+        <div class="page-stack">
+        <section class="page-view is-active" data-page-view="dashboard" id="dashboard">
+        <section class="workspace-home">
+          <header class="workspace-header panel">
+            <div>
+              <p class="eyebrow">Tela inicial</p>
+              <h2>Meu workspace</h2>
+              <p class="hero-copy">Entre por area, acompanhe sua vida em blocos e abra a parte certa do app com um clique.</p>
+            </div>
+          </header>
+
+          <section class="workspace-card-grid">
+            <button class="workspace-card workspace-card-planner is-featured" type="button" data-dashboard-open="agenda">
+              <div class="workspace-card-cover">
+                <span class="workspace-card-badge">Meu planner</span>
+              </div>
+              <strong>My Planner</strong>
+              <small>Abra e edite sua planner pessoal</small>
+            </button>
+
+            <button class="workspace-card workspace-card-dreams" type="button" data-dashboard-open="sonhos">
+              <div class="workspace-card-cover"></div>
+              <strong>Sonhos e Metas</strong>
+              <small>Metas por prazo e mural dos sonhos</small>
+            </button>
+
+            <button class="workspace-card workspace-card-body" type="button" data-dashboard-open="corpo">
+              <div class="workspace-card-cover"></div>
+              <strong>Saude | Beleza | Bem-estar</strong>
+              <small>Autocuidado e rituais</small>
+            </button>
+
+            <button class="workspace-card workspace-card-agenda" type="button" data-dashboard-open="agenda">
+              <div class="workspace-card-cover"></div>
+              <strong>Dia a Dia | Agenda</strong>
+              <small id="agenda-next-meta">Abra a agenda e edite seus compromissos</small>
+            </button>
+
+            <button class="workspace-card workspace-card-finance" type="button" data-dashboard-open="financas">
+              <div class="workspace-card-cover"></div>
+              <strong>Financas | Controle</strong>
+              <small id="finance-caption">Sem movimentacao registrada</small>
+            </button>
+
+            <button class="workspace-card workspace-card-study" type="button" data-dashboard-open="estudos">
+              <div class="workspace-card-cover"></div>
+              <strong>Estudos | Projetos</strong>
+              <small>Livros, cursos e projetos</small>
+            </button>
+
+            <button class="workspace-card workspace-card-image" type="button" data-dashboard-open="imagem">
+              <div class="workspace-card-cover"></div>
+              <strong>Imagem | Estilo</strong>
+              <small>Guarda-roupa e composicao visual</small>
+            </button>
+
+            <button class="workspace-card workspace-card-home" type="button" data-dashboard-open="casa">
+              <div class="workspace-card-cover"></div>
+              <strong>Alimentacao | Mercado | Lar</strong>
+              <small>Casa, refeicoes e reparos</small>
+            </button>
+
+            <button class="workspace-card workspace-card-travel" type="button" data-dashboard-open="viagens">
+              <div class="workspace-card-cover"></div>
+              <strong>Viagens</strong>
+              <small>Planejamento, documentos e roteiro</small>
+            </button>
+
+            <button class="workspace-card workspace-card-spiritual" type="button" data-dashboard-open="espiritual">
+              <div class="workspace-card-cover"></div>
+              <strong>Espiritual</strong>
+              <small>Metas com Deus e vida devocional</small>
+            </button>
+
+            <button class="workspace-card workspace-card-settings" type="button" data-dashboard-open="configuracoes">
+              <div class="workspace-card-cover"></div>
+              <strong>Configuracoes</strong>
+              <small>Conta, perfil, senha e personalizacao</small>
+            </button>
+          </section>
+
+          <section class="workspace-overview-grid">
+            <article class="panel workspace-overview-card interactive-stat" data-scroll-target="#task-form">
+              <span>Foco do dia</span>
+              <strong id="focus-count">0 tarefas</strong>
+              <small id="focus-progress">0 concluidas</small>
+            </article>
+            <article class="panel workspace-overview-card interactive-stat" data-scroll-target="#agenda">
+              <span>Agenda principal</span>
+              <strong id="agenda-next-title">Nenhum compromisso</strong>
+              <small>Abra sua semana em um clique</small>
+            </article>
+            <article class="panel workspace-overview-card interactive-stat" data-scroll-target="#financas">
+              <span>Financeiro do mes</span>
+              <strong id="finance-balance-hero">R$ 0,00</strong>
+              <small>Saldo atualizado da sua rotina</small>
+            </article>
+            <article class="panel workspace-overview-card interactive-stat" data-scroll-target="#notes-input">
+              <span>Resumo bom amor</span>
+              <strong id="summary-spotlight">Seu resumo aparece aqui</strong>
+              <small id="notes-preview">As anotacoes mais importantes sobem para o topo</small>
+            </article>
+          </section>
+
+          <section class="workspace-support-grid">
+            <article class="panel workspace-rhythm-card">
+              <div class="panel-heading">
+                <div>
+                  <p class="eyebrow">Visao rapida</p>
+                  <h3>Ritmo da sua semana</h3>
+                </div>
+              </div>
+              <div class="hero-graph workspace-graph">
+                <div class="graph-row">
+                  <span>Rotina</span>
+                  <div class="graph-bar"><i id="graph-routine"></i></div>
+                </div>
+                <div class="graph-row">
+                  <span>Agenda</span>
+                  <div class="graph-bar"><i id="graph-agenda"></i></div>
+                </div>
+                <div class="graph-row">
+                  <span>Financeiro</span>
+                  <div class="graph-bar"><i id="graph-finance"></i></div>
+                </div>
+              </div>
+            </article>
+
+            <article class="panel task-panel">
+              <div class="panel-heading">
+                <div>
+                  <p class="eyebrow">Checklist do dia</p>
+                  <h3>Rotina essencial</h3>
+                </div>
+                <span id="task-progress" class="progress-badge">0 de 0</span>
+              </div>
+
+              <form id="task-form" class="task-form">
+                <input
+                  id="task-input"
+                  type="text"
+                  placeholder="Adicionar tarefa de hoje"
+                  aria-label="Nova tarefa"
+                />
+                <button type="submit">Adicionar</button>
+              </form>
+
+              <ul id="task-list" class="task-list"></ul>
+            </article>
+
+            <article class="panel notes-panel" data-card-id="notes-panel">
+              <div class="panel-heading">
+                <div>
+                  <p class="eyebrow">Bloco de anotacao</p>
+                  <h3>Anotacoes livres</h3>
+                </div>
+                <span class="tag">Salva sozinha</span>
+              </div>
+              <textarea
+                id="notes-input"
+                class="notes-input"
+                placeholder="Escreva ideias, oracoes, lembretes, sentimentos ou qualquer anotacao importante do dia."
+              ></textarea>
+            </article>
+          </section>
+        </section>
+        </section>
+
+        <section class="page-view" data-page-view="agenda" id="agenda">
+        <section class="panel agenda-panel">
+          <div class="agenda-google-shell">
+            <section class="calendar-card google-calendar-card">
+              <div class="calendar-google-header">
+                <div class="calendar-google-left">
+                  <button id="calendar-today" class="ghost-button" type="button">Hoje</button>
+                  <button id="calendar-prev" class="ghost-button icon-button" type="button" aria-label="Periodo anterior">&#8249;</button>
+                  <button id="calendar-next" class="ghost-button icon-button" type="button" aria-label="Proximo periodo">&#8250;</button>
+                  <strong id="calendar-month-label">Mes</strong>
+                </div>
+
+                <div class="calendar-google-center">
+                  <label class="agenda-search">
+                    <span class="sr-only">Buscar eventos</span>
+                    <input id="agenda-search-input" type="search" placeholder="Buscar na agenda" aria-label="Buscar eventos" />
+                  </label>
+                </div>
+
+                <div class="calendar-google-right">
+                  <div class="calendar-view-switcher google-views">
+                    <button id="calendar-day-view" class="ghost-button" type="button">Dia</button>
+                    <button id="calendar-week-view" class="ghost-button is-active" type="button">Semana</button>
+                    <button id="calendar-month-view" class="ghost-button" type="button">Mes</button>
+                    <button id="calendar-year-view" class="ghost-button" type="button">Ano</button>
+                    <button id="calendar-schedule-view" class="ghost-button" type="button">Agenda</button>
+                    <button id="calendar-custom-view" class="ghost-button" type="button">Personalizada</button>
+                  </div>
+                  <label class="custom-days-field" id="custom-days-field">
+                    Dias
+                    <input id="calendar-custom-days-input" type="number" min="2" max="10" value="4" />
+                  </label>
+                </div>
+              </div>
+
+              <div class="calendar-experience google-calendar-experience">
+                <div class="calendar-main-stage">
+                  <div id="calendar-month-shell">
+                    <div class="calendar-weekdays">
+                      <span>Dom</span>
+                      <span>Seg</span>
+                      <span>Ter</span>
+                      <span>Qua</span>
+                      <span>Qui</span>
+                      <span>Sex</span>
+                      <span>Sab</span>
+                    </div>
+                    <div id="calendar-grid" class="calendar-grid"></div>
+                  </div>
+
+                  <div id="week-view-shell" class="week-view-shell">
+                    <div class="week-view-header" id="week-view-header"></div>
+                    <div class="week-view-body">
+                      <div class="week-hours-column" id="week-hours-column"></div>
+                      <div class="week-columns" id="week-columns"></div>
+                    </div>
+                  </div>
+
+                  <div id="year-view-shell" class="year-view-shell hidden"></div>
+                  <div id="schedule-view-shell" class="schedule-view-shell hidden"></div>
+                </div>
+              </div>
+            </section>
+          </div>
+          <div class="agenda-cards-grid">
+            <article class="agenda-summary-card">
+              <div class="panel-heading compact-heading">
+                <div>
+                  <p class="eyebrow">Resumo principal</p>
+                  <h3>Detalhes do periodo</h3>
+                </div>
+                <span id="selected-date-label" class="tag">Selecione um dia</span>
+              </div>
+              <textarea
+                id="agenda-summary-input"
+                class="summary-input"
+                placeholder="Resumo do dia, foco principal, observacoes e prioridades."
+              ></textarea>
+            </article>
+
+            <article class="agenda-events-card">
+              <div class="panel-heading agenda-subheading">
+                <div>
+                  <p class="eyebrow">Agenda do dia</p>
+                  <h3>Compromissos completos</h3>
+                </div>
+              </div>
+
+              <form id="agenda-form" class="agenda-form">
+                <input id="agenda-date-input" type="date" aria-label="Data do compromisso" />
+                <input id="agenda-time-input" type="time" aria-label="Horario inicial do compromisso" />
+                <input id="agenda-end-time-input" type="time" aria-label="Horario final do compromisso" />
+                <input id="agenda-title-input" type="text" placeholder="Titulo do compromisso" aria-label="Titulo do compromisso" />
+                <input id="agenda-location-input" type="text" placeholder="Local" aria-label="Local do compromisso" />
+                <input id="agenda-link-input" type="url" placeholder="Link de reuniao ou referencia" aria-label="Link do compromisso" />
+                <input id="agenda-guests-input" type="text" placeholder="Convidados (emails separados por virgula)" aria-label="Convidados" />
+                <select id="agenda-calendar-input" aria-label="Calendario do compromisso"></select>
+                <select id="agenda-category-input" aria-label="Categoria do compromisso">
+                  <option value="Pessoal">Pessoal</option>
+                  <option value="Trabalho">Trabalho</option>
+                  <option value="Casa">Casa</option>
+                  <option value="Saude">Saude</option>
+                  <option value="Espiritual">Espiritual</option>
+                </select>
+                <select id="agenda-recurrence-input" aria-label="Recorrencia">
+                  <option value="none">Nao se repete</option>
+                  <option value="daily">Diariamente</option>
+                  <option value="weekly">Semanalmente</option>
+                  <option value="monthly">Mensalmente</option>
+                  <option value="yearly">Anualmente</option>
+                </select>
+                <label class="color-field">
+                  Cor
+                  <input id="agenda-color-input" type="color" value="#4285f4" aria-label="Cor do compromisso" />
+                </label>
+                <textarea id="agenda-description-input" rows="3" placeholder="Descricao, observacoes ou detalhes"></textarea>
+                <button type="submit">Salvar</button>
+              </form>
+
+              <ul id="agenda-events-list" class="task-list"></ul>
+            </article>
+
+            <article class="agenda-summary-card">
+              <div class="panel-heading compact-heading">
+                <div>
+                  <p class="eyebrow">Planejamento semanal</p>
+                  <h3>Tarefas que ficam para a proxima semana</h3>
+                </div>
+              </div>
+              <textarea class="summary-input" data-persist-key="agenda-next-week" placeholder="Liste tarefas pendentes e prioridades para a proxima semana."></textarea>
+            </article>
+
+            <article class="agenda-events-card agenda-month-planning">
+              <div class="panel-heading compact-heading">
+                <div>
+                  <p class="eyebrow">Planejamento mensal</p>
+                  <h3>Visao geral do mes</h3>
+                </div>
+                <button id="agenda-create-button" class="agenda-create-button" type="button">+ Criar</button>
+              </div>
+              <div class="calendar-mini-heading">
+                <strong id="calendar-mini-label">Mes</strong>
+              </div>
+              <div class="calendar-mini-weekdays">
+                <span>D</span><span>S</span><span>T</span><span>Q</span><span>Q</span><span>S</span><span>S</span>
+              </div>
+              <div id="calendar-mini-grid" class="calendar-mini-grid"></div>
+              <div class="panel-heading compact-heading">
+                <div>
+                  <p class="eyebrow">Minhas agendas</p>
+                  <h3>Calendarios</h3>
+                </div>
+                <button id="calendar-add-button" class="ghost-button" type="button">Nova</button>
+              </div>
+              <div id="calendar-list" class="calendar-list"></div>
+              <textarea class="summary-input" data-persist-key="agenda-month-plan" placeholder="Metas, eventos fixos e direcionamento do mes."></textarea>
+            </article>
+          </div>
+        </section>
+        </section>
+
+        <section class="page-view" data-page-view="sonhos" id="sonhos">
+          <article class="panel module-card">
+            <div class="panel-heading"><div><p class="eyebrow">Sonhos e metas</p><h3>Planejamento por prazo</h3></div></div>
+            <div class="goal-horizon-grid">
+              <article class="detail-card"><span class="metric-label">Meta para 3 meses</span><textarea class="summary-input compact-area" data-persist-key="goal-3m"></textarea></article>
+              <article class="detail-card"><span class="metric-label">Meta para 6 meses</span><textarea class="summary-input compact-area" data-persist-key="goal-6m"></textarea></article>
+              <article class="detail-card"><span class="metric-label">Meta para 1 ano</span><textarea class="summary-input compact-area" data-persist-key="goal-1y"></textarea></article>
+              <article class="detail-card"><span class="metric-label">Meta para 2 anos</span><textarea class="summary-input compact-area" data-persist-key="goal-2y"></textarea></article>
+            </div>
+            <section class="dream-board">
+              <div class="panel-heading compact-heading"><div><p class="eyebrow">Visao dos sonhos</p><h3>Mural da vida dos sonhos</h3></div></div>
+              <input id="dream-vision-upload" type="file" accept="image/*" multiple />
+              <div id="dream-vision-gallery" class="dream-vision-gallery"></div>
+            </section>
+          </article>
+        </section>
+
+        <section class="page-view" data-page-view="estudos" id="estudos">
+          <article class="panel module-card">
+            <div class="panel-heading"><div><p class="eyebrow">Estudos</p><h3>Livros e cursos</h3></div></div>
+            <div class="study-main-grid">
+              <section class="agenda-events-card">
+                <h4>Livros</h4>
+                <table class="finance-table">
+                  <thead><tr><th>Livro</th><th>Autor</th><th>Inicio</th><th>Fim</th><th>Paginas</th><th>Progresso</th><th>Status</th><th>Observacoes</th></tr></thead>
+                  <tbody>
+                    <tr><td><input data-persist-key="book-1-title" /></td><td><input data-persist-key="book-1-author" /></td><td><input type="date" data-persist-key="book-1-start" /></td><td><input type="date" data-persist-key="book-1-end" /></td><td><input type="number" data-persist-key="book-1-pages" /></td><td><input type="number" min="0" max="100" data-persist-key="book-1-progress" /></td><td><input data-persist-key="book-1-status" /></td><td><input data-persist-key="book-1-notes" /></td></tr>
+                    <tr><td><input data-persist-key="book-2-title" /></td><td><input data-persist-key="book-2-author" /></td><td><input type="date" data-persist-key="book-2-start" /></td><td><input type="date" data-persist-key="book-2-end" /></td><td><input type="number" data-persist-key="book-2-pages" /></td><td><input type="number" min="0" max="100" data-persist-key="book-2-progress" /></td><td><input data-persist-key="book-2-status" /></td><td><input data-persist-key="book-2-notes" /></td></tr>
+                  </tbody>
+                </table>
+              </section>
+              <section class="agenda-events-card">
+                <h4>Cursos</h4>
+                <div class="two-column">
+                  <textarea class="summary-input" data-persist-key="courses-progress" placeholder="Cursos em andamento"></textarea>
+                  <textarea class="summary-input" data-persist-key="courses-wishlist" placeholder="Cursos desejados"></textarea>
+                </div>
+              </section>
+            </div>
+            <div class="postit-grid">
+              <article class="agenda-summary-card"><h4>Habilidades que quero desenvolver</h4><textarea class="summary-input compact-area" data-persist-key="skills-develop"></textarea></article>
+              <article class="agenda-summary-card"><h4>O que eu faco muito bem</h4><textarea class="summary-input compact-area" data-persist-key="skills-good"></textarea></article>
+              <article class="agenda-summary-card"><h4>O que eu preciso melhorar</h4><textarea class="summary-input compact-area" data-persist-key="skills-improve"></textarea></article>
+              <article class="agenda-summary-card"><h4>Quais sao os meus valores</h4><textarea class="summary-input compact-area" data-persist-key="values"></textarea></article>
+              <article class="agenda-events-card full"><h4>O que eu faco hoje que me afasta da vida que eu quero ter</h4><textarea class="summary-input compact-area" data-persist-key="habits-away"></textarea></article>
+            </div>
+            <div class="panel-heading"><div><p class="eyebrow">Projetos</p><h3>Projeto A, B, C e D</h3></div></div>
+            <div class="project-grid">
+              <article class="agenda-events-card project-card"><h4>Projeto A</h4><textarea class="summary-input compact-area" data-persist-key="proj-a-what" placeholder="O que e"></textarea><textarea class="summary-input compact-area" data-persist-key="proj-a-desc" placeholder="Descricao"></textarea><textarea class="summary-input compact-area" data-persist-key="proj-a-plan" placeholder="Plano de acao"></textarea><select data-persist-key="proj-a-status"><option>a começar</option><option>em andamento</option><option>pronto</option></select><input data-persist-key="proj-a-people" placeholder="Pessoas envolvidas" /><input data-persist-key="proj-a-links" placeholder="Links e documentos" /><label class="project-upload-field">Anexos e referencias<input type="file" data-project-upload="a" multiple /></label><div class="project-attachments" data-project-gallery="a"></div></article>
+              <article class="agenda-events-card project-card"><h4>Projeto B</h4><textarea class="summary-input compact-area" data-persist-key="proj-b-what" placeholder="O que e"></textarea><textarea class="summary-input compact-area" data-persist-key="proj-b-desc" placeholder="Descricao"></textarea><textarea class="summary-input compact-area" data-persist-key="proj-b-plan" placeholder="Plano de acao"></textarea><select data-persist-key="proj-b-status"><option>a começar</option><option>em andamento</option><option>pronto</option></select><input data-persist-key="proj-b-people" placeholder="Pessoas envolvidas" /><input data-persist-key="proj-b-links" placeholder="Links e documentos" /><label class="project-upload-field">Anexos e referencias<input type="file" data-project-upload="b" multiple /></label><div class="project-attachments" data-project-gallery="b"></div></article>
+              <article class="agenda-events-card project-card"><h4>Projeto C</h4><textarea class="summary-input compact-area" data-persist-key="proj-c-what" placeholder="O que e"></textarea><textarea class="summary-input compact-area" data-persist-key="proj-c-desc" placeholder="Descricao"></textarea><textarea class="summary-input compact-area" data-persist-key="proj-c-plan" placeholder="Plano de acao"></textarea><select data-persist-key="proj-c-status"><option>a começar</option><option>em andamento</option><option>pronto</option></select><input data-persist-key="proj-c-people" placeholder="Pessoas envolvidas" /><input data-persist-key="proj-c-links" placeholder="Links e documentos" /><label class="project-upload-field">Anexos e referencias<input type="file" data-project-upload="c" multiple /></label><div class="project-attachments" data-project-gallery="c"></div></article>
+              <article class="agenda-events-card project-card"><h4>Projeto D</h4><textarea class="summary-input compact-area" data-persist-key="proj-d-what" placeholder="O que e"></textarea><textarea class="summary-input compact-area" data-persist-key="proj-d-desc" placeholder="Descricao"></textarea><textarea class="summary-input compact-area" data-persist-key="proj-d-plan" placeholder="Plano de acao"></textarea><select data-persist-key="proj-d-status"><option>a começar</option><option>em andamento</option><option>pronto</option></select><input data-persist-key="proj-d-people" placeholder="Pessoas envolvidas" /><input data-persist-key="proj-d-links" placeholder="Links e documentos" /><label class="project-upload-field">Anexos e referencias<input type="file" data-project-upload="d" multiple /></label><div class="project-attachments" data-project-gallery="d"></div></article>
+            </div>
+          </article>
+        </section>
+
+        <section class="page-view" data-page-view="financas" id="financas">
+          <article class="panel module-card finance-card">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">Financas</p>
+                <h3>Controle financeiro premium</h3>
+              </div>
+              <span class="tag">Consciente</span>
+            </div>
+            <div class="finance-layout">
+              <div class="finance-chip-row">
+                <button class="finance-chip is-active" type="button" data-finance-filter="all">Planejamento financeiro</button>
+                <button class="finance-chip" type="button" data-finance-filter="impulse">Controle de compras</button>
+                <button class="finance-chip" type="button" data-finance-filter="savings">Metas financeiras</button>
+                <button class="finance-chip" type="button" data-finance-filter="planning">Orcamento de viagens</button>
+              </div>
+              <div class="finance-workspace">
+                <div class="finance-main-board">
+                  <div class="metric-row finance-summary-row">
+                    <div>
+                      <span class="metric-label">Entradas</span>
+                      <strong id="finance-income-display">R$ 0,00</strong>
+                    </div>
+                    <div>
+                      <span class="metric-label">Saidas</span>
+                      <strong id="finance-expense-display">R$ 0,00</strong>
+                    </div>
+                    <div>
+                      <span class="metric-label">Fluxo</span>
+                      <strong id="finance-balance-display">R$ 0,00</strong>
+                    </div>
+                  </div>
+
+                  <form id="finance-entry-form" class="finance-entry-form finance-entry-form-premium">
+                    <input id="finance-entry-title" class="module-input" type="text" placeholder="Descricao" />
+                    <input id="finance-entry-date" class="module-input" type="date" />
+                    <select id="finance-entry-type" class="module-input" aria-label="Tipo financeiro">
+                      <option value="income">Entrada</option>
+                      <option value="fixed">Fixo</option>
+                      <option value="variable">Variavel</option>
+                      <option value="impulse">Impulsivo</option>
+                      <option value="savings">Poupanca</option>
+                      <option value="planning">Planejamento</option>
+                    </select>
+                    <input id="finance-entry-category" class="module-input" type="text" placeholder="Categoria: casa, pessoal, profissional..." />
+                    <input id="finance-entry-amount" class="module-input" type="number" min="0" step="0.01" placeholder="Valor total" />
+                    <input id="finance-entry-installments" class="module-input" type="number" min="1" step="1" placeholder="Qtd parcelas" />
+                    <select id="finance-entry-start-month" class="module-input" aria-label="Mes inicial">
+                      <option value="0">Jan</option>
+                      <option value="1">Fev</option>
+                      <option value="2">Mar</option>
+                      <option value="3">Abr</option>
+                      <option value="4">Mai</option>
+                      <option value="5">Jun</option>
+                      <option value="6">Jul</option>
+                      <option value="7">Ago</option>
+                      <option value="8">Set</option>
+                      <option value="9">Out</option>
+                      <option value="10">Nov</option>
+                      <option value="11">Dez</option>
+                    </select>
+                    <label class="color-field finance-color-field">
+                      Cor
+                      <input id="finance-entry-color" class="finance-color-input" type="color" value="#ffd166" />
+                    </label>
+                    <button type="submit">Cadastrar</button>
+                  </form>
+
+                  <div class="finance-form-grid finance-plan-grid">
+                    <label>
+                      Entradas base
+                      <input id="finance-income-input" class="module-input" type="number" min="0" step="0.01" placeholder="0,00" />
+                    </label>
+                    <label>
+                      Saidas base
+                      <input id="finance-expense-input" class="module-input" type="number" min="0" step="0.01" placeholder="0,00" />
+                    </label>
+                    <label>
+                      Reserva desejada
+                      <input id="finance-goal-input" class="module-input" type="number" min="0" step="0.01" placeholder="0,00" />
+                    </label>
+                  </div>
+
+                  <div class="finance-detail-grid">
+                    <div class="detail-card">
+                      <span class="metric-label">Meta</span>
+                      <strong id="finance-goal-display">R$ 0,00</strong>
+                    </div>
+                    <div class="detail-card">
+                      <span class="metric-label">Situacao</span>
+                      <strong id="finance-status-display">Ajustar planejamento</strong>
+                    </div>
+                    <div class="detail-card">
+                      <span class="metric-label">Poupanca</span>
+                      <strong id="finance-savings-display">R$ 0,00</strong>
+                    </div>
+                    <div class="detail-card">
+                      <span class="metric-label">Gastos fixos</span>
+                      <strong id="finance-fixed-display">R$ 0,00</strong>
+                    </div>
+                    <div class="detail-card">
+                      <span class="metric-label">Variaveis</span>
+                      <strong id="finance-variable-display">R$ 0,00</strong>
+                    </div>
+                    <div class="detail-card">
+                      <span class="metric-label">Impulsivos</span>
+                      <strong id="finance-impulse-display">R$ 0,00</strong>
+                    </div>
+                  </div>
+
+                  <div class="finance-table-shell">
+                    <table class="finance-table">
+                      <thead>
+                        <tr>
+                          <th>Descricao</th>
+                          <th>Data</th>
+                          <th>Valor total</th>
+                          <th>Qtd parcela</th>
+                          <th>Valor parcela</th>
+                          <th>Jan</th>
+                          <th>Fev</th>
+                          <th>Mar</th>
+                          <th>Abr</th>
+                          <th>Mai</th>
+                          <th>Jun</th>
+                          <th>Jul</th>
+                          <th>Ago</th>
+                          <th>Set</th>
+                          <th>Out</th>
+                          <th>Nov</th>
+                          <th>Dez</th>
+                          <th></th>
+                        </tr>
+                      </thead>
+                      <tbody id="finance-table-body"></tbody>
+                    </table>
+                  </div>
+
+                  <div class="finance-comparison-card">
+                    <div class="panel-heading">
+                      <div>
+                        <p class="eyebrow">Comparativo mensal</p>
+                        <h3>Evolucao mes a mes</h3>
+                      </div>
+                    </div>
+                    <div class="finance-comparison-grid" id="finance-comparison-grid"></div>
+                  </div>
+                </div>
+
+                <aside class="finance-side-board">
+                  <article class="finance-note-card">
+                    <p class="eyebrow">Observacoes do mes</p>
+                    <textarea id="finance-notes-input" class="notes-input finance-notes-input" placeholder="Anote custos do negocio, compras importantes, metas e observacoes do mes."></textarea>
+                  </article>
+
+                  <article class="finance-planning-box">
+                    <span class="metric-label">Planejamento mensal</span>
+                    <p id="finance-planning-preview" class="module-note">Nenhum planejamento registrado.</p>
+                    <strong id="finance-panel-balance">R$ 0,00</strong>
+                    <small id="finance-panel-caption">Sem movimentacao registrada</small>
+                  </article>
+
+                  <div class="calculator-card">
+                    <div class="panel-heading calculator-heading">
+                      <div>
+                        <p class="eyebrow">Calculadora</p>
+                        <h3>Conta rapida</h3>
+                      </div>
+                    </div>
+                    <div class="calculator-display" id="calculator-display">0</div>
+                    <div class="calculator-grid">
+                      <button class="calc-key" type="button" data-calc-action="clear">AC</button>
+                      <button class="calc-key" type="button" data-calc-value="(">(</button>
+                      <button class="calc-key" type="button" data-calc-value=")">)</button>
+                      <button class="calc-key calc-operator" type="button" data-calc-value="/">/</button>
+                      <button class="calc-key" type="button" data-calc-value="7">7</button>
+                      <button class="calc-key" type="button" data-calc-value="8">8</button>
+                      <button class="calc-key" type="button" data-calc-value="9">9</button>
+                      <button class="calc-key calc-operator" type="button" data-calc-value="*">x</button>
+                      <button class="calc-key" type="button" data-calc-value="4">4</button>
+                      <button class="calc-key" type="button" data-calc-value="5">5</button>
+                      <button class="calc-key" type="button" data-calc-value="6">6</button>
+                      <button class="calc-key calc-operator" type="button" data-calc-value="-">-</button>
+                      <button class="calc-key" type="button" data-calc-value="1">1</button>
+                      <button class="calc-key" type="button" data-calc-value="2">2</button>
+                      <button class="calc-key" type="button" data-calc-value="3">3</button>
+                      <button class="calc-key calc-operator" type="button" data-calc-value="+">+</button>
+                      <button class="calc-key" type="button" data-calc-value="0">0</button>
+                      <button class="calc-key" type="button" data-calc-value=".">.</button>
+                      <button class="calc-key calc-equals" type="button" data-calc-action="equals">=</button>
+                    </div>
+                  </div>
+                </aside>
+              </div>
+            </div>
+          </article>
+        </section>
+
+        <section class="page-view" data-page-view="imagem" id="imagem">
+          <article class="panel module-card wardrobe-card module-open-card" data-module="wardrobe">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">Imagem e estilo</p>
+                <h3>Guarda-roupa inteligente</h3>
+              </div>
+              <button class="ghost-button module-open-button" type="button" data-module="wardrobe">Abrir</button>
+            </div>
+            <div class="structured-card-grid">
+              <div class="detail-card"><span class="metric-label">Looks da semana</span><strong>4 montados</strong></div>
+              <div class="detail-card"><span class="metric-label">Pecas-chave</span><strong>Blazer, jeans, vestido</strong></div>
+            </div>
+            <ul id="wardrobe-preview-list" class="mini-list module-preview-list"></ul>
+            <ul class="mini-list">
+              <li>Catalogar pecas favoritas e combinar por ocasiao</li>
+              <li>Mapear o que falta antes de comprar</li>
+              <li>Separar lista de desejo e lista de necessidade</li>
+            </ul>
+          </article>
+        </section>
+
+        <section class="page-view" data-page-view="casa" id="casa">
+          <article class="panel module-card home-card">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">Alimentacao e Lar</p>
+                <h3>Planejamento da casa e refeicoes</h3>
+              </div>
+            </div>
+            <div class="study-main-grid">
+              <article class="agenda-summary-card"><h4>Planner de refeicao</h4><textarea class="summary-input" data-persist-key="meal-planner"></textarea></article>
+              <article class="agenda-summary-card"><h4>Lista do mercado</h4><textarea class="summary-input" data-persist-key="market-list"></textarea></article>
+              <article class="agenda-summary-card"><h4>Cronograma de limpeza</h4><textarea class="summary-input" data-persist-key="cleaning-schedule"></textarea></article>
+              <article class="agenda-summary-card"><h4>Checklist dos comodos</h4><textarea class="summary-input" data-persist-key="room-checklist"></textarea></article>
+            </div>
+            <article class="agenda-events-card">
+              <h4>Reformas e reparos do lar</h4>
+              <div class="two-column">
+                <label>Inicio <input type="date" data-persist-key="home-repair-start" /></label>
+                <label>Previsao de termino <input type="date" data-persist-key="home-repair-end" /></label>
+              </div>
+              <textarea class="summary-input compact-area" data-persist-key="home-repair-summary" placeholder="Resumo / descricao da reforma"></textarea>
+              <input data-persist-key="home-repair-links" placeholder="Links relacionados a essa reforma" />
+            </article>
+          </article>
+        </section>
+
+        <section class="page-view" data-page-view="corpo" id="corpo">
+          <article class="panel module-card body-card">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">Corpo e autocuidado</p>
+                <h3>Gestao completa do autocuidado</h3>
+              </div>
+            </div>
+            <div class="tab-shell" data-tab-group="autocuidado">
+              <div class="tab-buttons">
+                <button class="ghost-button is-active" type="button" data-tab-target="medidas">Progresso de medidas</button>
+                <button class="ghost-button" type="button" data-tab-target="exercicios">Cronograma de exercicios</button>
+                <button class="ghost-button" type="button" data-tab-target="saude">Cuidados de saude</button>
+                <button class="ghost-button" type="button" data-tab-target="beleza">Rituais de beleza</button>
+              </div>
+              <section class="tab-panel is-active" data-tab-panel="medidas"><textarea class="summary-input" data-persist-key="self-measures"></textarea></section>
+              <section class="tab-panel" data-tab-panel="exercicios"><textarea class="summary-input" data-persist-key="self-workout"></textarea></section>
+              <section class="tab-panel" data-tab-panel="saude"><textarea class="summary-input" data-persist-key="self-health"></textarea></section>
+              <section class="tab-panel" data-tab-panel="beleza"><textarea class="summary-input" data-persist-key="self-beauty"></textarea></section>
+            </div>
+          </article>
+        </section>
+
+        <section class="page-view" data-page-view="viagens" id="viagens">
+          <article class="panel module-card travel-card module-open-card" data-module="travel">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">Viagens</p>
+                <h3>Planejador de viagens</h3>
+              </div>
+              <button class="ghost-button module-open-button" type="button" data-module="travel">Abrir</button>
+            </div>
+            <div class="structured-card-grid">
+              <div class="detail-card"><span class="metric-label">Destino</span><strong>Gramado</strong></div>
+              <div class="detail-card"><span class="metric-label">Orcamento</span><strong>R$ 3.500 alvo</strong></div>
+            </div>
+            <ul id="travel-preview-list" class="mini-list module-preview-list"></ul>
+            <ul class="mini-list">
+              <li>Prever transporte, hospedagem, alimentacao e extras</li>
+              <li>Checklist de documentos, malas e roteiro</li>
+              <li>Calculadora de custo e poupanca da viagem</li>
+            </ul>
+          </article>
+        </section>
+
+        <section class="page-view" data-page-view="espiritual" id="espiritual">
+          <article class="panel module-card spiritual-card module-open-card" data-module="spiritual">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">Vida espiritual</p>
+                <h3>Metas com Deus</h3>
+              </div>
+              <button class="ghost-button module-open-button" type="button" data-module="spiritual">Abrir</button>
+            </div>
+            <div class="structured-card-grid">
+              <div class="detail-card"><span class="metric-label">Meta do mes</span><strong>4 cultos, 20 leituras</strong></div>
+              <div class="detail-card"><span class="metric-label">Estado atual</span><strong>3 cultos, 18 leituras</strong></div>
+            </div>
+            <ul id="spiritual-preview-list" class="mini-list module-preview-list"></ul>
+            <ul class="mini-list">
+              <li>Leitura biblica, devocional, pedidos e respostas</li>
+              <li>Livros cristos, cultos e metas espirituais acompanhadas</li>
+              <li>Versiculo diario e espaco para oracao e reflexao</li>
+            </ul>
+          </article>
+        </section>
+
+        <section class="page-view" data-page-view="configuracoes" id="configuracoes">
+          <section class="panel settings-panel">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">Conta e experiencia</p>
+                <h3>Configuracoes do app</h3>
+              </div>
+              <span class="tag">Personalize do seu jeito</span>
+            </div>
+
+            <div class="settings-grid">
+              <article class="settings-card">
+                <div class="panel-heading">
+                  <div>
+                    <p class="eyebrow">Perfil</p>
+                    <h3>Dados da usuaria</h3>
+                  </div>
+                </div>
+
+                <div class="profile-hero">
+                  <div class="profile-avatar" id="settings-avatar-preview">VN</div>
+                  <div class="profile-copy">
+                    <strong id="settings-profile-name">Vida Nova</strong>
+                    <small id="settings-profile-email">Seu email aparece aqui</small>
+                  </div>
+                </div>
+
+                <form id="settings-profile-form" class="settings-form">
+                  <label class="avatar-upload-field">
+                    Foto do perfil
+                    <input id="settings-avatar-input" type="file" accept="image/*" />
+                  </label>
+                  <label>
+                    Nome
+                    <input id="settings-name-input" type="text" placeholder="Seu nome" />
+                  </label>
+                  <label>
+                    Email
+                    <input id="settings-email-input" type="email" placeholder="seuemail@provedor.com" />
+                  </label>
+                  <label>
+                    Link de renovacao do pacote
+                    <input id="settings-subscription-url" type="url" placeholder="https://..." />
+                  </label>
+                  <div class="settings-inline-actions">
+                    <button class="primary-button" type="submit">Salvar perfil</button>
+                    <button id="settings-renew-button" class="ghost-button" type="button">Renovar pacote</button>
+                  </div>
+                  <p id="settings-profile-feedback" class="settings-feedback"></p>
+                </form>
+              </article>
+
+              <article class="settings-card">
+                <div class="panel-heading">
+                  <div>
+                    <p class="eyebrow">Seguranca</p>
+                    <h3>Senha e acesso</h3>
+                  </div>
+                </div>
+
+                <form id="settings-password-form" class="settings-form">
+                  <label>
+                    Nova senha
+                    <input id="settings-password-input" type="password" placeholder="Minimo de 6 caracteres" />
+                  </label>
+                  <label>
+                    Confirmar nova senha
+                    <input id="settings-password-confirm-input" type="password" placeholder="Repita a senha" />
+                  </label>
+                  <div class="settings-inline-actions">
+                    <button class="primary-button" type="submit">Atualizar senha</button>
+                  </div>
+                  <p id="settings-password-feedback" class="settings-feedback"></p>
+                </form>
+              </article>
+
+              <article class="settings-card">
+                <div class="panel-heading">
+                  <div>
+                    <p class="eyebrow">Aparencia</p>
+                    <h3>Cor, tema e layout</h3>
+                  </div>
+                </div>
+
+                <div class="settings-form settings-appearance">
+                  <div class="preference-group">
+                    <span class="preference-label">Tema</span>
+                    <div class="toggle-row">
+                      <button class="preference-button" type="button" data-theme-choice="light">Claro</button>
+                      <button class="preference-button" type="button" data-theme-choice="dark">Escuro</button>
+                    </div>
+                  </div>
+
+                  <div class="preference-group">
+                    <span class="preference-label">Layout</span>
+                    <div class="layout-switcher">
+                      <button class="preference-button" type="button" data-layout-choice="soft">Suave</button>
+                      <button class="preference-button" type="button" data-layout-choice="focus">Foco</button>
+                      <button class="preference-button" type="button" data-layout-choice="magazine">Editorial</button>
+                    </div>
+                  </div>
+
+                  <label class="accent-color-field">
+                    Cor principal do app
+                    <input id="settings-accent-color" type="color" value="#c55b84" />
+                  </label>
+                  <p class="settings-feedback">Essas mudancas valem tanto para web quanto para mobile na mesma conta.</p>
+                </div>
+              </article>
+
+              <article class="settings-card">
+                <div class="panel-heading">
+                  <div>
+                    <p class="eyebrow">Assinatura</p>
+                    <h3>Pacote e renovacao</h3>
+                  </div>
+                </div>
+
+                <div class="subscription-summary">
+                  <div class="detail-card">
+                    <span class="metric-label">Status</span>
+                    <strong id="settings-subscription-status">Conta ativa</strong>
+                  </div>
+                  <div class="detail-card">
+                    <span class="metric-label">Renovacao</span>
+                    <strong id="settings-renewal-label">Configurar link</strong>
+                  </div>
+                </div>
+
+                <div class="settings-inline-actions">
+                  <button id="settings-open-renewal" class="primary-button" type="button">Abrir renovacao</button>
+                  <button id="settings-open-install" class="ghost-button" type="button">Instalar app</button>
+                </div>
+                <p class="settings-feedback">Use o link de renovacao da Kiwify ou do seu checkout para que a cliente consiga renovar por aqui.</p>
+              </article>
+            </div>
+          </section>
+        </section>
+        </div>
+      </main>
     </div>
 
-  </main>
-</div>
+    <nav class="mobile-nav">
+      <a href="#dashboard" data-page-link="dashboard">Inicio</a>
+      <a href="#agenda" data-page-link="agenda">Agenda</a>
+      <a href="#financas" data-page-link="financas">Financas</a>
+      <a href="#espiritual" data-page-link="espiritual">Espiritual</a>
+      <a href="#configuracoes" data-page-link="configuracoes">Config</a>
+    </nav>
 
-<script src="script.js"></script>
+    <div id="editor-modal" class="editor-modal hidden" aria-hidden="true">
+      <div class="editor-backdrop" data-close-editor="true"></div>
+      <section class="editor-sheet" role="dialog" aria-modal="true" aria-labelledby="editor-title">
+        <div class="editor-topbar">
+          <div>
+            <p class="eyebrow">Editar bloco</p>
+            <h2 id="editor-title">Bloco</h2>
+          </div>
+          <button id="editor-close" class="ghost-button" type="button">Fechar</button>
+        </div>
 
-</body>
+        <form id="editor-form" class="editor-form">
+          <label>
+            Titulo
+            <input id="editor-heading" name="heading" type="text" />
+          </label>
+
+          <label>
+            Subtitulo
+            <input id="editor-subheading" name="subheading" type="text" />
+          </label>
+
+          <label>
+            Texto principal
+            <textarea id="editor-body" name="body" rows="5"></textarea>
+          </label>
+
+          <label id="editor-list-group">
+            Itens da lista
+            <textarea
+              id="editor-list"
+              name="list"
+              rows="6"
+              placeholder="Um item por linha"
+            ></textarea>
+          </label>
+
+          <div class="editor-actions">
+            <button id="editor-reset" class="ghost-button" type="button">Restaurar original</button>
+            <button class="primary-button" type="submit">Salvar bloco</button>
+          </div>
+        </form>
+      </section>
+    </div>
+
+    <div id="calendar-modal" class="editor-modal hidden" aria-hidden="true">
+      <div class="editor-backdrop" data-close-calendar="true"></div>
+      <section class="editor-sheet calendar-modal-sheet" role="dialog" aria-modal="true">
+        <div class="editor-topbar">
+          <div>
+            <p class="eyebrow">Agenda do dia</p>
+            <h2 id="calendar-modal-title">Compromissos</h2>
+          </div>
+          <button id="calendar-modal-close" class="ghost-button" type="button">Fechar</button>
+        </div>
+        <p id="calendar-modal-empty" class="module-note">Nada cadastrado para este dia.</p>
+        <ul id="calendar-modal-list" class="task-list"></ul>
+        <div class="mirror-block">
+          <div class="panel-heading">
+            <div>
+              <strong>Tarefas do dia</strong>
+            </div>
+          </div>
+          <form id="calendar-task-form" class="task-form">
+            <input id="calendar-task-input" type="text" placeholder="Adicionar tarefa do dia" />
+            <button type="submit">Adicionar tarefa</button>
+          </form>
+          <ul id="calendar-day-task-list" class="task-list"></ul>
+        </div>
+        <div class="calendar-modal-extra">
+          <div class="mirror-block">
+            <strong>Tarefas da rotina</strong>
+            <ul id="calendar-modal-tasks" class="dashboard-preview-list"></ul>
+          </div>
+        </div>
+        <form id="calendar-modal-form" class="editor-form">
+          <label>
+            Data
+            <input id="calendar-modal-date" type="date" />
+          </label>
+          <label>
+            Hora inicial
+            <input id="calendar-modal-time" type="time" />
+          </label>
+          <label>
+            Hora final
+            <input id="calendar-modal-end-time" type="time" />
+          </label>
+          <label>
+            Titulo
+            <input id="calendar-modal-title-input" type="text" placeholder="Compromisso" />
+          </label>
+          <label>
+            Local
+            <input id="calendar-modal-location" type="text" placeholder="Local" />
+          </label>
+          <label>
+            Link
+            <input id="calendar-modal-link" type="url" placeholder="Link de reuniao ou referencia" />
+          </label>
+          <label>
+            Convidados
+            <input id="calendar-modal-guests" type="text" placeholder="Emails separados por virgula" />
+          </label>
+          <label>
+            Calendario
+            <select id="calendar-modal-calendar"></select>
+          </label>
+          <label>
+            Categoria
+            <select id="calendar-modal-category">
+              <option value="Pessoal">Pessoal</option>
+              <option value="Trabalho">Trabalho</option>
+              <option value="Casa">Casa</option>
+              <option value="Saude">Saude</option>
+              <option value="Espiritual">Espiritual</option>
+            </select>
+          </label>
+          <label>
+            Recorrencia
+            <select id="calendar-modal-recurrence">
+              <option value="none">Nao se repete</option>
+              <option value="daily">Diariamente</option>
+              <option value="weekly">Semanalmente</option>
+              <option value="monthly">Mensalmente</option>
+              <option value="yearly">Anualmente</option>
+            </select>
+          </label>
+          <label class="color-field">
+            Cor
+            <input id="calendar-modal-color" type="color" value="#c55b84" />
+          </label>
+          <label>
+            Descricao
+            <textarea id="calendar-modal-description" rows="4" placeholder="Descricao completa do compromisso"></textarea>
+          </label>
+          <div class="editor-actions">
+            <button class="primary-button" type="submit">Salvar compromisso</button>
+          </div>
+        </form>
+      </section>
+    </div>
+
+    <div id="module-modal" class="editor-modal hidden" aria-hidden="true">
+      <div class="editor-backdrop" data-close-module="true"></div>
+      <section class="editor-sheet" role="dialog" aria-modal="true">
+        <div class="editor-topbar">
+          <div>
+            <p class="eyebrow">Cadastro do modulo</p>
+            <h2 id="module-modal-title">Modulo</h2>
+          </div>
+          <button id="module-modal-close" class="ghost-button" type="button">Fechar</button>
+        </div>
+        <p id="module-modal-copy" class="module-note">Cadastre seus itens aqui.</p>
+        <form id="module-modal-form" class="editor-form">
+          <label>
+            Titulo
+            <input id="module-entry-title" type="text" placeholder="Titulo do item" />
+          </label>
+          <label>
+            Categoria
+            <input id="module-entry-category" type="text" placeholder="Categoria ou tipo" />
+          </label>
+          <label>
+            Descricao
+            <textarea id="module-entry-description" rows="4" placeholder="Detalhes do item"></textarea>
+          </label>
+          <div class="editor-actions">
+            <button class="primary-button" type="submit">Cadastrar item</button>
+          </div>
+        </form>
+        <ul id="module-modal-list" class="task-list"></ul>
+      </section>
+    </div>
+
+    <div id="install-modal" class="editor-modal hidden" aria-hidden="true">
+      <div class="editor-backdrop" data-close-install="true"></div>
+      <section class="editor-sheet" role="dialog" aria-modal="true">
+        <div class="editor-topbar">
+          <div>
+            <p class="eyebrow">Instalacao</p>
+            <h2>Como instalar o app</h2>
+          </div>
+          <button id="install-modal-close" class="ghost-button" type="button">Fechar</button>
+        </div>
+        <div class="install-guide-grid">
+          <article class="detail-card">
+            <span class="metric-label">Mac</span>
+            <p>Abra no Chrome ou Edge, clique no icone de instalar na barra e confirme.</p>
+          </article>
+          <article class="detail-card">
+            <span class="metric-label">Windows</span>
+            <p>Abra no Chrome ou Edge, use “Instalar app” no menu do navegador e confirme.</p>
+          </article>
+          <article class="detail-card">
+            <span class="metric-label">Android</span>
+            <p>No Chrome, abra o site publicado e use “Adicionar a tela inicial” ou “Instalar app”.</p>
+          </article>
+          <article class="detail-card">
+            <span class="metric-label">iPhone / iPad</span>
+            <p>No Safari, toque em Compartilhar e depois em “Adicionar a Tela de Inicio”.</p>
+          </article>
+        </div>
+        <div class="install-actions install-actions-modal">
+          <a class="primary-button download-link" href="VIDA_NOVA_APP.zip" download>Baixar arquivo</a>
+          <button id="install-modal-chrome-button" class="ghost-button install-cta" type="button">Tentar instalar agora</button>
+        </div>
+        <p class="module-note">A instalacao real depende de um link publicado com HTTPS. No arquivo local ou preview quebrado do navegador, isso nao aparece de forma confiavel.</p>
+      </section>
+    </div>
+
+    <script src="script.agenda-fix.js"></script>
+  </body>
 </html>
