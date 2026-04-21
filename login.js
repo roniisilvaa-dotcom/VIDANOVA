@@ -11,12 +11,17 @@ const modeLoginButton = document.querySelector("#mode-login");
 const modeRegisterButton = document.querySelector("#mode-register");
 const nameField = document.querySelector("#name-field");
 const confirmPasswordField = document.querySelector("#confirm-password-field");
+const loginLiveLink = document.querySelector("#login-live-link");
+const loginInstallButton = document.querySelector("#login-install-button");
+const loginInstallStatus = document.querySelector("#login-install-status");
 
 const AUTH_TOKEN_KEY = "vida-nova:auth-token";
 const AUTH_USER_KEY = "vida-nova:auth-user";
 const LEGACY_SESSION_KEY = "ela-em-ordem:session";
+const FALLBACK_PUBLIC_APP_URL = "https://vidanova-1.onrender.com";
 
 let authMode = "login";
+let deferredInstallPrompt = null;
 
 function getAuthStorage() {
   const localToken = window.localStorage.getItem(AUTH_TOKEN_KEY);
@@ -91,6 +96,110 @@ function saveSession(token, user) {
 
 function getPostLoginTarget(user) {
   return user?.is_admin || user?.role === "admin" ? "./index.html#admin" : "./index.html";
+}
+
+function getPublishedAppUrl() {
+  if (window.location.protocol === "file:") {
+    return FALLBACK_PUBLIC_APP_URL;
+  }
+
+  if (window.location.origin && /^https?:/i.test(window.location.origin)) {
+    return window.location.origin;
+  }
+
+  return FALLBACK_PUBLIC_APP_URL;
+}
+
+function getInstallContext() {
+  const ua = navigator.userAgent || "";
+  const isIos = /iPhone|iPad|iPod/i.test(ua);
+  const isAndroid = /Android/i.test(ua);
+  const isMac = /Macintosh|Mac OS X/i.test(ua) && !isIos;
+  const isWindows = /Windows/i.test(ua);
+  const isStandalone =
+    window.matchMedia?.("(display-mode: standalone)").matches ||
+    window.navigator.standalone === true;
+
+  return { isIos, isAndroid, isMac, isWindows, isStandalone };
+}
+
+function refreshInstallLinks() {
+  if (loginLiveLink) {
+    loginLiveLink.href = getPublishedAppUrl();
+  }
+}
+
+function updateLoginInstallUi() {
+  if (!loginInstallButton || !loginInstallStatus) {
+    return;
+  }
+
+  const context = getInstallContext();
+
+  if (context.isStandalone) {
+    loginInstallButton.textContent = "App ja instalado";
+    loginInstallButton.disabled = true;
+    loginInstallStatus.textContent =
+      "O app já está instalado neste dispositivo. Agora é só entrar com a conta.";
+    return;
+  }
+
+  loginInstallButton.disabled = false;
+
+  if (deferredInstallPrompt) {
+    loginInstallButton.textContent = "Instalar agora";
+    loginInstallStatus.textContent =
+      "Este dispositivo aceita instalação direta. Toque em instalar para adicionar o app.";
+    return;
+  }
+
+  if (context.isIos) {
+    loginInstallButton.textContent = "Abrir no Safari";
+    loginInstallStatus.textContent =
+      "No iPhone/iPad, abra no Safari e toque em “Adicionar à Tela de Início”.";
+    return;
+  }
+
+  if (context.isAndroid) {
+    loginInstallButton.textContent = "Abrir no Chrome";
+    loginInstallStatus.textContent =
+      "No Android, abra no Chrome e toque em “Instalar app” ou “Adicionar à tela inicial”.";
+    return;
+  }
+
+  if (context.isMac) {
+    loginInstallButton.textContent = "Abrir para instalar no Mac";
+    loginInstallStatus.textContent =
+      "No Mac, abra a versão publicada no Chrome ou Edge e use “Instalar app” no navegador.";
+    return;
+  }
+
+  if (context.isWindows) {
+    loginInstallButton.textContent = "Abrir para instalar no Windows";
+    loginInstallStatus.textContent =
+      "No Windows, abra a versão publicada no Chrome ou Edge e instale como aplicativo.";
+    return;
+  }
+
+  loginInstallButton.textContent = "Abrir app";
+  loginInstallStatus.textContent =
+    "Abra a versão publicada do app para instalar e depois entre com sua conta normalmente.";
+}
+
+function openPublishedInstallPage() {
+  window.open(getPublishedAppUrl(), "_blank", "noopener,noreferrer");
+}
+
+async function triggerLoginInstallFlow() {
+  if (deferredInstallPrompt) {
+    deferredInstallPrompt.prompt();
+    await deferredInstallPrompt.userChoice;
+    deferredInstallPrompt = null;
+    updateLoginInstallUi();
+    return;
+  }
+
+  openPublishedInstallPage();
 }
 
 async function postJson(url, payload) {
@@ -207,6 +316,25 @@ if (demoAccess) {
   });
 }
 
+if (loginInstallButton) {
+  loginInstallButton.addEventListener("click", async () => {
+    await triggerLoginInstallFlow();
+  });
+}
+
+window.addEventListener("beforeinstallprompt", (event) => {
+  event.preventDefault();
+  deferredInstallPrompt = event;
+  updateLoginInstallUi();
+});
+
+window.addEventListener("appinstalled", () => {
+  deferredInstallPrompt = null;
+  updateLoginInstallUi();
+});
+
 clearLegacyAuthCache();
+refreshInstallLinks();
 setMode("login");
+updateLoginInstallUi();
 redirectIfAuthenticated();
