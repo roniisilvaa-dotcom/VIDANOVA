@@ -242,6 +242,16 @@ a {
   display: grid;
 }
 
+.page-return-bar {
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 14px;
+}
+
+.page-return-button {
+  font-weight: 700;
+}
+
 .app-topbar {
   display: flex;
   align-items: center;
@@ -3100,6 +3110,10 @@ select {
 .workspace-home {
   display: grid;
   gap: 18px;
+}
+
+.workspace-hidden-metrics {
+  display: none;
 }
 
 .workspace-header {

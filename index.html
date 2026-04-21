@@ -160,7 +160,6 @@
           <header class="workspace-header panel">
             <div>
               <p class="eyebrow">Tela inicial</p>
-              <h2>Meu workspace</h2>
               <p class="hero-copy">Entre por area, acompanhe sua vida em blocos e abra a parte certa do app com um clique.</p>
             </div>
           </header>
@@ -235,94 +234,29 @@
             </button>
           </section>
 
-          <section class="workspace-overview-grid">
-            <article class="panel workspace-overview-card interactive-stat" data-scroll-target="#task-form">
-              <span>Foco do dia</span>
-              <strong id="focus-count">0 tarefas</strong>
-              <small id="focus-progress">0 concluidas</small>
-            </article>
-            <article class="panel workspace-overview-card interactive-stat" data-scroll-target="#agenda">
-              <span>Agenda principal</span>
-              <strong id="agenda-next-title">Nenhum compromisso</strong>
-              <small>Abra sua semana em um clique</small>
-            </article>
-            <article class="panel workspace-overview-card interactive-stat" data-scroll-target="#financas">
-              <span>Financeiro do mes</span>
-              <strong id="finance-balance-hero">R$ 0,00</strong>
-              <small>Saldo atualizado da sua rotina</small>
-            </article>
-            <article class="panel workspace-overview-card interactive-stat" data-scroll-target="#notes-input">
-              <span>Resumo bom amor</span>
-              <strong id="summary-spotlight">Seu resumo aparece aqui</strong>
-              <small id="notes-preview">As anotacoes mais importantes sobem para o topo</small>
-            </article>
-          </section>
-
-          <section class="workspace-support-grid">
-            <article class="panel workspace-rhythm-card">
-              <div class="panel-heading">
-                <div>
-                  <p class="eyebrow">Visao rapida</p>
-                  <h3>Ritmo da sua semana</h3>
-                </div>
-              </div>
-              <div class="hero-graph workspace-graph">
-                <div class="graph-row">
-                  <span>Rotina</span>
-                  <div class="graph-bar"><i id="graph-routine"></i></div>
-                </div>
-                <div class="graph-row">
-                  <span>Agenda</span>
-                  <div class="graph-bar"><i id="graph-agenda"></i></div>
-                </div>
-                <div class="graph-row">
-                  <span>Financeiro</span>
-                  <div class="graph-bar"><i id="graph-finance"></i></div>
-                </div>
-              </div>
-            </article>
-
-            <article class="panel task-panel">
-              <div class="panel-heading">
-                <div>
-                  <p class="eyebrow">Checklist do dia</p>
-                  <h3>Rotina essencial</h3>
-                </div>
-                <span id="task-progress" class="progress-badge">0 de 0</span>
-              </div>
-
-              <form id="task-form" class="task-form">
-                <input
-                  id="task-input"
-                  type="text"
-                  placeholder="Adicionar tarefa de hoje"
-                  aria-label="Nova tarefa"
-                />
-                <button type="submit">Adicionar</button>
-              </form>
-
-              <ul id="task-list" class="task-list"></ul>
-            </article>
-
-            <article class="panel notes-panel" data-card-id="notes-panel">
-              <div class="panel-heading">
-                <div>
-                  <p class="eyebrow">Bloco de anotacao</p>
-                  <h3>Anotacoes livres</h3>
-                </div>
-                <span class="tag">Salva sozinha</span>
-              </div>
-              <textarea
-                id="notes-input"
-                class="notes-input"
-                placeholder="Escreva ideias, oracoes, lembretes, sentimentos ou qualquer anotacao importante do dia."
-              ></textarea>
-            </article>
-          </section>
+          <div class="workspace-hidden-metrics" aria-hidden="true">
+            <strong id="focus-count">0 tarefas</strong>
+            <small id="focus-progress">0 concluidas</small>
+            <strong id="agenda-next-title">Nenhum compromisso</strong>
+            <strong id="finance-balance-hero">R$ 0,00</strong>
+            <strong id="summary-spotlight">Seu resumo aparece aqui</strong>
+            <small id="notes-preview">As anotacoes mais importantes sobem para o topo</small>
+            <i id="graph-routine"></i>
+            <i id="graph-agenda"></i>
+            <i id="graph-finance"></i>
+            <form id="task-form"></form>
+            <input id="task-input" type="text" />
+            <ul id="task-list"></ul>
+            <span id="task-progress"></span>
+            <textarea id="notes-input"></textarea>
+          </div>
         </section>
         </section>
 
         <section class="page-view" data-page-view="agenda" id="agenda">
+        <div class="page-return-bar">
+          <button class="ghost-button page-return-button" type="button" data-go-home>← Voltar</button>
+        </div>
         <section class="panel agenda-panel">
           <div class="agenda-google-shell">
             <section class="calendar-card google-calendar-card">
@@ -484,6 +418,9 @@
         </section>
 
         <section class="page-view" data-page-view="sonhos" id="sonhos">
+          <div class="page-return-bar">
+            <button class="ghost-button page-return-button" type="button" data-go-home>← Voltar</button>
+          </div>
           <article class="panel module-card">
             <div class="panel-heading"><div><p class="eyebrow">Sonhos e metas</p><h3>Planejamento por prazo</h3></div></div>
             <div class="goal-horizon-grid">
@@ -501,6 +438,9 @@
         </section>
 
         <section class="page-view" data-page-view="estudos" id="estudos">
+          <div class="page-return-bar">
+            <button class="ghost-button page-return-button" type="button" data-go-home>← Voltar</button>
+          </div>
           <article class="panel module-card">
             <div class="panel-heading"><div><p class="eyebrow">Estudos</p><h3>Livros e cursos</h3></div></div>
             <div class="study-main-grid">
@@ -540,6 +480,9 @@
         </section>
 
         <section class="page-view" data-page-view="financas" id="financas">
+          <div class="page-return-bar">
+            <button class="ghost-button page-return-button" type="button" data-go-home>← Voltar</button>
+          </div>
           <article class="panel module-card finance-card">
             <div class="panel-heading">
               <div>
@@ -738,6 +681,9 @@
         </section>
 
         <section class="page-view" data-page-view="imagem" id="imagem">
+          <div class="page-return-bar">
+            <button class="ghost-button page-return-button" type="button" data-go-home>← Voltar</button>
+          </div>
           <article class="panel module-card wardrobe-card module-open-card" data-module="wardrobe">
             <div class="panel-heading">
               <div>
@@ -760,6 +706,9 @@
         </section>
 
         <section class="page-view" data-page-view="casa" id="casa">
+          <div class="page-return-bar">
+            <button class="ghost-button page-return-button" type="button" data-go-home>← Voltar</button>
+          </div>
           <article class="panel module-card home-card">
             <div class="panel-heading">
               <div>
@@ -786,6 +735,9 @@
         </section>
 
         <section class="page-view" data-page-view="corpo" id="corpo">
+          <div class="page-return-bar">
+            <button class="ghost-button page-return-button" type="button" data-go-home>← Voltar</button>
+          </div>
           <article class="panel module-card body-card">
             <div class="panel-heading">
               <div>
@@ -809,6 +761,9 @@
         </section>
 
         <section class="page-view" data-page-view="viagens" id="viagens">
+          <div class="page-return-bar">
+            <button class="ghost-button page-return-button" type="button" data-go-home>← Voltar</button>
+          </div>
           <article class="panel module-card travel-card module-open-card" data-module="travel">
             <div class="panel-heading">
               <div>
@@ -831,6 +786,9 @@
         </section>
 
         <section class="page-view" data-page-view="espiritual" id="espiritual">
+          <div class="page-return-bar">
+            <button class="ghost-button page-return-button" type="button" data-go-home>← Voltar</button>
+          </div>
           <article class="panel module-card spiritual-card module-open-card" data-module="spiritual">
             <div class="panel-heading">
               <div>
@@ -853,6 +811,9 @@
         </section>
 
         <section class="page-view" data-page-view="configuracoes" id="configuracoes">
+          <div class="page-return-bar">
+            <button class="ghost-button page-return-button" type="button" data-go-home>← Voltar</button>
+          </div>
           <section class="panel settings-panel">
             <div class="panel-heading">
               <div>
@@ -1213,23 +1174,7 @@
       </section>
     </div>
 
-    <script src="script.agenda-fix.js"></script>
-  
-<script>
-document.querySelectorAll('[data-dashboard-open]').forEach(btn => {
-  btn.addEventListener('click', () => {
-    const page = btn.getAttribute('data-dashboard-open');
-    document.querySelectorAll('.page-view').forEach(p => {
-      p.classList.remove('is-active');
-    });
-    const target = document.querySelector(`[data-page-view="${page}"]`);
-    if (target) {
-      target.classList.add('is-active');
-      window.scrollTo(0, 0);
-    }
-  });
-});
-</script>
+    <script src="script.js"></script>
 
 </body>
 </html>
