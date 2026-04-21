@@ -293,14 +293,17 @@ async function createUser({ name, email, password, avatarUrl = "", subscriptionU
 }
 
 function normalizeSubscriptionStatus(active, status, expiresAt) {
+  if (expiresAt) {
+    const expiresTime = new Date(expiresAt).getTime();
+    if (!Number.isNaN(expiresTime) && expiresTime < Date.now()) {
+      return "expired";
+    }
+  }
   if (active) {
     return "active";
   }
   if (status) {
     return String(status).toLowerCase();
-  }
-  if (expiresAt) {
-    return new Date(expiresAt).getTime() > Date.now() ? "active" : "expired";
   }
   return "pending";
 }
@@ -828,8 +831,15 @@ async function updateUserAdminControls(userId, payload = {}) {
     typeof payload.subscriptionActive === "boolean"
       ? payload.subscriptionActive
       : nextStatus === "active";
-  const nextExpires = payload.subscriptionExpires || null;
+  let nextExpires = payload.subscriptionExpires || null;
   const nextSubscriptionUrl = String(payload.subscriptionUrl || "").trim();
+
+  if (nextStatus === "active") {
+    const expiresTime = nextExpires ? new Date(nextExpires).getTime() : NaN;
+    if (!nextExpires || Number.isNaN(expiresTime) || expiresTime < Date.now()) {
+      nextExpires = null;
+    }
+  }
 
   if (isUsingDatabase) {
     const result = await query(

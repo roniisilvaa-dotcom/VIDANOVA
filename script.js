@@ -580,13 +580,17 @@ function updateSubscriptionGate(session = currentSession) {
   const status = String(session?.subscription_status || "pending");
   if (subscriptionGateStatus) {
     subscriptionGateStatus.textContent =
-      status === "late" ? "Em atraso" : status === "inactive" ? "Inativa" : "Pendente";
+      status === "late"
+        ? "Em atraso"
+        : status === "inactive" || status === "expired"
+          ? "Inativa"
+          : "Pendente";
   }
   if (subscriptionGateCopy) {
     subscriptionGateCopy.textContent =
       status === "late"
         ? "Sua assinatura esta em atraso. Atualize o pagamento para reativar todos os recursos do app."
-        : status === "inactive"
+        : status === "inactive" || status === "expired"
           ? "Sua assinatura esta inativa. Seus dados continuam guardados, mas o app fica bloqueado ate a renovacao."
           : "Sua assinatura ainda nao foi ativada. Seus dados ficam salvos, mas o app so sera liberado quando o pagamento for confirmado.";
   }
@@ -600,7 +604,7 @@ function getSubscriptionLabel(session = currentSession) {
   if (status === "late") {
     return "Pagamento em atraso";
   }
-  if (status === "inactive") {
+  if (status === "inactive" || status === "expired") {
     return "Assinatura inativa";
   }
   return "Aguardando ativacao";
