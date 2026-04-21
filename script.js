@@ -200,6 +200,7 @@ const installChromeButton = document.querySelector("#install-chrome-button");
 const userGreeting = document.querySelector("#user-greeting");
 const logoutButton = document.querySelector("#logout-button");
 const settingsButton = document.querySelector("#settings-button");
+const homeButton = document.querySelector("#home-button");
 const topbarAvatar = document.querySelector("#topbar-avatar");
 const financeIncomeInput = document.querySelector("#finance-income-input");
 const financeExpenseInput = document.querySelector("#finance-expense-input");
@@ -2346,6 +2347,12 @@ if (settingsAccentColor) {
 if (settingsButton) {
   settingsButton.addEventListener("click", () => {
     setActivePage("configuracoes");
+  });
+}
+
+if (homeButton) {
+  homeButton.addEventListener("click", () => {
+    setActivePage("dashboard");
   });
 }
 

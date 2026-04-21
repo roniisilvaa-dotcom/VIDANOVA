@@ -85,6 +85,7 @@
       <main class="main-content">
         <section class="app-topbar">
           <div>
+            <button id="home-button" class="home-link-button" type="button">Vida Nova</button>
             <p class="eyebrow">Acesso da usuaria</p>
             <h3 id="user-greeting">Bem-vinda</h3>
           </div>
@@ -111,7 +112,7 @@
           </div>
         </section>
 
-        <section class="preferences-card quick-controls">
+        <section class="preferences-card quick-controls hidden-home-control" aria-hidden="true">
           <div class="preference-group">
             <span class="preference-label">Tema</span>
             <div class="toggle-row">
@@ -129,7 +130,7 @@
           </div>
         </section>
 
-        <section class="install-banner" id="install-banner">
+        <section class="install-banner hidden-home-control" id="install-banner" aria-hidden="true">
           <div>
             <p class="eyebrow">Versao atual</p>
             <h3>Primeira versao visual do produto em foco</h3>
@@ -165,12 +166,12 @@
           </header>
 
           <section class="workspace-card-grid">
-            <button class="workspace-card workspace-card-planner is-featured" type="button" data-dashboard-open="dashboard">
+            <button class="workspace-card workspace-card-planner is-featured" type="button" data-dashboard-open="agenda">
               <div class="workspace-card-cover">
                 <span class="workspace-card-badge">Meu planner</span>
               </div>
               <strong>My Planner</strong>
-              <small>Entrada principal do app</small>
+              <small>Abra e edite sua planner pessoal</small>
             </button>
 
             <button class="workspace-card workspace-card-body" type="button" data-dashboard-open="corpo">
@@ -182,7 +183,7 @@
             <button class="workspace-card workspace-card-agenda" type="button" data-dashboard-open="agenda">
               <div class="workspace-card-cover"></div>
               <strong>Dia a Dia | Agenda</strong>
-              <small id="agenda-next-meta">Escolha um dia no calendario</small>
+              <small id="agenda-next-meta">Abra a agenda e edite seus compromissos</small>
             </button>
 
             <button class="workspace-card workspace-card-finance" type="button" data-dashboard-open="financas">
