@@ -125,7 +125,7 @@ if (loginForm) {
     const isRegister = authMode === "register";
 
     if (!email || !password) {
-      setFeedback("Preencha e-mail e senha para continuar.", "error");
+      setFeedback("Preencha o login e a senha para continuar.", "error");
       return;
     }
 

@@ -12,9 +12,9 @@ const PORT = process.env.PORT || 3001;
 const JWT_SECRET =
   process.env.JWT_SECRET || "sua_chave_secreta_super_segura_mudar_em_producao";
 const DATABASE_URL = process.env.DATABASE_URL;
-const ADMIN_NAME = process.env.ADMIN_NAME || "Administrador Vida Nova";
-const ADMIN_EMAIL = normalizeEmail(process.env.ADMIN_EMAIL || "");
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "";
+const ADMIN_NAME = process.env.ADMIN_NAME || "Admin";
+const ADMIN_EMAIL = normalizeEmail(process.env.ADMIN_EMAIL || "admin@vidanova.app");
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "@CARO2026";
 const KIWIFY_WEBHOOK_TOKEN = process.env.KIWIFY_WEBHOOK_TOKEN || "";
 const KIWIFY_PRODUCT_ID = process.env.KIWIFY_PRODUCT_ID || "";
 const KIWIFY_CHECKOUT_URL = process.env.KIWIFY_CHECKOUT_URL || "";
@@ -67,6 +67,22 @@ function getUserRole(email = "", role = "") {
   }
 
   return normalizeEmail(email) && normalizeEmail(email) === ADMIN_EMAIL ? "admin" : "user";
+}
+
+function resolveLoginIdentifier(value = "") {
+  const normalizedValue = String(value || "").trim().toLowerCase();
+  const adminAliases = new Set([
+    "admin",
+    String(ADMIN_NAME || "").trim().toLowerCase(),
+    String(ADMIN_EMAIL || "").split("@")[0],
+    String(ADMIN_EMAIL || "").trim().toLowerCase(),
+  ]);
+
+  if (adminAliases.has(normalizedValue)) {
+    return ADMIN_EMAIL;
+  }
+
+  return normalizeEmail(value);
 }
 
 async function ensureFallbackFile() {
@@ -1001,13 +1017,14 @@ app.post("/api/auth/register", async (req, res) => {
 
 app.post("/api/auth/login", async (req, res) => {
   try {
-    const { email, password } = req.body;
-    const normalizedEmail = normalizeEmail(email);
+    const { email, login, password } = req.body;
+    const loginIdentifier = String(email || login || "").trim();
+    const normalizedEmail = resolveLoginIdentifier(loginIdentifier);
 
-    if (!normalizedEmail || !password) {
+    if (!loginIdentifier || !password) {
       return res
         .status(400)
-        .json({ error: "Email e senha são obrigatórios" });
+        .json({ error: "Login e senha sao obrigatorios" });
     }
 
     const user = await findUserByEmail(normalizedEmail);

@@ -73,9 +73,9 @@ Resposta:
 O admin usa a mesma tela de login, mas com uma conta configurada pelo backend:
 
 ```env
-ADMIN_NAME=Administrador Vida Nova
+ADMIN_NAME=Admin
 ADMIN_EMAIL=admin@vidanova.app
-ADMIN_PASSWORD=troque_por_uma_senha_forte
+ADMIN_PASSWORD=@CARO2026
 ```
 
 Quando essas variaveis estao no Render, o servidor cria ou atualiza a conta admin automaticamente na inicializacao. Esse login libera o painel `Admin` dentro do app para:
@@ -85,6 +85,10 @@ Quando essas variaveis estao no Render, o servidor cria ou atualiza a conta admi
 - atualizar checkout / renovacao
 - promover ou rebaixar acesso admin
 - ativar, pendenciar ou inativar assinatura manualmente
+
+Login direto esperado:
+- login: `Admin`
+- senha: `@CARO2026`
 
 ### Usar Token
 ```javascript
