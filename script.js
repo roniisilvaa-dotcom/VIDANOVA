@@ -298,6 +298,8 @@ const installModal = document.querySelector("#install-modal");
 const installModalClose = document.querySelector("#install-modal-close");
 const installModalChromeButton = document.querySelector("#install-modal-chrome-button");
 const installPlatformStatus = document.querySelector("#install-platform-status");
+const installLiveLink = document.querySelector("#install-live-link");
+const installModalLiveLink = document.querySelector("#install-modal-live-link");
 const calendarModalTasks = document.querySelector("#calendar-modal-tasks");
 const financeFilterButtons = document.querySelectorAll("[data-finance-filter]");
 const interactiveStats = document.querySelectorAll(".interactive-stat");
@@ -367,6 +369,7 @@ const ADMIN_SHADOW_TOKEN_KEY = "vida-nova:admin-shadow-token";
 const ADMIN_SHADOW_USER_KEY = "vida-nova:admin-shadow-user";
 const CLOUD_STATE_TYPE = "app_state";
 const CLOUD_STATE_KEY = "main";
+const FALLBACK_PUBLIC_APP_URL = "https://vidanova-1.onrender.com";
 
 let tasks = [...initialTasks];
 let verseIndex = new Date().getDate() % verses.length;
@@ -2010,6 +2013,31 @@ function openCalendarModal(dateKey, prefill = {}) {
   renderCalendar();
 }
 
+
+function getPublishedAppUrl() {
+  if (window.location.protocol === "file:") {
+    return FALLBACK_PUBLIC_APP_URL;
+  }
+
+  if (window.location.origin && /^https?:/i.test(window.location.origin)) {
+    return window.location.origin;
+  }
+
+  return FALLBACK_PUBLIC_APP_URL;
+}
+
+function refreshInstallLinks() {
+  const publishedUrl = getPublishedAppUrl();
+
+  [installLiveLink, installModalLiveLink].forEach((link) => {
+    if (!link) {
+      return;
+    }
+
+    link.href = publishedUrl;
+  });
+}
+
 function closeCalendarModal() {
   if (!calendarModal) {
     return;
@@ -2055,7 +2083,7 @@ function updateInstallUi() {
 
   if (context.isStandalone) {
     installPlatformStatus.textContent =
-      "O app ja esta instalado neste dispositivo. Se quiser, use o pacote ZIP apenas para backup local do projeto.";
+      "O app ja esta instalado neste dispositivo e continua usando a mesma conta e os mesmos dados salvos no Neon.";
     installModalChromeButton.textContent = "App ja instalado";
     installModalChromeButton.disabled = true;
     return;
@@ -2065,41 +2093,41 @@ function updateInstallUi() {
 
   if (deferredInstallPrompt) {
     installPlatformStatus.textContent =
-      "Este dispositivo aceita instalacao direta. Toque em instalar e confirme no navegador para adicionar o app.";
+      "Este dispositivo aceita instalacao direta. Instalando por aqui, a cliente continua usando a versao sincronizada com o Neon e os mesmos dados da conta.";
     installModalChromeButton.textContent = "Instalar agora";
     return;
   }
 
   if (context.isIos) {
     installPlatformStatus.textContent =
-      "No iPhone ou iPad, abra no Safari, toque em Compartilhar e depois em “Adicionar a Tela de Inicio”.";
+      "No iPhone ou iPad, abra a versao publicada no Safari, toque em Compartilhar e depois em “Adicionar a Tela de Inicio” para manter tudo sincronizado com o Neon.";
     installModalChromeButton.textContent = "Abrir instrucoes para iPhone/iPad";
     return;
   }
 
   if (context.isAndroid) {
     installPlatformStatus.textContent =
-      "No Android, use Chrome ou Edge, abra o menu do navegador e toque em “Instalar app” ou “Adicionar a tela inicial”.";
+      "No Android, use Chrome ou Edge na versao publicada e toque em “Instalar app” ou “Adicionar a tela inicial”. Assim os dados continuam iguais em qualquer navegador em que a cliente entrar.";
     installModalChromeButton.textContent = "Ver como instalar no Android";
     return;
   }
 
   if (context.isMac) {
     installPlatformStatus.textContent =
-      "No Mac, abra o app publicado em Chrome ou Edge e use o icone de instalacao na barra de endereco ou a opcao “Instalar app”.";
+      "No Mac, abra a versao publicada em Chrome ou Edge e use o icone de instalacao na barra de endereco ou a opcao “Instalar app”. Nao use o ZIP para a rotina da cliente.";
     installModalChromeButton.textContent = "Ver como instalar no Mac";
     return;
   }
 
   if (context.isWindows) {
     installPlatformStatus.textContent =
-      "No Windows, abra o app em Chrome ou Edge e use o menu do navegador para instalar como aplicativo.";
+      "No Windows, abra a versao publicada em Chrome ou Edge e use o menu do navegador para instalar como aplicativo. Isso mantem login, arquivos e banco sincronizados.";
     installModalChromeButton.textContent = "Ver como instalar no Windows";
     return;
   }
 
   installPlatformStatus.textContent =
-    "Abra este link publicado em um navegador compativel com PWA para instalar o app. Em iPhone/iPad a instalacao e manual; em Android, Mac e Windows pode haver prompt automatico.";
+    "Use sempre a versao publicada do app para instalar. Ela e a que continua conectada ao Neon, ao login da usuaria e aos dados salvos em qualquer navegador ou desktop.";
   installModalChromeButton.textContent = "Ver instrucoes";
 }
 
