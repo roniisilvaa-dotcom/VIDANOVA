@@ -218,6 +218,11 @@ const adminTotalUsers = document.querySelector("#admin-total-users");
 const adminActiveUsers = document.querySelector("#admin-active-users");
 const adminPendingUsers = document.querySelector("#admin-pending-users");
 const adminInactiveUsers = document.querySelector("#admin-inactive-users");
+const adminAdminUsers = document.querySelector("#admin-admin-users");
+const adminSearchInput = document.querySelector("#admin-search-input");
+const adminStatusFilter = document.querySelector("#admin-status-filter");
+const adminRoleFilter = document.querySelector("#admin-role-filter");
+const adminActivityList = document.querySelector("#admin-activity-list");
 const goHomeButtons = document.querySelectorAll("[data-go-home]");
 const topbarAvatar = document.querySelector("#topbar-avatar");
 const topbarEmail = document.querySelector("#topbar-email");
@@ -384,6 +389,8 @@ let plannerBoardStore = JSON.parse(localStorage.getItem("vida-nova:planner-board
 let activeModule = null;
 let activePage = "dashboard";
 let currentSession = null;
+let adminUsersCache = [];
+let adminActivityCache = [];
 let syncTimeoutId = null;
 let syncInFlight = null;
 let isHydratingCloudState = false;
@@ -616,6 +623,9 @@ function renderAdminSummary(summary = {}) {
   if (adminInactiveUsers) {
     adminInactiveUsers.textContent = String(summary.inactiveUsers || 0);
   }
+  if (adminAdminUsers) {
+    adminAdminUsers.textContent = String(summary.adminUsers || 0);
+  }
 }
 
 function createAdminUserRow(user) {
@@ -636,6 +646,11 @@ function createAdminUserRow(user) {
         <span class="admin-badge">${escapeHtml(user.role || "user")}</span>
         <span class="admin-badge">${escapeHtml(user.subscription_status || "pending")}</span>
       </div>
+    </div>
+    <div class="admin-user-meta">
+      <span>Entradas salvas: ${escapeHtml(String(user.data_entries || 0))}</span>
+      <span>Criada em: ${escapeHtml(formatAdminDate(user.created_at))}</span>
+      <span>Ultima atividade: ${escapeHtml(formatAdminDateTime(user.last_activity_at))}</span>
     </div>
     <div class="admin-user-controls">
       <label>
@@ -671,7 +686,53 @@ function createAdminUserRow(user) {
   return article;
 }
 
-function renderAdminUsers(users = []) {
+function formatAdminDate(value) {
+  if (!value) {
+    return "—";
+  }
+
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) {
+    return "—";
+  }
+
+  return date.toLocaleDateString("pt-BR");
+}
+
+function formatAdminDateTime(value) {
+  if (!value) {
+    return "Sem registro";
+  }
+
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) {
+    return "Sem registro";
+  }
+
+  return date.toLocaleString("pt-BR");
+}
+
+function getFilteredAdminUsers() {
+  const query = String(adminSearchInput?.value || "").trim().toLowerCase();
+  const status = String(adminStatusFilter?.value || "all");
+  const role = String(adminRoleFilter?.value || "all");
+
+  return adminUsersCache.filter((user) => {
+    const matchesQuery =
+      !query ||
+      String(user.name || "").toLowerCase().includes(query) ||
+      String(user.email || "").toLowerCase().includes(query);
+    const matchesStatus =
+      status === "all" ||
+      (status === "inactive"
+        ? ["inactive", "expired"].includes(String(user.subscription_status || ""))
+        : String(user.subscription_status || "") === status);
+    const matchesRole = role === "all" || String(user.role || "user") === role;
+    return matchesQuery && matchesStatus && matchesRole;
+  });
+}
+
+function renderAdminUsers(users = adminUsersCache) {
   if (!adminUsersList) {
     return;
   }
@@ -688,6 +749,30 @@ function renderAdminUsers(users = []) {
   });
 }
 
+function renderAdminActivity(activity = adminActivityCache) {
+  if (!adminActivityList) {
+    return;
+  }
+
+  adminActivityList.innerHTML = "";
+
+  if (!activity.length) {
+    adminActivityList.innerHTML = '<div class="admin-empty-state">Ainda nao ha atividades registradas.</div>';
+    return;
+  }
+
+  activity.forEach((item) => {
+    const entry = document.createElement("article");
+    entry.className = "admin-activity-item";
+    entry.innerHTML = `
+      <strong>${escapeHtml(item.action || "atividade")}</strong>
+      <div>${escapeHtml(item.details || "Sem detalhes.")}</div>
+      <small>${escapeHtml(item.name || item.email || "Sistema")} • ${escapeHtml(formatAdminDateTime(item.created_at))}</small>
+    `;
+    adminActivityList.appendChild(entry);
+  });
+}
+
 async function loadAdminDashboard() {
   if (!isAdminSession()) {
     return;
@@ -695,13 +780,17 @@ async function loadAdminDashboard() {
 
   try {
     setFeedback(adminFeedback, "Atualizando painel admin...");
-    const [summaryResponse, usersResponse] = await Promise.all([
+    const [summaryResponse, usersResponse, activityResponse] = await Promise.all([
       apiPost("/api/admin/summary", { token: getAuthToken() }),
       apiPost("/api/admin/users", { token: getAuthToken() }),
+      apiPost("/api/admin/activity", { token: getAuthToken() }),
     ]);
 
+    adminUsersCache = usersResponse.users || [];
+    adminActivityCache = activityResponse.activity || [];
     renderAdminSummary(summaryResponse.summary || {});
-    renderAdminUsers(usersResponse.users || []);
+    renderAdminUsers(getFilteredAdminUsers());
+    renderAdminActivity(adminActivityCache);
     setFeedback(adminFeedback, "Painel admin atualizado.", "success");
   } catch (error) {
     setFeedback(adminFeedback, error.message, "error");
@@ -2865,6 +2954,20 @@ if (adminRefreshUsers) {
     loadAdminDashboard();
   });
 }
+
+[adminSearchInput, adminStatusFilter, adminRoleFilter].forEach((control) => {
+  if (!control) {
+    return;
+  }
+
+  control.addEventListener("input", () => {
+    renderAdminUsers(getFilteredAdminUsers());
+  });
+
+  control.addEventListener("change", () => {
+    renderAdminUsers(getFilteredAdminUsers());
+  });
+});
 
 interactiveStats.forEach((card) => {
   card.addEventListener("click", () => {

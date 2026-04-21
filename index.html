@@ -1192,6 +1192,10 @@
                 <span class="metric-label">Inativas / atraso</span>
                 <strong id="admin-inactive-users">0</strong>
               </article>
+              <article class="settings-card">
+                <span class="metric-label">Admins</span>
+                <strong id="admin-admin-users">0</strong>
+              </article>
             </div>
 
             <article class="settings-card admin-users-card">
@@ -1202,8 +1206,42 @@
                 </div>
                 <button id="admin-refresh-users" class="ghost-button" type="button">Atualizar</button>
               </div>
+              <div class="admin-toolbar">
+                <label>
+                  Buscar
+                  <input id="admin-search-input" type="search" placeholder="Nome ou email" />
+                </label>
+                <label>
+                  Status
+                  <select id="admin-status-filter">
+                    <option value="all">Todos</option>
+                    <option value="active">Ativas</option>
+                    <option value="pending">Pendentes</option>
+                    <option value="late">Em atraso</option>
+                    <option value="inactive">Inativas</option>
+                  </select>
+                </label>
+                <label>
+                  Papel
+                  <select id="admin-role-filter">
+                    <option value="all">Todos</option>
+                    <option value="admin">Admins</option>
+                    <option value="user">Usuarias</option>
+                  </select>
+                </label>
+              </div>
               <p id="admin-feedback" class="settings-feedback"></p>
               <div class="admin-users-list" id="admin-users-list"></div>
+            </article>
+
+            <article class="settings-card admin-users-card">
+              <div class="panel-heading">
+                <div>
+                  <p class="eyebrow">Atividade recente</p>
+                  <h3>Ultimos movimentos no app</h3>
+                </div>
+              </div>
+              <div id="admin-activity-list" class="admin-activity-list"></div>
             </article>
           </section>
         </section>

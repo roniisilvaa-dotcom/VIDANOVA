@@ -733,17 +733,41 @@ async function ensureAdminUser() {
 async function listUsersForAdmin() {
   if (isUsingDatabase) {
     const result = await query(
-      `SELECT id, name, email, role, avatar_url, subscription_url, subscription_active, subscription_status, subscription_expires, created_at, updated_at
+      `SELECT
+         users.id,
+         users.name,
+         users.email,
+         users.role,
+         users.avatar_url,
+         users.subscription_url,
+         users.subscription_active,
+         users.subscription_status,
+         users.subscription_expires,
+         users.created_at,
+         users.updated_at,
+         COUNT(app_data.id)::INTEGER AS data_entries,
+         MAX(activity_log.created_at) AS last_activity_at
        FROM users
+       LEFT JOIN app_data ON app_data.user_id = users.id
+       LEFT JOIN activity_log ON activity_log.user_id = users.id
+       GROUP BY users.id
        ORDER BY created_at DESC, id DESC`,
     );
     return result.rows;
   }
 
   const store = await readStore();
-  return [...store.users].sort(
-    (a, b) => new Date(b.created_at || 0).getTime() - new Date(a.created_at || 0).getTime(),
-  );
+  return [...store.users]
+    .map((user) => ({
+      ...user,
+      data_entries: store.appData.filter((item) => item.user_id === user.id).length,
+      last_activity_at:
+        [...store.activityLog]
+          .filter((item) => item.user_id === user.id)
+          .sort((a, b) => new Date(b.created_at || 0).getTime() - new Date(a.created_at || 0).getTime())[0]
+          ?.created_at || null,
+    }))
+    .sort((a, b) => new Date(b.created_at || 0).getTime() - new Date(a.created_at || 0).getTime());
 }
 
 async function getAdminSummary() {
@@ -759,6 +783,39 @@ async function getAdminSummary() {
     ).length,
     adminUsers: normalized.filter((user) => user.role === "admin").length,
   };
+}
+
+async function getRecentAdminActivity(limit = 25) {
+  if (isUsingDatabase) {
+    const result = await query(
+      `SELECT
+         activity_log.id,
+         activity_log.action,
+         activity_log.details,
+         activity_log.created_at,
+         users.email,
+         users.name
+       FROM activity_log
+       LEFT JOIN users ON users.id = activity_log.user_id
+       ORDER BY activity_log.created_at DESC
+       LIMIT $1`,
+      [limit],
+    );
+    return result.rows;
+  }
+
+  const store = await readStore();
+  return [...store.activityLog]
+    .sort((a, b) => new Date(b.created_at || 0).getTime() - new Date(a.created_at || 0).getTime())
+    .slice(0, limit)
+    .map((entry) => {
+      const user = store.users.find((item) => item.id === entry.user_id);
+      return {
+        ...entry,
+        email: user?.email || "",
+        name: user?.name || "",
+      };
+    });
 }
 
 async function updateUserAdminControls(userId, payload = {}) {
@@ -1246,11 +1303,36 @@ app.post("/api/admin/users", async (req, res) => {
     const { token } = req.body;
     await requireAuthorizedUser(token, { requireAdmin: true });
 
-    const users = (await listUsersForAdmin()).map((user) => buildPublicUser(user));
+    const users = (await listUsersForAdmin()).map((user) => ({
+      ...buildPublicUser(user),
+      created_at: user.created_at || null,
+      updated_at: user.updated_at || null,
+      data_entries: Number(user.data_entries || 0),
+      last_activity_at: user.last_activity_at || null,
+    }));
 
     res.json({
       success: true,
       users,
+      storageMode: isUsingDatabase ? "neon" : "fallback",
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(error.status || 401).json({
+      error: error.message || "Nao autorizado",
+      user: error.user || null,
+    });
+  }
+});
+
+app.post("/api/admin/activity", async (req, res) => {
+  try {
+    const { token } = req.body;
+    await requireAuthorizedUser(token, { requireAdmin: true });
+
+    res.json({
+      success: true,
+      activity: await getRecentAdminActivity(),
       storageMode: isUsingDatabase ? "neon" : "fallback",
     });
   } catch (error) {
