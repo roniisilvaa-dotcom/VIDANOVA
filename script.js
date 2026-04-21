@@ -1,3 +1,4 @@
 function openPlanner(){
-  document.getElementById('planner-view').classList.toggle('hidden');
+  document.querySelectorAll('.page-view').forEach(p=>p.classList.remove('is-active'));
+  document.getElementById('planner-view').classList.add('is-active');
 }

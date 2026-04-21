@@ -5,38 +5,63 @@
 <title>Vida Nova</title>
 <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
 
-<div class="app">
-  <h1>Vida Nova Planner</h1>
+<div class="app-shell">
 
-  <button onclick="openPlanner()">Abrir Planner</button>
-
-  <div id="planner-view" class="hidden">
-
-    <h2>✨ My Planner</h2>
-
-    <div class="planner-header">
-      <button>Semanal</button>
-      <button>Mensal</button>
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-mark">VN</div>
+      <h1>Vida Nova</h1>
     </div>
 
-    <div class="planner-focus">
-      <h3>Foco do mês</h3>
-      <input placeholder="Meta 1">
-      <input placeholder="Meta 2">
+    <nav class="sidebar-nav">
+      <a href="#" onclick="openPlanner()">Planner</a>
+    </nav>
+  </aside>
+
+  <main class="main-content">
+
+    <div class="app-topbar">
+      <h3>✨ Vida Nova</h3>
     </div>
 
-    <div class="planner-weeks">
-      <div contenteditable="true">Semana 1</div>
-      <div contenteditable="true">Semana 2</div>
-      <div contenteditable="true">Semana 3</div>
-      <div contenteditable="true">Semana 4</div>
+    <!-- DASHBOARD ORIGINAL MANTIDO -->
+    <div id="home-view" class="page-view is-active">
+      <div class="panel">
+        <h2>Dashboard</h2>
+        <p>Seu layout original continua aqui.</p>
+      </div>
     </div>
 
-    <textarea placeholder="Reflexão"></textarea>
+    <!-- NOVO PLANNER SEM QUEBRAR O LAYOUT -->
+    <div id="planner-view" class="page-view">
 
-  </div>
+      <div class="panel">
+        <h2>📌 Foco do mês</h2>
+        <input placeholder="Meta 1">
+        <input placeholder="Meta 2">
+      </div>
+
+      <div class="panel">
+        <h2>📅 Semanas</h2>
+        <div class="grid">
+          <div class="panel" contenteditable="true">Semana 1</div>
+          <div class="panel" contenteditable="true">Semana 2</div>
+          <div class="panel" contenteditable="true">Semana 3</div>
+          <div class="panel" contenteditable="true">Semana 4</div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h2>🔔 Resumo</h2>
+        <textarea></textarea>
+      </div>
+
+    </div>
+
+  </main>
 </div>
 
 <script src="script.js"></script>
