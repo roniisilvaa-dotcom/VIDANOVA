@@ -67,6 +67,7 @@
           <a href="#corpo" data-page-link="corpo">Autocuidado</a>
           <a href="#viagens" data-page-link="viagens">Viagens</a>
           <a href="#espiritual" data-page-link="espiritual">Espiritual</a>
+          <a href="#admin" data-page-link="admin" id="sidebar-admin-link" class="hidden">Admin</a>
           <a href="#configuracoes" data-page-link="configuracoes">Configuracoes</a>
         </nav>
 
@@ -113,6 +114,23 @@
           <div class="verse-banner-copy">
             <strong id="headline-verse-text">Entrega o teu caminho ao Senhor; confia nele, e ele o fara.</strong>
             <small id="headline-verse-reference">Salmos 37:5</small>
+          </div>
+        </section>
+
+        <section id="subscription-gate" class="panel subscription-gate hidden" aria-hidden="true">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">Assinatura</p>
+              <h3>Aguardando ativacao da conta</h3>
+            </div>
+            <span id="subscription-gate-status" class="tag">Pendente</span>
+          </div>
+          <p id="subscription-gate-copy" class="install-copy">
+            Sua assinatura ainda nao foi ativada. Assim que a Kiwify confirmar o pagamento, seu acesso completo sera liberado automaticamente.
+          </p>
+          <div class="install-actions">
+            <button id="subscription-renew-button" class="primary-button" type="button">Renovar assinatura</button>
+            <button id="subscription-open-settings" class="ghost-button" type="button">Abrir configuracoes</button>
           </div>
         </section>
 
@@ -1120,7 +1138,67 @@
                 </div>
                 <p class="settings-feedback">Use o link de renovacao da Kiwify ou do seu checkout para que a cliente consiga renovar por aqui.</p>
               </article>
+
+              <article id="admin-shortcut-card" class="settings-card hidden" aria-hidden="true">
+                <div class="panel-heading">
+                  <div>
+                    <p class="eyebrow">Administracao</p>
+                    <h3>Painel administrativo</h3>
+                  </div>
+                  <span class="tag">ADM</span>
+                </div>
+                <p class="settings-feedback">Acesse a lista de usuarias, acompanhe a assinatura e ajuste status diretamente por aqui.</p>
+                <div class="settings-inline-actions">
+                  <button id="admin-open-panel" class="primary-button" type="button">Abrir painel admin</button>
+                </div>
+              </article>
             </div>
+          </section>
+        </section>
+
+        <section class="page-view" data-page-view="admin" id="admin">
+          <div class="page-return-bar">
+            <button class="ghost-button page-return-button" type="button" data-go-home>← Voltar</button>
+          </div>
+          <section class="panel settings-panel admin-panel">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">Administracao do app</p>
+                <h3>Controle de usuarias e assinaturas</h3>
+              </div>
+              <span class="tag">ADM</span>
+            </div>
+
+            <div class="settings-grid admin-summary-grid">
+              <article class="settings-card">
+                <span class="metric-label">Total de usuarias</span>
+                <strong id="admin-total-users">0</strong>
+              </article>
+              <article class="settings-card">
+                <span class="metric-label">Ativas</span>
+                <strong id="admin-active-users">0</strong>
+              </article>
+              <article class="settings-card">
+                <span class="metric-label">Pendentes</span>
+                <strong id="admin-pending-users">0</strong>
+              </article>
+              <article class="settings-card">
+                <span class="metric-label">Inativas / atraso</span>
+                <strong id="admin-inactive-users">0</strong>
+              </article>
+            </div>
+
+            <article class="settings-card admin-users-card">
+              <div class="panel-heading">
+                <div>
+                  <p class="eyebrow">Usuarias cadastradas</p>
+                  <h3>Painel geral</h3>
+                </div>
+                <button id="admin-refresh-users" class="ghost-button" type="button">Atualizar</button>
+              </div>
+              <p id="admin-feedback" class="settings-feedback"></p>
+              <div class="admin-users-list" id="admin-users-list"></div>
+            </article>
           </section>
         </section>
         </div>
@@ -1132,6 +1210,7 @@
       <a href="#agenda" data-page-link="agenda">Agenda</a>
       <a href="#financas" data-page-link="financas">Financas</a>
       <a href="#espiritual" data-page-link="espiritual">Espiritual</a>
+      <a href="#admin" data-page-link="admin" id="mobile-admin-link" class="hidden">Admin</a>
       <a href="#configuracoes" data-page-link="configuracoes">Config</a>
     </nav>
 

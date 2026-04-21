@@ -69,6 +69,23 @@ Resposta:
 }
 ```
 
+### Login administrador
+O admin usa a mesma tela de login, mas com uma conta configurada pelo backend:
+
+```env
+ADMIN_NAME=Administrador Vida Nova
+ADMIN_EMAIL=admin@vidanova.app
+ADMIN_PASSWORD=troque_por_uma_senha_forte
+```
+
+Quando essas variaveis estao no Render, o servidor cria ou atualiza a conta admin automaticamente na inicializacao. Esse login libera o painel `Admin` dentro do app para:
+
+- listar todas as usuarias
+- acompanhar status de assinatura
+- atualizar checkout / renovacao
+- promover ou rebaixar acesso admin
+- ativar, pendenciar ou inativar assinatura manualmente
+
 ### Usar Token
 ```javascript
 // No frontend, salve o token
@@ -188,29 +205,48 @@ https://vida-nova.onrender.com
 
 ---
 
-## 💳 Integração Kiwifi (Pagamentos)
+## 💳 Integração Kiwify (Pagamentos)
 
 ### 1. Criar Produto
-1. Acesse painel Kiwifi
+1. Acesse painel Kiwify
 2. Crie produto "Vida Nova - Acesso Premium"
 3. Preço: R$ 37/mês (sugerido)
 4. Tipo: Assinatura recorrente
 
 ### 2. Configurar Webhook
-No Kiwifi → Configurações → Webhooks:
+No Kiwify → Configurações → Webhooks:
 ```
-URL: https://vida-nova.onrender.com/api/kiwifi/webhook
-Eventos: payment.approved, payment.cancelled
+URL: https://vida-nova.onrender.com/api/billing/kiwify/webhook
+Eventos: compra_aprovada, subscription_renewed, subscription_canceled, subscription_late, compra_reembolsada
+```
+
+Variáveis de ambiente necessárias:
+```env
+KIWIFY_WEBHOOK_TOKEN=token_configurado_no_webhook
+KIWIFY_PRODUCT_ID=opcional_para_filtrar_um_produto
+KIWIFY_CHECKOUT_URL=https://pay.kiwify.com.br/seu-checkout
 ```
 
 ### 3. Integrar no Frontend
 ```javascript
-// No index.html, adicione:
-function redirectToKiwifi() {
-  // Link do seu produto Kiwifi
-  window.location.href = 'https://kiwifi.com.br/seu-link';
-}
+// O app já usa o subscription_url da usuária para abrir renovação
+// e o webhook ativa/desativa o acesso automaticamente.
 ```
+
+### 4. Checklist rapido para publicar com Kiwify
+1. Crie o produto de assinatura na Kiwify.
+2. Copie o link oficial do checkout e salve em `KIWIFY_CHECKOUT_URL`.
+3. Crie um token do webhook e salve em `KIWIFY_WEBHOOK_TOKEN`.
+4. Se quiser limitar por produto, salve o id em `KIWIFY_PRODUCT_ID`.
+5. Aponte o webhook para:
+   - `https://SEU-APP.onrender.com/api/billing/kiwify/webhook`
+6. Habilite os eventos:
+   - `compra_aprovada`
+   - `subscription_renewed`
+   - `subscription_canceled`
+   - `subscription_late`
+   - `compra_reembolsada`
+7. Entre com o login admin e acompanhe as usuarias no painel `Admin`.
 
 ---
 
@@ -329,7 +365,7 @@ npm install
 - [ ] Importar dados
 - [ ] Notificações push
 - [ ] Integração WhatsApp
-- [ ] Dashboard admin
+- [x] Dashboard admin
 - [ ] Relatórios de uso
 - [ ] API pública (para integrações)
 

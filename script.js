@@ -197,10 +197,26 @@ const agendaSummaryInput = document.querySelector("#agenda-summary-input");
 const installBanner = document.querySelector("#install-banner");
 const installHelpButton = document.querySelector("#install-help-button");
 const installChromeButton = document.querySelector("#install-chrome-button");
+const subscriptionGate = document.querySelector("#subscription-gate");
+const subscriptionGateStatus = document.querySelector("#subscription-gate-status");
+const subscriptionGateCopy = document.querySelector("#subscription-gate-copy");
+const subscriptionRenewButton = document.querySelector("#subscription-renew-button");
+const subscriptionOpenSettings = document.querySelector("#subscription-open-settings");
 const userGreeting = document.querySelector("#user-greeting");
 const logoutButton = document.querySelector("#logout-button");
 const settingsButton = document.querySelector("#settings-button");
 const homeButton = document.querySelector("#home-button");
+const sidebarAdminLink = document.querySelector("#sidebar-admin-link");
+const mobileAdminLink = document.querySelector("#mobile-admin-link");
+const adminShortcutCard = document.querySelector("#admin-shortcut-card");
+const adminOpenPanel = document.querySelector("#admin-open-panel");
+const adminRefreshUsers = document.querySelector("#admin-refresh-users");
+const adminUsersList = document.querySelector("#admin-users-list");
+const adminFeedback = document.querySelector("#admin-feedback");
+const adminTotalUsers = document.querySelector("#admin-total-users");
+const adminActiveUsers = document.querySelector("#admin-active-users");
+const adminPendingUsers = document.querySelector("#admin-pending-users");
+const adminInactiveUsers = document.querySelector("#admin-inactive-users");
 const goHomeButtons = document.querySelectorAll("[data-go-home]");
 const topbarAvatar = document.querySelector("#topbar-avatar");
 const topbarEmail = document.querySelector("#topbar-email");
@@ -518,10 +534,188 @@ async function apiPost(url, payload) {
   const data = await response.json().catch(() => ({}));
 
   if (!response.ok) {
-    throw new Error(data.error || "Erro na comunicacao com o servidor.");
+    const error = new Error(data.error || "Erro na comunicacao com o servidor.");
+    error.status = response.status;
+    error.payload = data;
+    throw error;
   }
 
   return data;
+}
+
+function hasActiveSubscription(session = currentSession) {
+  return Boolean(session?.subscription_active);
+}
+
+function isAdminSession(session = currentSession) {
+  return Boolean(session?.is_admin || session?.role === "admin");
+}
+
+function updateSubscriptionGate(session = currentSession) {
+  if (!subscriptionGate) {
+    return;
+  }
+
+  const active = hasActiveSubscription(session);
+  subscriptionGate.classList.toggle("hidden", active);
+  subscriptionGate.setAttribute("aria-hidden", active ? "true" : "false");
+
+  if (active) {
+    return;
+  }
+
+  const status = String(session?.subscription_status || "pending");
+  if (subscriptionGateStatus) {
+    subscriptionGateStatus.textContent =
+      status === "late" ? "Em atraso" : status === "inactive" ? "Inativa" : "Pendente";
+  }
+  if (subscriptionGateCopy) {
+    subscriptionGateCopy.textContent =
+      status === "late"
+        ? "Sua assinatura esta em atraso. Atualize o pagamento para reativar todos os recursos do app."
+        : status === "inactive"
+          ? "Sua assinatura esta inativa. Renove para voltar a usar todas as areas do app."
+          : "Sua assinatura ainda nao foi ativada. Assim que a Kiwify confirmar o pagamento, seu acesso completo sera liberado automaticamente.";
+  }
+}
+
+function getSubscriptionLabel(session = currentSession) {
+  const status = String(session?.subscription_status || "pending");
+  if (status === "active") {
+    return "Conta ativa";
+  }
+  if (status === "late") {
+    return "Pagamento em atraso";
+  }
+  if (status === "inactive") {
+    return "Assinatura inativa";
+  }
+  return "Aguardando ativacao";
+}
+
+function setAdminVisibility(target, visible) {
+  if (!target) {
+    return;
+  }
+
+  target.classList.toggle("hidden", !visible);
+  target.setAttribute("aria-hidden", visible ? "false" : "true");
+}
+
+function renderAdminSummary(summary = {}) {
+  if (adminTotalUsers) {
+    adminTotalUsers.textContent = String(summary.totalUsers || 0);
+  }
+  if (adminActiveUsers) {
+    adminActiveUsers.textContent = String(summary.activeUsers || 0);
+  }
+  if (adminPendingUsers) {
+    adminPendingUsers.textContent = String(summary.pendingUsers || 0);
+  }
+  if (adminInactiveUsers) {
+    adminInactiveUsers.textContent = String(summary.inactiveUsers || 0);
+  }
+}
+
+function createAdminUserRow(user) {
+  const article = document.createElement("article");
+  article.className = "admin-user-row";
+
+  const expiresValue = user.subscription_expires
+    ? String(user.subscription_expires).slice(0, 10)
+    : "";
+
+  article.innerHTML = `
+    <div class="admin-user-main">
+      <div>
+        <strong>${escapeHtml(user.name || "Sem nome")}</strong>
+        <small>${escapeHtml(user.email || "")}</small>
+      </div>
+      <div class="admin-user-badges">
+        <span class="admin-badge">${escapeHtml(user.role || "user")}</span>
+        <span class="admin-badge">${escapeHtml(user.subscription_status || "pending")}</span>
+      </div>
+    </div>
+    <div class="admin-user-controls">
+      <label>
+        Papel
+        <select data-admin-role>
+          <option value="user"${user.role === "admin" ? "" : " selected"}>Usuaria</option>
+          <option value="admin"${user.role === "admin" ? " selected" : ""}>Admin</option>
+        </select>
+      </label>
+      <label>
+        Assinatura
+        <select data-admin-status>
+          <option value="active"${user.subscription_status === "active" ? " selected" : ""}>Ativa</option>
+          <option value="pending"${user.subscription_status === "pending" ? " selected" : ""}>Pendente</option>
+          <option value="late"${user.subscription_status === "late" ? " selected" : ""}>Em atraso</option>
+          <option value="inactive"${user.subscription_status === "inactive" || user.subscription_status === "expired" ? " selected" : ""}>Inativa</option>
+        </select>
+      </label>
+      <label>
+        Expira em
+        <input data-admin-expires type="date" value="${escapeHtml(expiresValue)}" />
+      </label>
+      <label>
+        Link checkout / renovacao
+        <input data-admin-subscription-url type="url" value="${escapeHtml(user.subscription_url || "")}" placeholder="https://..." />
+      </label>
+    </div>
+    <div class="admin-user-actions">
+      <button class="primary-button" type="button" data-admin-save="${escapeHtml(String(user.id))}">Salvar</button>
+    </div>
+  `;
+
+  return article;
+}
+
+function renderAdminUsers(users = []) {
+  if (!adminUsersList) {
+    return;
+  }
+
+  adminUsersList.innerHTML = "";
+
+  if (!users.length) {
+    adminUsersList.innerHTML = '<div class="admin-empty-state">Nenhuma usuaria cadastrada ainda.</div>';
+    return;
+  }
+
+  users.forEach((user) => {
+    adminUsersList.appendChild(createAdminUserRow(user));
+  });
+}
+
+async function loadAdminDashboard() {
+  if (!isAdminSession()) {
+    return;
+  }
+
+  try {
+    setFeedback(adminFeedback, "Atualizando painel admin...");
+    const [summaryResponse, usersResponse] = await Promise.all([
+      apiPost("/api/admin/summary", { token: getAuthToken() }),
+      apiPost("/api/admin/users", { token: getAuthToken() }),
+    ]);
+
+    renderAdminSummary(summaryResponse.summary || {});
+    renderAdminUsers(usersResponse.users || []);
+    setFeedback(adminFeedback, "Painel admin atualizado.", "success");
+  } catch (error) {
+    setFeedback(adminFeedback, error.message, "error");
+  }
+}
+
+function syncAdminUi(session = currentSession) {
+  const adminActive = isAdminSession(session);
+  setAdminVisibility(sidebarAdminLink, adminActive);
+  setAdminVisibility(mobileAdminLink, adminActive);
+  setAdminVisibility(adminShortcutCard, adminActive);
+
+  if (!adminActive && activePage === "admin") {
+    setActivePage("dashboard", false);
+  }
 }
 
 function getSavedCardsState() {
@@ -703,7 +897,7 @@ function applyCloudState(state) {
 }
 
 function scheduleCloudSync() {
-  if (isHydratingCloudState || !getAuthToken()) {
+  if (isHydratingCloudState || !getAuthToken() || !hasActiveSubscription()) {
     return;
   }
 
@@ -732,6 +926,11 @@ async function initializeAuthenticatedState() {
   try {
     const verifyResponse = await apiPost("/api/auth/verify", { token });
     persistUserSession(verifyResponse.user, token);
+    if (!hasActiveSubscription(verifyResponse.user)) {
+      hydrateSessionUI(verifyResponse.user);
+      setActivePage("configuracoes", false);
+      return;
+    }
   } catch (error) {
     clearAuthSession();
     window.location.href = "./login.html";
@@ -752,6 +951,15 @@ async function initializeAuthenticatedState() {
       scheduleCloudSync();
     }
   } catch (error) {
+    if (error.status === 403) {
+      if (error.payload?.user) {
+        persistUserSession(error.payload.user, token);
+        hydrateSessionUI(error.payload.user);
+        setActivePage("configuracoes", false);
+      }
+      return;
+    }
+
     console.warn("Nao foi possivel carregar dados da nuvem.", error);
     const localState = JSON.parse(localStorage.getItem("vida-nova:cloud-state") || "null");
     if (localState) {
@@ -781,7 +989,8 @@ if (changeVerseButton) {
 
 function setActivePage(pageName, syncHash = true) {
   const availablePages = Array.from(pageViews).map((view) => view.dataset.pageView);
-  const nextPage = availablePages.includes(pageName) ? pageName : "dashboard";
+  const requestedPage = availablePages.includes(pageName) ? pageName : "dashboard";
+  const nextPage = requestedPage === "admin" && !isAdminSession() ? "dashboard" : requestedPage;
   activePage = nextPage;
 
   pageViews.forEach((view) => {
@@ -794,6 +1003,10 @@ function setActivePage(pageName, syncHash = true) {
 
   if (syncHash && window.location.hash !== `#${nextPage}`) {
     history.replaceState(null, "", `#${nextPage}`);
+  }
+
+  if (nextPage === "admin" && isAdminSession()) {
+    loadAdminDashboard();
   }
 
   window.scrollTo({ top: 0, behavior: "smooth" });
@@ -2173,12 +2386,12 @@ function hydrateSessionUI(session) {
     settingsSubscriptionUrl.value = session.subscription_url || "";
   }
   if (settingsSubscriptionStatus) {
-    settingsSubscriptionStatus.textContent = session.subscription_active
-      ? "Conta ativa"
-      : "Aguardando ativacao";
+    settingsSubscriptionStatus.textContent = getSubscriptionLabel(session);
   }
   if (topbarPlan) {
-    topbarPlan.textContent = session.subscription_active ? "Conta ativa" : "Aguardando ativacao";
+    topbarPlan.textContent = isAdminSession(session)
+      ? `Admin • ${getSubscriptionLabel(session)}`
+      : getSubscriptionLabel(session);
   }
   if (settingsRenewalLabel) {
     settingsRenewalLabel.textContent = session.subscription_url
@@ -2191,6 +2404,9 @@ function hydrateSessionUI(session) {
   if (settingsOpenRenewal) {
     settingsOpenRenewal.disabled = !session.subscription_url;
   }
+
+  updateSubscriptionGate(session);
+  syncAdminUi(session);
 }
 
 function registerServiceWorker() {
@@ -2625,6 +2841,29 @@ if (settingsOpenInstall) {
   });
 }
 
+if (subscriptionRenewButton) {
+  subscriptionRenewButton.addEventListener("click", openRenewalLink);
+}
+
+if (subscriptionOpenSettings) {
+  subscriptionOpenSettings.addEventListener("click", () => {
+    setActivePage("configuracoes");
+  });
+}
+
+if (adminOpenPanel) {
+  adminOpenPanel.addEventListener("click", () => {
+    setActivePage("admin");
+    loadAdminDashboard();
+  });
+}
+
+if (adminRefreshUsers) {
+  adminRefreshUsers.addEventListener("click", () => {
+    loadAdminDashboard();
+  });
+}
+
 interactiveStats.forEach((card) => {
   card.addEventListener("click", () => {
     const target = document.querySelector(card.dataset.scrollTarget || "");
@@ -3028,6 +3267,49 @@ if (logoutButton) {
 
     clearAuthSession();
     window.location.href = "./login.html";
+  });
+}
+
+if (adminUsersList) {
+  adminUsersList.addEventListener("click", async (event) => {
+    const saveButton = event.target.closest("[data-admin-save]");
+    if (!saveButton) {
+      return;
+    }
+
+    const row = saveButton.closest(".admin-user-row");
+    const userId = saveButton.dataset.adminSave;
+    if (!row || !userId) {
+      return;
+    }
+
+    const role = row.querySelector("[data-admin-role]")?.value || "user";
+    const subscriptionStatus = row.querySelector("[data-admin-status]")?.value || "pending";
+    const subscriptionExpires = row.querySelector("[data-admin-expires]")?.value || null;
+    const subscriptionUrl = row.querySelector("[data-admin-subscription-url]")?.value.trim() || "";
+
+    saveButton.disabled = true;
+    setFeedback(adminFeedback, "Salvando ajuste da usuaria...");
+
+    try {
+      const response = await apiPost("/api/admin/users/update", {
+        token: getAuthToken(),
+        userId: Number(userId),
+        role,
+        subscriptionStatus,
+        subscriptionActive: subscriptionStatus === "active",
+        subscriptionExpires,
+        subscriptionUrl,
+      });
+
+      renderAdminSummary(response.summary || {});
+      await loadAdminDashboard();
+      setFeedback(adminFeedback, "Controle da usuaria atualizado.", "success");
+    } catch (error) {
+      setFeedback(adminFeedback, error.message, "error");
+    } finally {
+      saveButton.disabled = false;
+    }
   });
 }
 

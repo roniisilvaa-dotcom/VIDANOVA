@@ -12,6 +12,12 @@ const PORT = process.env.PORT || 3001;
 const JWT_SECRET =
   process.env.JWT_SECRET || "sua_chave_secreta_super_segura_mudar_em_producao";
 const DATABASE_URL = process.env.DATABASE_URL;
+const ADMIN_NAME = process.env.ADMIN_NAME || "Administrador Vida Nova";
+const ADMIN_EMAIL = normalizeEmail(process.env.ADMIN_EMAIL || "");
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "";
+const KIWIFY_WEBHOOK_TOKEN = process.env.KIWIFY_WEBHOOK_TOKEN || "";
+const KIWIFY_PRODUCT_ID = process.env.KIWIFY_PRODUCT_ID || "";
+const KIWIFY_CHECKOUT_URL = process.env.KIWIFY_CHECKOUT_URL || "";
 const DATA_FILE = path.join(__dirname, "vida-nova-fallback.json");
 
 const isUsingDatabase = Boolean(DATABASE_URL);
@@ -55,6 +61,14 @@ function getDefaultStore() {
   };
 }
 
+function getUserRole(email = "", role = "") {
+  if (String(role || "").toLowerCase() === "admin") {
+    return "admin";
+  }
+
+  return normalizeEmail(email) && normalizeEmail(email) === ADMIN_EMAIL ? "admin" : "user";
+}
+
 async function ensureFallbackFile() {
   if (!fs.existsSync(DATA_FILE)) {
     await fsp.writeFile(DATA_FILE, JSON.stringify(getDefaultStore(), null, 2));
@@ -87,13 +101,24 @@ async function initDb() {
       name TEXT NOT NULL,
       email TEXT UNIQUE NOT NULL,
       password TEXT NOT NULL,
+      role TEXT DEFAULT 'user',
       avatar_url TEXT,
       subscription_url TEXT,
       subscription_active BOOLEAN DEFAULT FALSE,
+      subscription_status TEXT DEFAULT 'pending',
       subscription_expires TIMESTAMPTZ,
+      kiwify_customer_id TEXT,
+      kiwify_subscription_id TEXT,
+      kiwify_product_id TEXT,
+      kiwify_order_id TEXT,
       created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
       updated_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
     )
+  `);
+
+  await query(`
+    ALTER TABLE users
+    ADD COLUMN IF NOT EXISTS role TEXT DEFAULT 'user'
   `);
 
   await query(`
@@ -104,6 +129,31 @@ async function initDb() {
   await query(`
     ALTER TABLE users
     ADD COLUMN IF NOT EXISTS subscription_url TEXT
+  `);
+
+  await query(`
+    ALTER TABLE users
+    ADD COLUMN IF NOT EXISTS subscription_status TEXT DEFAULT 'pending'
+  `);
+
+  await query(`
+    ALTER TABLE users
+    ADD COLUMN IF NOT EXISTS kiwify_customer_id TEXT
+  `);
+
+  await query(`
+    ALTER TABLE users
+    ADD COLUMN IF NOT EXISTS kiwify_subscription_id TEXT
+  `);
+
+  await query(`
+    ALTER TABLE users
+    ADD COLUMN IF NOT EXISTS kiwify_product_id TEXT
+  `);
+
+  await query(`
+    ALTER TABLE users
+    ADD COLUMN IF NOT EXISTS kiwify_order_id TEXT
   `);
 
   await query(`
@@ -153,7 +203,7 @@ async function findUserByEmail(email) {
 async function findUserById(id) {
   if (isUsingDatabase) {
     const result = await query(
-      `SELECT id, name, email, avatar_url, subscription_url, subscription_active
+      `SELECT id, name, email, role, avatar_url, subscription_url, subscription_active, subscription_status, subscription_expires
        FROM users
        WHERE id = $1`,
       [id],
@@ -172,19 +222,23 @@ async function findUserById(id) {
     id: user.id,
     name: user.name,
     email: user.email,
+    role: getUserRole(user.email, user.role),
     avatar_url: user.avatar_url || "",
     subscription_url: user.subscription_url || "",
     subscription_active: user.subscription_active,
+    subscription_status: user.subscription_status || "pending",
+    subscription_expires: user.subscription_expires || null,
   };
 }
 
 async function createUser({ name, email, password, avatarUrl = "", subscriptionUrl = "" }) {
+  const role = getUserRole(email);
   if (isUsingDatabase) {
     const result = await query(
-      `INSERT INTO users (name, email, password, avatar_url, subscription_url)
-       VALUES ($1, $2, $3, $4, $5)
-       RETURNING id, name, email, avatar_url, subscription_url, subscription_active`,
-      [name, email, password, avatarUrl, subscriptionUrl],
+      `INSERT INTO users (name, email, password, role, avatar_url, subscription_url, subscription_status)
+       VALUES ($1, $2, $3, $4, $5, $6, 'pending')
+       RETURNING id, name, email, role, avatar_url, subscription_url, subscription_active, subscription_status, subscription_expires`,
+      [name, email, password, role, avatarUrl, subscriptionUrl || KIWIFY_CHECKOUT_URL],
     );
 
     return result.rows[0];
@@ -196,9 +250,11 @@ async function createUser({ name, email, password, avatarUrl = "", subscriptionU
     name,
     email,
     password,
+    role,
     avatar_url: avatarUrl,
-    subscription_url: subscriptionUrl,
+    subscription_url: subscriptionUrl || KIWIFY_CHECKOUT_URL,
     subscription_active: false,
+    subscription_status: "pending",
     subscription_expires: null,
     created_at: new Date().toISOString(),
     updated_at: new Date().toISOString(),
@@ -211,9 +267,164 @@ async function createUser({ name, email, password, avatarUrl = "", subscriptionU
     id: user.id,
     name: user.name,
     email: user.email,
+    role: getUserRole(user.email, user.role),
     avatar_url: user.avatar_url || "",
     subscription_url: user.subscription_url || "",
     subscription_active: user.subscription_active,
+    subscription_status: user.subscription_status || "pending",
+    subscription_expires: user.subscription_expires || null,
+  };
+}
+
+function normalizeSubscriptionStatus(active, status, expiresAt) {
+  if (active) {
+    return "active";
+  }
+  if (status) {
+    return String(status).toLowerCase();
+  }
+  if (expiresAt) {
+    return new Date(expiresAt).getTime() > Date.now() ? "active" : "expired";
+  }
+  return "pending";
+}
+
+function isSubscriptionActive(user) {
+  if (!user) {
+    return false;
+  }
+
+  const expiresAt = user.subscription_expires || null;
+  if (expiresAt && new Date(expiresAt).getTime() < Date.now()) {
+    return false;
+  }
+
+  return normalizeSubscriptionStatus(
+    user.subscription_active,
+    user.subscription_status,
+    expiresAt,
+  ) === "active";
+}
+
+function buildPublicUser(user) {
+  const role = getUserRole(user.email, user.role);
+  return {
+    id: user.id,
+    name: user.name,
+    email: user.email,
+    role,
+    is_admin: role === "admin",
+    avatar_url: user.avatar_url || "",
+    subscription_url: user.subscription_url || KIWIFY_CHECKOUT_URL || "",
+    subscription_active: isSubscriptionActive(user),
+    subscription_status: normalizeSubscriptionStatus(
+      user.subscription_active,
+      user.subscription_status,
+      user.subscription_expires,
+    ),
+    subscription_expires: user.subscription_expires || null,
+  };
+}
+
+function pickFirstString(candidates = []) {
+  const found = candidates.find((value) => typeof value === "string" && value.trim());
+  return found ? found.trim() : "";
+}
+
+function pickFirstObject(candidates = []) {
+  return candidates.find((value) => value && typeof value === "object") || null;
+}
+
+function resolveKiwifyEventType(payload) {
+  return pickFirstString([
+    payload?.event,
+    payload?.trigger,
+    payload?.type,
+    payload?.action,
+    payload?.event_name,
+  ]).toLowerCase();
+}
+
+function extractKiwifyPayload(payload) {
+  const customer = pickFirstObject([
+    payload?.customer,
+    payload?.Customer,
+    payload?.buyer,
+    payload?.buyer_data,
+    payload?.data?.customer,
+    payload?.data?.buyer,
+    payload?.order?.customer,
+    payload?.sale?.customer,
+    payload?.subscription?.customer,
+  ]);
+
+  const subscription = pickFirstObject([
+    payload?.subscription,
+    payload?.data?.subscription,
+  ]);
+
+  const order = pickFirstObject([
+    payload?.order,
+    payload?.sale,
+    payload?.data?.order,
+    payload?.data?.sale,
+  ]);
+
+  return {
+    eventType: resolveKiwifyEventType(payload),
+    email: normalizeEmail(
+      pickFirstString([
+        payload?.email,
+        payload?.customer_email,
+        payload?.buyer_email,
+        customer?.email,
+        customer?.mail,
+        order?.customer_email,
+        subscription?.email,
+      ]),
+    ),
+    name: pickFirstString([
+      payload?.name,
+      payload?.customer_name,
+      payload?.buyer_name,
+      customer?.name,
+      order?.customer_name,
+      subscription?.name,
+    ]),
+    customerId: pickFirstString([
+      payload?.customer_id,
+      customer?.id,
+      customer?.customer_id,
+    ]),
+    subscriptionId: pickFirstString([
+      payload?.subscription_id,
+      subscription?.id,
+      subscription?.subscription_id,
+    ]),
+    productId: pickFirstString([
+      payload?.product_id,
+      payload?.offer_id,
+      order?.product_id,
+      subscription?.product_id,
+    ]),
+    orderId: pickFirstString([
+      payload?.order_id,
+      payload?.sale_id,
+      order?.id,
+      order?.order_id,
+    ]),
+    expiresAt: pickFirstString([
+      payload?.subscription_expires_at,
+      payload?.expires_at,
+      subscription?.expires_at,
+      subscription?.next_charge_date,
+    ]),
+    status: pickFirstString([
+      payload?.status,
+      payload?.subscription_status,
+      subscription?.status,
+    ]),
+    raw: payload,
   };
 }
 
@@ -381,7 +592,7 @@ async function updateUserProfile(
       `UPDATE users
        SET ${updates.join(", ")}, updated_at = CURRENT_TIMESTAMP
        WHERE id = $${params.length}
-       RETURNING id, name, email, avatar_url, subscription_url, subscription_active`,
+       RETURNING id, name, email, role, avatar_url, subscription_url, subscription_active, subscription_status, subscription_expires`,
       params,
     );
 
@@ -422,10 +633,304 @@ async function updateUserProfile(
     id: user.id,
     name: user.name,
     email: user.email,
+    role: getUserRole(user.email, user.role),
     avatar_url: user.avatar_url || "",
     subscription_url: user.subscription_url || "",
     subscription_active: user.subscription_active,
+    subscription_status: user.subscription_status || "pending",
+    subscription_expires: user.subscription_expires || null,
   };
+}
+
+async function ensureAdminUser() {
+  if (!ADMIN_EMAIL || !ADMIN_PASSWORD) {
+    return null;
+  }
+
+  const hashedPassword = await bcrypt.hash(ADMIN_PASSWORD, 10);
+
+  if (isUsingDatabase) {
+    const existing = await query(`SELECT * FROM users WHERE email = $1 LIMIT 1`, [ADMIN_EMAIL]);
+
+    if (existing.rows[0]) {
+      const result = await query(
+        `UPDATE users
+         SET name = COALESCE(NULLIF($1, ''), name),
+             password = $2,
+             role = 'admin',
+             subscription_active = TRUE,
+             subscription_status = 'active',
+             subscription_url = COALESCE(NULLIF(subscription_url, ''), $3),
+             updated_at = CURRENT_TIMESTAMP
+         WHERE email = $4
+         RETURNING *`,
+        [ADMIN_NAME, hashedPassword, KIWIFY_CHECKOUT_URL || "", ADMIN_EMAIL],
+      );
+      return result.rows[0] || existing.rows[0];
+    }
+
+    const created = await query(
+      `INSERT INTO users (
+         name, email, password, role, avatar_url, subscription_url,
+         subscription_active, subscription_status, subscription_expires
+       ) VALUES ($1, $2, $3, 'admin', '', $4, TRUE, 'active', NULL)
+       RETURNING *`,
+      [ADMIN_NAME, ADMIN_EMAIL, hashedPassword, KIWIFY_CHECKOUT_URL || ""],
+    );
+
+    return created.rows[0] || null;
+  }
+
+  const store = await readStore();
+  let user = store.users.find((entry) => entry.email === ADMIN_EMAIL);
+
+  if (!user) {
+    user = {
+      id: store.counters.user++,
+      name: ADMIN_NAME,
+      email: ADMIN_EMAIL,
+      password: hashedPassword,
+      role: "admin",
+      avatar_url: "",
+      subscription_url: KIWIFY_CHECKOUT_URL || "",
+      subscription_active: true,
+      subscription_status: "active",
+      subscription_expires: null,
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+    };
+    store.users.push(user);
+  } else {
+    user.name = ADMIN_NAME || user.name;
+    user.password = hashedPassword;
+    user.role = "admin";
+    user.subscription_active = true;
+    user.subscription_status = "active";
+    user.subscription_url = user.subscription_url || KIWIFY_CHECKOUT_URL || "";
+    user.updated_at = new Date().toISOString();
+  }
+
+  await writeStore(store);
+  return user;
+}
+
+async function listUsersForAdmin() {
+  if (isUsingDatabase) {
+    const result = await query(
+      `SELECT id, name, email, role, avatar_url, subscription_url, subscription_active, subscription_status, subscription_expires, created_at, updated_at
+       FROM users
+       ORDER BY created_at DESC, id DESC`,
+    );
+    return result.rows;
+  }
+
+  const store = await readStore();
+  return [...store.users].sort(
+    (a, b) => new Date(b.created_at || 0).getTime() - new Date(a.created_at || 0).getTime(),
+  );
+}
+
+async function getAdminSummary() {
+  const users = await listUsersForAdmin();
+  const normalized = users.map((user) => buildPublicUser(user));
+
+  return {
+    totalUsers: normalized.length,
+    activeUsers: normalized.filter((user) => user.subscription_status === "active").length,
+    pendingUsers: normalized.filter((user) => user.subscription_status === "pending").length,
+    inactiveUsers: normalized.filter((user) =>
+      ["inactive", "expired", "late"].includes(user.subscription_status),
+    ).length,
+    adminUsers: normalized.filter((user) => user.role === "admin").length,
+  };
+}
+
+async function updateUserAdminControls(userId, payload = {}) {
+  const nextRole = payload.role === "admin" ? "admin" : "user";
+  const nextStatus = String(
+    payload.subscriptionStatus ||
+      (payload.subscriptionActive ? "active" : "inactive"),
+  ).toLowerCase();
+  const nextActive =
+    typeof payload.subscriptionActive === "boolean"
+      ? payload.subscriptionActive
+      : nextStatus === "active";
+  const nextExpires = payload.subscriptionExpires || null;
+  const nextSubscriptionUrl = String(payload.subscriptionUrl || "").trim();
+
+  if (isUsingDatabase) {
+    const result = await query(
+      `UPDATE users
+       SET role = $1,
+           subscription_active = $2,
+           subscription_status = $3,
+           subscription_expires = $4,
+           subscription_url = COALESCE(NULLIF($5, ''), subscription_url),
+           updated_at = CURRENT_TIMESTAMP
+       WHERE id = $6
+       RETURNING *`,
+      [nextRole, nextActive, nextStatus, nextExpires, nextSubscriptionUrl, userId],
+    );
+    return result.rows[0] || null;
+  }
+
+  const store = await readStore();
+  const user = store.users.find((entry) => Number(entry.id) === Number(userId));
+  if (!user) {
+    return null;
+  }
+
+  user.role = nextRole;
+  user.subscription_active = nextActive;
+  user.subscription_status = nextStatus;
+  user.subscription_expires = nextExpires;
+  user.subscription_url = nextSubscriptionUrl || user.subscription_url || "";
+  user.updated_at = new Date().toISOString();
+  await writeStore(store);
+  return user;
+}
+
+async function findUserForKiwifyEvent({ email, customerId, subscriptionId }) {
+  if (isUsingDatabase) {
+    const result = await query(
+      `SELECT * FROM users
+       WHERE email = $1
+          OR (kiwify_customer_id IS NOT NULL AND kiwify_customer_id = $2)
+          OR (kiwify_subscription_id IS NOT NULL AND kiwify_subscription_id = $3)
+       LIMIT 1`,
+      [email || "", customerId || "", subscriptionId || ""],
+    );
+
+    return result.rows[0] || null;
+  }
+
+  const store = await readStore();
+  return (
+    store.users.find(
+      (user) =>
+        (email && user.email === email) ||
+        (customerId && user.kiwify_customer_id === customerId) ||
+        (subscriptionId && user.kiwify_subscription_id === subscriptionId),
+    ) || null
+  );
+}
+
+async function updateSubscriptionFromKiwify(userId, details) {
+  const nextStatus = String(details.subscriptionStatus || "pending").toLowerCase();
+  const nextActive = nextStatus === "active";
+  const nextExpires = details.expiresAt || null;
+
+  if (isUsingDatabase) {
+    const result = await query(
+      `UPDATE users
+       SET subscription_active = $1,
+           subscription_status = $2,
+           subscription_expires = $3,
+           subscription_url = COALESCE(NULLIF($4, ''), subscription_url),
+           kiwify_customer_id = COALESCE(NULLIF($5, ''), kiwify_customer_id),
+           kiwify_subscription_id = COALESCE(NULLIF($6, ''), kiwify_subscription_id),
+           kiwify_product_id = COALESCE(NULLIF($7, ''), kiwify_product_id),
+           kiwify_order_id = COALESCE(NULLIF($8, ''), kiwify_order_id),
+           updated_at = CURRENT_TIMESTAMP
+       WHERE id = $9
+       RETURNING *`,
+      [
+        nextActive,
+        nextStatus,
+        nextExpires,
+        details.subscriptionUrl || "",
+        details.customerId || "",
+        details.subscriptionId || "",
+        details.productId || "",
+        details.orderId || "",
+        userId,
+      ],
+    );
+    return result.rows[0] || null;
+  }
+
+  const store = await readStore();
+  const user = store.users.find((entry) => entry.id === userId);
+  if (!user) {
+    return null;
+  }
+
+  user.subscription_active = nextActive;
+  user.subscription_status = nextStatus;
+  user.subscription_expires = nextExpires;
+  user.subscription_url = details.subscriptionUrl || user.subscription_url || "";
+  user.kiwify_customer_id = details.customerId || user.kiwify_customer_id || "";
+  user.kiwify_subscription_id = details.subscriptionId || user.kiwify_subscription_id || "";
+  user.kiwify_product_id = details.productId || user.kiwify_product_id || "";
+  user.kiwify_order_id = details.orderId || user.kiwify_order_id || "";
+  user.updated_at = new Date().toISOString();
+  await writeStore(store);
+  return user;
+}
+
+function verifyKiwifyWebhook(req) {
+  if (!KIWIFY_WEBHOOK_TOKEN) {
+    return true;
+  }
+
+  const candidate = pickFirstString([
+    req.headers["x-kiwify-token"],
+    req.headers["x-webhook-token"],
+    req.headers.authorization?.replace(/^Bearer\s+/i, ""),
+    req.query?.token,
+    req.body?.token,
+  ]);
+
+  return candidate === KIWIFY_WEBHOOK_TOKEN;
+}
+
+function mapKiwifyTriggerToSubscriptionStatus(trigger) {
+  switch (trigger) {
+    case "compra_aprovada":
+    case "subscription_renewed":
+      return "active";
+    case "subscription_late":
+      return "late";
+    case "subscription_canceled":
+    case "compra_reembolsada":
+    case "chargeback":
+      return "inactive";
+    default:
+      return "pending";
+  }
+}
+
+async function requireAuthorizedUser(token, options = {}) {
+  if (!token) {
+    const error = new Error("Token não fornecido");
+    error.status = 401;
+    throw error;
+  }
+
+  const decoded = getTokenPayload(token);
+  const user = await getUserWithPasswordById(decoded.id);
+
+  if (!user) {
+    const error = new Error("Usuário não encontrado");
+    error.status = 401;
+    throw error;
+  }
+
+  if (options.requireActiveSubscription && !isSubscriptionActive(user)) {
+    const error = new Error("Assinatura inativa. Atualize sua assinatura para continuar.");
+    error.status = 403;
+    error.user = buildPublicUser(user);
+    throw error;
+  }
+
+  if (options.requireAdmin && getUserRole(user.email, user.role) !== "admin") {
+    const error = new Error("Acesso restrito ao administrador.");
+    error.status = 403;
+    error.user = buildPublicUser(user);
+    throw error;
+  }
+
+  return { decoded, user };
 }
 
 async function deleteUserAccount(userId) {
@@ -485,7 +990,7 @@ app.post("/api/auth/register", async (req, res) => {
       success: true,
       message: "Cadastro realizado com sucesso!",
       token,
-      user,
+      user: buildPublicUser(user),
       storageMode: isUsingDatabase ? "neon" : "fallback",
     });
   } catch (error) {
@@ -532,12 +1037,7 @@ app.post("/api/auth/login", async (req, res) => {
       message: "Login realizado com sucesso!",
       token,
       user: {
-        id: user.id,
-        name: user.name,
-        email: user.email,
-        avatar_url: user.avatar_url || "",
-        subscription_url: user.subscription_url || "",
-        subscription_active: user.subscription_active,
+        ...buildPublicUser(user),
       },
       storageMode: isUsingDatabase ? "neon" : "fallback",
     });
@@ -550,21 +1050,11 @@ app.post("/api/auth/login", async (req, res) => {
 app.post("/api/auth/verify", async (req, res) => {
   try {
     const { token } = req.body;
-
-    if (!token) {
-      return res.status(401).json({ error: "Token não fornecido" });
-    }
-
-    const decoded = getTokenPayload(token);
-    const user = await findUserById(decoded.id);
-
-    if (!user) {
-      return res.status(401).json({ error: "Usuário não encontrado" });
-    }
+    const { user } = await requireAuthorizedUser(token);
 
     res.json({
       success: true,
-      user,
+      user: buildPublicUser(user),
       storageMode: isUsingDatabase ? "neon" : "fallback",
     });
   } catch (error) {
@@ -590,7 +1080,7 @@ app.post("/api/auth/logout", async (req, res) => {
 app.post("/api/data/save", async (req, res) => {
   try {
     const { token, dataType, dataKey, dataValue } = req.body;
-    const decoded = getTokenPayload(token);
+    const { decoded } = await requireAuthorizedUser(token, { requireActiveSubscription: true });
 
     await saveUserData(decoded.id, dataType, dataKey, dataValue);
 
@@ -601,14 +1091,17 @@ app.post("/api/data/save", async (req, res) => {
     });
   } catch (error) {
     console.error(error);
-    res.status(401).json({ error: "Não autorizado" });
+    res.status(error.status || 401).json({
+      error: error.message || "Não autorizado",
+      user: error.user || null,
+    });
   }
 });
 
 app.post("/api/data/get", async (req, res) => {
   try {
     const { token, dataType } = req.body;
-    const decoded = getTokenPayload(token);
+    const { decoded } = await requireAuthorizedUser(token, { requireActiveSubscription: true });
     const data = await getUserData(decoded.id, dataType);
 
     res.json({
@@ -618,7 +1111,10 @@ app.post("/api/data/get", async (req, res) => {
     });
   } catch (error) {
     console.error(error);
-    res.status(401).json({ error: "Não autorizado" });
+    res.status(error.status || 401).json({
+      error: error.message || "Não autorizado",
+      user: error.user || null,
+    });
   }
 });
 
@@ -654,12 +1150,141 @@ app.post("/api/user/update", async (req, res) => {
     res.json({
       success: true,
       message: "Perfil atualizado com sucesso!",
-      user,
+      user: buildPublicUser(user),
       storageMode: isUsingDatabase ? "neon" : "fallback",
     });
   } catch (error) {
     console.error(error);
     res.status(401).json({ error: "Não autorizado" });
+  }
+});
+
+app.post("/api/billing/kiwify/webhook", async (req, res) => {
+  try {
+    if (!verifyKiwifyWebhook(req)) {
+      return res.status(401).json({ error: "Webhook nao autorizado" });
+    }
+
+    const webhookData = extractKiwifyPayload(req.body || {});
+    if (!webhookData.email) {
+      return res.status(400).json({ error: "Nao foi possivel identificar o email da cliente." });
+    }
+
+    if (KIWIFY_PRODUCT_ID && webhookData.productId && webhookData.productId !== KIWIFY_PRODUCT_ID) {
+      return res.json({ success: true, ignored: true, reason: "Produto diferente do configurado" });
+    }
+
+    const user = await findUserForKiwifyEvent(webhookData);
+    if (!user) {
+      return res.status(404).json({ error: "Usuario nao encontrado para este evento da Kiwify." });
+    }
+
+    const updatedUser = await updateSubscriptionFromKiwify(user.id, {
+      subscriptionStatus: mapKiwifyTriggerToSubscriptionStatus(webhookData.eventType),
+      expiresAt: webhookData.expiresAt,
+      subscriptionUrl: user.subscription_url || KIWIFY_CHECKOUT_URL || "",
+      customerId: webhookData.customerId,
+      subscriptionId: webhookData.subscriptionId,
+      productId: webhookData.productId,
+      orderId: webhookData.orderId,
+    });
+
+    await logActivity(
+      user.id,
+      "kiwify_webhook",
+      `Evento ${webhookData.eventType || "desconhecido"} processado para ${webhookData.email}`,
+    );
+
+    res.json({
+      success: true,
+      user: buildPublicUser(updatedUser || user),
+    });
+  } catch (error) {
+    console.error("Erro ao processar webhook da Kiwify:", error);
+    res.status(500).json({ error: "Falha ao processar webhook da Kiwify." });
+  }
+});
+
+app.post("/api/admin/summary", async (req, res) => {
+  try {
+    const { token } = req.body;
+    await requireAuthorizedUser(token, { requireAdmin: true });
+
+    res.json({
+      success: true,
+      summary: await getAdminSummary(),
+      storageMode: isUsingDatabase ? "neon" : "fallback",
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(error.status || 401).json({
+      error: error.message || "Nao autorizado",
+      user: error.user || null,
+    });
+  }
+});
+
+app.post("/api/admin/users", async (req, res) => {
+  try {
+    const { token } = req.body;
+    await requireAuthorizedUser(token, { requireAdmin: true });
+
+    const users = (await listUsersForAdmin()).map((user) => buildPublicUser(user));
+
+    res.json({
+      success: true,
+      users,
+      storageMode: isUsingDatabase ? "neon" : "fallback",
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(error.status || 401).json({
+      error: error.message || "Nao autorizado",
+      user: error.user || null,
+    });
+  }
+});
+
+app.post("/api/admin/users/update", async (req, res) => {
+  try {
+    const { token, userId, role, subscriptionStatus, subscriptionActive, subscriptionExpires, subscriptionUrl } = req.body;
+    const { user: adminUser } = await requireAuthorizedUser(token, { requireAdmin: true });
+
+    const targetUser = await getUserWithPasswordById(Number(userId));
+    if (!targetUser) {
+      return res.status(404).json({ error: "Usuaria nao encontrada." });
+    }
+
+    if (Number(targetUser.id) === Number(adminUser.id) && role !== "admin") {
+      return res.status(400).json({ error: "O login admin principal nao pode perder o acesso de administrador." });
+    }
+
+    const updatedUser = await updateUserAdminControls(Number(userId), {
+      role,
+      subscriptionStatus,
+      subscriptionActive,
+      subscriptionExpires,
+      subscriptionUrl,
+    });
+
+    await logActivity(
+      adminUser.id,
+      "admin_user_update",
+      `Admin atualizou usuaria ${targetUser.email} para status ${subscriptionStatus || "mantido"}`,
+    );
+
+    res.json({
+      success: true,
+      user: buildPublicUser(updatedUser || targetUser),
+      summary: await getAdminSummary(),
+      storageMode: isUsingDatabase ? "neon" : "fallback",
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(error.status || 401).json({
+      error: error.message || "Nao autorizado",
+      user: error.user || null,
+    });
   }
 });
 
@@ -718,6 +1343,7 @@ app.get("/api/health", async (req, res) => {
 async function startServer() {
   try {
     await initDb();
+    await ensureAdminUser();
     app.listen(PORT, () => {
       console.log(`Servidor Vida Nova rodando na porta ${PORT}`);
       console.log(
@@ -725,6 +1351,9 @@ async function startServer() {
           ? "Banco de dados: Neon / PostgreSQL"
           : `Banco de dados: fallback local em ${DATA_FILE}`,
       );
+      if (ADMIN_EMAIL) {
+        console.log(`Admin principal configurado para ${ADMIN_EMAIL}`);
+      }
     });
   } catch (error) {
     console.error("Erro ao iniciar servidor:", error);
