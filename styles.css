@@ -675,6 +675,8 @@ a {
 
 .agenda-panel {
   margin-bottom: 18px;
+  display: grid;
+  gap: 14px;
   background:
     linear-gradient(135deg, rgba(207, 230, 255, 0.5), rgba(255, 255, 255, 0.9)),
     linear-gradient(180deg, rgba(255, 255, 255, 0.72), rgba(255, 255, 255, 0.84));
@@ -980,6 +982,9 @@ a {
 
 .calendar-main-stage {
   min-width: 0;
+  overflow: hidden;
+  border-radius: 18px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.82), rgba(248, 250, 255, 0.92));
 }
 
 .year-view-shell {
@@ -2969,14 +2974,59 @@ select {
 .agenda-cards-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 18px;
-  margin-top: 18px;
+  gap: 14px;
+  margin-top: 8px;
 }
 
 .agenda-month-planning {
   grid-column: 1 / -1;
   display: grid;
-  gap: 12px;
+  grid-template-columns: minmax(0, 1.35fr) minmax(300px, 0.9fr);
+  gap: 12px 18px;
+  align-items: start;
+  padding: 20px;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.92), rgba(247, 251, 255, 0.96)),
+    linear-gradient(180deg, rgba(207, 230, 255, 0.18), rgba(255, 255, 255, 0.06));
+}
+
+.agenda-month-planning > .panel-heading:first-child {
+  grid-column: 1 / -1;
+  margin-bottom: 2px;
+}
+
+.agenda-month-planning > .calendar-mini-heading,
+.agenda-month-planning > .calendar-mini-weekdays,
+.agenda-month-planning > .calendar-mini-grid {
+  grid-column: 1;
+}
+
+.agenda-month-planning > .agenda-month-side-heading,
+.agenda-month-planning > .calendar-list {
+  grid-column: 2;
+}
+
+.agenda-month-planning > .calendar-list {
+  align-self: start;
+}
+
+.agenda-month-planning > .summary-input {
+  grid-column: 1 / -1;
+  min-height: 120px;
+}
+
+.calendar-mini-grid {
+  padding: 6px 0 2px;
+}
+
+.calendar-mini-day {
+  min-height: 36px;
+  border-radius: 12px;
+}
+
+.agenda-summary-card,
+.agenda-events-card {
+  min-height: 100%;
 }
 
 .goal-horizon-grid {
@@ -3338,6 +3388,19 @@ select {
   .workspace-header {
     align-items: flex-start;
     flex-direction: column;
+  }
+
+  .agenda-month-planning {
+    grid-template-columns: 1fr;
+  }
+
+  .agenda-month-planning > .calendar-mini-heading,
+  .agenda-month-planning > .calendar-mini-weekdays,
+  .agenda-month-planning > .calendar-mini-grid,
+  .agenda-month-planning > .agenda-month-side-heading,
+  .agenda-month-planning > .calendar-list,
+  .agenda-month-planning > .summary-input {
+    grid-column: 1;
   }
 }
 
