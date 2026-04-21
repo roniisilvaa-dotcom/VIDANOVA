@@ -1744,6 +1744,26 @@ body.subscription-locked .subscription-gate {
   line-height: 1.55;
 }
 
+.mobile-install-panel {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.mobile-install-card strong {
+  display: block;
+  margin-top: 6px;
+  color: var(--ink);
+  font-size: 1rem;
+}
+
+.mobile-install-card p {
+  margin: 8px 0 0;
+  color: var(--muted);
+  line-height: 1.55;
+}
+
 .calc-key {
   min-height: 54px;
   border: 1px solid var(--line);
@@ -3084,6 +3104,10 @@ select {
   }
 
   .install-guide-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .mobile-install-panel {
     grid-template-columns: 1fr;
   }
 

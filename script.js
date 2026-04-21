@@ -2106,14 +2106,14 @@ function updateInstallUi() {
   if (context.isIos) {
     installPlatformStatus.textContent =
       "No iPhone ou iPad, abra a versao publicada no Safari, toque em Compartilhar e depois em “Adicionar a Tela de Inicio” para manter tudo sincronizado com o Neon.";
-    installModalChromeButton.textContent = "Abrir instrucoes para iPhone/iPad";
+    installModalChromeButton.textContent = "Abrir no Safari";
     return;
   }
 
   if (context.isAndroid) {
     installPlatformStatus.textContent =
       "No Android, use Chrome ou Edge na versao publicada e toque em “Instalar app” ou “Adicionar a tela inicial”. Assim os dados continuam iguais em qualquer navegador em que a cliente entrar.";
-    installModalChromeButton.textContent = "Ver como instalar no Android";
+    installModalChromeButton.textContent = "Abrir no Chrome";
     return;
   }
 
