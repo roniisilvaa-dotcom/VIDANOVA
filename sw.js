@@ -1,5 +1,5 @@
-const CACHE_NAME = "vida-nova-v1";
-const CACHE_DYNAMIC = "vida-nova-dynamic-v1";
+const CACHE_NAME = "vida-nova-v3";
+const CACHE_DYNAMIC = "vida-nova-dynamic-v3";
 const APP_SHELL = [
   "./",
   "./index.html",
@@ -10,11 +10,11 @@ const APP_SHELL = [
   "./login.js",
   "./mobile.js",
   "./manifest.webmanifest",
-  "./icon.svg",
-  "./icon-192.png",
-  "./icon-512.png",
-  "./apple-touch-icon.png",
-  "./apple-touch-icon-180.png",
+  "./icon.svg?v=nv3",
+  "./icon-192.png?v=nv3",
+  "./icon-512.png?v=nv3",
+  "./apple-touch-icon.png?v=nv3",
+  "./apple-touch-icon-180.png?v=nv3",
   "./mstile-150.png",
 ];
 
@@ -63,7 +63,8 @@ self.addEventListener("fetch", (event) => {
       url.pathname.endsWith(".css") ||
       url.pathname.endsWith(".js") ||
       url.pathname.endsWith(".webmanifest") ||
-      url.pathname.endsWith(".svg");
+      url.pathname.endsWith(".svg") ||
+      url.pathname.endsWith(".png");
 
     if (isAppAsset) {
       // Network first, fallback to cache for app assets

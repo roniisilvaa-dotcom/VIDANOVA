@@ -1,53 +1,49 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
   <defs>
     <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#fff9f4"/>
-      <stop offset="55%" stop-color="#f7e8df"/>
-      <stop offset="100%" stop-color="#efd8d7"/>
+      <stop offset="0%" stop-color="#fffaf6"/>
+      <stop offset="58%" stop-color="#f8ece5"/>
+      <stop offset="100%" stop-color="#f0dcda"/>
     </linearGradient>
     <linearGradient id="frame" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#d8ab73"/>
-      <stop offset="100%" stop-color="#b68158"/>
+      <stop offset="0%" stop-color="#d8b07b"/>
+      <stop offset="100%" stop-color="#bb8a61"/>
     </linearGradient>
     <linearGradient id="ink" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#6f4559"/>
-      <stop offset="100%" stop-color="#4b2f3c"/>
+      <stop offset="0%" stop-color="#6f465b"/>
+      <stop offset="100%" stop-color="#4a2d3b"/>
     </linearGradient>
   </defs>
 
   <rect width="512" height="512" rx="128" fill="url(#bg)"/>
   <rect x="22" y="22" width="468" height="468" rx="110" fill="none" stroke="url(#frame)" stroke-width="3"/>
-  <circle cx="256" cy="256" r="172" fill="#ffffff" opacity="0.48"/>
-  <circle cx="256" cy="256" r="154" fill="none" stroke="#dbc0aa" stroke-width="2" opacity="0.9"/>
-
-  <text
-    x="222"
-    y="305"
-    text-anchor="middle"
-    font-family="Didot, Baskerville, 'Times New Roman', serif"
-    font-size="236"
-    font-style="italic"
-    fill="url(#ink)"
-    letter-spacing="-20"
-  >N</text>
-
-  <text
-    x="302"
-    y="305"
-    text-anchor="middle"
-    font-family="Didot, Baskerville, 'Times New Roman', serif"
-    font-size="236"
-    font-style="italic"
-    fill="url(#ink)"
-    letter-spacing="-20"
-  >V</text>
+  <circle cx="256" cy="256" r="170" fill="#ffffff" opacity="0.52"/>
+  <circle cx="256" cy="256" r="150" fill="none" stroke="#dbc2b0" stroke-width="2" opacity="0.95"/>
 
   <path
-    d="M180 363c30 18 63 27 98 27 42 0 80-12 113-36"
+    d="M158 340V172L248 312V172"
     fill="none"
-    stroke="#c79c74"
+    stroke="url(#ink)"
     stroke-linecap="round"
-    stroke-width="7"
-    opacity="0.9"
+    stroke-linejoin="round"
+    stroke-width="18"
+  />
+
+  <path
+    d="M278 172L338 340L398 172"
+    fill="none"
+    stroke="url(#ink)"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    stroke-width="18"
+  />
+
+  <path
+    d="M170 358c25 14 55 22 86 22 34 0 66-10 95-28"
+    fill="none"
+    stroke="#c79b73"
+    stroke-linecap="round"
+    stroke-width="6"
+    opacity="0.95"
   />
 </svg>
