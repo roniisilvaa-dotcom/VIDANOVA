@@ -2883,12 +2883,18 @@ select {
 }
 
 .calendar-main-stage {
-  overflow-x: auto;
+  overflow-x: hidden;
   padding-bottom: 6px;
 }
 
 #calendar-month-shell {
-  min-width: 980px;
+  width: 100%;
+  min-width: 0;
+}
+
+#calendar-month-shell .calendar-weekdays,
+#calendar-month-shell .calendar-grid {
+  grid-template-columns: repeat(7, minmax(120px, 1fr));
 }
 
 .week-view-shell {
@@ -2899,6 +2905,7 @@ select {
   display: flex;
   flex-direction: column;
   gap: 10px;
+  width: 100%;
 }
 
 .calendar-day-number {
@@ -3000,9 +3007,18 @@ select {
 }
 
 @media (max-width: 1180px) {
+  .calendar-main-stage {
+    overflow-x: auto;
+  }
+
   #calendar-month-shell,
   .week-view-shell {
     min-width: 760px;
+  }
+
+  #calendar-month-shell .calendar-weekdays,
+  #calendar-month-shell .calendar-grid {
+    grid-template-columns: repeat(7, minmax(96px, 1fr));
   }
 }
 

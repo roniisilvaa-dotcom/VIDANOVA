@@ -544,12 +544,32 @@ function getSavedGridOrders() {
   }, {});
 }
 
+function getPersistedFieldState() {
+  return Array.from(persistFields).reduce((savedFields, field) => {
+    const key = field.dataset.persistKey;
+    if (!key) {
+      return savedFields;
+    }
+
+    const storedValue = localStorage.getItem(`vida-nova:field:${key}`);
+    if (storedValue !== null) {
+      savedFields[key] = storedValue;
+    }
+
+    return savedFields;
+  }, {});
+}
+
 function collectCloudState() {
   return {
     tasks,
     agendaStore,
     financeStore,
     moduleStore,
+    plannerBoardStore,
+    persistedFields: getPersistedFieldState(),
+    plannerDreamImages: getStoredDreamVisionImages("planner"),
+    dreamImages: getStoredDreamVisionImages("main"),
     notes: notesInput?.value || localStorage.getItem("ela-em-ordem:notes") || "",
     theme: document.body.dataset.theme || localStorage.getItem("ela-em-ordem:theme") || "light",
     layout: document.body.dataset.layout || localStorage.getItem("ela-em-ordem:layout") || "soft",
@@ -579,6 +599,10 @@ function createEmptyCloudState() {
       records: [],
     },
     moduleStore: {},
+    plannerBoardStore: {},
+    persistedFields: {},
+    plannerDreamImages: [],
+    dreamImages: [],
     notes: "",
     theme: localStorage.getItem("ela-em-ordem:theme") || "light",
     layout: localStorage.getItem("ela-em-ordem:layout") || "soft",
@@ -591,6 +615,23 @@ function createEmptyCloudState() {
     cards: {},
     gridOrders: {},
   };
+}
+
+function applyPersistedFieldState(fields = {}) {
+  persistFields.forEach((field) => {
+    const key = field.dataset.persistKey;
+    if (!key) {
+      return;
+    }
+
+    const nextValue = Object.prototype.hasOwnProperty.call(fields, key) ? fields[key] : "";
+    field.value = nextValue;
+    if (nextValue) {
+      localStorage.setItem(`vida-nova:field:${key}`, nextValue);
+    } else {
+      localStorage.removeItem(`vida-nova:field:${key}`);
+    }
+  });
 }
 
 function applyCloudState(state) {
@@ -616,6 +657,8 @@ function applyCloudState(state) {
         : [...initialFinanceRecords],
   };
   moduleStore = state.moduleStore && typeof state.moduleStore === "object" ? state.moduleStore : {};
+  plannerBoardStore =
+    state.plannerBoardStore && typeof state.plannerBoardStore === "object" ? state.plannerBoardStore : {};
   agendaView = state.agendaView || "week";
   calendarStore = Array.isArray(state.calendarStore) && state.calendarStore.length
     ? state.calendarStore
@@ -627,6 +670,7 @@ function applyCloudState(state) {
   localStorage.setItem("ela-em-ordem:agenda-events", JSON.stringify(agendaStore));
   localStorage.setItem("ela-em-ordem:finance", JSON.stringify(financeStore));
   localStorage.setItem("vida-nova:modules", JSON.stringify(moduleStore));
+  localStorage.setItem("vida-nova:planner-boards", JSON.stringify(plannerBoardStore));
   localStorage.setItem("ela-em-ordem:notes", state.notes || "");
   localStorage.setItem("ela-em-ordem:theme", state.theme || "light");
   localStorage.setItem("ela-em-ordem:layout", state.layout || "soft");
@@ -650,6 +694,10 @@ function applyCloudState(state) {
   Object.entries(state.gridOrders || {}).forEach(([gridId, gridState]) => {
     localStorage.setItem(`ela-em-ordem:grid:${gridId}`, JSON.stringify(gridState));
   });
+
+  saveDreamVisionImages(Array.isArray(state.dreamImages) ? state.dreamImages : [], "main");
+  saveDreamVisionImages(Array.isArray(state.plannerDreamImages) ? state.plannerDreamImages : [], "planner");
+  applyPersistedFieldState(state.persistedFields || {});
 
   isHydratingCloudState = false;
 }
