@@ -85,6 +85,18 @@
 
       <main class="main-content">
         <section class="app-topbar">
+          <div id="admin-impersonation-banner" class="panel subscription-gate hidden" aria-hidden="true">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">Modo administrador</p>
+                <h3>Voce esta dentro do app da cliente</h3>
+              </div>
+            </div>
+            <p class="install-copy">Use este modo para investigar configuracoes, dados e fluxo da conta. Quando terminar, volte para o painel admin.</p>
+            <div class="install-actions">
+              <button id="admin-return-button" class="primary-button" type="button">Voltar para o admin</button>
+            </div>
+          </div>
           <div class="topbar-profile">
             <div class="topbar-avatar topbar-avatar-large" id="topbar-avatar" aria-hidden="true">VN</div>
             <div class="topbar-profile-copy">
@@ -1242,6 +1254,18 @@
                 </div>
               </div>
               <div id="admin-activity-list" class="admin-activity-list"></div>
+            </article>
+
+            <article class="settings-card admin-users-card">
+              <div class="panel-heading">
+                <div>
+                  <p class="eyebrow">Detalhes da usuaria</p>
+                  <h3>Visao tecnica e operacional</h3>
+                </div>
+              </div>
+              <div id="admin-user-detail" class="admin-user-detail">
+                <div class="admin-empty-state">Selecione uma usuaria em "Ver detalhes" para abrir esta visao.</div>
+              </div>
             </article>
           </section>
         </section>

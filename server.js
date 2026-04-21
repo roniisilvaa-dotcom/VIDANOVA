@@ -821,6 +821,68 @@ async function getRecentAdminActivity(limit = 25) {
     });
 }
 
+async function getUserAdminDetail(userId) {
+  if (isUsingDatabase) {
+    const [userResult, dataResult, activityResult] = await Promise.all([
+      query(
+        `SELECT id, name, email, role, avatar_url, subscription_url, subscription_active, subscription_status, subscription_expires, created_at, updated_at
+         FROM users WHERE id = $1 LIMIT 1`,
+        [userId],
+      ),
+      query(
+        `SELECT data_type, COUNT(*)::INTEGER AS count, MAX(updated_at) AS last_updated
+         FROM app_data
+         WHERE user_id = $1
+         GROUP BY data_type
+         ORDER BY data_type ASC`,
+        [userId],
+      ),
+      query(
+        `SELECT action, details, created_at
+         FROM activity_log
+         WHERE user_id = $1
+         ORDER BY created_at DESC
+         LIMIT 12`,
+        [userId],
+      ),
+    ]);
+
+    return {
+      user: userResult.rows[0] || null,
+      dataTypes: dataResult.rows,
+      activity: activityResult.rows,
+    };
+  }
+
+  const store = await readStore();
+  const user = store.users.find((entry) => Number(entry.id) === Number(userId)) || null;
+  const dataTypes = Object.values(
+    store.appData
+      .filter((item) => Number(item.user_id) === Number(userId))
+      .reduce((acc, item) => {
+        const current = acc[item.data_type] || {
+          data_type: item.data_type,
+          count: 0,
+          last_updated: null,
+        };
+        current.count += 1;
+        current.last_updated =
+          !current.last_updated ||
+          new Date(item.updated_at || 0).getTime() > new Date(current.last_updated || 0).getTime()
+            ? item.updated_at
+            : current.last_updated;
+        acc[item.data_type] = current;
+        return acc;
+      }, {}),
+  );
+  const activity = [...store.activityLog]
+    .filter((item) => Number(item.user_id) === Number(userId))
+    .sort((a, b) => new Date(b.created_at || 0).getTime() - new Date(a.created_at || 0).getTime())
+    .slice(0, 12);
+
+  return { user, dataTypes, activity };
+}
+
 async function updateUserAdminControls(userId, payload = {}) {
   const nextRole = payload.role === "admin" ? "admin" : "user";
   const nextStatus = String(
@@ -1343,6 +1405,73 @@ app.post("/api/admin/activity", async (req, res) => {
     res.json({
       success: true,
       activity: await getRecentAdminActivity(),
+      storageMode: isUsingDatabase ? "neon" : "fallback",
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(error.status || 401).json({
+      error: error.message || "Nao autorizado",
+      user: error.user || null,
+    });
+  }
+});
+
+app.post("/api/admin/users/detail", async (req, res) => {
+  try {
+    const { token, userId } = req.body;
+    await requireAuthorizedUser(token, { requireAdmin: true });
+
+    const detail = await getUserAdminDetail(Number(userId));
+    if (!detail.user) {
+      return res.status(404).json({ error: "Usuaria nao encontrada." });
+    }
+
+    res.json({
+      success: true,
+      detail: {
+        user: buildPublicUser(detail.user),
+        dataTypes: detail.dataTypes || [],
+        activity: detail.activity || [],
+      },
+      storageMode: isUsingDatabase ? "neon" : "fallback",
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(error.status || 401).json({
+      error: error.message || "Nao autorizado",
+      user: error.user || null,
+    });
+  }
+});
+
+app.post("/api/admin/users/impersonate", async (req, res) => {
+  try {
+    const { token, userId } = req.body;
+    const { user: adminUser } = await requireAuthorizedUser(token, { requireAdmin: true });
+
+    const targetUser = await getUserWithPasswordById(Number(userId));
+    if (!targetUser) {
+      return res.status(404).json({ error: "Usuaria nao encontrada." });
+    }
+
+    const targetPublicUser = buildPublicUser(targetUser);
+    const impersonationToken = jwt.sign(
+      { id: targetUser.id, email: targetUser.email, name: targetUser.name },
+      JWT_SECRET,
+      { expiresIn: "12h" },
+    );
+
+    await logActivity(
+      adminUser.id,
+      "admin_impersonation",
+      `Admin entrou no app da usuaria ${targetUser.email}`,
+    );
+
+    res.json({
+      success: true,
+      token: impersonationToken,
+      user: targetPublicUser,
+      admin: buildPublicUser(adminUser),
       storageMode: isUsingDatabase ? "neon" : "fallback",
     });
   } catch (error) {

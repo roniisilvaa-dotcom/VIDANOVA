@@ -198,6 +198,8 @@ const installBanner = document.querySelector("#install-banner");
 const installHelpButton = document.querySelector("#install-help-button");
 const installChromeButton = document.querySelector("#install-chrome-button");
 const subscriptionGate = document.querySelector("#subscription-gate");
+const adminImpersonationBanner = document.querySelector("#admin-impersonation-banner");
+const adminReturnButton = document.querySelector("#admin-return-button");
 const subscriptionGateStatus = document.querySelector("#subscription-gate-status");
 const subscriptionGateCopy = document.querySelector("#subscription-gate-copy");
 const subscriptionRenewButton = document.querySelector("#subscription-renew-button");
@@ -223,6 +225,7 @@ const adminSearchInput = document.querySelector("#admin-search-input");
 const adminStatusFilter = document.querySelector("#admin-status-filter");
 const adminRoleFilter = document.querySelector("#admin-role-filter");
 const adminActivityList = document.querySelector("#admin-activity-list");
+const adminUserDetail = document.querySelector("#admin-user-detail");
 const goHomeButtons = document.querySelectorAll("[data-go-home]");
 const topbarAvatar = document.querySelector("#topbar-avatar");
 const topbarEmail = document.querySelector("#topbar-email");
@@ -360,6 +363,8 @@ const isTouchDevice =
 const AUTH_TOKEN_KEY = "vida-nova:auth-token";
 const AUTH_USER_KEY = "vida-nova:auth-user";
 const LEGACY_SESSION_KEY = "ela-em-ordem:session";
+const ADMIN_SHADOW_TOKEN_KEY = "vida-nova:admin-shadow-token";
+const ADMIN_SHADOW_USER_KEY = "vida-nova:admin-shadow-user";
 const CLOUD_STATE_TYPE = "app_state";
 const CLOUD_STATE_KEY = "main";
 
@@ -391,6 +396,7 @@ let activePage = "dashboard";
 let currentSession = null;
 let adminUsersCache = [];
 let adminActivityCache = [];
+let adminDetailCache = null;
 let syncTimeoutId = null;
 let syncInFlight = null;
 let isHydratingCloudState = false;
@@ -453,7 +459,44 @@ function clearAuthSession() {
   authStorage.removeItem(AUTH_TOKEN_KEY);
   authStorage.removeItem(AUTH_USER_KEY);
   authStorage.removeItem(LEGACY_SESSION_KEY);
+  authStorage.removeItem(ADMIN_SHADOW_TOKEN_KEY);
+  authStorage.removeItem(ADMIN_SHADOW_USER_KEY);
   clearLegacyAuthCache();
+}
+
+function isImpersonating() {
+  return Boolean(
+    getAuthStorage().getItem(ADMIN_SHADOW_TOKEN_KEY) &&
+      getAuthStorage().getItem(ADMIN_SHADOW_USER_KEY),
+  );
+}
+
+function updateImpersonationBanner() {
+  if (!adminImpersonationBanner) {
+    return;
+  }
+
+  const active = isImpersonating();
+  adminImpersonationBanner.classList.toggle("hidden", !active);
+  adminImpersonationBanner.setAttribute("aria-hidden", active ? "false" : "true");
+}
+
+function restoreAdminShadowSession() {
+  const authStorage = getAuthStorage();
+  const shadowToken = authStorage.getItem(ADMIN_SHADOW_TOKEN_KEY);
+  const shadowUser = authStorage.getItem(ADMIN_SHADOW_USER_KEY);
+
+  if (!shadowToken || !shadowUser) {
+    return false;
+  }
+
+  persistUserSession(JSON.parse(shadowUser), shadowToken);
+  authStorage.removeItem(ADMIN_SHADOW_TOKEN_KEY);
+  authStorage.removeItem(ADMIN_SHADOW_USER_KEY);
+  updateImpersonationBanner();
+  setActivePage("admin", false);
+  loadAdminDashboard();
+  return true;
 }
 
 function persistUserSession(user, token = getAuthToken()) {
@@ -701,10 +744,87 @@ function createAdminUserRow(user) {
     </div>
     <div class="admin-user-actions">
       <button class="primary-button" type="button" data-admin-save="${escapeHtml(String(user.id))}">Salvar</button>
+      <button class="ghost-button" type="button" data-admin-detail="${escapeHtml(String(user.id))}">Ver detalhes</button>
+      <button class="ghost-button" type="button" data-admin-impersonate="${escapeHtml(String(user.id))}">Entrar no app dela</button>
     </div>
   `;
 
   return article;
+}
+
+function renderAdminDetail(detail = adminDetailCache) {
+  if (!adminUserDetail) {
+    return;
+  }
+
+  if (!detail?.user) {
+    adminUserDetail.innerHTML =
+      '<div class="admin-empty-state">Selecione uma usuaria em "Ver detalhes" para abrir esta visao.</div>';
+    return;
+  }
+
+  const user = detail.user;
+  const dataTypes = Array.isArray(detail.dataTypes) ? detail.dataTypes : [];
+  const activity = Array.isArray(detail.activity) ? detail.activity : [];
+
+  adminUserDetail.innerHTML = `
+    <div class="admin-detail-top">
+      <div>
+        <strong>${escapeHtml(user.name || "Sem nome")}</strong>
+        <small>${escapeHtml(user.email || "")}</small>
+      </div>
+      <div class="admin-user-badges">
+        <span class="admin-badge">${escapeHtml(user.role || "user")}</span>
+        <span class="admin-badge">${escapeHtml(user.subscription_status || "pending")}</span>
+      </div>
+    </div>
+    <div class="admin-detail-grid">
+      <article class="admin-detail-card">
+        <span class="metric-label">Criada em</span>
+        <strong>${escapeHtml(formatAdminDateTime(user.created_at))}</strong>
+      </article>
+      <article class="admin-detail-card">
+        <span class="metric-label">Atualizada em</span>
+        <strong>${escapeHtml(formatAdminDateTime(user.updated_at))}</strong>
+      </article>
+      <article class="admin-detail-card">
+        <span class="metric-label">Expira em</span>
+        <strong>${escapeHtml(formatAdminDate(user.subscription_expires))}</strong>
+      </article>
+    </div>
+    <div class="admin-detail-list">
+      <article class="admin-detail-item">
+        <strong>Tipos de dados salvos</strong>
+        ${
+          dataTypes.length
+            ? dataTypes
+                .map(
+                  (item) =>
+                    `<div>${escapeHtml(item.data_type || "app_state")} • ${escapeHtml(
+                      String(item.count || 0),
+                    )} registros • ultimo update ${escapeHtml(formatAdminDateTime(item.last_updated))}</div>`,
+                )
+                .join("")
+            : "<div>Nenhum dado salvo no backend ainda.</div>"
+        }
+      </article>
+      <article class="admin-detail-item">
+        <strong>Atividade recente da usuaria</strong>
+        ${
+          activity.length
+            ? activity
+                .map(
+                  (item) =>
+                    `<div>${escapeHtml(item.action || "atividade")} • ${escapeHtml(
+                      item.details || "Sem detalhes",
+                    )} • ${escapeHtml(formatAdminDateTime(item.created_at))}</div>`,
+                )
+                .join("")
+            : "<div>Sem atividades registradas.</div>"
+        }
+      </article>
+    </div>
+  `;
 }
 
 function formatAdminDate(value) {
@@ -812,7 +932,48 @@ async function loadAdminDashboard() {
     renderAdminSummary(summaryResponse.summary || {});
     renderAdminUsers(getFilteredAdminUsers());
     renderAdminActivity(adminActivityCache);
+    renderAdminDetail(adminDetailCache);
     setFeedback(adminFeedback, "Painel admin atualizado.", "success");
+  } catch (error) {
+    setFeedback(adminFeedback, error.message, "error");
+  }
+}
+
+async function loadAdminUserDetail(userId) {
+  if (!isAdminSession()) {
+    return;
+  }
+
+  try {
+    setFeedback(adminFeedback, "Abrindo detalhes da usuaria...");
+    const response = await apiPost("/api/admin/users/detail", {
+      token: getAuthToken(),
+      userId: Number(userId),
+    });
+    adminDetailCache = response.detail || null;
+    renderAdminDetail(adminDetailCache);
+    setFeedback(adminFeedback, "Detalhes carregados.", "success");
+  } catch (error) {
+    setFeedback(adminFeedback, error.message, "error");
+  }
+}
+
+async function impersonateAdminUser(userId) {
+  if (!isAdminSession()) {
+    return;
+  }
+
+  try {
+    setFeedback(adminFeedback, "Entrando no app da usuaria...");
+    const response = await apiPost("/api/admin/users/impersonate", {
+      token: getAuthToken(),
+      userId: Number(userId),
+    });
+
+    sessionStorage.setItem("vida-nova:admin-shadow-token", getAuthToken());
+    sessionStorage.setItem("vida-nova:admin-shadow-user", JSON.stringify(currentSession));
+    persistUserSession(response.user, response.token);
+    window.location.href = "./index.html";
   } catch (error) {
     setFeedback(adminFeedback, error.message, "error");
   }
@@ -2520,6 +2681,7 @@ function hydrateSessionUI(session) {
 
   updateSubscriptionGate(session);
   syncAdminUi(session);
+  updateImpersonationBanner();
 }
 
 function registerServiceWorker() {
@@ -2964,6 +3126,12 @@ if (subscriptionOpenSettings) {
   });
 }
 
+if (adminReturnButton) {
+  adminReturnButton.addEventListener("click", () => {
+    restoreAdminShadowSession();
+  });
+}
+
 if (adminOpenPanel) {
   adminOpenPanel.addEventListener("click", () => {
     setActivePage("admin");
@@ -3399,6 +3567,18 @@ if (logoutButton) {
 
 if (adminUsersList) {
   adminUsersList.addEventListener("click", async (event) => {
+    const detailButton = event.target.closest("[data-admin-detail]");
+    if (detailButton) {
+      await loadAdminUserDetail(detailButton.dataset.adminDetail);
+      return;
+    }
+
+    const impersonateButton = event.target.closest("[data-admin-impersonate]");
+    if (impersonateButton) {
+      await impersonateAdminUser(impersonateButton.dataset.adminImpersonate);
+      return;
+    }
+
     const saveButton = event.target.closest("[data-admin-save]");
     if (!saveButton) {
       return;

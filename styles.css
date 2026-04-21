@@ -2067,6 +2067,58 @@ body.subscription-locked .subscription-gate {
   margin-top: 6px;
 }
 
+.admin-user-detail {
+  display: grid;
+  gap: 14px;
+}
+
+.admin-detail-top {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 12px 18px;
+  align-items: flex-start;
+}
+
+.admin-detail-top strong {
+  display: block;
+  font-size: 1.12rem;
+}
+
+.admin-detail-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.admin-detail-card {
+  padding: 14px 16px;
+  border-radius: 18px;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.8);
+}
+
+.admin-detail-list {
+  display: grid;
+  gap: 10px;
+}
+
+.admin-detail-item {
+  padding: 12px 14px;
+  border-radius: 16px;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.74);
+}
+
+.admin-detail-item strong {
+  display: block;
+  margin-bottom: 4px;
+}
+
+.admin-user-row .ghost-button {
+  min-height: 42px;
+}
+
 .profile-hero {
   display: flex;
   align-items: center;
@@ -3005,6 +3057,10 @@ select {
   }
 
   .admin-toolbar {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-detail-grid {
     grid-template-columns: 1fr;
   }
 
