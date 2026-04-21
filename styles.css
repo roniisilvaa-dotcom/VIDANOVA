@@ -3100,7 +3100,7 @@ select {
 
 .workspace-card-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 18px;
 }
 
@@ -3114,6 +3114,7 @@ select {
   overflow: hidden;
   transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
   cursor: pointer;
+  min-height: 100%;
 }
 
 .workspace-card:hover {
@@ -3124,7 +3125,7 @@ select {
 
 .workspace-card-cover {
   position: relative;
-  min-height: 190px;
+  aspect-ratio: 1.45 / 1;
   border-radius: 22px;
   margin: 14px 14px 10px;
   overflow: hidden;
@@ -3211,6 +3212,36 @@ select {
     linear-gradient(135deg, #d0f0bf, #fff0b8 55%, #ffd09f);
 }
 
+.workspace-card-dreams .workspace-card-cover {
+  background:
+    radial-gradient(circle at 72% 28%, rgba(255,255,255,0.65), transparent 12%),
+    linear-gradient(135deg, #ffd5ec, #ffeebe 55%, #fff8ef);
+}
+
+.workspace-card-image .workspace-card-cover {
+  background:
+    linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,255,255,0.05)),
+    linear-gradient(135deg, #f3d3d9, #f9ecf1 58%, #eed5cf);
+}
+
+.workspace-card-travel .workspace-card-cover {
+  background:
+    linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,255,255,0.05)),
+    linear-gradient(135deg, #bfe3f6, #ebf8ff 60%, #d9f0df);
+}
+
+.workspace-card-spiritual .workspace-card-cover {
+  background:
+    linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.04)),
+    linear-gradient(135deg, #f5e4ae, #fff7d7 58%, #fff1e1);
+}
+
+.workspace-card-settings .workspace-card-cover {
+  background:
+    linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05)),
+    linear-gradient(135deg, #dcd6ef, #f7f5ff 55%, #ebedf8);
+}
+
 .workspace-overview-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -3256,14 +3287,23 @@ select {
   .study-main-grid,
   .project-grid,
   .two-column,
-  .workspace-card-grid,
   .workspace-overview-grid,
   .workspace-support-grid {
     grid-template-columns: 1fr;
   }
 
+  .workspace-card-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .workspace-header {
     align-items: flex-start;
     flex-direction: column;
+  }
+}
+
+@media (max-width: 720px) {
+  .workspace-card-grid {
+    grid-template-columns: 1fr;
   }
 }
