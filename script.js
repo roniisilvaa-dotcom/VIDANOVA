@@ -2038,6 +2038,11 @@ function refreshInstallLinks() {
   });
 }
 
+function openPublishedInstallPage() {
+  const publishedUrl = getPublishedAppUrl();
+  window.open(publishedUrl, "_blank", "noopener,noreferrer");
+}
+
 function closeCalendarModal() {
   if (!calendarModal) {
     return;
@@ -2137,6 +2142,17 @@ async function triggerInstallFlow() {
     await deferredInstallPrompt.userChoice;
     deferredInstallPrompt = null;
     return;
+  }
+
+  const context = getInstallContext();
+  if (
+    window.location.protocol === "file:" ||
+    context.isMac ||
+    context.isWindows ||
+    context.isAndroid ||
+    context.isIos
+  ) {
+    openPublishedInstallPage();
   }
 
   openInstallModal();
