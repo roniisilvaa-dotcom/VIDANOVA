@@ -19,13 +19,30 @@ const LEGACY_SESSION_KEY = "ela-em-ordem:session";
 let authMode = "login";
 
 function getAuthStorage() {
-  return window.sessionStorage;
+  const localToken = window.localStorage.getItem(AUTH_TOKEN_KEY);
+  const sessionToken = window.sessionStorage.getItem(AUTH_TOKEN_KEY);
+  const localUser = window.localStorage.getItem(AUTH_USER_KEY);
+  const sessionUser = window.sessionStorage.getItem(AUTH_USER_KEY);
+
+  if ((!localToken || !localUser) && sessionToken && sessionUser) {
+    window.localStorage.setItem(AUTH_TOKEN_KEY, sessionToken);
+    window.localStorage.setItem(AUTH_USER_KEY, sessionUser);
+  }
+
+  if (!window.localStorage.getItem(LEGACY_SESSION_KEY)) {
+    const legacySession = window.sessionStorage.getItem(LEGACY_SESSION_KEY);
+    if (legacySession) {
+      window.localStorage.setItem(LEGACY_SESSION_KEY, legacySession);
+    }
+  }
+
+  return window.localStorage;
 }
 
 function clearLegacyAuthCache() {
-  localStorage.removeItem(AUTH_TOKEN_KEY);
-  localStorage.removeItem(AUTH_USER_KEY);
-  localStorage.removeItem(LEGACY_SESSION_KEY);
+  window.sessionStorage.removeItem(AUTH_TOKEN_KEY);
+  window.sessionStorage.removeItem(AUTH_USER_KEY);
+  window.sessionStorage.removeItem(LEGACY_SESSION_KEY);
 }
 
 function setFeedback(message, type = "neutral") {

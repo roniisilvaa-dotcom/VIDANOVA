@@ -403,13 +403,41 @@ let isHydratingCloudState = false;
 let pendingAvatarData = "";
 
 function getAuthStorage() {
-  return window.sessionStorage;
+  const localToken = window.localStorage.getItem(AUTH_TOKEN_KEY);
+  const sessionToken = window.sessionStorage.getItem(AUTH_TOKEN_KEY);
+  const localUser = window.localStorage.getItem(AUTH_USER_KEY);
+  const sessionUser = window.sessionStorage.getItem(AUTH_USER_KEY);
+
+  if ((!localToken || !localUser) && sessionToken && sessionUser) {
+    window.localStorage.setItem(AUTH_TOKEN_KEY, sessionToken);
+    window.localStorage.setItem(AUTH_USER_KEY, sessionUser);
+  }
+
+  if (!window.localStorage.getItem(LEGACY_SESSION_KEY)) {
+    const legacySession = window.sessionStorage.getItem(LEGACY_SESSION_KEY);
+    if (legacySession) {
+      window.localStorage.setItem(LEGACY_SESSION_KEY, legacySession);
+    }
+  }
+
+  if (!window.localStorage.getItem(ADMIN_SHADOW_TOKEN_KEY)) {
+    const shadowToken = window.sessionStorage.getItem(ADMIN_SHADOW_TOKEN_KEY);
+    const shadowUser = window.sessionStorage.getItem(ADMIN_SHADOW_USER_KEY);
+    if (shadowToken && shadowUser) {
+      window.localStorage.setItem(ADMIN_SHADOW_TOKEN_KEY, shadowToken);
+      window.localStorage.setItem(ADMIN_SHADOW_USER_KEY, shadowUser);
+    }
+  }
+
+  return window.localStorage;
 }
 
 function clearLegacyAuthCache() {
-  localStorage.removeItem(AUTH_TOKEN_KEY);
-  localStorage.removeItem(AUTH_USER_KEY);
-  localStorage.removeItem(LEGACY_SESSION_KEY);
+  window.sessionStorage.removeItem(AUTH_TOKEN_KEY);
+  window.sessionStorage.removeItem(AUTH_USER_KEY);
+  window.sessionStorage.removeItem(LEGACY_SESSION_KEY);
+  window.sessionStorage.removeItem(ADMIN_SHADOW_TOKEN_KEY);
+  window.sessionStorage.removeItem(ADMIN_SHADOW_USER_KEY);
 }
 
 financeStore = {
@@ -1035,6 +1063,7 @@ function collectCloudState() {
     financeStore,
     moduleStore,
     plannerBoardStore,
+    projectAttachments: getAllStoredProjectAttachments(),
     persistedFields: getPersistedFieldState(),
     plannerDreamImages: getStoredDreamVisionImages("planner"),
     dreamImages: getStoredDreamVisionImages("main"),
@@ -1068,6 +1097,7 @@ function createEmptyCloudState() {
     },
     moduleStore: {},
     plannerBoardStore: {},
+    projectAttachments: {},
     persistedFields: {},
     plannerDreamImages: [],
     dreamImages: [],
@@ -1162,6 +1192,8 @@ function applyCloudState(state) {
   Object.entries(state.gridOrders || {}).forEach(([gridId, gridState]) => {
     localStorage.setItem(`ela-em-ordem:grid:${gridId}`, JSON.stringify(gridState));
   });
+
+  applyProjectAttachmentsState(state.projectAttachments || {});
 
   saveDreamVisionImages(Array.isArray(state.dreamImages) ? state.dreamImages : [], "main");
   saveDreamVisionImages(Array.isArray(state.plannerDreamImages) ? state.plannerDreamImages : [], "planner");
@@ -3866,8 +3898,39 @@ function getStoredProjectAttachments(projectKey) {
   return JSON.parse(localStorage.getItem(getProjectAttachmentKey(projectKey)) || "[]");
 }
 
+function getAllStoredProjectAttachments() {
+  return Array.from(projectGalleries).reduce((attachments, gallery) => {
+    const projectKey = gallery.dataset.projectGallery;
+    if (!projectKey) {
+      return attachments;
+    }
+
+    attachments[projectKey] = getStoredProjectAttachments(projectKey);
+    return attachments;
+  }, {});
+}
+
 function saveProjectAttachments(projectKey, files) {
   localStorage.setItem(getProjectAttachmentKey(projectKey), JSON.stringify(files));
+}
+
+function applyProjectAttachmentsState(attachments = {}) {
+  projectGalleries.forEach((gallery) => {
+    const projectKey = gallery.dataset.projectGallery;
+    if (!projectKey) {
+      return;
+    }
+
+    localStorage.removeItem(getProjectAttachmentKey(projectKey));
+  });
+
+  Object.entries(attachments).forEach(([projectKey, files]) => {
+    if (!Array.isArray(files)) {
+      return;
+    }
+
+    saveProjectAttachments(projectKey, files);
+  });
 }
 
 function renderProjectAttachments(projectKey) {
@@ -4006,6 +4069,7 @@ function setupProjectUploads() {
 
       saveProjectAttachments(projectKey, nextFiles);
       renderProjectAttachments(projectKey);
+      scheduleCloudSync();
       input.value = "";
     });
   });
@@ -4023,6 +4087,7 @@ function setupProjectUploads() {
       );
       saveProjectAttachments(projectKey, nextFiles);
       renderProjectAttachments(projectKey);
+      scheduleCloudSync();
     });
   });
 }
