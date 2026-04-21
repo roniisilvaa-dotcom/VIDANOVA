@@ -559,14 +559,19 @@ function isAdminSession(session = currentSession) {
   return Boolean(session?.is_admin || session?.role === "admin");
 }
 
+function canAccessLockedApp(session = currentSession) {
+  return isAdminSession(session) || hasActiveSubscription(session);
+}
+
 function updateSubscriptionGate(session = currentSession) {
   if (!subscriptionGate) {
     return;
   }
 
-  const active = hasActiveSubscription(session);
+  const active = canAccessLockedApp(session);
   subscriptionGate.classList.toggle("hidden", active);
   subscriptionGate.setAttribute("aria-hidden", active ? "true" : "false");
+  document.body.classList.toggle("subscription-locked", !active);
 
   if (active) {
     return;
@@ -582,8 +587,8 @@ function updateSubscriptionGate(session = currentSession) {
       status === "late"
         ? "Sua assinatura esta em atraso. Atualize o pagamento para reativar todos os recursos do app."
         : status === "inactive"
-          ? "Sua assinatura esta inativa. Renove para voltar a usar todas as areas do app."
-          : "Sua assinatura ainda nao foi ativada. Assim que a Kiwify confirmar o pagamento, seu acesso completo sera liberado automaticamente.";
+          ? "Sua assinatura esta inativa. Seus dados continuam guardados, mas o app fica bloqueado ate a renovacao."
+          : "Sua assinatura ainda nao foi ativada. Seus dados ficam salvos, mas o app so sera liberado quando o pagamento for confirmado.";
   }
 }
 
@@ -599,6 +604,18 @@ function getSubscriptionLabel(session = currentSession) {
     return "Assinatura inativa";
   }
   return "Aguardando ativacao";
+}
+
+function getAllowedPageForSession(requestedPage, session = currentSession) {
+  if (requestedPage === "admin" && !isAdminSession(session)) {
+    return "dashboard";
+  }
+
+  if (!canAccessLockedApp(session)) {
+    return requestedPage === "configuracoes" ? "configuracoes" : "configuracoes";
+  }
+
+  return requestedPage;
 }
 
 function setAdminVisibility(target, visible) {
@@ -725,7 +742,7 @@ function getFilteredAdminUsers() {
     const matchesStatus =
       status === "all" ||
       (status === "inactive"
-        ? ["inactive", "expired"].includes(String(user.subscription_status || ""))
+        ? ["inactive", "expired", "late"].includes(String(user.subscription_status || ""))
         : String(user.subscription_status || "") === status);
     const matchesRole = role === "all" || String(user.role || "user") === role;
     return matchesQuery && matchesStatus && matchesRole;
@@ -804,8 +821,9 @@ function syncAdminUi(session = currentSession) {
   setAdminVisibility(adminShortcutCard, adminActive);
   setAdminVisibility(adminDashboardCard, adminActive);
 
-  if (!adminActive && activePage === "admin") {
-    setActivePage("dashboard", false);
+  const allowedPage = getAllowedPageForSession(activePage, session);
+  if (allowedPage !== activePage) {
+    setActivePage(allowedPage, false);
   }
 }
 
@@ -1081,7 +1099,7 @@ if (changeVerseButton) {
 function setActivePage(pageName, syncHash = true) {
   const availablePages = Array.from(pageViews).map((view) => view.dataset.pageView);
   const requestedPage = availablePages.includes(pageName) ? pageName : "dashboard";
-  const nextPage = requestedPage === "admin" && !isAdminSession() ? "dashboard" : requestedPage;
+  const nextPage = getAllowedPageForSession(requestedPage);
   activePage = nextPage;
 
   pageViews.forEach((view) => {
