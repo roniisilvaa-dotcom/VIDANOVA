@@ -3390,6 +3390,109 @@ function setupProjectUploads() {
   });
 }
 
+function formatCalculatorDisplay(expression) {
+  return String(expression || "0").replace(/\*/g, "×").replace(/\//g, "÷");
+}
+
+function appendCalculatorValue(value) {
+  const operators = new Set(["+", "-", "*", "/"]);
+  const current = calculatorExpression === "Erro" ? "0" : calculatorExpression;
+  const lastChar = current.slice(-1);
+
+  if (/\d/.test(value)) {
+    calculatorExpression = current === "0" ? value : `${current}${value}`;
+    return;
+  }
+
+  if (value === ".") {
+    const currentNumber = current.split(/[+\-*/()]/).pop() || "";
+    if (currentNumber.includes(".")) {
+      return;
+    }
+
+    calculatorExpression =
+      current === "0" || operators.has(lastChar) || lastChar === "("
+        ? `${current === "0" ? "" : current}0.`
+        : `${current}.`;
+    return;
+  }
+
+  if (value === "(") {
+    calculatorExpression =
+      current === "0" || operators.has(lastChar) || lastChar === "("
+        ? `${current === "0" ? "" : current}(`
+        : `${current}*(`;
+    return;
+  }
+
+  if (value === ")") {
+    const openCount = (current.match(/\(/g) || []).length;
+    const closeCount = (current.match(/\)/g) || []).length;
+    if (openCount <= closeCount || operators.has(lastChar) || lastChar === "(") {
+      return;
+    }
+    calculatorExpression = `${current})`;
+    return;
+  }
+
+  if (operators.has(value)) {
+    if (current === "0") {
+      if (value === "-") {
+        calculatorExpression = "-";
+      }
+      return;
+    }
+
+    if (operators.has(lastChar)) {
+      calculatorExpression = `${current.slice(0, -1)}${value}`;
+      return;
+    }
+
+    if (lastChar === "." || lastChar === "(") {
+      return;
+    }
+
+    calculatorExpression = `${current}${value}`;
+  }
+}
+
+function evaluateCalculatorExpression() {
+  const normalized = String(calculatorExpression || "0").trim();
+
+  if (!normalized || normalized === "Erro") {
+    calculatorExpression = "0";
+    return;
+  }
+
+  if (!/^[0-9+\-*/().\s]+$/.test(normalized)) {
+    calculatorExpression = "Erro";
+    return;
+  }
+
+  const openCount = (normalized.match(/\(/g) || []).length;
+  const closeCount = (normalized.match(/\)/g) || []).length;
+  if (openCount !== closeCount || /[+\-*/.(]$/.test(normalized)) {
+    calculatorExpression = "Erro";
+    return;
+  }
+
+  try {
+    const result = Function(`"use strict"; return (${normalized})`)();
+    calculatorExpression =
+      typeof result === "number" && Number.isFinite(result)
+        ? String(Number.parseFloat(result.toFixed(8)))
+        : "Erro";
+  } catch {
+    calculatorExpression = "Erro";
+  }
+}
+
+function renderCalculator() {
+  if (calculatorDisplay) {
+    calculatorDisplay.textContent = formatCalculatorDisplay(calculatorExpression);
+  }
+}
+
 if (calculatorDisplay) {
   calculatorKeys.forEach((key) => {
     key.addEventListener("click", () => {
@@ -3399,23 +3502,16 @@ if (calculatorDisplay) {
       if (action === "clear") {
         calculatorExpression = "0";
       } else if (action === "equals") {
-        try {
-          // Limited to calculator button input only.
-          const result = Function(`"use strict"; return (${calculatorExpression})`)();
-          calculatorExpression = String(Number.isFinite(result) ? result : 0);
-        } catch {
-          calculatorExpression = "Erro";
-        }
+        evaluateCalculatorExpression();
       } else if (value) {
-        calculatorExpression =
-          calculatorExpression === "0" || calculatorExpression === "Erro"
-            ? value
-            : `${calculatorExpression}${value}`;
+        appendCalculatorValue(value);
       }
 
-      calculatorDisplay.textContent = calculatorExpression;
+      renderCalculator();
     });
   });
+
+  renderCalculator();
 }
 
 moduleOpenButtons.forEach((button) => {
