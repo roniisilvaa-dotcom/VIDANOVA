@@ -59,9 +59,11 @@
         <nav class="sidebar-nav">
           <a href="#dashboard" data-page-link="dashboard">Dashboard</a>
           <a href="#agenda" data-page-link="agenda">Agenda</a>
+          <a href="#sonhos" data-page-link="sonhos">Sonhos e Metas</a>
+          <a href="#estudos" data-page-link="estudos">Estudos e Projetos</a>
           <a href="#financas" data-page-link="financas">Financas</a>
           <a href="#imagem" data-page-link="imagem">Imagem</a>
-          <a href="#casa" data-page-link="casa">Casa</a>
+          <a href="#casa" data-page-link="casa">Alimentacao e Lar</a>
           <a href="#corpo" data-page-link="corpo">Autocuidado</a>
           <a href="#viagens" data-page-link="viagens">Viagens</a>
           <a href="#espiritual" data-page-link="espiritual">Espiritual</a>
@@ -269,38 +271,6 @@
         <section class="page-view" data-page-view="agenda" id="agenda">
         <section class="panel agenda-panel">
           <div class="agenda-google-shell">
-            <aside class="agenda-left-rail">
-              <button id="agenda-create-button" class="agenda-create-button" type="button">+ Criar</button>
-
-              <section class="agenda-sidebar-card">
-                <div class="calendar-mini-heading">
-                  <p class="eyebrow">Navegacao</p>
-                  <strong id="calendar-mini-label">Mes</strong>
-                </div>
-                <div class="calendar-mini-weekdays">
-                  <span>D</span>
-                  <span>S</span>
-                  <span>T</span>
-                  <span>Q</span>
-                  <span>Q</span>
-                  <span>S</span>
-                  <span>S</span>
-                </div>
-                <div id="calendar-mini-grid" class="calendar-mini-grid"></div>
-              </section>
-
-              <section class="agenda-sidebar-card">
-                <div class="panel-heading compact-heading">
-                  <div>
-                    <p class="eyebrow">Minhas agendas</p>
-                    <h3>Calendarios</h3>
-                  </div>
-                  <button id="calendar-add-button" class="ghost-button" type="button">Nova</button>
-                </div>
-                <div id="calendar-list" class="calendar-list"></div>
-              </section>
-            </aside>
-
             <section class="calendar-card google-calendar-card">
               <div class="calendar-google-header">
                 <div class="calendar-google-left">
@@ -361,67 +331,158 @@
                 </div>
               </div>
             </section>
-
-            <section class="agenda-side google-agenda-side">
-              <article class="agenda-summary-card">
-                <div class="panel-heading compact-heading">
-                  <div>
-                    <p class="eyebrow">Resumo principal</p>
-                    <h3>Detalhes do periodo</h3>
-                  </div>
-                  <span id="selected-date-label" class="tag">Selecione um dia</span>
+          </div>
+          <div class="agenda-cards-grid">
+            <article class="agenda-summary-card">
+              <div class="panel-heading compact-heading">
+                <div>
+                  <p class="eyebrow">Resumo principal</p>
+                  <h3>Detalhes do periodo</h3>
                 </div>
-                <textarea
-                  id="agenda-summary-input"
-                  class="summary-input"
-                  placeholder="Resumo do dia, foco principal, observacoes e prioridades."
-                ></textarea>
-              </article>
+                <span id="selected-date-label" class="tag">Selecione um dia</span>
+              </div>
+              <textarea
+                id="agenda-summary-input"
+                class="summary-input"
+                placeholder="Resumo do dia, foco principal, observacoes e prioridades."
+              ></textarea>
+            </article>
 
-              <article class="agenda-events-card">
-                <div class="panel-heading agenda-subheading">
-                  <div>
-                    <p class="eyebrow">Agenda do dia</p>
-                    <h3>Compromissos completos</h3>
-                  </div>
+            <article class="agenda-events-card">
+              <div class="panel-heading agenda-subheading">
+                <div>
+                  <p class="eyebrow">Agenda do dia</p>
+                  <h3>Compromissos completos</h3>
                 </div>
+              </div>
 
-                <form id="agenda-form" class="agenda-form">
-                  <input id="agenda-date-input" type="date" aria-label="Data do compromisso" />
-                  <input id="agenda-time-input" type="time" aria-label="Horario inicial do compromisso" />
-                  <input id="agenda-end-time-input" type="time" aria-label="Horario final do compromisso" />
-                  <input id="agenda-title-input" type="text" placeholder="Titulo do compromisso" aria-label="Titulo do compromisso" />
-                  <input id="agenda-location-input" type="text" placeholder="Local" aria-label="Local do compromisso" />
-                  <input id="agenda-link-input" type="url" placeholder="Link de reuniao ou referencia" aria-label="Link do compromisso" />
-                  <input id="agenda-guests-input" type="text" placeholder="Convidados (emails separados por virgula)" aria-label="Convidados" />
-                  <select id="agenda-calendar-input" aria-label="Calendario do compromisso"></select>
-                  <select id="agenda-category-input" aria-label="Categoria do compromisso">
-                    <option value="Pessoal">Pessoal</option>
-                    <option value="Trabalho">Trabalho</option>
-                    <option value="Casa">Casa</option>
-                    <option value="Saude">Saude</option>
-                    <option value="Espiritual">Espiritual</option>
-                  </select>
-                  <select id="agenda-recurrence-input" aria-label="Recorrencia">
-                    <option value="none">Nao se repete</option>
-                    <option value="daily">Diariamente</option>
-                    <option value="weekly">Semanalmente</option>
-                    <option value="monthly">Mensalmente</option>
-                    <option value="yearly">Anualmente</option>
-                  </select>
-                  <label class="color-field">
-                    Cor
-                    <input id="agenda-color-input" type="color" value="#4285f4" aria-label="Cor do compromisso" />
-                  </label>
-                  <textarea id="agenda-description-input" rows="3" placeholder="Descricao, observacoes ou detalhes"></textarea>
-                  <button type="submit">Salvar</button>
-                </form>
+              <form id="agenda-form" class="agenda-form">
+                <input id="agenda-date-input" type="date" aria-label="Data do compromisso" />
+                <input id="agenda-time-input" type="time" aria-label="Horario inicial do compromisso" />
+                <input id="agenda-end-time-input" type="time" aria-label="Horario final do compromisso" />
+                <input id="agenda-title-input" type="text" placeholder="Titulo do compromisso" aria-label="Titulo do compromisso" />
+                <input id="agenda-location-input" type="text" placeholder="Local" aria-label="Local do compromisso" />
+                <input id="agenda-link-input" type="url" placeholder="Link de reuniao ou referencia" aria-label="Link do compromisso" />
+                <input id="agenda-guests-input" type="text" placeholder="Convidados (emails separados por virgula)" aria-label="Convidados" />
+                <select id="agenda-calendar-input" aria-label="Calendario do compromisso"></select>
+                <select id="agenda-category-input" aria-label="Categoria do compromisso">
+                  <option value="Pessoal">Pessoal</option>
+                  <option value="Trabalho">Trabalho</option>
+                  <option value="Casa">Casa</option>
+                  <option value="Saude">Saude</option>
+                  <option value="Espiritual">Espiritual</option>
+                </select>
+                <select id="agenda-recurrence-input" aria-label="Recorrencia">
+                  <option value="none">Nao se repete</option>
+                  <option value="daily">Diariamente</option>
+                  <option value="weekly">Semanalmente</option>
+                  <option value="monthly">Mensalmente</option>
+                  <option value="yearly">Anualmente</option>
+                </select>
+                <label class="color-field">
+                  Cor
+                  <input id="agenda-color-input" type="color" value="#4285f4" aria-label="Cor do compromisso" />
+                </label>
+                <textarea id="agenda-description-input" rows="3" placeholder="Descricao, observacoes ou detalhes"></textarea>
+                <button type="submit">Salvar</button>
+              </form>
 
-                <ul id="agenda-events-list" class="task-list"></ul>
-              </article>
-            </section>
+              <ul id="agenda-events-list" class="task-list"></ul>
+            </article>
+
+            <article class="agenda-summary-card">
+              <div class="panel-heading compact-heading">
+                <div>
+                  <p class="eyebrow">Planejamento semanal</p>
+                  <h3>Tarefas que ficam para a proxima semana</h3>
+                </div>
+              </div>
+              <textarea class="summary-input" data-persist-key="agenda-next-week" placeholder="Liste tarefas pendentes e prioridades para a proxima semana."></textarea>
+            </article>
+
+            <article class="agenda-events-card agenda-month-planning">
+              <div class="panel-heading compact-heading">
+                <div>
+                  <p class="eyebrow">Planejamento mensal</p>
+                  <h3>Visao geral do mes</h3>
+                </div>
+                <button id="agenda-create-button" class="agenda-create-button" type="button">+ Criar</button>
+              </div>
+              <div class="calendar-mini-heading">
+                <strong id="calendar-mini-label">Mes</strong>
+              </div>
+              <div class="calendar-mini-weekdays">
+                <span>D</span><span>S</span><span>T</span><span>Q</span><span>Q</span><span>S</span><span>S</span>
+              </div>
+              <div id="calendar-mini-grid" class="calendar-mini-grid"></div>
+              <div class="panel-heading compact-heading">
+                <div>
+                  <p class="eyebrow">Minhas agendas</p>
+                  <h3>Calendarios</h3>
+                </div>
+                <button id="calendar-add-button" class="ghost-button" type="button">Nova</button>
+              </div>
+              <div id="calendar-list" class="calendar-list"></div>
+              <textarea class="summary-input" data-persist-key="agenda-month-plan" placeholder="Metas, eventos fixos e direcionamento do mes."></textarea>
+            </article>
           </div>
         </section>
+        </section>
+
+        <section class="page-view" data-page-view="sonhos" id="sonhos">
+          <article class="panel module-card">
+            <div class="panel-heading"><div><p class="eyebrow">Sonhos e metas</p><h3>Planejamento por prazo</h3></div></div>
+            <div class="goal-horizon-grid">
+              <article class="detail-card"><span class="metric-label">Meta para 3 meses</span><textarea class="summary-input compact-area" data-persist-key="goal-3m"></textarea></article>
+              <article class="detail-card"><span class="metric-label">Meta para 6 meses</span><textarea class="summary-input compact-area" data-persist-key="goal-6m"></textarea></article>
+              <article class="detail-card"><span class="metric-label">Meta para 1 ano</span><textarea class="summary-input compact-area" data-persist-key="goal-1y"></textarea></article>
+              <article class="detail-card"><span class="metric-label">Meta para 2 anos</span><textarea class="summary-input compact-area" data-persist-key="goal-2y"></textarea></article>
+            </div>
+            <section class="dream-board">
+              <div class="panel-heading compact-heading"><div><p class="eyebrow">Visao dos sonhos</p><h3>Mural da vida dos sonhos</h3></div></div>
+              <input id="dream-vision-upload" type="file" accept="image/*" multiple />
+              <div id="dream-vision-gallery" class="dream-vision-gallery"></div>
+            </section>
+          </article>
+        </section>
+
+        <section class="page-view" data-page-view="estudos" id="estudos">
+          <article class="panel module-card">
+            <div class="panel-heading"><div><p class="eyebrow">Estudos</p><h3>Livros e cursos</h3></div></div>
+            <div class="study-main-grid">
+              <section class="agenda-events-card">
+                <h4>Livros</h4>
+                <table class="finance-table">
+                  <thead><tr><th>Livro</th><th>Autor</th><th>Inicio</th><th>Fim</th><th>Paginas</th><th>Progresso</th><th>Status</th></tr></thead>
+                  <tbody>
+                    <tr><td><input data-persist-key="book-1-title" /></td><td><input data-persist-key="book-1-author" /></td><td><input type="date" data-persist-key="book-1-start" /></td><td><input type="date" data-persist-key="book-1-end" /></td><td><input type="number" data-persist-key="book-1-pages" /></td><td><input type="number" min="0" max="100" data-persist-key="book-1-progress" /></td><td><input data-persist-key="book-1-status" /></td></tr>
+                    <tr><td><input data-persist-key="book-2-title" /></td><td><input data-persist-key="book-2-author" /></td><td><input type="date" data-persist-key="book-2-start" /></td><td><input type="date" data-persist-key="book-2-end" /></td><td><input type="number" data-persist-key="book-2-pages" /></td><td><input type="number" min="0" max="100" data-persist-key="book-2-progress" /></td><td><input data-persist-key="book-2-status" /></td></tr>
+                  </tbody>
+                </table>
+              </section>
+              <section class="agenda-events-card">
+                <h4>Cursos</h4>
+                <div class="two-column">
+                  <textarea class="summary-input" data-persist-key="courses-progress" placeholder="Cursos em andamento"></textarea>
+                  <textarea class="summary-input" data-persist-key="courses-wishlist" placeholder="Cursos desejados"></textarea>
+                </div>
+              </section>
+            </div>
+            <div class="postit-grid">
+              <article class="agenda-summary-card"><h4>Habilidades que quero desenvolver</h4><textarea class="summary-input compact-area" data-persist-key="skills-develop"></textarea></article>
+              <article class="agenda-summary-card"><h4>O que eu faco muito bem</h4><textarea class="summary-input compact-area" data-persist-key="skills-good"></textarea></article>
+              <article class="agenda-summary-card"><h4>O que eu preciso melhorar</h4><textarea class="summary-input compact-area" data-persist-key="skills-improve"></textarea></article>
+              <article class="agenda-summary-card"><h4>Quais sao os meus valores</h4><textarea class="summary-input compact-area" data-persist-key="values"></textarea></article>
+              <article class="agenda-events-card full"><h4>O que eu faco hoje que me afasta da vida que eu quero ter</h4><textarea class="summary-input compact-area" data-persist-key="habits-away"></textarea></article>
+            </div>
+            <div class="panel-heading"><div><p class="eyebrow">Projetos</p><h3>Projeto A, B, C e D</h3></div></div>
+            <div class="project-grid">
+              <article class="agenda-events-card"><h4>Projeto A</h4><textarea class="summary-input compact-area" data-persist-key="proj-a-what" placeholder="O que e"></textarea><textarea class="summary-input compact-area" data-persist-key="proj-a-desc" placeholder="Descricao"></textarea><textarea class="summary-input compact-area" data-persist-key="proj-a-plan" placeholder="Plano de acao"></textarea><select data-persist-key="proj-a-status"><option>a começar</option><option>em andamento</option><option>pronto</option></select><input data-persist-key="proj-a-people" placeholder="Pessoas envolvidas" /><input data-persist-key="proj-a-links" placeholder="Links e documentos" /></article>
+              <article class="agenda-events-card"><h4>Projeto B</h4><textarea class="summary-input compact-area" data-persist-key="proj-b-what" placeholder="O que e"></textarea><textarea class="summary-input compact-area" data-persist-key="proj-b-desc" placeholder="Descricao"></textarea><textarea class="summary-input compact-area" data-persist-key="proj-b-plan" placeholder="Plano de acao"></textarea><select data-persist-key="proj-b-status"><option>a começar</option><option>em andamento</option><option>pronto</option></select><input data-persist-key="proj-b-people" placeholder="Pessoas envolvidas" /><input data-persist-key="proj-b-links" placeholder="Links e documentos" /></article>
+              <article class="agenda-events-card"><h4>Projeto C</h4><textarea class="summary-input compact-area" data-persist-key="proj-c-what" placeholder="O que e"></textarea><textarea class="summary-input compact-area" data-persist-key="proj-c-desc" placeholder="Descricao"></textarea><textarea class="summary-input compact-area" data-persist-key="proj-c-plan" placeholder="Plano de acao"></textarea><select data-persist-key="proj-c-status"><option>a começar</option><option>em andamento</option><option>pronto</option></select><input data-persist-key="proj-c-people" placeholder="Pessoas envolvidas" /><input data-persist-key="proj-c-links" placeholder="Links e documentos" /></article>
+              <article class="agenda-events-card"><h4>Projeto D</h4><textarea class="summary-input compact-area" data-persist-key="proj-d-what" placeholder="O que e"></textarea><textarea class="summary-input compact-area" data-persist-key="proj-d-desc" placeholder="Descricao"></textarea><textarea class="summary-input compact-area" data-persist-key="proj-d-plan" placeholder="Plano de acao"></textarea><select data-persist-key="proj-d-status"><option>a começar</option><option>em andamento</option><option>pronto</option></select><input data-persist-key="proj-d-people" placeholder="Pessoas envolvidas" /><input data-persist-key="proj-d-links" placeholder="Links e documentos" /></article>
+            </div>
+          </article>
         </section>
 
         <section class="page-view" data-page-view="financas" id="financas">
@@ -645,46 +706,51 @@
         </section>
 
         <section class="page-view" data-page-view="casa" id="casa">
-          <article class="panel module-card home-card module-open-card" data-module="home">
+          <article class="panel module-card home-card">
             <div class="panel-heading">
               <div>
-                <p class="eyebrow">Casa</p>
-                <h3>Gestao da casa</h3>
+                <p class="eyebrow">Alimentacao e Lar</p>
+                <h3>Planejamento da casa e refeicoes</h3>
               </div>
-              <button class="ghost-button module-open-button" type="button" data-module="home">Abrir</button>
             </div>
-            <div class="structured-card-grid">
-              <div class="detail-card"><span class="metric-label">Rotina da semana</span><strong>Cozinha, quartos, roupas</strong></div>
-              <div class="detail-card"><span class="metric-label">Compras da casa</span><strong>8 itens pendentes</strong></div>
+            <div class="study-main-grid">
+              <article class="agenda-summary-card"><h4>Planner de refeicao</h4><textarea class="summary-input" data-persist-key="meal-planner"></textarea></article>
+              <article class="agenda-summary-card"><h4>Lista do mercado</h4><textarea class="summary-input" data-persist-key="market-list"></textarea></article>
+              <article class="agenda-summary-card"><h4>Cronograma de limpeza</h4><textarea class="summary-input" data-persist-key="cleaning-schedule"></textarea></article>
+              <article class="agenda-summary-card"><h4>Checklist dos comodos</h4><textarea class="summary-input" data-persist-key="room-checklist"></textarea></article>
             </div>
-            <ul id="home-preview-list" class="mini-list module-preview-list"></ul>
-            <ul class="mini-list">
-              <li>Limpeza por zonas com prioridade visivel</li>
-              <li>Planejamento de compras, estoque e reposicao</li>
-              <li>Checklist da cozinha, lavanderia e manutencao</li>
-            </ul>
+            <article class="agenda-events-card">
+              <h4>Reformas e reparos do lar</h4>
+              <div class="two-column">
+                <label>Inicio <input type="date" data-persist-key="home-repair-start" /></label>
+                <label>Previsao de termino <input type="date" data-persist-key="home-repair-end" /></label>
+              </div>
+              <textarea class="summary-input compact-area" data-persist-key="home-repair-summary" placeholder="Resumo / descricao da reforma"></textarea>
+              <input data-persist-key="home-repair-links" placeholder="Links relacionados a essa reforma" />
+            </article>
           </article>
         </section>
 
         <section class="page-view" data-page-view="corpo" id="corpo">
-          <article class="panel module-card body-card module-open-card" data-module="body">
+          <article class="panel module-card body-card">
             <div class="panel-heading">
               <div>
                 <p class="eyebrow">Corpo e autocuidado</p>
-                <h3>Como estou e para onde vou</h3>
+                <h3>Gestao completa do autocuidado</h3>
               </div>
-              <button class="ghost-button module-open-button" type="button" data-module="body">Abrir</button>
             </div>
-            <div class="structured-card-grid">
-              <div class="detail-card"><span class="metric-label">Como estou</span><strong>Energia media, buscando ritmo</strong></div>
-              <div class="detail-card"><span class="metric-label">Para onde vou</span><strong>Mais constancia, saude e imagem</strong></div>
+            <div class="tab-shell" data-tab-group="autocuidado">
+              <div class="tab-buttons">
+                <button class="ghost-button is-active" type="button" data-tab-target="medidas">Progresso de medidas</button>
+                <button class="ghost-button" type="button" data-tab-target="exercicios">Cronograma de exercicios</button>
+                <button class="ghost-button" type="button" data-tab-target="saude">Cuidados de saude</button>
+                <button class="ghost-button" type="button" data-tab-target="beleza">Rituais de beleza</button>
+              </div>
+              <section class="tab-panel is-active" data-tab-panel="medidas"><textarea class="summary-input" data-persist-key="self-measures"></textarea></section>
+              <section class="tab-panel" data-tab-panel="exercicios"><textarea class="summary-input" data-persist-key="self-workout"></textarea></section>
+              <section class="tab-panel" data-tab-panel="saude"><textarea class="summary-input" data-persist-key="self-health"></textarea></section>
+              <section class="tab-panel" data-tab-panel="beleza"><textarea class="summary-input" data-persist-key="self-beauty"></textarea></section>
             </div>
-            <ul id="body-preview-list" class="mini-list module-preview-list"></ul>
-            <ul class="mini-list">
-              <li>Registrar sensacao atual, meta e pequenas vitorias</li>
-              <li>Organizar cuidados com pele, cabelo, corpo e descanso</li>
-              <li>Acompanhar constancia semanal e progresso visual</li>
-            </ul>
           </article>
         </section>
 

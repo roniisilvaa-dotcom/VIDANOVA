@@ -595,7 +595,7 @@ a {
 
 .agenda-google-shell {
   display: grid;
-  grid-template-columns: 280px minmax(0, 1fr) 360px;
+  grid-template-columns: minmax(0, 1fr);
   gap: 20px;
   align-items: start;
 }
@@ -2887,6 +2887,118 @@ select {
   }
 
   .year-view-shell {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* --- New planning sections --- */
+.agenda-google-shell {
+  grid-template-columns: minmax(0, 1fr) !important;
+}
+
+.agenda-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+  margin-top: 18px;
+}
+
+.agenda-month-planning {
+  grid-column: 1 / -1;
+  display: grid;
+  gap: 12px;
+}
+
+.goal-horizon-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.compact-area {
+  min-height: 120px;
+}
+
+.dream-board {
+  margin-top: 16px;
+}
+
+.dream-vision-gallery {
+  margin-top: 12px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 10px;
+}
+
+.dream-vision-gallery img {
+  width: 100%;
+  min-height: 110px;
+  object-fit: cover;
+  border-radius: 14px;
+  border: 1px solid var(--line);
+}
+
+.study-main-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  margin-bottom: 14px;
+}
+
+.postit-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  margin-bottom: 18px;
+}
+
+.postit-grid .full {
+  grid-column: 1 / -1;
+}
+
+.project-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.project-grid .agenda-events-card {
+  display: grid;
+  gap: 10px;
+}
+
+.two-column {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.tab-shell {
+  display: grid;
+  gap: 12px;
+}
+
+.tab-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.tab-panel {
+  display: none;
+}
+
+.tab-panel.is-active {
+  display: block;
+}
+
+@media (max-width: 1100px) {
+  .agenda-cards-grid,
+  .goal-horizon-grid,
+  .study-main-grid,
+  .project-grid,
+  .two-column {
     grid-template-columns: 1fr;
   }
 }

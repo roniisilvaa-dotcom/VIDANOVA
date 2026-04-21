@@ -294,6 +294,10 @@ const themeButtons = document.querySelectorAll("[data-theme-choice]");
 const layoutButtons = document.querySelectorAll("[data-layout-choice]");
 const pageLinks = document.querySelectorAll("[data-page-link]");
 const pageViews = document.querySelectorAll("[data-page-view]");
+const persistFields = document.querySelectorAll("[data-persist-key]");
+const tabShells = document.querySelectorAll("[data-tab-group]");
+const dreamVisionUpload = document.querySelector("#dream-vision-upload");
+const dreamVisionGallery = document.querySelector("#dream-vision-gallery");
 const settingsProfileForm = document.querySelector("#settings-profile-form");
 const settingsPasswordForm = document.querySelector("#settings-password-form");
 const settingsNameInput = document.querySelector("#settings-name-input");
@@ -2934,6 +2938,60 @@ financeFilterButtons.forEach((button) => {
   });
 });
 
+function setupPersistedFields() {
+  persistFields.forEach((field) => {
+    const key = field.dataset.persistKey;
+    if (!key) {
+      return;
+    }
+    const savedValue = localStorage.getItem(`vida-nova:field:${key}`);
+    if (savedValue !== null) {
+      field.value = savedValue;
+    }
+    field.addEventListener("input", () => {
+      localStorage.setItem(`vida-nova:field:${key}`, field.value);
+    });
+  });
+}
+
+function setupTabs() {
+  tabShells.forEach((shell) => {
+    shell.addEventListener("click", (event) => {
+      const trigger = event.target.closest("[data-tab-target]");
+      if (!trigger) {
+        return;
+      }
+      const target = trigger.dataset.tabTarget;
+      const buttons = shell.querySelectorAll("[data-tab-target]");
+      const panels = shell.querySelectorAll("[data-tab-panel]");
+      buttons.forEach((button) => {
+        button.classList.toggle("is-active", button.dataset.tabTarget === target);
+      });
+      panels.forEach((panel) => {
+        panel.classList.toggle("is-active", panel.dataset.tabPanel === target);
+      });
+    });
+  });
+}
+
+function setupDreamVisionUpload() {
+  if (!dreamVisionUpload || !dreamVisionGallery) {
+    return;
+  }
+  dreamVisionUpload.addEventListener("change", () => {
+    dreamVisionGallery.innerHTML = "";
+    Array.from(dreamVisionUpload.files || []).forEach((file) => {
+      if (!file.type.startsWith("image/")) {
+        return;
+      }
+      const image = document.createElement("img");
+      image.src = URL.createObjectURL(file);
+      image.alt = file.name;
+      dreamVisionGallery.appendChild(image);
+    });
+  });
+}
+
 if (calculatorDisplay) {
   calculatorKeys.forEach((key) => {
     key.addEventListener("click", () => {
@@ -3273,6 +3331,9 @@ async function bootApp() {
   renderFinance();
   renderDashboardMirror();
   renderModuleCards();
+  setupPersistedFields();
+  setupTabs();
+  setupDreamVisionUpload();
   registerServiceWorker();
   setupInstallPrompt();
 }
