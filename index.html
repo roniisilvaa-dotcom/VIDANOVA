@@ -165,7 +165,7 @@
           </header>
 
           <section class="workspace-card-grid">
-            <button class="workspace-card workspace-card-planner is-featured" type="button" data-dashboard-open="agenda">
+            <button class="workspace-card workspace-card-planner is-featured" type="button" data-dashboard-open="planner">
               <div class="workspace-card-cover">
                 <span class="workspace-card-badge">Meu planner</span>
               </div>
@@ -243,6 +243,113 @@
             <ul id="task-list"></ul>
             <span id="task-progress"></span>
             <textarea id="notes-input"></textarea>
+          </div>
+        </section>
+        </section>
+
+        <section class="page-view" data-page-view="planner" id="planner">
+        <div class="page-return-bar">
+          <button class="ghost-button page-return-button" type="button" data-go-home>← Voltar</button>
+        </div>
+        <section class="panel planner-page-shell">
+          <div class="planner-tab-ribbon" aria-label="Abas da planner">
+            <span class="planner-tab planner-tab-weekly">Planejamento semanal</span>
+            <span class="planner-tab planner-tab-monthly">Planejamento mensal</span>
+            <span class="planner-tab planner-tab-calendar">Calendario</span>
+            <span class="planner-tab planner-tab-goals">Lista de metas</span>
+            <span class="planner-tab planner-tab-dreams">Mural dos sonhos</span>
+          </div>
+
+          <div class="planner-hero-banner">
+            <div class="planner-hero-copy">
+              <span class="planner-hero-icon">📘</span>
+              <div>
+                <p class="eyebrow">Minha planner</p>
+                <h2>Quais serao as prioridades de cada semana?</h2>
+              </div>
+            </div>
+          </div>
+
+          <div class="planner-top-grid">
+            <article class="planner-spotlight-card planner-focus-card">
+              <div class="planner-card-header planner-card-header-coral">
+                <span>📌</span>
+                <strong>Foco do mes</strong>
+              </div>
+              <textarea
+                class="summary-input planner-input planner-focus-input"
+                data-persist-key="planner-month-focus"
+                placeholder="Escreva os focos principais deste mes."
+              ></textarea>
+            </article>
+
+            <article class="planner-spotlight-card planner-photo-card">
+              <div class="planner-photo-illustration"></div>
+            </article>
+          </div>
+
+          <div class="planner-week-grid">
+            <article class="planner-week-card">
+              <div class="planner-card-header planner-card-header-peach">
+                <strong>Semana 1</strong>
+                <span>🗒️</span>
+              </div>
+              <textarea class="summary-input planner-input planner-week-input" data-persist-key="planner-week-1" placeholder="Liste tarefas, metas e prioridades da semana 1."></textarea>
+            </article>
+
+            <article class="planner-week-card">
+              <div class="planner-card-header planner-card-header-peach">
+                <strong>Semana 2</strong>
+                <span>🗒️</span>
+              </div>
+              <textarea class="summary-input planner-input planner-week-input" data-persist-key="planner-week-2" placeholder="Liste tarefas, metas e prioridades da semana 2."></textarea>
+            </article>
+
+            <article class="planner-week-card">
+              <div class="planner-card-header planner-card-header-peach">
+                <strong>Semana 3</strong>
+                <span>🗒️</span>
+              </div>
+              <textarea class="summary-input planner-input planner-week-input" data-persist-key="planner-week-3" placeholder="Liste tarefas, metas e prioridades da semana 3."></textarea>
+            </article>
+
+            <article class="planner-week-card">
+              <div class="planner-card-header planner-card-header-peach">
+                <strong>Semana 4</strong>
+                <span>🗒️</span>
+              </div>
+              <textarea class="summary-input planner-input planner-week-input" data-persist-key="planner-week-4" placeholder="Liste tarefas, metas e prioridades da semana 4."></textarea>
+            </article>
+          </div>
+
+          <article class="planner-summary-band">
+            <div class="planner-card-header planner-card-header-green">
+              <span>🔔</span>
+              <strong>Resumo do mes</strong>
+            </div>
+            <textarea class="summary-input planner-input planner-band-input" data-persist-key="planner-month-summary" placeholder="Resuma o que este mes esta pedindo de voce, seus aprendizados e ajustes."></textarea>
+          </article>
+
+          <div class="planner-reflection-grid">
+            <article class="planner-reflection-card planner-reflection-photo">
+              <div class="planner-reflection-illustration"></div>
+            </article>
+
+            <article class="planner-reflection-card">
+              <div class="planner-card-header planner-card-header-cream">
+                <strong>O que eu consegui fazer?</strong>
+                <span>🌼</span>
+              </div>
+              <textarea class="summary-input planner-input planner-reflection-input" data-persist-key="planner-wins" placeholder="Registre avancos, constancia, pequenas vitorias e pontos que te orgulham."></textarea>
+            </article>
+
+            <article class="planner-reflection-card">
+              <div class="planner-card-header planner-card-header-cream">
+                <strong>O que vou precisar melhorar ou adiar?</strong>
+                <span>💭</span>
+              </div>
+              <textarea class="summary-input planner-input planner-reflection-input" data-persist-key="planner-adjustments" placeholder="Liste o que precisa melhorar, simplificar, reorganizar ou deixar para depois."></textarea>
+            </article>
           </div>
         </section>
         </section>
