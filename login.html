@@ -2,17 +2,36 @@
 <html lang="pt-BR">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no" />
     <title>Entrar | Vida Nova</title>
+    
+    <!-- Theme Colors -->
     <meta name="theme-color" content="#c55b84" />
+    <meta name="msapplication-TileColor" content="#c55b84" />
+    
+    <!-- iOS Web App Meta Tags -->
     <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta name="apple-mobile-web-app-title" content="Vida Nova" />
-    <meta
-      name="description"
-      content="Acesso mobile do planner Vida Nova para rotina, agenda, financas e organizacao da vida."
-    />
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon-180.png" />
+    
+    <!-- Android Web App Meta Tags -->
+    <meta name="mobile-web-app-capable" content="yes" />
+    
+    <!-- Windows/Microsoft -->
+    <meta name="application-name" content="Vida Nova" />
+    <meta name="msapplication-starturl" content="./login.html" />
+    
+    <!-- Description -->
+    <meta name="description" content="Acesso mobile do planner Vida Nova para rotina, agenda, financas e organizacao da vida." />
+    
+    <!-- Security Headers -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    
+    <!-- PWA Manifest -->
     <link rel="manifest" href="manifest.webmanifest" />
     <link rel="icon" href="icon.svg" type="image/svg+xml" />
+    <link rel="icon" href="icon-192.png" sizes="192x192" type="image/png" />
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body class="auth-body">
@@ -36,13 +55,18 @@
       <section class="auth-form-card">
         <div>
           <p class="eyebrow">Acesso da usuaria</p>
-          <h2>Entrar no app</h2>
+          <h2 id="auth-title">Entrar no app</h2>
+        </div>
+
+        <div class="auth-mode-switch" role="tablist" aria-label="Modo de autenticacao">
+          <button id="mode-login" class="secondary-button is-active" type="button">Entrar</button>
+          <button id="mode-register" class="secondary-button" type="button">Criar conta</button>
         </div>
 
         <form id="login-form" class="auth-form">
-          <label>
+          <label id="name-field" class="auth-field hidden-field">
             Nome
-            <input id="login-name" type="text" placeholder="Seu nome" required />
+            <input id="login-name" type="text" placeholder="Seu nome completo" />
           </label>
 
           <label>
@@ -50,17 +74,29 @@
             <input id="login-email" type="email" placeholder="voce@email.com" required />
           </label>
 
+          <label>
+            Senha
+            <input id="login-password" type="password" placeholder="Digite sua senha" required minlength="6" />
+          </label>
+
+          <label id="confirm-password-field" class="auth-field hidden-field">
+            Confirmar senha
+            <input id="login-confirm-password" type="password" placeholder="Repita sua senha" minlength="6" />
+          </label>
+
+          <p id="auth-feedback" class="auth-feedback" role="status" aria-live="polite"></p>
+
           <div class="auth-actions">
-            <button class="primary-button" type="submit">Entrar agora</button>
+            <button id="auth-submit" class="primary-button" type="submit">Entrar agora</button>
             <button id="demo-access" class="secondary-button" type="button">
-              Acessar demonstracao
+              Sem acesso demo
             </button>
           </div>
         </form>
 
         <p class="auth-note">
-          Esta e a estrutura inicial do acesso mobile. Depois ligamos isso a
-          login real, assinatura e Kiwify.
+          O acesso agora depende de conta real validada no servidor e no banco.
+          Ao reabrir o app, a usuaria precisa entrar novamente.
         </p>
       </section>
     </main>
