@@ -15,10 +15,18 @@ const todayKey = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart
   today.getDate(),
 ).padStart(2, "0")}`;
 
-const session = JSON.parse(
-  localStorage.getItem("ela-em-ordem:session") ||
-    JSON.stringify({ name: "Visitante", email: "demo@elaemordem.app" }),
-);
+const AUTH_TOKEN_KEY = "vida-nova:auth-token";
+const AUTH_USER_KEY = "vida-nova:auth-user";
+
+const savedToken = sessionStorage.getItem(AUTH_TOKEN_KEY);
+const savedUser = sessionStorage.getItem(AUTH_USER_KEY);
+
+if (!savedToken || !savedUser) {
+  window.location.href = "./login.html";
+  throw new Error("Sessao nao encontrada");
+}
+
+const session = JSON.parse(savedUser);
 
 const agendaStore = JSON.parse(localStorage.getItem("ela-em-ordem:agenda-events") || "{}");
 let topTenItems = JSON.parse(localStorage.getItem("ela-em-ordem:top-ten") || "[]");

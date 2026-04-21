@@ -18,6 +18,16 @@ const LEGACY_SESSION_KEY = "ela-em-ordem:session";
 
 let authMode = "login";
 
+function getAuthStorage() {
+  return window.sessionStorage;
+}
+
+function clearLegacyAuthCache() {
+  localStorage.removeItem(AUTH_TOKEN_KEY);
+  localStorage.removeItem(AUTH_USER_KEY);
+  localStorage.removeItem(LEGACY_SESSION_KEY);
+}
+
 function setFeedback(message, type = "neutral") {
   if (!authFeedback) {
     return;
@@ -47,9 +57,10 @@ function setMode(mode) {
 }
 
 function saveSession(token, user) {
-  localStorage.setItem(AUTH_TOKEN_KEY, token);
-  localStorage.setItem(AUTH_USER_KEY, JSON.stringify(user));
-  localStorage.setItem(
+  const storage = getAuthStorage();
+  storage.setItem(AUTH_TOKEN_KEY, token);
+  storage.setItem(AUTH_USER_KEY, JSON.stringify(user));
+  storage.setItem(
     LEGACY_SESSION_KEY,
     JSON.stringify({
       name: user.name,
@@ -58,6 +69,7 @@ function saveSession(token, user) {
       createdAt: new Date().toISOString(),
     }),
   );
+  clearLegacyAuthCache();
 }
 
 async function postJson(url, payload) {
@@ -79,7 +91,7 @@ async function postJson(url, payload) {
 }
 
 async function redirectIfAuthenticated() {
-  const token = localStorage.getItem(AUTH_TOKEN_KEY);
+  const token = getAuthStorage().getItem(AUTH_TOKEN_KEY);
   if (!token) {
     return;
   }
@@ -89,9 +101,10 @@ async function redirectIfAuthenticated() {
     saveSession(token, response.user);
     window.location.href = "./index.html";
   } catch {
-    localStorage.removeItem(AUTH_TOKEN_KEY);
-    localStorage.removeItem(AUTH_USER_KEY);
-    localStorage.removeItem(LEGACY_SESSION_KEY);
+    getAuthStorage().removeItem(AUTH_TOKEN_KEY);
+    getAuthStorage().removeItem(AUTH_USER_KEY);
+    getAuthStorage().removeItem(LEGACY_SESSION_KEY);
+    clearLegacyAuthCache();
   }
 }
 
@@ -165,15 +178,14 @@ if (loginForm) {
 
 if (demoAccess) {
   demoAccess.addEventListener("click", () => {
-    loginEmail.value = "demo@vidanova.app";
-    loginPassword.value = "123456";
     setMode("login");
     setFeedback(
-      "A demonstracao agora depende de uma conta criada no servidor. Se quiser, posso ligar isso a uma conta demo real.",
-      "neutral",
+      "O acesso demo foi desativado. Entre com uma conta real cadastrada no servidor.",
+      "error",
     );
   });
 }
 
+clearLegacyAuthCache();
 setMode("login");
 redirectIfAuthenticated();

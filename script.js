@@ -366,6 +366,16 @@ let syncInFlight = null;
 let isHydratingCloudState = false;
 let pendingAvatarData = "";
 
+function getAuthStorage() {
+  return window.sessionStorage;
+}
+
+function clearLegacyAuthCache() {
+  localStorage.removeItem(AUTH_TOKEN_KEY);
+  localStorage.removeItem(AUTH_USER_KEY);
+  localStorage.removeItem(LEGACY_SESSION_KEY);
+}
+
 financeStore = {
   planIncome: Number(financeStore.planIncome || 0),
   planExpense: Number(financeStore.planExpense || 0),
@@ -380,16 +390,18 @@ const editableCardDefaults = Array.from(editableCards).reduce((defaults, card) =
 }, {});
 
 function requireSession() {
-  const savedUser = localStorage.getItem(AUTH_USER_KEY);
-  const token = localStorage.getItem(AUTH_TOKEN_KEY);
+  const authStorage = getAuthStorage();
+  const savedUser = authStorage.getItem(AUTH_USER_KEY);
+  const token = authStorage.getItem(AUTH_TOKEN_KEY);
 
   if (!savedUser || !token) {
+    clearLegacyAuthCache();
     window.location.href = "./login.html";
     throw new Error("Sessao nao encontrada");
   }
 
   const session = JSON.parse(savedUser);
-  localStorage.setItem(
+  authStorage.setItem(
     LEGACY_SESSION_KEY,
     JSON.stringify({
       id: session.id,
@@ -403,21 +415,24 @@ function requireSession() {
 }
 
 function getAuthToken() {
-  return localStorage.getItem(AUTH_TOKEN_KEY) || "";
+  return getAuthStorage().getItem(AUTH_TOKEN_KEY) || "";
 }
 
 function clearAuthSession() {
-  localStorage.removeItem(AUTH_TOKEN_KEY);
-  localStorage.removeItem(AUTH_USER_KEY);
-  localStorage.removeItem(LEGACY_SESSION_KEY);
+  const authStorage = getAuthStorage();
+  authStorage.removeItem(AUTH_TOKEN_KEY);
+  authStorage.removeItem(AUTH_USER_KEY);
+  authStorage.removeItem(LEGACY_SESSION_KEY);
+  clearLegacyAuthCache();
 }
 
 function persistUserSession(user, token = getAuthToken()) {
-  localStorage.setItem(AUTH_USER_KEY, JSON.stringify(user));
+  const authStorage = getAuthStorage();
+  authStorage.setItem(AUTH_USER_KEY, JSON.stringify(user));
   if (token) {
-    localStorage.setItem(AUTH_TOKEN_KEY, token);
+    authStorage.setItem(AUTH_TOKEN_KEY, token);
   }
-  localStorage.setItem(
+  authStorage.setItem(
     LEGACY_SESSION_KEY,
     JSON.stringify({
       id: user.id,
@@ -426,6 +441,7 @@ function persistUserSession(user, token = getAuthToken()) {
       createdAt: new Date().toISOString(),
     }),
   );
+  clearLegacyAuthCache();
   currentSession = user;
 }
 
@@ -652,60 +668,40 @@ function scheduleCloudSync() {
 
 async function initializeAuthenticatedState() {
   const token = getAuthToken();
-  const legacySession = JSON.parse(localStorage.getItem(LEGACY_SESSION_KEY) || "null");
   
-  // Se não houver token, usar sessão legada ou demo
-  if (!token && !legacySession) {
-    // Modo demo - criar sessão de demonstração
-    const demoSession = {
-      id: "demo-user",
-      name: "Visitante",
-      email: "demo@vidanova.app",
-      createdAt: new Date().toISOString(),
-    };
-    persistUserSession(demoSession, "demo-token");
-    return;
+  if (!token) {
+    clearAuthSession();
+    window.location.href = "./login.html";
+    throw new Error("Token de autenticacao ausente");
   }
 
-  // Tentar verificar token com servidor (com fallback para offline)
-  if (token) {
-    try {
-      const verifyResponse = await apiPost("/api/auth/verify", { token });
-      persistUserSession(verifyResponse.user, token);
-    } catch (error) {
-      console.warn("Servidor indisponível. Usando modo offline.", error);
-      // Continuar com sessão legada ou demo
-      if (legacySession) {
-        persistUserSession(legacySession, token);
-      }
+  try {
+    const verifyResponse = await apiPost("/api/auth/verify", { token });
+    persistUserSession(verifyResponse.user, token);
+  } catch (error) {
+    clearAuthSession();
+    window.location.href = "./login.html";
+    throw new Error("Sessao invalida ou expirada");
+  }
+
+  try {
+    const response = await apiPost("/api/data/get", {
+      token,
+      dataType: CLOUD_STATE_TYPE,
+    });
+    const savedState = response.data?.[CLOUD_STATE_KEY];
+
+    if (savedState) {
+      applyCloudState(savedState);
+    } else {
+      applyCloudState(createEmptyCloudState());
+      scheduleCloudSync();
     }
-  } else if (legacySession) {
-    // Usar sessão previamente salva
-    persistUserSession(legacySession);
-  }
-
-  // Tentar carregar dados da nuvem (com fallback para localStorage)
-  if (token) {
-    try {
-      const response = await apiPost("/api/data/get", {
-        token,
-        dataType: CLOUD_STATE_TYPE,
-      });
-      const savedState = response.data?.[CLOUD_STATE_KEY];
-
-      if (savedState) {
-        applyCloudState(savedState);
-      } else {
-        applyCloudState(createEmptyCloudState());
-        scheduleCloudSync();
-      }
-    } catch (error) {
-      console.warn("Não foi possível carregar dados da nuvem. Usando localStorage.", error);
-      // Fallback para dados locais
-      const localState = JSON.parse(localStorage.getItem("vida-nova:cloud-state") || "null");
-      if (localState) {
-        applyCloudState(localState);
-      }
+  } catch (error) {
+    console.warn("Nao foi possivel carregar dados da nuvem.", error);
+    const localState = JSON.parse(localStorage.getItem("vida-nova:cloud-state") || "null");
+    if (localState) {
+      applyCloudState(localState);
     }
   }
 }
