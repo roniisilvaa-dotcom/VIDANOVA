@@ -996,13 +996,17 @@ a {
 
 .calendar-main-stage {
   min-width: 0;
-  overflow: hidden;
+  overflow-x: auto;
+  overflow-y: hidden;
   border-radius: 18px;
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.82), rgba(248, 250, 255, 0.92));
 }
 
 #calendar-month-shell {
+  display: grid;
+  gap: 12px;
   width: 100%;
+  min-width: 980px;
 }
 
 .year-view-shell {
@@ -1089,11 +1093,13 @@ a {
 
 .calendar-grid {
   width: 100%;
+  min-width: 100%;
   align-items: stretch;
 }
 
 .calendar-day {
   min-height: 136px;
+  min-width: 0;
   padding: 14px 12px;
   border: 1px solid var(--line);
   border-radius: 20px;
@@ -2882,7 +2888,7 @@ select {
 }
 
 #calendar-month-shell {
-  min-width: 760px;
+  min-width: 980px;
 }
 
 .week-view-shell {
@@ -2996,7 +3002,7 @@ select {
 @media (max-width: 1180px) {
   #calendar-month-shell,
   .week-view-shell {
-    min-width: 0;
+    min-width: 760px;
   }
 }
 
