@@ -296,13 +296,13 @@ a {
 }
 
 .icon-only-button {
-  width: 60px;
-  height: 60px;
+  width: 72px;
+  height: 72px;
   padding: 0;
-  border-radius: 18px;
+  border-radius: 22px;
   display: inline-grid;
   place-items: center;
-  font-size: 1.55rem;
+  font-size: 1.9rem;
 }
 
 .topbar-avatar-large {
@@ -317,14 +317,17 @@ a {
   font-size: 0.95rem;
 }
 
-.icon-only-button {
-  width: 46px;
-  height: 46px;
-  padding: 0;
-  border-radius: 15px;
-  display: inline-grid;
-  place-items: center;
-  font-size: 1.2rem;
+.settings-gear-button {
+  width: 82px;
+  height: 82px;
+  border-radius: 24px;
+  font-size: 2.1rem;
+  font-weight: 700;
+  box-shadow: 0 18px 38px rgba(197, 91, 132, 0.2);
+}
+
+.settings-gear-button span {
+  transform: translateY(-1px);
 }
 
 .topbar-avatar {
