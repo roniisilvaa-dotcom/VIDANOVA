@@ -294,10 +294,13 @@ const themeButtons = document.querySelectorAll("[data-theme-choice]");
 const layoutButtons = document.querySelectorAll("[data-layout-choice]");
 const pageLinks = document.querySelectorAll("[data-page-link]");
 const pageViews = document.querySelectorAll("[data-page-view]");
+const dashboardOpenButtons = document.querySelectorAll("[data-dashboard-open]");
 const persistFields = document.querySelectorAll("[data-persist-key]");
 const tabShells = document.querySelectorAll("[data-tab-group]");
 const dreamVisionUpload = document.querySelector("#dream-vision-upload");
 const dreamVisionGallery = document.querySelector("#dream-vision-gallery");
+const projectUploads = document.querySelectorAll("[data-project-upload]");
+const projectGalleries = document.querySelectorAll("[data-project-gallery]");
 const settingsProfileForm = document.querySelector("#settings-profile-form");
 const settingsPasswordForm = document.querySelector("#settings-password-form");
 const settingsNameInput = document.querySelector("#settings-name-input");
@@ -2496,6 +2499,15 @@ pageLinks.forEach((link) => {
   });
 });
 
+dashboardOpenButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    const targetPage = button.dataset.dashboardOpen;
+    if (targetPage) {
+      setActivePage(targetPage);
+    }
+  });
+});
+
 editCardButtons.forEach((button) => {
   button.addEventListener("click", () => {
     const card = document.querySelector(`[data-card-id="${button.dataset.editCard}"]`);
@@ -2954,6 +2966,85 @@ function setupPersistedFields() {
   });
 }
 
+function getStoredDreamVisionImages() {
+  return JSON.parse(localStorage.getItem("vida-nova:dream-vision-images") || "[]");
+}
+
+function saveDreamVisionImages(images) {
+  localStorage.setItem("vida-nova:dream-vision-images", JSON.stringify(images));
+}
+
+function renderDreamVisionGallery(images = getStoredDreamVisionImages()) {
+  if (!dreamVisionGallery) {
+    return;
+  }
+
+  dreamVisionGallery.innerHTML = "";
+
+  if (!images.length) {
+    dreamVisionGallery.innerHTML =
+      '<div class="dream-empty-state">Adicione imagens do seu mural de sonhos para montar sua visao.</div>';
+    return;
+  }
+
+  images.forEach((image, index) => {
+    const card = document.createElement("figure");
+    card.className = "dream-vision-card";
+    card.innerHTML = `
+      <img src="${escapeHtml(image.src)}" alt="${escapeHtml(image.name || `Imagem ${index + 1}`)}" />
+      <button type="button" class="task-remove dream-remove-button" data-dream-remove="${index}">Remover</button>
+    `;
+    dreamVisionGallery.appendChild(card);
+  });
+}
+
+function getProjectAttachmentKey(projectKey) {
+  return `vida-nova:project-attachments:${projectKey}`;
+}
+
+function getStoredProjectAttachments(projectKey) {
+  return JSON.parse(localStorage.getItem(getProjectAttachmentKey(projectKey)) || "[]");
+}
+
+function saveProjectAttachments(projectKey, files) {
+  localStorage.setItem(getProjectAttachmentKey(projectKey), JSON.stringify(files));
+}
+
+function renderProjectAttachments(projectKey) {
+  const gallery = document.querySelector(`[data-project-gallery="${projectKey}"]`);
+  if (!gallery) {
+    return;
+  }
+
+  const files = getStoredProjectAttachments(projectKey);
+  gallery.innerHTML = "";
+
+  if (!files.length) {
+    gallery.innerHTML =
+      '<div class="project-empty-state">Nenhum anexo ou referencia adicionados ainda.</div>';
+    return;
+  }
+
+  files.forEach((file, index) => {
+    const item = document.createElement("article");
+    item.className = "project-attachment-item";
+    item.innerHTML = `
+      <div>
+        <strong>${escapeHtml(file.name || `Arquivo ${index + 1}`)}</strong>
+        <small>${escapeHtml(file.type || "Referencia")}</small>
+      </div>
+      <button type="button" class="task-remove" data-project-remove="${projectKey}:${index}">Excluir</button>
+    `;
+    gallery.appendChild(item);
+  });
+}
+
+function renderAllProjectAttachments() {
+  projectGalleries.forEach((gallery) => {
+    renderProjectAttachments(gallery.dataset.projectGallery);
+  });
+}
+
 function setupTabs() {
   tabShells.forEach((shell) => {
     shell.addEventListener("click", (event) => {
@@ -2978,16 +3069,93 @@ function setupDreamVisionUpload() {
   if (!dreamVisionUpload || !dreamVisionGallery) {
     return;
   }
+  renderDreamVisionGallery();
+
   dreamVisionUpload.addEventListener("change", () => {
-    dreamVisionGallery.innerHTML = "";
-    Array.from(dreamVisionUpload.files || []).forEach((file) => {
-      if (!file.type.startsWith("image/")) {
+    const files = Array.from(dreamVisionUpload.files || []).filter((file) =>
+      file.type.startsWith("image/"),
+    );
+
+    Promise.all(
+      files.map(
+        (file) =>
+          new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = () =>
+              resolve({
+                name: file.name,
+                src: String(reader.result || ""),
+              });
+            reader.onerror = () => reject(new Error("Falha ao carregar imagem do mural."));
+            reader.readAsDataURL(file);
+          }),
+      ),
+    )
+      .then((images) => {
+        const stored = getStoredDreamVisionImages();
+        const nextImages = [...stored, ...images].slice(-12);
+        saveDreamVisionImages(nextImages);
+        renderDreamVisionGallery(nextImages);
+        dreamVisionUpload.value = "";
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  });
+
+  dreamVisionGallery.addEventListener("click", (event) => {
+    const removeButton = event.target.closest("[data-dream-remove]");
+    if (!removeButton) {
+      return;
+    }
+
+    const removeIndex = Number(removeButton.dataset.dreamRemove);
+    const nextImages = getStoredDreamVisionImages().filter((_, index) => index !== removeIndex);
+    saveDreamVisionImages(nextImages);
+    renderDreamVisionGallery(nextImages);
+  });
+}
+
+function setupProjectUploads() {
+  renderAllProjectAttachments();
+
+  projectUploads.forEach((input) => {
+    input.addEventListener("change", () => {
+      const projectKey = input.dataset.projectUpload;
+      if (!projectKey) {
         return;
       }
-      const image = document.createElement("img");
-      image.src = URL.createObjectURL(file);
-      image.alt = file.name;
-      dreamVisionGallery.appendChild(image);
+
+      const files = Array.from(input.files || []);
+      const existingFiles = getStoredProjectAttachments(projectKey);
+      const nextFiles = [
+        ...existingFiles,
+        ...files.map((file) => ({
+          name: file.name,
+          type: file.type || "Arquivo",
+          size: file.size || 0,
+        })),
+      ].slice(-12);
+
+      saveProjectAttachments(projectKey, nextFiles);
+      renderProjectAttachments(projectKey);
+      input.value = "";
+    });
+  });
+
+  projectGalleries.forEach((gallery) => {
+    gallery.addEventListener("click", (event) => {
+      const removeButton = event.target.closest("[data-project-remove]");
+      if (!removeButton) {
+        return;
+      }
+
+      const [projectKey, itemIndex] = String(removeButton.dataset.projectRemove || "").split(":");
+      const nextFiles = getStoredProjectAttachments(projectKey).filter(
+        (_, index) => index !== Number(itemIndex),
+      );
+      saveProjectAttachments(projectKey, nextFiles);
+      renderProjectAttachments(projectKey);
     });
   });
 }
@@ -3334,6 +3502,7 @@ async function bootApp() {
   setupPersistedFields();
   setupTabs();
   setupDreamVisionUpload();
+  setupProjectUploads();
   registerServiceWorker();
   setupInstallPrompt();
 }

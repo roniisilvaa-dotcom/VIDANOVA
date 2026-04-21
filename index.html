@@ -89,7 +89,9 @@
             <h3 id="user-greeting">Bem-vinda</h3>
           </div>
           <div class="topbar-actions">
-            <button id="settings-button" class="ghost-button" type="button">Configuracoes</button>
+            <button id="settings-button" class="ghost-button icon-only-button" type="button" aria-label="Abrir configuracoes" title="Configuracoes">
+              <span aria-hidden="true">⚙</span>
+            </button>
             <div class="topbar-avatar" id="topbar-avatar" aria-hidden="true">VN</div>
             <button id="logout-button" class="ghost-button" type="button">Sair</button>
           </div>
@@ -149,122 +151,143 @@
 
         <div class="page-stack">
         <section class="page-view is-active" data-page-view="dashboard" id="dashboard">
-        <header class="hero">
-          <div class="hero-main-card">
-            <p class="eyebrow">SaaS de organizacao da vida feminina</p>
-            <h2>Um painel para organizar rotina, casa, financas, imagem, corpo e espiritualidade.</h2>
-            <p class="hero-copy">
-              Um painel para dar clareza ao dia, acompanhar compromissos, enxergar o dinheiro e manter a vida em ordem em um lugar so.
-            </p>
-            <div class="hero-graph">
-              <div class="graph-row">
-                <span>Rotina</span>
-                <div class="graph-bar"><i id="graph-routine"></i></div>
-              </div>
-              <div class="graph-row">
-                <span>Agenda</span>
-                <div class="graph-bar"><i id="graph-agenda"></i></div>
-              </div>
-              <div class="graph-row">
-                <span>Financeiro</span>
-                <div class="graph-bar"><i id="graph-finance"></i></div>
-              </div>
+        <section class="workspace-home">
+          <header class="workspace-header panel">
+            <div>
+              <p class="eyebrow">Tela inicial</p>
+              <h2>Meu workspace</h2>
+              <p class="hero-copy">Entre por area, acompanhe sua vida em blocos e abra a parte certa do app com um clique.</p>
             </div>
-          </div>
-          <div class="hero-stats dashboard-grid" data-grid-id="hero-stats">
-            <article class="stat-card warm interactive-stat" data-scroll-target="#task-form">
+            <div class="workspace-actions">
+              <button class="ghost-button" type="button" data-dashboard-open="sonhos">Modelos</button>
+              <button class="primary-button" type="button" data-dashboard-open="agenda">+ Novo projeto</button>
+            </div>
+          </header>
+
+          <section class="workspace-card-grid">
+            <button class="workspace-card workspace-card-planner is-featured" type="button" data-dashboard-open="dashboard">
+              <div class="workspace-card-cover">
+                <span class="workspace-card-badge">Meu planner</span>
+              </div>
+              <strong>My Planner</strong>
+              <small>Entrada principal do app</small>
+            </button>
+
+            <button class="workspace-card workspace-card-body" type="button" data-dashboard-open="corpo">
+              <div class="workspace-card-cover"></div>
+              <strong>Saude | Beleza | Bem-estar</strong>
+              <small>Autocuidado e rituais</small>
+            </button>
+
+            <button class="workspace-card workspace-card-agenda" type="button" data-dashboard-open="agenda">
+              <div class="workspace-card-cover"></div>
+              <strong>Dia a Dia | Agenda</strong>
+              <small id="agenda-next-meta">Escolha um dia no calendario</small>
+            </button>
+
+            <button class="workspace-card workspace-card-finance" type="button" data-dashboard-open="financas">
+              <div class="workspace-card-cover"></div>
+              <strong>Financas | Controle</strong>
+              <small id="finance-caption">Sem movimentacao registrada</small>
+            </button>
+
+            <button class="workspace-card workspace-card-study" type="button" data-dashboard-open="estudos">
+              <div class="workspace-card-cover"></div>
+              <strong>Estudos | Projetos</strong>
+              <small>Livros, cursos e projetos</small>
+            </button>
+
+            <button class="workspace-card workspace-card-home" type="button" data-dashboard-open="casa">
+              <div class="workspace-card-cover"></div>
+              <strong>Alimentacao | Mercado | Lar</strong>
+              <small>Casa, refeicoes e reparos</small>
+            </button>
+          </section>
+
+          <section class="workspace-overview-grid">
+            <article class="panel workspace-overview-card interactive-stat" data-scroll-target="#task-form">
               <span>Foco do dia</span>
               <strong id="focus-count">0 tarefas</strong>
               <small id="focus-progress">0 concluidas</small>
             </article>
-            <article class="stat-card mint interactive-stat" data-scroll-target="#agenda">
+            <article class="panel workspace-overview-card interactive-stat" data-scroll-target="#agenda">
               <span>Agenda principal</span>
               <strong id="agenda-next-title">Nenhum compromisso</strong>
-              <small id="agenda-next-meta">Escolha um dia no calendario</small>
+              <small>Abra sua semana em um clique</small>
             </article>
-            <article class="stat-card rose interactive-stat" data-scroll-target="#financas">
+            <article class="panel workspace-overview-card interactive-stat" data-scroll-target="#financas">
               <span>Financeiro do mes</span>
               <strong id="finance-balance-hero">R$ 0,00</strong>
-              <small id="finance-caption">Sem movimentacao registrada</small>
+              <small>Saldo atualizado da sua rotina</small>
             </article>
-            <article class="stat-card sky interactive-stat" data-scroll-target="#notes-input">
+            <article class="panel workspace-overview-card interactive-stat" data-scroll-target="#notes-input">
               <span>Resumo bom amor</span>
               <strong id="summary-spotlight">Seu resumo aparece aqui</strong>
               <small id="notes-preview">As anotacoes mais importantes sobem para o topo</small>
             </article>
-          </div>
-        </header>
+          </section>
 
-        <section class="grid dashboard-grid">
-          <article class="panel task-panel">
-            <div class="panel-heading">
-              <div>
-                <p class="eyebrow">Checklist do dia</p>
-                <h3>Rotina essencial</h3>
+          <section class="workspace-support-grid">
+            <article class="panel workspace-rhythm-card">
+              <div class="panel-heading">
+                <div>
+                  <p class="eyebrow">Visao rapida</p>
+                  <h3>Ritmo da sua semana</h3>
+                </div>
               </div>
-              <span id="task-progress" class="progress-badge">0 de 0</span>
-            </div>
-
-            <form id="task-form" class="task-form">
-              <input
-                id="task-input"
-                type="text"
-                placeholder="Adicionar tarefa de hoje"
-                aria-label="Nova tarefa"
-              />
-              <button type="submit">Adicionar</button>
-            </form>
-
-            <ul id="task-list" class="task-list"></ul>
-          </article>
-        </section>
-
-        <section class="grid planning-grid">
-          <article class="panel notes-panel" data-card-id="notes-panel">
-            <div class="panel-heading">
-              <div>
-                <p class="eyebrow">Bloco de anotacao</p>
-                <h3>Anotacoes livres</h3>
+              <div class="hero-graph workspace-graph">
+                <div class="graph-row">
+                  <span>Rotina</span>
+                  <div class="graph-bar"><i id="graph-routine"></i></div>
+                </div>
+                <div class="graph-row">
+                  <span>Agenda</span>
+                  <div class="graph-bar"><i id="graph-agenda"></i></div>
+                </div>
+                <div class="graph-row">
+                  <span>Financeiro</span>
+                  <div class="graph-bar"><i id="graph-finance"></i></div>
+                </div>
               </div>
-              <span class="tag">Salva sozinha</span>
-            </div>
-            <textarea
-              id="notes-input"
-              class="notes-input"
-              placeholder="Escreva ideias, oracoes, lembretes, sentimentos ou qualquer anotacao importante do dia."
-            ></textarea>
-          </article>
-        </section>
+            </article>
 
-        <section class="grid bottom-grid">
-          <article class="panel reflection-panel editable-card" data-card-id="reflection-panel" data-card-type="text">
-            <div class="panel-heading">
-              <div>
-                <p class="eyebrow">Reflexao</p>
-                <h3>Como ela quer se sentir</h3>
+            <article class="panel task-panel">
+              <div class="panel-heading">
+                <div>
+                  <p class="eyebrow">Checklist do dia</p>
+                  <h3>Rotina essencial</h3>
+                </div>
+                <span id="task-progress" class="progress-badge">0 de 0</span>
               </div>
-              <button class="ghost-button card-edit-button" type="button" data-edit-card="reflection-panel">Editar</button>
-            </div>
-            <p>
-              Organizada, bonita, em paz, sem culpa, com a casa em ordem e a
-              vida espiritual em crescimento.
-            </p>
-          </article>
 
-          <article class="panel roadmap-panel editable-card" data-card-id="roadmap-panel" data-card-type="list">
-            <div class="panel-heading">
-              <div>
-                <p class="eyebrow">MVP</p>
-                <h3>Estrutura do produto</h3>
+              <form id="task-form" class="task-form">
+                <input
+                  id="task-input"
+                  type="text"
+                  placeholder="Adicionar tarefa de hoje"
+                  aria-label="Nova tarefa"
+                />
+                <button type="submit">Adicionar</button>
+              </form>
+
+              <ul id="task-list" class="task-list"></ul>
+            </article>
+
+            <article class="panel notes-panel" data-card-id="notes-panel">
+              <div class="panel-heading">
+                <div>
+                  <p class="eyebrow">Bloco de anotacao</p>
+                  <h3>Anotacoes livres</h3>
+                </div>
+                <span class="tag">Salva sozinha</span>
               </div>
-              <button class="ghost-button card-edit-button" type="button" data-edit-card="roadmap-panel">Editar</button>
-            </div>
-            <ol class="roadmap-list">
-              <li>Dashboard com agenda, tarefas e versiculo diario</li>
-              <li>Modulos de financas, casa, imagem, corpo e espiritualidade</li>
-              <li>Login, assinatura e integracao com Kiwify na proxima fase</li>
-            </ol>
-          </article>
+              <textarea
+                id="notes-input"
+                class="notes-input"
+                placeholder="Escreva ideias, oracoes, lembretes, sentimentos ou qualquer anotacao importante do dia."
+              ></textarea>
+            </article>
+          </section>
         </section>
         </section>
 
@@ -453,10 +476,10 @@
               <section class="agenda-events-card">
                 <h4>Livros</h4>
                 <table class="finance-table">
-                  <thead><tr><th>Livro</th><th>Autor</th><th>Inicio</th><th>Fim</th><th>Paginas</th><th>Progresso</th><th>Status</th></tr></thead>
+                  <thead><tr><th>Livro</th><th>Autor</th><th>Inicio</th><th>Fim</th><th>Paginas</th><th>Progresso</th><th>Status</th><th>Observacoes</th></tr></thead>
                   <tbody>
-                    <tr><td><input data-persist-key="book-1-title" /></td><td><input data-persist-key="book-1-author" /></td><td><input type="date" data-persist-key="book-1-start" /></td><td><input type="date" data-persist-key="book-1-end" /></td><td><input type="number" data-persist-key="book-1-pages" /></td><td><input type="number" min="0" max="100" data-persist-key="book-1-progress" /></td><td><input data-persist-key="book-1-status" /></td></tr>
-                    <tr><td><input data-persist-key="book-2-title" /></td><td><input data-persist-key="book-2-author" /></td><td><input type="date" data-persist-key="book-2-start" /></td><td><input type="date" data-persist-key="book-2-end" /></td><td><input type="number" data-persist-key="book-2-pages" /></td><td><input type="number" min="0" max="100" data-persist-key="book-2-progress" /></td><td><input data-persist-key="book-2-status" /></td></tr>
+                    <tr><td><input data-persist-key="book-1-title" /></td><td><input data-persist-key="book-1-author" /></td><td><input type="date" data-persist-key="book-1-start" /></td><td><input type="date" data-persist-key="book-1-end" /></td><td><input type="number" data-persist-key="book-1-pages" /></td><td><input type="number" min="0" max="100" data-persist-key="book-1-progress" /></td><td><input data-persist-key="book-1-status" /></td><td><input data-persist-key="book-1-notes" /></td></tr>
+                    <tr><td><input data-persist-key="book-2-title" /></td><td><input data-persist-key="book-2-author" /></td><td><input type="date" data-persist-key="book-2-start" /></td><td><input type="date" data-persist-key="book-2-end" /></td><td><input type="number" data-persist-key="book-2-pages" /></td><td><input type="number" min="0" max="100" data-persist-key="book-2-progress" /></td><td><input data-persist-key="book-2-status" /></td><td><input data-persist-key="book-2-notes" /></td></tr>
                   </tbody>
                 </table>
               </section>
@@ -477,10 +500,10 @@
             </div>
             <div class="panel-heading"><div><p class="eyebrow">Projetos</p><h3>Projeto A, B, C e D</h3></div></div>
             <div class="project-grid">
-              <article class="agenda-events-card"><h4>Projeto A</h4><textarea class="summary-input compact-area" data-persist-key="proj-a-what" placeholder="O que e"></textarea><textarea class="summary-input compact-area" data-persist-key="proj-a-desc" placeholder="Descricao"></textarea><textarea class="summary-input compact-area" data-persist-key="proj-a-plan" placeholder="Plano de acao"></textarea><select data-persist-key="proj-a-status"><option>a começar</option><option>em andamento</option><option>pronto</option></select><input data-persist-key="proj-a-people" placeholder="Pessoas envolvidas" /><input data-persist-key="proj-a-links" placeholder="Links e documentos" /></article>
-              <article class="agenda-events-card"><h4>Projeto B</h4><textarea class="summary-input compact-area" data-persist-key="proj-b-what" placeholder="O que e"></textarea><textarea class="summary-input compact-area" data-persist-key="proj-b-desc" placeholder="Descricao"></textarea><textarea class="summary-input compact-area" data-persist-key="proj-b-plan" placeholder="Plano de acao"></textarea><select data-persist-key="proj-b-status"><option>a começar</option><option>em andamento</option><option>pronto</option></select><input data-persist-key="proj-b-people" placeholder="Pessoas envolvidas" /><input data-persist-key="proj-b-links" placeholder="Links e documentos" /></article>
-              <article class="agenda-events-card"><h4>Projeto C</h4><textarea class="summary-input compact-area" data-persist-key="proj-c-what" placeholder="O que e"></textarea><textarea class="summary-input compact-area" data-persist-key="proj-c-desc" placeholder="Descricao"></textarea><textarea class="summary-input compact-area" data-persist-key="proj-c-plan" placeholder="Plano de acao"></textarea><select data-persist-key="proj-c-status"><option>a começar</option><option>em andamento</option><option>pronto</option></select><input data-persist-key="proj-c-people" placeholder="Pessoas envolvidas" /><input data-persist-key="proj-c-links" placeholder="Links e documentos" /></article>
-              <article class="agenda-events-card"><h4>Projeto D</h4><textarea class="summary-input compact-area" data-persist-key="proj-d-what" placeholder="O que e"></textarea><textarea class="summary-input compact-area" data-persist-key="proj-d-desc" placeholder="Descricao"></textarea><textarea class="summary-input compact-area" data-persist-key="proj-d-plan" placeholder="Plano de acao"></textarea><select data-persist-key="proj-d-status"><option>a começar</option><option>em andamento</option><option>pronto</option></select><input data-persist-key="proj-d-people" placeholder="Pessoas envolvidas" /><input data-persist-key="proj-d-links" placeholder="Links e documentos" /></article>
+              <article class="agenda-events-card project-card"><h4>Projeto A</h4><textarea class="summary-input compact-area" data-persist-key="proj-a-what" placeholder="O que e"></textarea><textarea class="summary-input compact-area" data-persist-key="proj-a-desc" placeholder="Descricao"></textarea><textarea class="summary-input compact-area" data-persist-key="proj-a-plan" placeholder="Plano de acao"></textarea><select data-persist-key="proj-a-status"><option>a começar</option><option>em andamento</option><option>pronto</option></select><input data-persist-key="proj-a-people" placeholder="Pessoas envolvidas" /><input data-persist-key="proj-a-links" placeholder="Links e documentos" /><label class="project-upload-field">Anexos e referencias<input type="file" data-project-upload="a" multiple /></label><div class="project-attachments" data-project-gallery="a"></div></article>
+              <article class="agenda-events-card project-card"><h4>Projeto B</h4><textarea class="summary-input compact-area" data-persist-key="proj-b-what" placeholder="O que e"></textarea><textarea class="summary-input compact-area" data-persist-key="proj-b-desc" placeholder="Descricao"></textarea><textarea class="summary-input compact-area" data-persist-key="proj-b-plan" placeholder="Plano de acao"></textarea><select data-persist-key="proj-b-status"><option>a começar</option><option>em andamento</option><option>pronto</option></select><input data-persist-key="proj-b-people" placeholder="Pessoas envolvidas" /><input data-persist-key="proj-b-links" placeholder="Links e documentos" /><label class="project-upload-field">Anexos e referencias<input type="file" data-project-upload="b" multiple /></label><div class="project-attachments" data-project-gallery="b"></div></article>
+              <article class="agenda-events-card project-card"><h4>Projeto C</h4><textarea class="summary-input compact-area" data-persist-key="proj-c-what" placeholder="O que e"></textarea><textarea class="summary-input compact-area" data-persist-key="proj-c-desc" placeholder="Descricao"></textarea><textarea class="summary-input compact-area" data-persist-key="proj-c-plan" placeholder="Plano de acao"></textarea><select data-persist-key="proj-c-status"><option>a começar</option><option>em andamento</option><option>pronto</option></select><input data-persist-key="proj-c-people" placeholder="Pessoas envolvidas" /><input data-persist-key="proj-c-links" placeholder="Links e documentos" /><label class="project-upload-field">Anexos e referencias<input type="file" data-project-upload="c" multiple /></label><div class="project-attachments" data-project-gallery="c"></div></article>
+              <article class="agenda-events-card project-card"><h4>Projeto D</h4><textarea class="summary-input compact-area" data-persist-key="proj-d-what" placeholder="O que e"></textarea><textarea class="summary-input compact-area" data-persist-key="proj-d-desc" placeholder="Descricao"></textarea><textarea class="summary-input compact-area" data-persist-key="proj-d-plan" placeholder="Plano de acao"></textarea><select data-persist-key="proj-d-status"><option>a começar</option><option>em andamento</option><option>pronto</option></select><input data-persist-key="proj-d-people" placeholder="Pessoas envolvidas" /><input data-persist-key="proj-d-links" placeholder="Links e documentos" /><label class="project-upload-field">Anexos e referencias<input type="file" data-project-upload="d" multiple /></label><div class="project-attachments" data-project-gallery="d"></div></article>
             </div>
           </article>
         </section>

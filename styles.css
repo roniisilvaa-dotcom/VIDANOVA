@@ -260,6 +260,16 @@ a {
   gap: 12px;
 }
 
+.icon-only-button {
+  width: 46px;
+  height: 46px;
+  padding: 0;
+  border-radius: 15px;
+  display: inline-grid;
+  place-items: center;
+  font-size: 1.2rem;
+}
+
 .topbar-avatar {
   width: 44px;
   height: 44px;
@@ -300,15 +310,32 @@ a {
 }
 
 .verse-banner-copy strong {
-  font-size: 1.15rem;
-  line-height: 1.55;
+  max-width: 24ch;
+  font-family: "Cormorant Garamond", "Palatino Linotype", Georgia, serif;
+  font-size: clamp(1.5rem, 2.6vw, 2.3rem);
+  line-height: 1.18;
+  font-style: italic;
+  letter-spacing: 0.01em;
   color: var(--ink);
 }
 
 .verse-banner-copy small {
   color: var(--berry);
   font-weight: 700;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.verse-banner-copy strong::before {
+  content: "“";
+  margin-right: 0.1em;
+  color: var(--berry);
+}
+
+.verse-banner-copy strong::after {
+  content: "”";
+  margin-left: 0.08em;
+  color: var(--berry);
 }
 
 .install-banner {
@@ -2939,6 +2966,25 @@ select {
   border: 1px solid var(--line);
 }
 
+.dream-vision-card {
+  position: relative;
+}
+
+.dream-remove-button {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+}
+
+.dream-empty-state,
+.project-empty-state {
+  padding: 18px;
+  border: 1px dashed var(--line);
+  border-radius: 16px;
+  color: var(--muted);
+  background: rgba(255, 255, 255, 0.75);
+}
+
 .study-main-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -2968,6 +3014,34 @@ select {
   gap: 10px;
 }
 
+.project-upload-field {
+  display: grid;
+  gap: 8px;
+  font-size: 0.92rem;
+  color: var(--muted);
+}
+
+.project-attachments {
+  display: grid;
+  gap: 10px;
+}
+
+.project-attachment-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.72);
+  border: 1px solid var(--line);
+}
+
+.project-attachment-item strong,
+.project-attachment-item small {
+  display: block;
+}
+
 .two-column {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -2993,12 +3067,181 @@ select {
   display: block;
 }
 
+.workspace-home {
+  display: grid;
+  gap: 18px;
+}
+
+.workspace-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.workspace-header h2 {
+  margin: 0;
+  font-size: clamp(2rem, 3.2vw, 2.9rem);
+}
+
+.workspace-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.workspace-card-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.workspace-card {
+  border: 1px solid rgba(91, 72, 105, 0.1);
+  border-radius: 26px;
+  padding: 0;
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: var(--shadow);
+  text-align: left;
+  overflow: hidden;
+  transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+}
+
+.workspace-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 24px 52px rgba(83, 53, 79, 0.16);
+  border-color: rgba(91, 72, 105, 0.22);
+}
+
+.workspace-card-cover {
+  position: relative;
+  min-height: 190px;
+  border-radius: 22px;
+  margin: 14px 14px 10px;
+  overflow: hidden;
+  background: linear-gradient(135deg, #a8cffc, #e8f2ff);
+}
+
+.workspace-card strong,
+.workspace-card small {
+  display: block;
+  padding: 0 16px;
+}
+
+.workspace-card strong {
+  font-size: 1.05rem;
+  margin-bottom: 6px;
+}
+
+.workspace-card small {
+  padding-bottom: 18px;
+  color: var(--muted);
+}
+
+.workspace-card-badge {
+  position: absolute;
+  left: 16px;
+  bottom: 16px;
+  padding: 10px 14px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.88);
+  color: #2f5ba7;
+  font-style: italic;
+  font-size: 1.35rem;
+  box-shadow: 0 10px 30px rgba(47, 91, 167, 0.18);
+}
+
+.workspace-card-planner .workspace-card-cover {
+  background:
+    radial-gradient(circle at 68% 32%, rgba(255,255,255,0.95), transparent 14%),
+    linear-gradient(135deg, #8bb7f1, #b6d3ff);
+}
+
+.workspace-card-body .workspace-card-cover {
+  background:
+    linear-gradient(rgba(255,255,255,0.05), rgba(255,255,255,0.05)),
+    linear-gradient(135deg, #f8cade, #fff5f8 55%, #f1d2ff);
+}
+
+.workspace-card-agenda .workspace-card-cover {
+  background:
+    linear-gradient(135deg, rgba(255,255,255,0.5), rgba(255,255,255,0.15)),
+    repeating-linear-gradient(90deg, rgba(0,0,0,0.04) 0 2px, transparent 2px 34px),
+    linear-gradient(135deg, #f0ece7, #ffffff);
+}
+
+.workspace-card-finance .workspace-card-cover {
+  background:
+    linear-gradient(rgba(255,255,255,0.08), rgba(255,255,255,0.08)),
+    linear-gradient(135deg, #ccdba4, #f0f6d5 45%, #e8e3af);
+}
+
+.workspace-card-study .workspace-card-cover {
+  background:
+    linear-gradient(135deg, rgba(255,255,255,0.2), rgba(255,255,255,0.05)),
+    linear-gradient(135deg, #d9d2c6, #f5f0e7);
+}
+
+.workspace-card-home .workspace-card-cover {
+  background:
+    linear-gradient(135deg, rgba(255,255,255,0.12), rgba(255,255,255,0.08)),
+    linear-gradient(135deg, #d0f0bf, #fff0b8 55%, #ffd09f);
+}
+
+.workspace-overview-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.workspace-overview-card {
+  display: grid;
+  gap: 6px;
+  min-height: 128px;
+  align-content: start;
+}
+
+.workspace-overview-card span {
+  color: var(--muted);
+  font-size: 0.86rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.workspace-overview-card strong {
+  font-size: 1.35rem;
+}
+
+.workspace-support-grid {
+  display: grid;
+  grid-template-columns: 1.05fr 1fr 1fr;
+  gap: 18px;
+}
+
+.workspace-rhythm-card {
+  display: grid;
+  gap: 16px;
+}
+
+.workspace-graph {
+  padding-top: 6px;
+}
+
 @media (max-width: 1100px) {
   .agenda-cards-grid,
   .goal-horizon-grid,
   .study-main-grid,
   .project-grid,
-  .two-column {
+  .two-column,
+  .workspace-card-grid,
+  .workspace-overview-grid,
+  .workspace-support-grid {
     grid-template-columns: 1fr;
+  }
+
+  .workspace-header {
+    align-items: flex-start;
+    flex-direction: column;
   }
 }
