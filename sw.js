@@ -11,6 +11,11 @@ const APP_SHELL = [
   "./mobile.js",
   "./manifest.webmanifest",
   "./icon.svg",
+  "./icon-192.png",
+  "./icon-512.png",
+  "./apple-touch-icon.png",
+  "./apple-touch-icon-180.png",
+  "./mstile-150.png",
 ];
 
 // Install event - cache app shell

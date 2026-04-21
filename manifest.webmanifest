@@ -1,34 +1,51 @@
 {
   "name": "Vida Nova - Planner Feminino",
   "short_name": "Vida Nova",
+  "id": "./",
   "description": "Planner web feminino com agenda, rotina, financas, espiritualidade e organizacao pessoal.",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
+  "display_override": ["window-controls-overlay", "standalone", "minimal-ui", "browser"],
   "orientation": "portrait-primary",
   "background_color": "#fffaf4",
   "theme_color": "#c55b84",
+  "lang": "pt-BR",
+  "dir": "ltr",
+  "prefer_related_applications": false,
   "categories": ["productivity", "lifestyle"],
   "screenshots": [
     {
-      "src": "./icon.svg",
+      "src": "./icon-512.png",
       "sizes": "512x512",
-      "type": "image/svg+xml",
+      "type": "image/png",
       "form_factor": "wide"
     },
     {
-      "src": "./icon.svg",
+      "src": "./icon-192.png",
       "sizes": "192x192",
-      "type": "image/svg+xml",
+      "type": "image/png",
       "form_factor": "narrow"
     }
   ],
   "icons": [
     {
+      "src": "./icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
       "src": "./icon.svg",
       "sizes": "any",
       "type": "image/svg+xml",
-      "purpose": "any maskable"
+      "purpose": "any"
     }
   ],
   "shortcuts": [
@@ -39,9 +56,9 @@
       "url": "./index.html#agenda",
       "icons": [
         {
-          "src": "./icon.svg",
-          "sizes": "any",
-          "type": "image/svg+xml"
+          "src": "./icon-192.png",
+          "sizes": "192x192",
+          "type": "image/png"
         }
       ]
     },
@@ -52,21 +69,11 @@
       "url": "./index.html#financas",
       "icons": [
         {
-          "src": "./icon.svg",
-          "sizes": "any",
-          "type": "image/svg+xml"
+          "src": "./icon-192.png",
+          "sizes": "192x192",
+          "type": "image/png"
         }
       ]
     }
-  ],
-  "share_target": {
-    "action": "/share",
-    "method": "POST",
-    "enctype": "application/x-www-form-urlencoded",
-    "params": {
-      "title": "title",
-      "text": "text",
-      "url": "url"
-    }
-  }
+  ]
 }

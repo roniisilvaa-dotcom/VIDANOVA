@@ -272,6 +272,7 @@ const moduleEntryDescription = document.querySelector("#module-entry-description
 const installModal = document.querySelector("#install-modal");
 const installModalClose = document.querySelector("#install-modal-close");
 const installModalChromeButton = document.querySelector("#install-modal-chrome-button");
+const installPlatformStatus = document.querySelector("#install-platform-status");
 const calendarModalTasks = document.querySelector("#calendar-modal-tasks");
 const financeFilterButtons = document.querySelectorAll("[data-finance-filter]");
 const interactiveStats = document.querySelectorAll(".interactive-stat");
@@ -1449,8 +1450,85 @@ function openInstallModal() {
   if (!installModal) {
     return;
   }
+  updateInstallUi();
   installModal.classList.remove("hidden");
   installModal.setAttribute("aria-hidden", "false");
+}
+
+function getInstallContext() {
+  const ua = navigator.userAgent || "";
+  const isIos = /iPhone|iPad|iPod/i.test(ua);
+  const isAndroid = /Android/i.test(ua);
+  const isMac = /Macintosh|Mac OS X/i.test(ua) && !isIos;
+  const isWindows = /Windows/i.test(ua);
+  const isStandalone =
+    window.matchMedia?.("(display-mode: standalone)").matches ||
+    window.navigator.standalone === true;
+
+  return {
+    isIos,
+    isAndroid,
+    isMac,
+    isWindows,
+    isStandalone,
+  };
+}
+
+function updateInstallUi() {
+  const context = getInstallContext();
+
+  if (!installPlatformStatus || !installModalChromeButton) {
+    return;
+  }
+
+  if (context.isStandalone) {
+    installPlatformStatus.textContent =
+      "O app ja esta instalado neste dispositivo. Se quiser, use o pacote ZIP apenas para backup local do projeto.";
+    installModalChromeButton.textContent = "App ja instalado";
+    installModalChromeButton.disabled = true;
+    return;
+  }
+
+  installModalChromeButton.disabled = false;
+
+  if (deferredInstallPrompt) {
+    installPlatformStatus.textContent =
+      "Este dispositivo aceita instalacao direta. Toque em instalar e confirme no navegador para adicionar o app.";
+    installModalChromeButton.textContent = "Instalar agora";
+    return;
+  }
+
+  if (context.isIos) {
+    installPlatformStatus.textContent =
+      "No iPhone ou iPad, abra no Safari, toque em Compartilhar e depois em “Adicionar a Tela de Inicio”.";
+    installModalChromeButton.textContent = "Abrir instrucoes para iPhone/iPad";
+    return;
+  }
+
+  if (context.isAndroid) {
+    installPlatformStatus.textContent =
+      "No Android, use Chrome ou Edge, abra o menu do navegador e toque em “Instalar app” ou “Adicionar a tela inicial”.";
+    installModalChromeButton.textContent = "Ver como instalar no Android";
+    return;
+  }
+
+  if (context.isMac) {
+    installPlatformStatus.textContent =
+      "No Mac, abra o app publicado em Chrome ou Edge e use o icone de instalacao na barra de endereco ou a opcao “Instalar app”.";
+    installModalChromeButton.textContent = "Ver como instalar no Mac";
+    return;
+  }
+
+  if (context.isWindows) {
+    installPlatformStatus.textContent =
+      "No Windows, abra o app em Chrome ou Edge e use o menu do navegador para instalar como aplicativo.";
+    installModalChromeButton.textContent = "Ver como instalar no Windows";
+    return;
+  }
+
+  installPlatformStatus.textContent =
+    "Abra este link publicado em um navegador compativel com PWA para instalar o app. Em iPhone/iPad a instalacao e manual; em Android, Mac e Windows pode haver prompt automatico.";
+  installModalChromeButton.textContent = "Ver instrucoes";
 }
 
 async function triggerInstallFlow() {
@@ -2076,10 +2154,12 @@ function setupInstallPrompt() {
   window.addEventListener("beforeinstallprompt", (event) => {
     event.preventDefault();
     deferredInstallPrompt = event;
+    updateInstallUi();
   });
 
   window.addEventListener("appinstalled", () => {
     deferredInstallPrompt = null;
+    updateInstallUi();
   });
 }
 
@@ -3542,6 +3622,7 @@ async function bootApp() {
   setupProjectUploads();
   registerServiceWorker();
   setupInstallPrompt();
+  updateInstallUi();
 }
 
 bootApp().catch((error) => {
