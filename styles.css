@@ -261,6 +261,17 @@ a {
   gap: 12px;
 }
 
+.topbar-profile {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.topbar-profile-copy {
+  display: grid;
+  gap: 2px;
+}
+
 .home-link-button {
   border: none;
   background: transparent;
@@ -275,13 +286,25 @@ a {
 }
 
 .icon-only-button {
-  width: 46px;
-  height: 46px;
+  width: 60px;
+  height: 60px;
   padding: 0;
-  border-radius: 15px;
+  border-radius: 18px;
   display: inline-grid;
   place-items: center;
-  font-size: 1.2rem;
+  font-size: 1.55rem;
+}
+
+.topbar-avatar-large {
+  width: 68px;
+  height: 68px;
+  border-radius: 22px;
+}
+
+.topbar-email {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.95rem;
 }
 
 .icon-only-button {
@@ -3092,10 +3115,7 @@ select {
 }
 
 .workspace-actions {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  flex-wrap: wrap;
+  display: none;
 }
 
 .workspace-card-grid {
@@ -3115,6 +3135,7 @@ select {
   transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
   cursor: pointer;
   min-height: 100%;
+  position: relative;
 }
 
 .workspace-card:hover {
@@ -3160,6 +3181,7 @@ select {
   color: var(--berry);
   font-weight: 700;
   box-shadow: 0 12px 24px rgba(91, 72, 105, 0.1);
+  pointer-events: none;
 }
 
 .workspace-card-badge {
@@ -3303,6 +3325,15 @@ select {
 }
 
 @media (max-width: 720px) {
+  .topbar-profile {
+    align-items: flex-start;
+  }
+
+  .topbar-avatar-large {
+    width: 58px;
+    height: 58px;
+  }
+
   .workspace-card-grid {
     grid-template-columns: 1fr;
   }

@@ -202,6 +202,8 @@ const logoutButton = document.querySelector("#logout-button");
 const settingsButton = document.querySelector("#settings-button");
 const homeButton = document.querySelector("#home-button");
 const topbarAvatar = document.querySelector("#topbar-avatar");
+const topbarEmail = document.querySelector("#topbar-email");
+const topbarPlan = document.querySelector("#topbar-plan");
 const financeIncomeInput = document.querySelector("#finance-income-input");
 const financeExpenseInput = document.querySelector("#finance-expense-input");
 const financeGoalInput = document.querySelector("#finance-goal-input");
@@ -717,11 +719,13 @@ function renderVerse() {
   }
 }
 
+function cycleVerse() {
+  verseIndex = (verseIndex + 1) % verses.length;
+  renderVerse();
+}
+
 if (changeVerseButton) {
-  changeVerseButton.addEventListener("click", () => {
-    verseIndex = (verseIndex + 1) % verses.length;
-    renderVerse();
-  });
+  changeVerseButton.addEventListener("click", cycleVerse);
 }
 
 function setActivePage(pageName, syncHash = true) {
@@ -2025,6 +2029,9 @@ function hydrateSessionUI(session) {
   if (settingsProfileName) {
     settingsProfileName.textContent = session.name || "Vida Nova";
   }
+  if (topbarEmail) {
+    topbarEmail.textContent = session.email || "Seu email aparece aqui";
+  }
   if (settingsProfileEmail) {
     settingsProfileEmail.textContent = session.email || "Seu email aparece aqui";
   }
@@ -2041,6 +2048,9 @@ function hydrateSessionUI(session) {
     settingsSubscriptionStatus.textContent = session.subscription_active
       ? "Conta ativa"
       : "Aguardando ativacao";
+  }
+  if (topbarPlan) {
+    topbarPlan.textContent = session.subscription_active ? "Conta ativa" : "Aguardando ativacao";
   }
   if (settingsRenewalLabel) {
     settingsRenewalLabel.textContent = session.subscription_url
@@ -2513,6 +2523,23 @@ dashboardOpenButtons.forEach((button) => {
       setActivePage(targetPage);
     }
   });
+});
+
+document.addEventListener("click", (event) => {
+  const dashboardTrigger = event.target.closest("[data-dashboard-open]");
+  if (dashboardTrigger) {
+    const targetPage = dashboardTrigger.dataset.dashboardOpen;
+    if (targetPage) {
+      event.preventDefault();
+      setActivePage(targetPage);
+    }
+  }
+
+  const verseTrigger = event.target.closest("#change-verse-button");
+  if (verseTrigger && verseTrigger !== changeVerseButton) {
+    event.preventDefault();
+    cycleVerse();
+  }
 });
 
 editCardButtons.forEach((button) => {
