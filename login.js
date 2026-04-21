@@ -72,6 +72,10 @@ function saveSession(token, user) {
   clearLegacyAuthCache();
 }
 
+function getPostLoginTarget(user) {
+  return user?.is_admin || user?.role === "admin" ? "./index.html#admin" : "./index.html";
+}
+
 async function postJson(url, payload) {
   const response = await fetch(url, {
     method: "POST",
@@ -99,7 +103,7 @@ async function redirectIfAuthenticated() {
   try {
     const response = await postJson("/api/auth/verify", { token });
     saveSession(token, response.user);
-    window.location.href = "./index.html";
+    window.location.href = getPostLoginTarget(response.user);
   } catch {
     getAuthStorage().removeItem(AUTH_TOKEN_KEY);
     getAuthStorage().removeItem(AUTH_USER_KEY);
@@ -166,7 +170,7 @@ if (loginForm) {
 
       saveSession(response.token, response.user);
       setFeedback("Acesso liberado. Redirecionando...", "success");
-      window.location.href = "./index.html";
+      window.location.href = getPostLoginTarget(response.user);
     } catch (error) {
       setFeedback(error.message, "error");
     } finally {

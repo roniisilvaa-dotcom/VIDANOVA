@@ -209,6 +209,7 @@ const homeButton = document.querySelector("#home-button");
 const sidebarAdminLink = document.querySelector("#sidebar-admin-link");
 const mobileAdminLink = document.querySelector("#mobile-admin-link");
 const adminShortcutCard = document.querySelector("#admin-shortcut-card");
+const adminDashboardCard = document.querySelector("#admin-dashboard-card");
 const adminOpenPanel = document.querySelector("#admin-open-panel");
 const adminRefreshUsers = document.querySelector("#admin-refresh-users");
 const adminUsersList = document.querySelector("#admin-users-list");
@@ -712,6 +713,7 @@ function syncAdminUi(session = currentSession) {
   setAdminVisibility(sidebarAdminLink, adminActive);
   setAdminVisibility(mobileAdminLink, adminActive);
   setAdminVisibility(adminShortcutCard, adminActive);
+  setAdminVisibility(adminDashboardCard, adminActive);
 
   if (!adminActive && activePage === "admin") {
     setActivePage("dashboard", false);
