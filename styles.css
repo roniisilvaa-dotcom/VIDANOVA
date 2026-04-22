@@ -343,9 +343,9 @@ body.subscription-locked .subscription-gate {
 }
 
 .topbar-avatar-large {
-  width: 108px;
-  height: 136px;
-  border-radius: 26px;
+  width: 84px;
+  height: 84px;
+  border-radius: 28px;
 }
 
 .topbar-email {
