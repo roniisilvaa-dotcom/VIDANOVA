@@ -4199,7 +4199,91 @@ function evaluateCalculatorExpression() {
   }
 
   try {
-    const result = Function(`"use strict"; return (${normalized})`)();
+    let cursor = 0;
+    const peek = () => normalized[cursor] || "";
+
+    const parseNumber = () => {
+      let value = "";
+      let hasDecimal = false;
+
+      while (/[0-9.]/.test(peek())) {
+        if (peek() === ".") {
+          if (hasDecimal) {
+            throw new Error("Numero invalido");
+          }
+          hasDecimal = true;
+        }
+        value += normalized[cursor];
+        cursor += 1;
+      }
+
+      if (!value || value === ".") {
+        throw new Error("Numero invalido");
+      }
+
+      return Number.parseFloat(value);
+    };
+
+    const parseFactor = () => {
+      if (peek() === "+") {
+        cursor += 1;
+        return parseFactor();
+      }
+
+      if (peek() === "-") {
+        cursor += 1;
+        return -parseFactor();
+      }
+
+      if (peek() === "(") {
+        cursor += 1;
+        const value = parseExpression();
+        if (peek() !== ")") {
+          throw new Error("Parenteses invalidos");
+        }
+        cursor += 1;
+        return value;
+      }
+
+      return parseNumber();
+    };
+
+    const parseTerm = () => {
+      let value = parseFactor();
+
+      while (peek() === "*" || peek() === "/") {
+        const operator = peek();
+        cursor += 1;
+        const nextValue = parseFactor();
+
+        if (operator === "/" && nextValue === 0) {
+          throw new Error("Divisao por zero");
+        }
+
+        value = operator === "*" ? value * nextValue : value / nextValue;
+      }
+
+      return value;
+    };
+
+    const parseExpression = () => {
+      let value = parseTerm();
+
+      while (peek() === "+" || peek() === "-") {
+        const operator = peek();
+        cursor += 1;
+        const nextValue = parseTerm();
+        value = operator === "+" ? value + nextValue : value - nextValue;
+      }
+
+      return value;
+    };
+
+    const result = parseExpression();
+    if (cursor !== normalized.length || !Number.isFinite(result)) {
+      throw new Error("Expressao invalida");
+    }
+
     calculatorExpression =
       typeof result === "number" && Number.isFinite(result)
         ? String(Number.parseFloat(result.toFixed(8)))
