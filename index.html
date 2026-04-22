@@ -102,10 +102,10 @@
             <div class="topbar-profile-copy">
               <button id="home-button" class="home-link-button" type="button">Vida Nova</button>
               <h3 id="user-greeting">Bem-vinda</h3>
-              <span id="topbar-plan" class="topbar-status-pill is-pending">Conta pendente</span>
             </div>
           </div>
           <div class="topbar-actions">
+            <span id="topbar-plan" class="topbar-status-pill is-pending">Conta pendente</span>
             <button id="settings-button" class="ghost-button icon-only-button settings-gear-button" type="button" aria-label="Abrir configuracoes" title="Configuracoes">
               <span aria-hidden="true">⚙</span>
             </button>
@@ -1091,7 +1091,7 @@
                 </div>
 
                 <div class="profile-hero">
-                  <div class="profile-avatar" id="settings-avatar-preview">VN</div>
+                  <div class="profile-avatar profile-avatar-match-headline" id="settings-avatar-preview">VN</div>
                   <div class="profile-copy">
                     <strong id="settings-profile-name">Vida Nova</strong>
                     <small id="settings-profile-email">Seu e-mail aparece aqui</small>
@@ -1272,6 +1272,37 @@
             <article class="settings-card admin-users-card">
               <div class="panel-heading">
                 <div>
+                  <p class="eyebrow">Cadastro rapido</p>
+                  <h3>Nova usuaria</h3>
+                </div>
+                <span class="tag">ADM</span>
+              </div>
+              <form id="admin-create-user-form" class="settings-form admin-create-form">
+                <label>
+                  Nome
+                  <input id="admin-create-name" type="text" placeholder="Nome da cliente" />
+                </label>
+                <label>
+                  Email
+                  <input id="admin-create-email" type="email" placeholder="cliente@email.com" />
+                </label>
+                <label>
+                  Senha inicial
+                  <input id="admin-create-password" type="password" placeholder="Minimo de 6 caracteres" />
+                </label>
+                <label>
+                  Link checkout / renovacao
+                  <input id="admin-create-subscription-url" type="url" placeholder="https://..." />
+                </label>
+                <div class="settings-inline-actions">
+                  <button id="admin-create-submit" class="primary-button" type="submit">Cadastrar usuaria</button>
+                </div>
+              </form>
+            </article>
+
+            <article class="settings-card admin-users-card">
+              <div class="panel-heading">
+                <div>
                   <p class="eyebrow">Usuarias cadastradas</p>
                   <h3>Painel geral</h3>
                 </div>
@@ -1308,11 +1339,11 @@
             <article class="settings-card admin-users-card">
               <div class="panel-heading">
                 <div>
-                  <p class="eyebrow">Atividade recente</p>
-                  <h3>Ultimos movimentos no app</h3>
+                  <p class="eyebrow">Registros recentes</p>
+                  <h3>Historico resumido</h3>
                 </div>
               </div>
-              <div id="admin-activity-list" class="admin-activity-list"></div>
+              <div id="admin-activity-list" class="admin-activity-list admin-activity-list-compact"></div>
             </article>
 
             <article class="settings-card admin-users-card">

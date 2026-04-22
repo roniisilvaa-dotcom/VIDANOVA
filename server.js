@@ -1526,6 +1526,93 @@ app.post("/api/admin/users/update", async (req, res) => {
   }
 });
 
+app.post("/api/admin/users/create", async (req, res) => {
+  try {
+    const { token, name, email, password, subscriptionUrl } = req.body;
+    const { user: adminUser } = await requireAuthorizedUser(token, { requireAdmin: true });
+    const normalizedEmail = normalizeEmail(email);
+
+    if (!name || !normalizedEmail || !password) {
+      return res.status(400).json({ error: "Preencha nome, email e senha da usuaria." });
+    }
+
+    if (password.length < 6) {
+      return res.status(400).json({ error: "A senha inicial precisa ter no minimo 6 caracteres." });
+    }
+
+    if (await emailInUse(normalizedEmail)) {
+      return res.status(400).json({ error: "Este email ja esta cadastrado." });
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const createdUser = await createUser({
+      name: String(name).trim(),
+      email: normalizedEmail,
+      password: hashedPassword,
+      avatarUrl: "",
+      subscriptionUrl: String(subscriptionUrl || "").trim(),
+    });
+
+    await logActivity(
+      adminUser.id,
+      "admin_user_create",
+      `Admin cadastrou a usuaria ${createdUser.email}`,
+    );
+
+    res.json({
+      success: true,
+      user: buildPublicUser(createdUser),
+      summary: await getAdminSummary(),
+      storageMode: isUsingDatabase ? "neon" : "fallback",
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(error.status || 401).json({
+      error: error.message || "Nao autorizado",
+      user: error.user || null,
+    });
+  }
+});
+
+app.post("/api/admin/users/delete", async (req, res) => {
+  try {
+    const { token, userId } = req.body;
+    const { user: adminUser } = await requireAuthorizedUser(token, { requireAdmin: true });
+
+    const targetUser = await getUserWithPasswordById(Number(userId));
+    if (!targetUser) {
+      return res.status(404).json({ error: "Usuaria nao encontrada." });
+    }
+
+    if (Number(targetUser.id) === Number(adminUser.id)) {
+      return res.status(400).json({ error: "O administrador logado nao pode excluir a propria conta." });
+    }
+
+    if (normalizeEmail(targetUser.email) === ADMIN_EMAIL) {
+      return res.status(400).json({ error: "A conta principal de administrador nao pode ser excluida." });
+    }
+
+    await deleteUserAccount(Number(userId));
+    await logActivity(
+      adminUser.id,
+      "admin_user_delete",
+      `Admin excluiu a usuaria ${targetUser.email}`,
+    );
+
+    res.json({
+      success: true,
+      summary: await getAdminSummary(),
+      storageMode: isUsingDatabase ? "neon" : "fallback",
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(error.status || 401).json({
+      error: error.message || "Nao autorizado",
+      user: error.user || null,
+    });
+  }
+});
+
 app.post("/api/user/delete", async (req, res) => {
   try {
     const { token, password } = req.body;

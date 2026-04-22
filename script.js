@@ -119,6 +119,7 @@ const userGreeting = document.querySelector("#user-greeting");
 const logoutButton = document.querySelector("#logout-button");
 const settingsButton = document.querySelector("#settings-button");
 const homeButton = document.querySelector("#home-button");
+const verseBanner = document.querySelector(".verse-banner");
 const sidebarAdminLink = document.querySelector("#sidebar-admin-link");
 const mobileAdminLink = document.querySelector("#mobile-admin-link");
 const adminShortcutCard = document.querySelector("#admin-shortcut-card");
@@ -127,6 +128,12 @@ const adminOpenPanel = document.querySelector("#admin-open-panel");
 const adminRefreshUsers = document.querySelector("#admin-refresh-users");
 const adminUsersList = document.querySelector("#admin-users-list");
 const adminFeedback = document.querySelector("#admin-feedback");
+const adminCreateUserForm = document.querySelector("#admin-create-user-form");
+const adminCreateName = document.querySelector("#admin-create-name");
+const adminCreateEmail = document.querySelector("#admin-create-email");
+const adminCreatePassword = document.querySelector("#admin-create-password");
+const adminCreateSubscriptionUrl = document.querySelector("#admin-create-subscription-url");
+const adminCreateSubmit = document.querySelector("#admin-create-submit");
 const adminTotalUsers = document.querySelector("#admin-total-users");
 const adminActiveUsers = document.querySelector("#admin-active-users");
 const adminPendingUsers = document.querySelector("#admin-pending-users");
@@ -728,6 +735,7 @@ function createAdminUserRow(user) {
       <button class="primary-button" type="button" data-admin-save="${escapeHtml(String(user.id))}">Salvar</button>
       <button class="ghost-button" type="button" data-admin-detail="${escapeHtml(String(user.id))}">Ver detalhes</button>
       <button class="ghost-button" type="button" data-admin-impersonate="${escapeHtml(String(user.id))}">Entrar no app dela</button>
+      <button class="ghost-button admin-danger-button" type="button" data-admin-delete="${escapeHtml(String(user.id))}" data-admin-name="${escapeHtml(user.name || "usuaria")}">Excluir</button>
     </div>
   `;
 
@@ -956,6 +964,70 @@ async function impersonateAdminUser(userId) {
     sessionStorage.setItem("vida-nova:admin-shadow-user", JSON.stringify(currentSession));
     persistUserSession(response.user, response.token);
     window.location.href = "./index.html";
+  } catch (error) {
+    setFeedback(adminFeedback, error.message, "error");
+  }
+}
+
+async function createAdminUser() {
+  const name = adminCreateName?.value.trim() || "";
+  const email = adminCreateEmail?.value.trim() || "";
+  const password = adminCreatePassword?.value || "";
+  const subscriptionUrl = adminCreateSubscriptionUrl?.value.trim() || "";
+
+  if (!name || !email || !password) {
+    setFeedback(adminFeedback, "Preencha nome, email e senha para cadastrar a usuaria.", "error");
+    return;
+  }
+
+  if (password.length < 6) {
+    setFeedback(adminFeedback, "A senha inicial precisa ter no minimo 6 caracteres.", "error");
+    return;
+  }
+
+  if (adminCreateSubmit) {
+    adminCreateSubmit.disabled = true;
+  }
+
+  try {
+    setFeedback(adminFeedback, "Cadastrando nova usuaria...");
+    await apiPost("/api/admin/users/create", {
+      token: getAuthToken(),
+      name,
+      email,
+      password,
+      subscriptionUrl,
+    });
+    adminCreateUserForm?.reset();
+    await loadAdminDashboard();
+    setFeedback(adminFeedback, "Usuaria cadastrada com sucesso.", "success");
+  } catch (error) {
+    setFeedback(adminFeedback, error.message, "error");
+  } finally {
+    if (adminCreateSubmit) {
+      adminCreateSubmit.disabled = false;
+    }
+  }
+}
+
+async function deleteAdminUser(userId, userName = "usuaria") {
+  const confirmed = window.confirm(`Excluir ${userName} e todos os dados salvos desta conta?`);
+  if (!confirmed) {
+    return;
+  }
+
+  try {
+    setFeedback(adminFeedback, "Excluindo usuaria...");
+    await apiPost("/api/admin/users/delete", {
+      token: getAuthToken(),
+      userId: Number(userId),
+    });
+    if (adminDetailCache?.user?.id && Number(adminDetailCache.user.id) === Number(userId)) {
+      adminDetailCache = null;
+      renderAdminDetail(null);
+    }
+    await loadAdminDashboard();
+    setFeedback(adminFeedback, "Usuaria excluida com sucesso.", "success");
   } catch (error) {
     setFeedback(adminFeedback, error.message, "error");
   }
@@ -1261,6 +1333,12 @@ function setActivePage(pageName, syncHash = true) {
   pageLinks.forEach((link) => {
     link.classList.toggle("is-active", link.dataset.pageLink === nextPage);
   });
+
+  if (verseBanner) {
+    const shouldHideVerse = nextPage === "admin";
+    verseBanner.classList.toggle("hidden", shouldHideVerse);
+    verseBanner.setAttribute("aria-hidden", shouldHideVerse ? "true" : "false");
+  }
 
   if (syncHash && window.location.hash !== `#${nextPage}`) {
     history.replaceState(null, "", `#${nextPage}`);
@@ -3620,6 +3698,12 @@ if (adminUsersList) {
       return;
     }
 
+    const deleteButton = event.target.closest("[data-admin-delete]");
+    if (deleteButton) {
+      await deleteAdminUser(deleteButton.dataset.adminDelete, deleteButton.dataset.adminName);
+      return;
+    }
+
     const saveButton = event.target.closest("[data-admin-save]");
     if (!saveButton) {
       return;
@@ -3658,6 +3742,13 @@ if (adminUsersList) {
     } finally {
       saveButton.disabled = false;
     }
+  });
+}
+
+if (adminCreateUserForm) {
+  adminCreateUserForm.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    await createAdminUser();
   });
 }
 
