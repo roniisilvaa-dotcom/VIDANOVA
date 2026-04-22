@@ -142,6 +142,9 @@ const adminActiveUsers = document.querySelector("#admin-active-users");
 const adminPendingUsers = document.querySelector("#admin-pending-users");
 const adminInactiveUsers = document.querySelector("#admin-inactive-users");
 const adminAdminUsers = document.querySelector("#admin-admin-users");
+const adminRenewSoonUsers = document.querySelector("#admin-renew-soon-users");
+const adminProjectedRevenue = document.querySelector("#admin-projected-revenue");
+const adminPriceCaption = document.querySelector("#admin-price-caption");
 const adminSearchInput = document.querySelector("#admin-search-input");
 const adminStatusFilter = document.querySelector("#admin-status-filter");
 const adminRoleFilter = document.querySelector("#admin-role-filter");
@@ -688,6 +691,18 @@ function renderAdminSummary(summary = {}) {
   if (adminAdminUsers) {
     adminAdminUsers.textContent = String(summary.adminUsers || 0);
   }
+  if (adminRenewSoonUsers) {
+    adminRenewSoonUsers.textContent = String(summary.renewSoonUsers || 0);
+  }
+  if (adminProjectedRevenue) {
+    adminProjectedRevenue.textContent = formatCurrency(Number(summary.projectedMonthlyRevenue || 0));
+  }
+  if (adminPriceCaption) {
+    const planPrice = Number(summary.monthlySubscriptionPrice || 0);
+    adminPriceCaption.textContent = planPrice > 0
+      ? `Plano mensal: ${formatCurrency(planPrice)}`
+      : "Configure MONTHLY_SUBSCRIPTION_PRICE no servidor";
+  }
 }
 
 function getAdminStatusBadgeMeta(statusValue = "") {
@@ -708,26 +723,44 @@ function createAdminUserRow(user) {
   const article = document.createElement("article");
   article.className = "admin-user-row";
   const statusMeta = getAdminStatusBadgeMeta(user.subscription_status);
+  const deviceLabel = user.last_device_label || user.last_platform || "Sem aparelho detectado";
+  const deviceTypeLabel =
+    user.last_device_type === "mobile"
+      ? "Mobile"
+      : user.last_device_type === "tablet"
+        ? "Tablet"
+        : "Web / Desktop";
 
   const expiresValue = user.subscription_expires
     ? String(user.subscription_expires).slice(0, 10)
     : "";
 
   article.innerHTML = `
-    <div class="admin-user-main">
-      <div>
-        <strong>${escapeHtml(user.name || "Sem nome")}</strong>
-        <small>${escapeHtml(user.email || "")}</small>
+    <div class="admin-user-grid">
+      <div class="admin-user-client">
+        <div class="admin-user-avatar">${escapeHtml(getInitials(user.name || user.email || "VN"))}</div>
+        <div>
+          <strong>${escapeHtml(user.name || "Sem nome")}</strong>
+          <small>${escapeHtml(user.email || "")}</small>
+          <div class="admin-user-device">${escapeHtml(deviceTypeLabel)} • ${escapeHtml(deviceLabel)}</div>
+        </div>
       </div>
-      <div class="admin-user-badges">
+      <div class="admin-user-status-cell">
         <span class="admin-badge">${escapeHtml(user.role || "user")}</span>
         <span class="admin-badge ${escapeHtml(statusMeta.className)}">${escapeHtml(statusMeta.label)}</span>
       </div>
-    </div>
-    <div class="admin-user-meta">
-      <span>Entradas salvas: ${escapeHtml(String(user.data_entries || 0))}</span>
-      <span>Criada em: ${escapeHtml(formatAdminDate(user.created_at))}</span>
-      <span>Ultima atividade: ${escapeHtml(formatAdminDateTime(user.last_activity_at))}</span>
+      <div class="admin-user-stat-cell">
+        <strong>${escapeHtml(String(user.data_entries || 0))}</strong>
+        <small>registros</small>
+      </div>
+      <div class="admin-user-stat-cell">
+        <strong>${escapeHtml(formatAdminDate(user.created_at))}</strong>
+        <small>criada em</small>
+      </div>
+      <div class="admin-user-stat-cell">
+        <strong>${escapeHtml(formatAdminDateTime(user.last_seen_at || user.last_activity_at))}</strong>
+        <small>ultimo acesso</small>
+      </div>
     </div>
     <div class="admin-user-controls">
       <label>
@@ -790,12 +823,14 @@ function renderAdminDetail(detail = adminDetailCache) {
       : null;
   const recentRecords = Array.isArray(storageSummary.recentRecords) ? storageSummary.recentRecords : [];
   const statusMeta = getAdminStatusBadgeMeta(user.subscription_status);
+  const deviceLabel = user.last_device_label || user.last_platform || "Sem aparelho detectado";
 
   adminUserDetail.innerHTML = `
     <div class="admin-detail-top">
       <div>
         <strong>${escapeHtml(user.name || "Sem nome")}</strong>
         <small>${escapeHtml(user.email || "")}</small>
+        <div class="admin-user-device">Ultimo aparelho: ${escapeHtml(deviceLabel)}</div>
       </div>
       <div class="admin-user-badges">
         <span class="admin-badge">${escapeHtml(user.role || "user")}</span>
@@ -818,6 +853,10 @@ function renderAdminDetail(detail = adminDetailCache) {
       <article class="admin-detail-card">
         <span class="metric-label">Ultimo sync em nuvem</span>
         <strong>${escapeHtml(formatAdminDateTime(storageSummary.lastCloudSyncAt))}</strong>
+      </article>
+      <article class="admin-detail-card">
+        <span class="metric-label">Plataforma</span>
+        <strong>${escapeHtml(user.last_device_label || "Sem identificacao")}</strong>
       </article>
       <article class="admin-detail-card">
         <span class="metric-label">Registros no banco</span>
@@ -1501,6 +1540,20 @@ function escapeHtml(value) {
     .replaceAll("<", "&lt;")
     .replaceAll(">", "&gt;")
     .replaceAll('"', "&quot;");
+}
+
+function getInitials(value = "") {
+  const parts = String(value || "")
+    .trim()
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0, 2);
+
+  if (!parts.length) {
+    return "VN";
+  }
+
+  return parts.map((part) => part[0]).join("").toUpperCase();
 }
 
 function toSoftColor(hex, alpha = 0.24) {

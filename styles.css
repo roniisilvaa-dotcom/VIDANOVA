@@ -2139,16 +2139,196 @@ body.subscription-locked .subscription-gate {
   box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.5);
 }
 
-.admin-summary-grid {
-  margin-top: 18px;
+.admin-panel-shell {
+  display: grid;
+  grid-template-columns: 220px minmax(0, 1fr);
+  gap: 22px;
+  padding: 18px;
+  border-radius: 34px;
+  background:
+    radial-gradient(circle at top right, rgba(96, 103, 255, 0.16), transparent 24%),
+    radial-gradient(circle at bottom left, rgba(75, 201, 171, 0.14), transparent 24%),
+    rgba(255, 255, 255, 0.74);
 }
 
-.admin-panel .settings-card strong {
-  font-size: 1.65rem;
+.admin-shell-sidebar {
+  display: grid;
+  align-content: start;
+  gap: 22px;
+  padding: 22px 16px;
+  border-radius: 28px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(244, 247, 255, 0.94));
+  border: 1px solid rgba(93, 99, 255, 0.1);
 }
 
-.admin-users-card {
-  grid-column: 1 / -1;
+.admin-shell-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.admin-shell-logo {
+  width: 52px;
+  height: 52px;
+  border-radius: 18px;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(135deg, #5e63ff, #8499ff);
+  color: white;
+  font-weight: 800;
+  box-shadow: 0 16px 34px rgba(94, 99, 255, 0.24);
+}
+
+.admin-shell-brand strong,
+.admin-shell-brand small {
+  display: block;
+}
+
+.admin-shell-brand small {
+  color: var(--muted);
+}
+
+.admin-shell-menu {
+  display: grid;
+  gap: 10px;
+}
+
+.admin-shell-link {
+  min-height: 48px;
+  padding: 0 14px;
+  border: 0;
+  border-radius: 16px;
+  background: transparent;
+  color: var(--muted);
+  text-align: left;
+  font: inherit;
+  cursor: pointer;
+  transition: transform 180ms ease, background 180ms ease, color 180ms ease;
+}
+
+.admin-shell-link:hover,
+.admin-shell-link.is-active {
+  background: linear-gradient(135deg, #5e63ff, #7b84ff);
+  color: white;
+  transform: translateX(3px);
+}
+
+.admin-shell-main {
+  display: grid;
+  gap: 18px;
+}
+
+.admin-shell-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 20px 24px;
+  border-radius: 26px;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(93, 99, 255, 0.1);
+}
+
+.admin-shell-topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.admin-shell-search {
+  min-width: min(420px, 48vw);
+}
+
+.admin-shell-search input,
+.admin-table-actions select {
+  width: 100%;
+  min-height: 48px;
+  padding: 0 16px;
+  border-radius: 16px;
+  border: 1px solid var(--line);
+  background: rgba(247, 248, 252, 0.96);
+  color: var(--ink);
+  font: inherit;
+}
+
+.admin-shell-stats {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.admin-stat-card,
+.admin-feature-card {
+  border: 1px solid rgba(93, 99, 255, 0.1);
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 16px 36px rgba(40, 48, 84, 0.08);
+}
+
+.admin-stat-card {
+  padding: 18px;
+  display: grid;
+  gap: 8px;
+}
+
+.admin-stat-card strong {
+  font-size: 1.8rem;
+}
+
+.admin-stat-card small {
+  color: var(--muted);
+}
+
+.admin-stat-card-highlight {
+  background: linear-gradient(135deg, rgba(255, 245, 214, 0.98), rgba(255, 255, 255, 0.94));
+}
+
+.admin-stat-card-accent {
+  background: linear-gradient(135deg, rgba(233, 241, 255, 0.98), rgba(255, 255, 255, 0.94));
+}
+
+.admin-shell-content {
+  display: grid;
+  grid-template-columns: minmax(300px, 0.34fr) minmax(0, 0.66fr);
+  gap: 18px;
+}
+
+.admin-shell-profile-column,
+.admin-shell-table-column {
+  display: grid;
+  gap: 18px;
+  align-content: start;
+}
+
+.admin-feature-card {
+  padding: 18px;
+}
+
+.admin-management-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.admin-table-card {
+  overflow: hidden;
+}
+
+.admin-table-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.admin-table-head {
+  display: grid;
+  grid-template-columns: 2.2fr 1.3fr 0.9fr 0.9fr 1.1fr;
+  gap: 12px;
+  padding: 0 18px 14px;
+  color: var(--muted);
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 .admin-create-form {
@@ -2157,60 +2337,63 @@ body.subscription-locked .subscription-gate {
 
 .admin-users-list {
   display: grid;
-  gap: 14px;
-}
-
-.admin-toolbar {
-  display: grid;
-  grid-template-columns: 2fr 1fr 1fr;
   gap: 12px;
-  margin: 14px 0 6px;
-}
-
-.admin-toolbar label {
-  display: grid;
-  gap: 8px;
-  color: var(--muted);
-  font-size: 0.92rem;
-}
-
-.admin-toolbar input,
-.admin-toolbar select {
-  width: 100%;
-  padding: 14px 16px;
-  border-radius: 16px;
-  border: 1px solid var(--line);
-  background: rgba(255, 255, 255, 0.82);
-  color: var(--ink);
-  font: inherit;
 }
 
 .admin-user-row {
   display: grid;
   gap: 14px;
   padding: 18px;
-  border: 1px solid var(--line);
-  border-radius: 20px;
-  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(93, 99, 255, 0.1);
+  border-radius: 22px;
+  background: linear-gradient(135deg, rgba(249, 250, 255, 0.96), rgba(255, 255, 255, 0.94));
+  transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
 }
 
-.admin-user-main {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  gap: 10px 18px;
+.admin-user-row:hover {
+  transform: translateY(-2px);
+  border-color: rgba(93, 99, 255, 0.2);
+  box-shadow: 0 18px 40px rgba(40, 48, 84, 0.1);
+}
+
+.admin-user-grid {
+  display: grid;
+  grid-template-columns: 2.2fr 1.3fr 0.9fr 0.9fr 1.1fr;
+  gap: 12px;
   align-items: center;
 }
 
-.admin-user-main strong {
-  display: block;
-  font-size: 1.05rem;
+.admin-user-client {
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
-.admin-user-main small {
+.admin-user-avatar {
+  width: 54px;
+  height: 54px;
+  border-radius: 18px;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(135deg, #5b66ff, #7da1ff);
+  color: white;
+  font-weight: 800;
+}
+
+.admin-user-client strong,
+.admin-user-client small,
+.admin-user-stat-cell strong,
+.admin-user-stat-cell small {
+  display: block;
+}
+
+.admin-user-client small,
+.admin-user-stat-cell small,
+.admin-user-device {
   color: var(--muted);
 }
 
+.admin-user-status-cell,
 .admin-user-badges {
   display: flex;
   flex-wrap: wrap;
@@ -2259,6 +2442,7 @@ body.subscription-locked .subscription-gate {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 10px;
+  padding-top: 4px;
 }
 
 .admin-user-actions {
@@ -2295,9 +2479,9 @@ body.subscription-locked .subscription-gate {
 
 .admin-activity-item {
   padding: 14px 16px;
-  border: 1px solid var(--line);
+  border: 1px solid rgba(93, 99, 255, 0.1);
   border-radius: 18px;
-  background: rgba(255, 255, 255, 0.8);
+  background: linear-gradient(135deg, rgba(248, 250, 255, 0.94), rgba(255, 255, 255, 0.92));
 }
 
 .admin-activity-item strong {
@@ -2344,8 +2528,8 @@ body.subscription-locked .subscription-gate {
 .admin-detail-card {
   padding: 14px 16px;
   border-radius: 18px;
-  border: 1px solid var(--line);
-  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(93, 99, 255, 0.1);
+  background: linear-gradient(135deg, rgba(248, 250, 255, 0.94), rgba(255, 255, 255, 0.92));
 }
 
 .admin-detail-list {
@@ -2356,8 +2540,8 @@ body.subscription-locked .subscription-gate {
 .admin-detail-item {
   padding: 12px 14px;
   border-radius: 16px;
-  border: 1px solid var(--line);
-  background: rgba(255, 255, 255, 0.74);
+  border: 1px solid rgba(93, 99, 255, 0.1);
+  background: linear-gradient(135deg, rgba(250, 251, 255, 0.96), rgba(255, 255, 255, 0.94));
 }
 
 .admin-detail-item strong {
@@ -2373,6 +2557,10 @@ body.subscription-locked .subscription-gate {
   color: #aa2c46;
   border-color: rgba(170, 44, 70, 0.18);
   background: rgba(255, 236, 240, 0.9);
+}
+
+.admin-user-stat-cell strong {
+  font-size: 1rem;
 }
 
 .profile-hero {
@@ -2935,28 +3123,7 @@ select {
 .mobile-app {
   max-width: 720px;
   margin: 0 auto;
-  padding: 18px 18px 96px;
-}
-
-.mobile-hero {
-  margin-bottom: 18px;
-  padding: 22px;
-  border: 1px solid var(--line);
-  border-radius: 28px;
-  background: linear-gradient(135deg, rgba(248, 191, 211, 0.9), rgba(255, 255, 255, 0.95));
-  box-shadow: var(--shadow);
-}
-
-.mobile-hero h1 {
-  margin: 0;
-  font-family: Georgia, "Times New Roman", serif;
-  font-size: clamp(2rem, 8vw, 3.2rem);
-  line-height: 1.02;
-}
-
-.mobile-hero p {
-  margin: 10px 0 0;
-  color: var(--muted);
+  padding: 18px;
 }
 
 .mobile-stack {
@@ -3018,21 +3185,6 @@ select {
   min-height: 52px;
 }
 
-.mobile-pillbar {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 14px;
-}
-
-.mobile-pill {
-  padding: 8px 12px;
-  border-radius: 999px;
-  background: rgba(197, 91, 132, 0.12);
-  color: var(--ink);
-  font-size: 0.84rem;
-}
-
 .mobile-list {
   display: grid;
   gap: 10px;
@@ -3086,31 +3238,21 @@ select {
   color: var(--muted);
 }
 
-.mobile-bottom-nav {
-  position: fixed;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 8px;
-  padding: 12px;
-  border-top: 1px solid var(--line);
-  background: rgba(255, 250, 244, 0.94);
-  backdrop-filter: blur(16px);
-}
-
-.mobile-bottom-nav a {
-  display: grid;
-  place-items: center;
-  min-height: 48px;
-  border-radius: 14px;
-  background: rgba(255, 255, 255, 0.78);
-  font-size: 0.88rem;
-}
-
 @media (max-width: 1180px) {
   .app-shell {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-panel-shell,
+  .admin-shell-content {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-shell-stats {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .admin-management-grid {
     grid-template-columns: 1fr;
   }
 
@@ -3318,11 +3460,42 @@ select {
     grid-template-columns: 1fr;
   }
 
-  .admin-toolbar {
+  .admin-detail-grid {
     grid-template-columns: 1fr;
   }
 
-  .admin-detail-grid {
+  .admin-panel-shell {
+    padding: 14px;
+    border-radius: 24px;
+  }
+
+  .admin-shell-sidebar,
+  .admin-shell-topbar,
+  .admin-feature-card {
+    padding: 16px;
+  }
+
+  .admin-shell-topbar,
+  .admin-shell-topbar-actions,
+  .admin-table-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .admin-shell-search {
+    min-width: 0;
+    width: 100%;
+  }
+
+  .admin-shell-stats {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-table-head {
+    display: none;
+  }
+
+  .admin-user-grid {
     grid-template-columns: 1fr;
   }
 

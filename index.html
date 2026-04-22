@@ -1280,156 +1280,205 @@
           <div class="page-return-bar">
             <button class="ghost-button page-return-button" type="button" data-go-home>← Voltar</button>
           </div>
-          <section class="panel settings-panel admin-panel">
-            <div class="panel-heading">
-              <div>
-                <p class="eyebrow">Administracao do app</p>
-                <h3>Controle de usuarias e assinaturas</h3>
+          <section class="panel admin-panel-shell">
+            <aside class="admin-shell-sidebar">
+              <div class="admin-shell-brand">
+                <div class="admin-shell-logo">VN</div>
+                <div>
+                  <strong>Vida Nova ADM</strong>
+                  <small>Controle central</small>
+                </div>
               </div>
-              <span class="tag">ADM</span>
+
+              <nav class="admin-shell-menu">
+                <button class="admin-shell-link is-active" type="button">Visao geral</button>
+                <button class="admin-shell-link" type="button">Clientes</button>
+                <button class="admin-shell-link" type="button">Cadastros</button>
+                <button class="admin-shell-link" type="button">Comunicacao</button>
+                <button class="admin-shell-link" type="button">Registros</button>
+                <button class="admin-shell-link" type="button">Configuracoes</button>
+              </nav>
+            </aside>
+
+            <div class="admin-shell-main">
+              <header class="admin-shell-topbar">
+                <div>
+                  <p class="eyebrow">Administracao do app</p>
+                  <h3>Controle de usuarias e assinaturas</h3>
+                </div>
+                <div class="admin-shell-topbar-actions">
+                  <label class="admin-shell-search">
+                    <input id="admin-search-input" type="search" placeholder="Buscar usuaria por nome ou email" />
+                  </label>
+                  <button id="admin-refresh-users" class="ghost-button" type="button">Atualizar</button>
+                </div>
+              </header>
+
+              <div class="admin-shell-stats">
+                <article class="admin-stat-card">
+                  <span class="metric-label">Total de usuarias</span>
+                  <strong id="admin-total-users">0</strong>
+                  <small>Base geral cadastrada</small>
+                </article>
+                <article class="admin-stat-card">
+                  <span class="metric-label">Ativas</span>
+                  <strong id="admin-active-users">0</strong>
+                  <small>Contas com acesso liberado</small>
+                </article>
+                <article class="admin-stat-card">
+                  <span class="metric-label">Pendentes</span>
+                  <strong id="admin-pending-users">0</strong>
+                  <small>Aguardando pagamento</small>
+                </article>
+                <article class="admin-stat-card">
+                  <span class="metric-label">Inativas / atraso</span>
+                  <strong id="admin-inactive-users">0</strong>
+                  <small>Bloqueadas no momento</small>
+                </article>
+                <article class="admin-stat-card">
+                  <span class="metric-label">Admins</span>
+                  <strong id="admin-admin-users">0</strong>
+                  <small>Usuarios administrativos</small>
+                </article>
+                <article class="admin-stat-card admin-stat-card-highlight">
+                  <span class="metric-label">Prestes a renovar</span>
+                  <strong id="admin-renew-soon-users">0</strong>
+                  <small>Expiram nos proximos 7 dias</small>
+                </article>
+                <article class="admin-stat-card admin-stat-card-accent">
+                  <span class="metric-label">Receita mensal ativa</span>
+                  <strong id="admin-projected-revenue">R$ 0,00</strong>
+                  <small id="admin-price-caption">Baseado no plano mensal</small>
+                </article>
+              </div>
+
+              <div class="admin-shell-content">
+                <aside class="admin-shell-profile-column">
+                  <article class="admin-feature-card">
+                    <div class="panel-heading">
+                      <div>
+                        <p class="eyebrow">Detalhes da usuaria</p>
+                        <h3>Perfil e operacao</h3>
+                      </div>
+                    </div>
+                    <div id="admin-user-detail" class="admin-user-detail">
+                      <div class="admin-empty-state">Selecione uma usuaria em "Ver detalhes" para abrir esta visao.</div>
+                    </div>
+                  </article>
+
+                  <article class="admin-feature-card">
+                    <div class="panel-heading">
+                      <div>
+                        <p class="eyebrow">Registros recentes</p>
+                        <h3>Historico resumido</h3>
+                      </div>
+                    </div>
+                    <div id="admin-activity-list" class="admin-activity-list admin-activity-list-compact"></div>
+                  </article>
+                </aside>
+
+                <section class="admin-shell-table-column">
+                  <div class="admin-management-grid">
+                    <article class="admin-feature-card">
+                      <div class="panel-heading">
+                        <div>
+                          <p class="eyebrow">Cadastro rapido</p>
+                          <h3>Nova usuaria</h3>
+                        </div>
+                        <span class="tag">ADM</span>
+                      </div>
+                      <form id="admin-create-user-form" class="settings-form admin-create-form">
+                        <label>
+                          Nome
+                          <input id="admin-create-name" type="text" placeholder="Nome da cliente" />
+                        </label>
+                        <label>
+                          Email
+                          <input id="admin-create-email" type="email" placeholder="cliente@email.com" />
+                        </label>
+                        <label>
+                          Senha inicial
+                          <input id="admin-create-password" type="password" placeholder="Minimo de 6 caracteres" />
+                        </label>
+                        <label>
+                          Link checkout / renovacao
+                          <input id="admin-create-subscription-url" type="url" placeholder="https://..." />
+                        </label>
+                        <div class="settings-inline-actions">
+                          <button id="admin-create-submit" class="primary-button" type="submit">Cadastrar usuaria</button>
+                        </div>
+                      </form>
+                    </article>
+
+                    <article class="admin-feature-card">
+                      <div class="panel-heading">
+                        <div>
+                          <p class="eyebrow">Comunicacao em massa</p>
+                          <h3>Notificar usuarias</h3>
+                        </div>
+                        <span class="tag">ADM</span>
+                      </div>
+                      <form id="admin-broadcast-form" class="settings-form admin-create-form">
+                        <label>
+                          Titulo
+                          <input id="admin-broadcast-title" type="text" placeholder="Ex.: Aviso importante" />
+                        </label>
+                        <label>
+                          Publico
+                          <select id="admin-broadcast-audience">
+                            <option value="active">Somente contas ativas</option>
+                            <option value="all">Todas as usuarias</option>
+                          </select>
+                        </label>
+                        <label class="admin-broadcast-message">
+                          Mensagem
+                          <textarea id="admin-broadcast-message" rows="4" placeholder="Escreva a notificacao que vai aparecer no app das usuarias."></textarea>
+                        </label>
+                        <div class="settings-inline-actions">
+                          <button id="admin-broadcast-submit" class="primary-button" type="submit">Enviar notificacao</button>
+                        </div>
+                      </form>
+                    </article>
+                  </div>
+
+                  <article class="admin-feature-card admin-table-card">
+                    <div class="panel-heading">
+                      <div>
+                        <p class="eyebrow">Usuarias cadastradas</p>
+                        <h3>Painel geral</h3>
+                      </div>
+                      <div class="admin-table-actions">
+                        <label>
+                          <select id="admin-status-filter">
+                            <option value="all">Todos os status</option>
+                            <option value="active">Ativas</option>
+                            <option value="pending">Pendentes</option>
+                            <option value="late">Em atraso</option>
+                            <option value="inactive">Inativas</option>
+                          </select>
+                        </label>
+                        <label>
+                          <select id="admin-role-filter">
+                            <option value="all">Todos os papeis</option>
+                            <option value="admin">Admins</option>
+                            <option value="user">Usuarias</option>
+                          </select>
+                        </label>
+                      </div>
+                    </div>
+                    <p id="admin-feedback" class="settings-feedback"></p>
+                    <div class="admin-table-head">
+                      <span>Cliente</span>
+                      <span>Status</span>
+                      <span>Dados</span>
+                      <span>Criacao</span>
+                      <span>Acoes</span>
+                    </div>
+                    <div class="admin-users-list" id="admin-users-list"></div>
+                  </article>
+                </section>
+              </div>
             </div>
-
-            <div class="settings-grid admin-summary-grid">
-              <article class="settings-card">
-                <span class="metric-label">Total de usuarias</span>
-                <strong id="admin-total-users">0</strong>
-              </article>
-              <article class="settings-card">
-                <span class="metric-label">Ativas</span>
-                <strong id="admin-active-users">0</strong>
-              </article>
-              <article class="settings-card">
-                <span class="metric-label">Pendentes</span>
-                <strong id="admin-pending-users">0</strong>
-              </article>
-              <article class="settings-card">
-                <span class="metric-label">Inativas / atraso</span>
-                <strong id="admin-inactive-users">0</strong>
-              </article>
-              <article class="settings-card">
-                <span class="metric-label">Admins</span>
-                <strong id="admin-admin-users">0</strong>
-              </article>
-            </div>
-
-            <article class="settings-card admin-users-card">
-              <div class="panel-heading">
-                <div>
-                  <p class="eyebrow">Cadastro rapido</p>
-                  <h3>Nova usuaria</h3>
-                </div>
-                <span class="tag">ADM</span>
-              </div>
-              <form id="admin-create-user-form" class="settings-form admin-create-form">
-                <label>
-                  Nome
-                  <input id="admin-create-name" type="text" placeholder="Nome da cliente" />
-                </label>
-                <label>
-                  Email
-                  <input id="admin-create-email" type="email" placeholder="cliente@email.com" />
-                </label>
-                <label>
-                  Senha inicial
-                  <input id="admin-create-password" type="password" placeholder="Minimo de 6 caracteres" />
-                </label>
-                <label>
-                  Link checkout / renovacao
-                  <input id="admin-create-subscription-url" type="url" placeholder="https://..." />
-                </label>
-                <div class="settings-inline-actions">
-                  <button id="admin-create-submit" class="primary-button" type="submit">Cadastrar usuaria</button>
-                </div>
-              </form>
-            </article>
-
-            <article class="settings-card admin-users-card">
-              <div class="panel-heading">
-                <div>
-                  <p class="eyebrow">Comunicacao em massa</p>
-                  <h3>Notificar usuarias</h3>
-                </div>
-                <span class="tag">ADM</span>
-              </div>
-              <form id="admin-broadcast-form" class="settings-form admin-create-form">
-                <label>
-                  Titulo
-                  <input id="admin-broadcast-title" type="text" placeholder="Ex.: Aviso importante" />
-                </label>
-                <label>
-                  Publico
-                  <select id="admin-broadcast-audience">
-                    <option value="active">Somente contas ativas</option>
-                    <option value="all">Todas as usuarias</option>
-                  </select>
-                </label>
-                <label class="admin-broadcast-message">
-                  Mensagem
-                  <textarea id="admin-broadcast-message" rows="4" placeholder="Escreva a notificacao que vai aparecer no app das usuarias."></textarea>
-                </label>
-                <div class="settings-inline-actions">
-                  <button id="admin-broadcast-submit" class="primary-button" type="submit">Enviar notificacao</button>
-                </div>
-              </form>
-            </article>
-
-            <article class="settings-card admin-users-card">
-              <div class="panel-heading">
-                <div>
-                  <p class="eyebrow">Usuarias cadastradas</p>
-                  <h3>Painel geral</h3>
-                </div>
-                <button id="admin-refresh-users" class="ghost-button" type="button">Atualizar</button>
-              </div>
-              <div class="admin-toolbar">
-                <label>
-                  Buscar
-                  <input id="admin-search-input" type="search" placeholder="Nome ou email" />
-                </label>
-                <label>
-                  Status
-                  <select id="admin-status-filter">
-                    <option value="all">Todos</option>
-                    <option value="active">Ativas</option>
-                    <option value="pending">Pendentes</option>
-                    <option value="late">Em atraso</option>
-                    <option value="inactive">Inativas</option>
-                  </select>
-                </label>
-                <label>
-                  Papel
-                  <select id="admin-role-filter">
-                    <option value="all">Todos</option>
-                    <option value="admin">Admins</option>
-                    <option value="user">Usuarias</option>
-                  </select>
-                </label>
-              </div>
-              <p id="admin-feedback" class="settings-feedback"></p>
-              <div class="admin-users-list" id="admin-users-list"></div>
-            </article>
-
-            <article class="settings-card admin-users-card">
-              <div class="panel-heading">
-                <div>
-                  <p class="eyebrow">Registros recentes</p>
-                  <h3>Historico resumido</h3>
-                </div>
-              </div>
-              <div id="admin-activity-list" class="admin-activity-list admin-activity-list-compact"></div>
-            </article>
-
-            <article class="settings-card admin-users-card">
-              <div class="panel-heading">
-                <div>
-                  <p class="eyebrow">Detalhes da usuaria</p>
-                  <h3>Visao tecnica e operacional</h3>
-                </div>
-              </div>
-              <div id="admin-user-detail" class="admin-user-detail">
-                <div class="admin-empty-state">Selecione uma usuaria em "Ver detalhes" para abrir esta visao.</div>
-              </div>
-            </article>
           </section>
         </section>
         </div>

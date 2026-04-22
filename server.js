@@ -18,6 +18,7 @@ const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "@CARO2026";
 const KIWIFY_WEBHOOK_TOKEN = process.env.KIWIFY_WEBHOOK_TOKEN || "";
 const KIWIFY_PRODUCT_ID = process.env.KIWIFY_PRODUCT_ID || "";
 const KIWIFY_CHECKOUT_URL = process.env.KIWIFY_CHECKOUT_URL || "";
+const MONTHLY_SUBSCRIPTION_PRICE = Number(process.env.MONTHLY_SUBSCRIPTION_PRICE || 0);
 const DATA_FILE = path.join(__dirname, "vida-nova-fallback.json");
 
 const isUsingDatabase = Boolean(DATABASE_URL);
@@ -42,6 +43,49 @@ function shouldUseSsl(connectionString) {
 
 function normalizeEmail(email) {
   return String(email || "").trim().toLowerCase();
+}
+
+function detectDeviceInfo(userAgent = "") {
+  const ua = String(userAgent || "");
+  const isTablet = /iPad|Tablet|PlayBook|Silk/i.test(ua);
+  const isMobile = !isTablet && /Android|iPhone|iPod|Mobile/i.test(ua);
+  const isDesktop = !isTablet && !isMobile;
+
+  let platform = "Web";
+  if (/iPhone/i.test(ua)) {
+    platform = "iPhone";
+  } else if (/iPad/i.test(ua)) {
+    platform = "iPad";
+  } else if (/Android/i.test(ua)) {
+    platform = "Android";
+  } else if (/Windows/i.test(ua)) {
+    platform = "Windows";
+  } else if (/Macintosh|Mac OS X/i.test(ua)) {
+    platform = "Mac";
+  } else if (/Linux/i.test(ua)) {
+    platform = "Linux";
+  }
+
+  let browser = "Web";
+  if (/Edg\//i.test(ua)) {
+    browser = "Edge";
+  } else if (/OPR\//i.test(ua)) {
+    browser = "Opera";
+  } else if (/Chrome\//i.test(ua) && !/Edg\//i.test(ua)) {
+    browser = "Chrome";
+  } else if (/Firefox\//i.test(ua)) {
+    browser = "Firefox";
+  } else if (/Safari\//i.test(ua) && !/Chrome\//i.test(ua)) {
+    browser = "Safari";
+  }
+
+  return {
+    device_type: isTablet ? "tablet" : isMobile ? "mobile" : "desktop",
+    platform,
+    browser,
+    label: `${platform} ${browser}`.trim(),
+    user_agent: ua,
+  };
 }
 
 function getTokenPayload(token) {
@@ -173,6 +217,31 @@ async function initDb() {
   `);
 
   await query(`
+    ALTER TABLE users
+    ADD COLUMN IF NOT EXISTS last_device_type TEXT
+  `);
+
+  await query(`
+    ALTER TABLE users
+    ADD COLUMN IF NOT EXISTS last_platform TEXT
+  `);
+
+  await query(`
+    ALTER TABLE users
+    ADD COLUMN IF NOT EXISTS last_browser TEXT
+  `);
+
+  await query(`
+    ALTER TABLE users
+    ADD COLUMN IF NOT EXISTS last_device_label TEXT
+  `);
+
+  await query(`
+    ALTER TABLE users
+    ADD COLUMN IF NOT EXISTS last_seen_at TIMESTAMPTZ
+  `);
+
+  await query(`
     CREATE TABLE IF NOT EXISTS app_data (
       id SERIAL PRIMARY KEY,
       user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
@@ -244,6 +313,11 @@ async function findUserById(id) {
     subscription_active: user.subscription_active,
     subscription_status: user.subscription_status || "pending",
     subscription_expires: user.subscription_expires || null,
+    last_device_type: user.last_device_type || "",
+    last_platform: user.last_platform || "",
+    last_browser: user.last_browser || "",
+    last_device_label: user.last_device_label || "",
+    last_seen_at: user.last_seen_at || null,
   };
 }
 
@@ -253,7 +327,7 @@ async function createUser({ name, email, password, avatarUrl = "", subscriptionU
     const result = await query(
       `INSERT INTO users (name, email, password, role, avatar_url, subscription_url, subscription_status)
        VALUES ($1, $2, $3, $4, $5, $6, 'pending')
-       RETURNING id, name, email, role, avatar_url, subscription_url, subscription_active, subscription_status, subscription_expires`,
+       RETURNING id, name, email, role, avatar_url, subscription_url, subscription_active, subscription_status, subscription_expires, last_device_type, last_platform, last_browser, last_device_label, last_seen_at`,
       [name, email, password, role, avatarUrl, subscriptionUrl || KIWIFY_CHECKOUT_URL],
     );
 
@@ -289,6 +363,11 @@ async function createUser({ name, email, password, avatarUrl = "", subscriptionU
     subscription_active: user.subscription_active,
     subscription_status: user.subscription_status || "pending",
     subscription_expires: user.subscription_expires || null,
+    last_device_type: user.last_device_type || "",
+    last_platform: user.last_platform || "",
+    last_browser: user.last_browser || "",
+    last_device_label: user.last_device_label || "",
+    last_seen_at: user.last_seen_at || null,
   };
 }
 
@@ -342,7 +421,51 @@ function buildPublicUser(user) {
       user.subscription_expires,
     ),
     subscription_expires: user.subscription_expires || null,
+    last_device_type: user.last_device_type || "",
+    last_platform: user.last_platform || "",
+    last_browser: user.last_browser || "",
+    last_device_label: user.last_device_label || "",
+    last_seen_at: user.last_seen_at || null,
   };
+}
+
+async function updateUserLastSeenDevice(userId, userAgent = "") {
+  const deviceInfo = detectDeviceInfo(userAgent);
+
+  if (isUsingDatabase) {
+    await query(
+      `UPDATE users
+       SET last_device_type = $1,
+           last_platform = $2,
+           last_browser = $3,
+           last_device_label = $4,
+           last_seen_at = CURRENT_TIMESTAMP,
+           updated_at = CURRENT_TIMESTAMP
+       WHERE id = $5`,
+      [
+        deviceInfo.device_type,
+        deviceInfo.platform,
+        deviceInfo.browser,
+        deviceInfo.label,
+        userId,
+      ],
+    );
+    return;
+  }
+
+  const store = await readStore();
+  const user = store.users.find((entry) => entry.id === userId);
+  if (!user) {
+    return;
+  }
+
+  user.last_device_type = deviceInfo.device_type;
+  user.last_platform = deviceInfo.platform;
+  user.last_browser = deviceInfo.browser;
+  user.last_device_label = deviceInfo.label;
+  user.last_seen_at = new Date().toISOString();
+  user.updated_at = new Date().toISOString();
+  await writeStore(store);
 }
 
 function pickFirstString(candidates = []) {
@@ -569,6 +692,36 @@ async function getUserData(userId, dataType) {
   return data;
 }
 
+async function listUserDataEntries(userId, dataType) {
+  if (isUsingDatabase) {
+    const result = await query(
+      `SELECT data_key, data_value, created_at, updated_at
+       FROM app_data
+       WHERE user_id = $1 AND data_type = $2
+       ORDER BY updated_at DESC, created_at DESC`,
+      [userId, dataType],
+    );
+
+    return result.rows.map((row) => ({
+      key: row.data_key,
+      value: row.data_value,
+      created_at: row.created_at,
+      updated_at: row.updated_at,
+    }));
+  }
+
+  const store = await readStore();
+  return store.appData
+    .filter((item) => item.user_id === userId && item.data_type === dataType)
+    .sort((a, b) => new Date(b.updated_at || b.created_at || 0).getTime() - new Date(a.updated_at || a.created_at || 0).getTime())
+    .map((item) => ({
+      key: item.data_key,
+      value: item.data_value,
+      created_at: item.created_at,
+      updated_at: item.updated_at,
+    }));
+}
+
 async function updateUserProfile(
   userId,
   { name, email, password, avatarUrl, subscriptionUrl },
@@ -746,6 +899,11 @@ async function listUsersForAdmin() {
          users.subscription_active,
          users.subscription_status,
          users.subscription_expires,
+         users.last_device_type,
+         users.last_platform,
+         users.last_browser,
+         users.last_device_label,
+         users.last_seen_at,
          users.created_at,
          users.updated_at,
          COUNT(app_data.id)::INTEGER AS data_entries,
@@ -776,6 +934,16 @@ async function listUsersForAdmin() {
 async function getAdminSummary() {
   const users = await listUsersForAdmin();
   const normalized = users.map((user) => buildPublicUser(user));
+  const renewSoonUsers = normalized.filter((user) => {
+    if (!user.subscription_expires || user.subscription_status !== "active") {
+      return false;
+    }
+
+    const expiresTime = new Date(user.subscription_expires).getTime();
+    const diff = expiresTime - Date.now();
+    return diff >= 0 && diff <= 7 * 24 * 60 * 60 * 1000;
+  }).length;
+  const projectedMonthlyRevenue = normalized.filter((user) => user.subscription_status === "active").length * MONTHLY_SUBSCRIPTION_PRICE;
 
   return {
     totalUsers: normalized.length,
@@ -785,6 +953,9 @@ async function getAdminSummary() {
       ["inactive", "expired", "late"].includes(user.subscription_status),
     ).length,
     adminUsers: normalized.filter((user) => user.role === "admin").length,
+    renewSoonUsers,
+    projectedMonthlyRevenue,
+    monthlySubscriptionPrice: MONTHLY_SUBSCRIPTION_PRICE,
   };
 }
 
@@ -1236,6 +1407,9 @@ app.post("/api/auth/login", async (req, res) => {
       { expiresIn: "30d" },
     );
 
+    await updateUserLastSeenDevice(user.id, req.headers["user-agent"] || "");
+    const refreshedUser = await getUserWithPasswordById(user.id);
+
     await logActivity(
       user.id,
       "user_login",
@@ -1247,7 +1421,7 @@ app.post("/api/auth/login", async (req, res) => {
       message: "Login realizado com sucesso!",
       token,
       user: {
-        ...buildPublicUser(user),
+        ...buildPublicUser(refreshedUser || user),
       },
       storageMode: isUsingDatabase ? "neon" : "fallback",
     });
@@ -1261,10 +1435,12 @@ app.post("/api/auth/verify", async (req, res) => {
   try {
     const { token } = req.body;
     const { user } = await requireAuthorizedUser(token);
+    await updateUserLastSeenDevice(user.id, req.headers["user-agent"] || "");
+    const refreshedUser = await getUserWithPasswordById(user.id);
 
     res.json({
       success: true,
-      user: buildPublicUser(user),
+      user: buildPublicUser(refreshedUser || user),
       storageMode: isUsingDatabase ? "neon" : "fallback",
     });
   } catch (error) {
