@@ -4140,6 +4140,33 @@ function formatCalculatorDisplay(expression) {
   return String(expression || "0").replace(/\*/g, "×").replace(/\//g, "÷");
 }
 
+function normalizeCalculatorExpression(expression) {
+  let normalized = String(expression || "")
+    .replace(/[×x]/g, "*")
+    .replace(/[÷]/g, "/")
+    .replace(/,/g, ".")
+    .replace(/\s+/g, "");
+
+  if (normalized.startsWith(".")) {
+    normalized = `0${normalized}`;
+  }
+
+  while (
+    normalized.includes("--") ||
+    normalized.includes("+-") ||
+    normalized.includes("-+") ||
+    normalized.includes("++")
+  ) {
+    normalized = normalized
+      .replace(/--/g, "+")
+      .replace(/\+\+/g, "+")
+      .replace(/\+-/g, "-")
+      .replace(/-\+/g, "-");
+  }
+
+  return normalized;
+}
+
 function appendCalculatorValue(value) {
   const operators = new Set(["+", "-", "*", "/"]);
   const current = calculatorExpression === "Erro" ? "0" : calculatorExpression;
@@ -4203,7 +4230,7 @@ function appendCalculatorValue(value) {
 }
 
 function evaluateCalculatorExpression() {
-  const normalized = String(calculatorExpression || "0").trim();
+  const normalized = normalizeCalculatorExpression(calculatorExpression || "0");
 
   if (!normalized || normalized === "Erro") {
     calculatorExpression = "0";
