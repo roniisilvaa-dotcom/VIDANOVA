@@ -34,6 +34,19 @@ const defaultCalendars = [
 
 const initialFinanceRecords = [];
 
+const DEFAULT_DASHBOARD_COVERS = Object.freeze({
+  planner: "assets/covers/planner.png",
+  sonhos: "assets/covers/sonhos.png",
+  corpo: "assets/covers/corpo.png",
+  agenda: "assets/covers/agenda.png",
+  financas: "assets/covers/financas.png",
+  estudos: "assets/covers/estudos.png",
+  imagem: "assets/covers/imagem.png",
+  casa: "assets/covers/casa.png",
+  viagens: "assets/covers/viagens.png",
+  espiritual: "assets/covers/espiritual.png",
+});
+
 const headlineVerseText = document.querySelector("#headline-verse-text");
 const headlineVerseReference = document.querySelector("#headline-verse-reference");
 const changeVerseButton = document.querySelector("#change-verse-button");
@@ -516,7 +529,8 @@ function renderDashboardCovers() {
       return;
     }
 
-    const imageUrl = coverMap[card.dataset.coverKey || ""];
+    const coverKey = card.dataset.coverKey || "";
+    const imageUrl = coverMap[coverKey] || DEFAULT_DASHBOARD_COVERS[coverKey] || "";
     if (imageUrl) {
       cover.style.backgroundImage = `linear-gradient(180deg, rgba(22, 16, 28, 0.08), rgba(22, 16, 28, 0.22)), url("${imageUrl}")`;
       cover.style.backgroundSize = "cover";
