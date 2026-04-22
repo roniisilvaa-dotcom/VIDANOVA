@@ -488,6 +488,18 @@ body.subscription-locked .subscription-gate {
   box-shadow: var(--shadow);
 }
 
+.app-update-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  margin-bottom: 18px;
+  border-color: rgba(197, 91, 132, 0.2);
+  background:
+    linear-gradient(135deg, rgba(255, 248, 240, 0.98), rgba(255, 236, 244, 0.98)),
+    linear-gradient(180deg, rgba(255, 213, 200, 0.18), rgba(255, 255, 255, 0.08));
+}
+
 .install-banner h3 {
   margin: 0;
   font-family: Georgia, "Times New Roman", serif;
@@ -531,7 +543,64 @@ body.subscription-locked .subscription-gate {
 }
 
 .mobile-nav {
-  display: none;
+  display: none !important;
+}
+
+.settings-status-pills {
+  margin: 0 0 18px;
+}
+
+.settings-guide-list {
+  margin: 0;
+}
+
+.admin-broadcast-message {
+  grid-column: 1 / -1;
+}
+
+.app-notification-stack {
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+  z-index: 80;
+  display: grid;
+  gap: 12px;
+  width: min(360px, calc(100vw - 32px));
+}
+
+.app-notification-toast {
+  padding: 16px;
+  border: 1px solid rgba(197, 91, 132, 0.2);
+  border-radius: 22px;
+  background:
+    linear-gradient(135deg, rgba(255, 250, 244, 0.98), rgba(255, 239, 246, 0.98)),
+    linear-gradient(180deg, rgba(255, 213, 200, 0.14), rgba(255, 255, 255, 0.06));
+  box-shadow: 0 20px 40px rgba(83, 53, 79, 0.18);
+}
+
+.app-notification-toast strong,
+.app-notification-toast small {
+  display: block;
+}
+
+.app-notification-toast strong {
+  margin-bottom: 6px;
+}
+
+.app-notification-toast p {
+  margin: 0;
+  color: var(--ink-soft);
+}
+
+.app-notification-toast small {
+  margin-top: 10px;
+  color: var(--muted);
+}
+
+.app-notification-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 14px;
 }
 
 .install-platform-status {
@@ -2149,6 +2218,9 @@ body.subscription-locked .subscription-gate {
 }
 
 .admin-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
   padding: 6px 10px;
   border-radius: 999px;
   background: rgba(197, 91, 132, 0.12);
@@ -2157,6 +2229,30 @@ body.subscription-locked .subscription-gate {
   font-weight: 600;
   letter-spacing: 0.04em;
   text-transform: uppercase;
+}
+
+.admin-badge::before {
+  content: "";
+  width: 9px;
+  height: 9px;
+  border-radius: 999px;
+  background: currentColor;
+  box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.34);
+}
+
+.admin-badge.is-active {
+  background: rgba(66, 168, 107, 0.16);
+  color: #2f8a58;
+}
+
+.admin-badge.is-pending {
+  background: rgba(241, 183, 42, 0.18);
+  color: #b58406;
+}
+
+.admin-badge.is-inactive {
+  background: rgba(210, 82, 92, 0.16);
+  color: #b63b49;
 }
 
 .admin-user-controls {
@@ -3122,6 +3218,18 @@ select {
     align-items: flex-start;
   }
 
+  .app-update-banner {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .app-notification-stack {
+    right: 12px;
+    left: 12px;
+    bottom: 12px;
+    width: auto;
+  }
+
   .calendar-google-header {
     grid-template-columns: 1fr;
     align-items: flex-start;
@@ -3204,34 +3312,6 @@ select {
 
   .editable-card::after {
     display: none;
-  }
-
-  .mobile-nav {
-    position: fixed;
-    right: 14px;
-    bottom: 14px;
-    left: 14px;
-    z-index: 35;
-    display: grid;
-    grid-template-columns: repeat(6, minmax(0, 1fr));
-    gap: 8px;
-    padding: 10px;
-    border: 1px solid var(--line);
-    border-radius: 22px;
-    background: rgba(255, 250, 244, 0.92);
-    box-shadow: 0 24px 42px rgba(83, 53, 79, 0.18);
-    backdrop-filter: blur(18px);
-  }
-
-  .mobile-nav a {
-    display: grid;
-    place-items: center;
-    min-height: 48px;
-    padding: 8px 10px;
-    border-radius: 16px;
-    background: rgba(255, 255, 255, 0.82);
-    font-size: 0.84rem;
-    text-align: center;
   }
 
   .admin-user-controls {

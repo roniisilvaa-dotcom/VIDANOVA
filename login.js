@@ -156,7 +156,7 @@ function updateLoginInstallUi() {
   if (context.isIos) {
     loginInstallButton.textContent = "Abrir no Safari";
     loginInstallStatus.textContent =
-      "No iPhone/iPad, abra no Safari e toque em “Adicionar à Tela de Início”.";
+      "No iPhone/iPad, abra no Safari e use Compartilhar > Adicionar à Tela de Início. Em Chrome ou navegadores dentro de outros apps essa opção pode não aparecer.";
     return;
   }
 

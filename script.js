@@ -120,6 +120,8 @@ const userGreeting = document.querySelector("#user-greeting");
 const logoutButton = document.querySelector("#logout-button");
 const settingsButton = document.querySelector("#settings-button");
 const homeButton = document.querySelector("#home-button");
+const appUpdateBanner = document.querySelector("#app-update-banner");
+const appUpdateButton = document.querySelector("#app-update-button");
 const verseBanner = document.querySelector(".verse-banner");
 const sidebarAdminLink = document.querySelector("#sidebar-admin-link");
 const mobileAdminLink = document.querySelector("#mobile-admin-link");
@@ -275,8 +277,10 @@ const accentPresetButtons = document.querySelectorAll("[data-accent-preset]");
 const settingsRenewButton = document.querySelector("#settings-renew-button");
 const settingsOpenRenewal = document.querySelector("#settings-open-renewal");
 const settingsOpenInstall = document.querySelector("#settings-open-install");
+const settingsForceUpdate = document.querySelector("#settings-force-update");
 const settingsSubscriptionStatus = document.querySelector("#settings-subscription-status");
 const settingsRenewalLabel = document.querySelector("#settings-renewal-label");
+const settingsUpdateFeedback = document.querySelector("#settings-update-feedback");
 const customizableGrids = document.querySelectorAll(".customizable-grid");
 const draggableCards = document.querySelectorAll(".draggable-card");
 const dashboardCoverInputs = document.querySelectorAll("[data-cover-upload]");
@@ -328,6 +332,8 @@ let syncTimeoutId = null;
 let syncInFlight = null;
 let isHydratingCloudState = false;
 let pendingAvatarData = "";
+let serviceWorkerRefreshHandled = false;
+let pendingServiceWorkerRegistration = null;
 const scheduledAgendaNotifications = new Map();
 
 function getAuthStorage() {
@@ -684,9 +690,24 @@ function renderAdminSummary(summary = {}) {
   }
 }
 
+function getAdminStatusBadgeMeta(statusValue = "") {
+  const status = String(statusValue || "pending").toLowerCase();
+
+  if (status === "active") {
+    return { label: "Ativa", className: "is-active" };
+  }
+
+  if (status === "pending") {
+    return { label: "Pendente", className: "is-pending" };
+  }
+
+  return { label: status === "late" ? "Em atraso" : "Inativa", className: "is-inactive" };
+}
+
 function createAdminUserRow(user) {
   const article = document.createElement("article");
   article.className = "admin-user-row";
+  const statusMeta = getAdminStatusBadgeMeta(user.subscription_status);
 
   const expiresValue = user.subscription_expires
     ? String(user.subscription_expires).slice(0, 10)
@@ -700,7 +721,7 @@ function createAdminUserRow(user) {
       </div>
       <div class="admin-user-badges">
         <span class="admin-badge">${escapeHtml(user.role || "user")}</span>
-        <span class="admin-badge">${escapeHtml(user.subscription_status || "pending")}</span>
+        <span class="admin-badge ${escapeHtml(statusMeta.className)}">${escapeHtml(statusMeta.label)}</span>
       </div>
     </div>
     <div class="admin-user-meta">
@@ -768,6 +789,7 @@ function renderAdminDetail(detail = adminDetailCache) {
       ? storageSummary.appStateSnapshot
       : null;
   const recentRecords = Array.isArray(storageSummary.recentRecords) ? storageSummary.recentRecords : [];
+  const statusMeta = getAdminStatusBadgeMeta(user.subscription_status);
 
   adminUserDetail.innerHTML = `
     <div class="admin-detail-top">
@@ -777,7 +799,7 @@ function renderAdminDetail(detail = adminDetailCache) {
       </div>
       <div class="admin-user-badges">
         <span class="admin-badge">${escapeHtml(user.role || "user")}</span>
-        <span class="admin-badge">${escapeHtml(user.subscription_status || "pending")}</span>
+        <span class="admin-badge ${escapeHtml(statusMeta.className)}">${escapeHtml(statusMeta.label)}</span>
       </div>
     </div>
     <div class="admin-detail-grid">
@@ -2967,8 +2989,128 @@ function registerServiceWorker() {
   }
 
   window.addEventListener("load", () => {
-    navigator.serviceWorker.register("./sw.js").catch(() => {});
+    navigator.serviceWorker
+      .register("./sw.js")
+      .then((registration) => {
+        const activateWaitingWorker = () => {
+          if (registration.waiting) {
+            registration.waiting.postMessage({ type: "SKIP_WAITING" });
+          }
+        };
+
+        const handleUpdateReady = () => {
+          pendingServiceWorkerRegistration = registration;
+          if (appUpdateBanner) {
+            appUpdateBanner.classList.remove("hidden");
+            appUpdateBanner.setAttribute("aria-hidden", "false");
+          }
+          setFeedback(
+            settingsUpdateFeedback,
+            "Nova versao detectada. O app vai atualizar automaticamente.",
+            "success",
+          );
+
+          window.setTimeout(() => {
+            activateWaitingWorker();
+          }, 1200);
+        };
+
+        registration.addEventListener("updatefound", () => {
+          const installingWorker = registration.installing;
+          if (!installingWorker) {
+            return;
+          }
+
+          installingWorker.addEventListener("statechange", () => {
+            if (
+              installingWorker.state === "installed" &&
+              navigator.serviceWorker.controller
+            ) {
+              handleUpdateReady();
+            }
+          });
+        });
+
+        if (registration.waiting) {
+          handleUpdateReady();
+        }
+
+        navigator.serviceWorker.addEventListener("controllerchange", () => {
+          if (serviceWorkerRefreshHandled) {
+            return;
+          }
+
+          serviceWorkerRefreshHandled = true;
+          hideAppUpdateBanner();
+          window.location.reload();
+        });
+
+        window.setTimeout(() => {
+          registration.update().catch(() => {});
+        }, 1800);
+
+        document.addEventListener("visibilitychange", () => {
+          if (document.visibilityState === "visible") {
+            registration.update().catch(() => {});
+          }
+        });
+
+        window.addEventListener("focus", () => {
+          registration.update().catch(() => {});
+        });
+      })
+      .catch(() => {});
   });
+}
+
+async function forceAppUpdate() {
+  if (settingsForceUpdate) {
+    settingsForceUpdate.disabled = true;
+  }
+  setFeedback(
+    settingsUpdateFeedback,
+    "Buscando versao mais recente do app...",
+    "success",
+  );
+
+  try {
+    if ("serviceWorker" in navigator) {
+      const registration =
+        pendingServiceWorkerRegistration || (await navigator.serviceWorker.getRegistration());
+      if (typeof caches !== "undefined") {
+        const cacheKeys = await caches.keys();
+        await Promise.all(cacheKeys.map((key) => caches.delete(key)));
+      }
+
+      if (registration) {
+        await registration.update();
+        if (registration.waiting) {
+          registration.waiting.postMessage({ type: "SKIP_WAITING" });
+          return;
+        }
+      }
+    }
+
+    window.location.reload();
+  } catch (error) {
+    setFeedback(
+      settingsUpdateFeedback,
+      "Nao foi possivel atualizar agora. Feche e abra o app novamente.",
+      "error",
+    );
+    if (settingsForceUpdate) {
+      settingsForceUpdate.disabled = false;
+    }
+  }
+}
+
+function hideAppUpdateBanner() {
+  if (!appUpdateBanner) {
+    return;
+  }
+
+  appUpdateBanner.classList.add("hidden");
+  appUpdateBanner.setAttribute("aria-hidden", "true");
 }
 
 function setupInstallPrompt() {
@@ -3400,6 +3542,18 @@ if (settingsOpenRenewal) {
 if (settingsOpenInstall) {
   settingsOpenInstall.addEventListener("click", () => {
     openInstallModal();
+  });
+}
+
+if (settingsForceUpdate) {
+  settingsForceUpdate.addEventListener("click", () => {
+    forceAppUpdate();
+  });
+}
+
+if (appUpdateButton) {
+  appUpdateButton.addEventListener("click", () => {
+    forceAppUpdate();
   });
 }
 

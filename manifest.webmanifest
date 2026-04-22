@@ -1,10 +1,10 @@
 {
   "name": "Vida Nova - Planner Feminino",
   "short_name": "Vida Nova",
-  "id": "./",
+  "id": "/",
   "description": "Planner web feminino com agenda, rotina, financas, espiritualidade e organizacao pessoal.",
-  "start_url": "./index.html",
-  "scope": "./",
+  "start_url": "/login.html",
+  "scope": "/",
   "display": "standalone",
   "display_override": ["window-controls-overlay", "standalone", "minimal-ui", "browser"],
   "orientation": "portrait-primary",
@@ -53,7 +53,7 @@
       "name": "Agenda",
       "short_name": "Agenda",
       "description": "Acessar agenda e calendario",
-      "url": "./index.html#agenda",
+      "url": "/index.html#agenda",
       "icons": [
         {
           "src": "./icon-192.png?v=nv3",
@@ -66,7 +66,7 @@
       "name": "Financas",
       "short_name": "Financas",
       "description": "Controle financeiro",
-      "url": "./index.html#financas",
+      "url": "/index.html#financas",
       "icons": [
         {
           "src": "./icon-192.png?v=nv3",

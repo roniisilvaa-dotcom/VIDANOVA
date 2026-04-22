@@ -14,6 +14,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta name="apple-mobile-web-app-title" content="Vida Nova" />
+    <link rel="apple-touch-icon" href="apple-touch-icon.png?v=nv3" />
     <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon-180.png?v=nv3" />
     
     <!-- Android Web App Meta Tags -->
@@ -113,6 +114,17 @@
           </div>
         </section>
 
+        <section id="app-update-banner" class="panel app-update-banner hidden" aria-hidden="true">
+          <div>
+            <p class="eyebrow">Atualizacao disponivel</p>
+            <h3>Uma versao nova do app foi publicada</h3>
+            <p class="install-copy">O app tenta atualizar automaticamente. Se nao trocar sozinho, toque em atualizar.</p>
+          </div>
+          <div class="install-actions">
+            <button id="app-update-button" class="primary-button" type="button">Atualizar agora</button>
+          </div>
+        </section>
+
         <section class="panel verse-banner">
           <div class="panel-heading">
             <div>
@@ -159,26 +171,6 @@
               <button class="preference-button" type="button" data-layout-choice="focus">Foco</button>
               <button class="preference-button" type="button" data-layout-choice="magazine">Editorial</button>
             </div>
-          </div>
-        </section>
-
-        <section class="install-banner hidden-home-control" id="install-banner" aria-hidden="true">
-          <div>
-            <p class="eyebrow">Versao atual</p>
-            <h3>Primeira versao visual do produto em foco</h3>
-            <p class="install-copy">
-              Para manter login, banco Neon e os mesmos dados em qualquer dispositivo, a cliente precisa instalar a versao publicada do app. O pacote ZIP serve apenas como backup tecnico do projeto.
-            </p>
-          </div>
-          <div class="status-pills">
-            <span class="status-pill">Web pronta</span>
-            <span class="status-pill">Agenda ativa</span>
-            <span class="status-pill">Mobile em evolucao</span>
-          </div>
-          <div class="install-actions">
-            <a id="install-live-link" class="primary-button" href="https://vidanova-1.onrender.com" target="_blank" rel="noreferrer">Abrir app no navegador</a>
-            <button id="install-chrome-button" class="ghost-button install-cta" type="button">Instalar app</button>
-            <button id="install-help-button" class="primary-button" type="button">Como instalar</button>
           </div>
         </section>
 
@@ -1224,6 +1216,49 @@
                 <p class="settings-feedback">Use o link de renovacao da Kiwify ou do seu checkout para que a cliente consiga renovar por aqui.</p>
               </article>
 
+              <article class="settings-card">
+                <div class="panel-heading">
+                  <div>
+                    <p class="eyebrow">App instalado</p>
+                    <h3>Instalacao e atualizacoes</h3>
+                  </div>
+                </div>
+                <p class="settings-feedback">
+                  Use sempre a versao publicada. O app instalado passa a buscar atualizacoes automaticamente quando houver nova publicacao.
+                </p>
+                <div class="status-pills settings-status-pills">
+                  <span class="status-pill">Web publicada</span>
+                  <span class="status-pill">Atualizacao automatica</span>
+                  <span class="status-pill">Dados preservados</span>
+                </div>
+                <div class="settings-inline-actions">
+                  <a id="install-live-link" class="primary-button" href="https://vidanova-1.onrender.com" target="_blank" rel="noreferrer">Abrir app no navegador</a>
+                  <button id="install-chrome-button" class="ghost-button install-cta" type="button">Instalar app</button>
+                  <button id="install-help-button" class="primary-button secondary-strong" type="button">Como instalar</button>
+                  <button id="settings-force-update" class="ghost-button" type="button">Atualizar app</button>
+                </div>
+                <p class="settings-feedback">
+                  No iPhone, abra no Safari e use Compartilhar > Adicionar a Tela de Inicio. Em navegadores dentro de outros apps essa opcao pode nao aparecer.
+                </p>
+                <p id="settings-update-feedback" class="settings-feedback"></p>
+              </article>
+
+              <article class="settings-card">
+                <div class="panel-heading">
+                  <div>
+                    <p class="eyebrow">Guia da usuaria</p>
+                    <h3>Como usar o app</h3>
+                  </div>
+                </div>
+                <ul class="settings-guide-list mini-list">
+                  <li>Entre sempre pela mesma conta para manter seus dados sincronizados.</li>
+                  <li>Use Agenda para compromissos, lembretes e notificacoes dos agendamentos.</li>
+                  <li>As capas, textos e organizacao dos blocos ficam salvos na sua conta.</li>
+                  <li>Se a assinatura ficar pendente, os dados continuam guardados e retornam apos a reativacao.</li>
+                  <li>Depois de publicar alteracoes novas, o app instalado busca a versao atual automaticamente.</li>
+                </ul>
+              </article>
+
               <article id="admin-shortcut-card" class="settings-card hidden" aria-hidden="true">
                 <div class="panel-heading">
                   <div>
@@ -1311,6 +1346,36 @@
             <article class="settings-card admin-users-card">
               <div class="panel-heading">
                 <div>
+                  <p class="eyebrow">Comunicacao em massa</p>
+                  <h3>Notificar usuarias</h3>
+                </div>
+                <span class="tag">ADM</span>
+              </div>
+              <form id="admin-broadcast-form" class="settings-form admin-create-form">
+                <label>
+                  Titulo
+                  <input id="admin-broadcast-title" type="text" placeholder="Ex.: Aviso importante" />
+                </label>
+                <label>
+                  Publico
+                  <select id="admin-broadcast-audience">
+                    <option value="active">Somente contas ativas</option>
+                    <option value="all">Todas as usuarias</option>
+                  </select>
+                </label>
+                <label class="admin-broadcast-message">
+                  Mensagem
+                  <textarea id="admin-broadcast-message" rows="4" placeholder="Escreva a notificacao que vai aparecer no app das usuarias."></textarea>
+                </label>
+                <div class="settings-inline-actions">
+                  <button id="admin-broadcast-submit" class="primary-button" type="submit">Enviar notificacao</button>
+                </div>
+              </form>
+            </article>
+
+            <article class="settings-card admin-users-card">
+              <div class="panel-heading">
+                <div>
                   <p class="eyebrow">Usuarias cadastradas</p>
                   <h3>Painel geral</h3>
                 </div>
@@ -1371,15 +1436,6 @@
       </main>
     </div>
 
-    <nav class="mobile-nav">
-      <a href="#dashboard" data-page-link="dashboard">Inicio</a>
-      <a href="#agenda" data-page-link="agenda">Agenda</a>
-      <a href="#financas" data-page-link="financas">Financas</a>
-      <a href="#espiritual" data-page-link="espiritual">Espiritual</a>
-      <a href="#admin" data-page-link="admin" id="mobile-admin-link" class="hidden">Admin</a>
-      <a href="#configuracoes" data-page-link="configuracoes">Config</a>
-    </nav>
-
     <div id="editor-modal" class="editor-modal hidden" aria-hidden="true">
       <div class="editor-backdrop" data-close-editor="true"></div>
       <section class="editor-sheet" role="dialog" aria-modal="true" aria-labelledby="editor-title">
@@ -1424,6 +1480,8 @@
         </form>
       </section>
     </div>
+
+    <div id="app-notification-stack" class="app-notification-stack" aria-live="polite" aria-atomic="false"></div>
 
     <div id="calendar-modal" class="editor-modal hidden" aria-hidden="true">
       <div class="editor-backdrop" data-close-calendar="true"></div>
