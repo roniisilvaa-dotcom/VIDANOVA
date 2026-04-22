@@ -290,7 +290,7 @@ body.subscription-locked .subscription-gate {
   justify-content: space-between;
   gap: 16px;
   margin-bottom: 18px;
-  padding: 16px 20px;
+  padding: 18px 22px;
   border: 1px solid var(--line);
   border-radius: var(--radius-lg);
   background: rgba(255, 255, 255, 0.7);
@@ -306,22 +306,23 @@ body.subscription-locked .subscription-gate {
 .topbar-profile {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 18px;
 }
 
 .topbar-profile-copy {
   display: grid;
-  gap: 2px;
+  gap: 4px;
+  align-content: center;
 }
 
 .home-link-button {
   border: none;
   background: transparent;
   padding: 0;
-  margin: 0 0 4px;
+  margin: 0 0 2px;
   font: inherit;
   font-family: Georgia, "Times New Roman", serif;
-  font-size: 1.1rem;
+  font-size: 1.22rem;
   font-weight: 700;
   color: var(--berry);
   cursor: pointer;
@@ -338,9 +339,9 @@ body.subscription-locked .subscription-gate {
 }
 
 .topbar-avatar-large {
-  width: 68px;
-  height: 68px;
-  border-radius: 22px;
+  width: 82px;
+  height: 82px;
+  border-radius: 24px;
 }
 
 .topbar-email {
@@ -361,7 +362,6 @@ body.subscription-locked .subscription-gate {
 .settings-gear-button span {
   transform: translateY(-1px);
 }
-
 .topbar-avatar {
   width: 44px;
   height: 44px;
@@ -387,6 +387,43 @@ body.subscription-locked .subscription-gate {
 .app-topbar h3 {
   margin: 0;
   font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.9rem;
+}
+
+.topbar-status-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  border: 1px solid transparent;
+}
+
+.topbar-status-pill.is-active {
+  color: #20795e;
+  background: rgba(212, 244, 229, 0.95);
+  border-color: rgba(73, 170, 127, 0.28);
+}
+
+.topbar-status-pill.is-pending,
+.topbar-status-pill.is-inactive {
+  color: #8c3c3c;
+  background: rgba(255, 227, 227, 0.96);
+  border-color: rgba(201, 108, 108, 0.28);
+}
+
+.topbar-action-button,
+#settings-button,
+#change-verse-button,
+#logout-button {
+  box-shadow: 0 12px 24px rgba(91, 72, 105, 0.12);
+}
+
+#settings-button span {
+  font-size: 1.38em;
 }
 
 .verse-banner {
@@ -722,6 +759,16 @@ body.subscription-locked .subscription-gate {
   background:
     linear-gradient(135deg, rgba(207, 230, 255, 0.5), rgba(255, 255, 255, 0.9)),
     linear-gradient(180deg, rgba(255, 255, 255, 0.72), rgba(255, 255, 255, 0.84));
+}
+
+.agenda-entry-card {
+  display: grid;
+  gap: 14px;
+  padding: 18px;
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.86);
+  box-shadow: var(--shadow);
 }
 
 .agenda-google-shell {
@@ -1203,6 +1250,28 @@ body.subscription-locked .subscription-gate {
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 10px;
   margin-bottom: 14px;
+}
+
+.agenda-form-horizontal {
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 12px;
+  margin-bottom: 0;
+  align-items: end;
+}
+
+.agenda-form-horizontal #agenda-title-input,
+.agenda-form-horizontal #agenda-guests-input,
+.agenda-form-horizontal #agenda-link-input,
+.agenda-form-horizontal #agenda-description-input {
+  grid-column: span 2;
+}
+
+.agenda-form-horizontal #agenda-description-input {
+  min-height: 112px;
+}
+
+.agenda-form-horizontal button[type="submit"] {
+  min-height: 52px;
 }
 
 .agenda-form input {
@@ -3307,78 +3376,6 @@ select {
   margin-top: 8px;
 }
 
-.agenda-month-planning {
-  grid-column: 1 / -1;
-  display: grid;
-  grid-template-columns: minmax(0, 1.62fr) minmax(250px, 0.78fr);
-  gap: 10px 14px;
-  align-items: start;
-  padding: 20px;
-  background:
-    linear-gradient(135deg, rgba(255, 255, 255, 0.92), rgba(247, 251, 255, 0.96)),
-    linear-gradient(180deg, rgba(207, 230, 255, 0.18), rgba(255, 255, 255, 0.06));
-}
-
-.agenda-month-planning > .panel-heading:first-child {
-  grid-column: 1 / -1;
-  margin-bottom: 0;
-}
-
-.agenda-month-planning > .calendar-mini-heading,
-.agenda-month-planning > .calendar-mini-weekdays,
-.agenda-month-planning > .calendar-mini-grid {
-  grid-column: 1;
-}
-
-.agenda-month-planning > .agenda-month-side-heading,
-.agenda-month-planning > .calendar-list {
-  grid-column: 2;
-}
-
-.agenda-month-planning > .agenda-month-side-heading {
-  margin: 0;
-  align-self: end;
-}
-
-.agenda-month-planning > .calendar-list {
-  align-self: start;
-  gap: 6px;
-  padding: 12px;
-  border: 1px solid rgba(220, 224, 232, 0.9);
-  border-radius: 18px;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.94), rgba(249, 250, 255, 0.92));
-  box-shadow: 0 12px 28px rgba(58, 41, 71, 0.06);
-}
-
-.agenda-month-planning > .summary-input {
-  grid-column: 1 / -1;
-  min-height: 120px;
-}
-
-.agenda-month-planning .calendar-list-item {
-  padding: 8px 10px;
-  border: 1px solid rgba(223, 227, 236, 0.72);
-  background: rgba(255, 255, 255, 0.86);
-}
-
-.agenda-month-planning .calendar-list-main {
-  gap: 8px;
-}
-
-.calendar-mini-grid {
-  padding: 0 0 2px;
-}
-
-.calendar-mini-day {
-  min-height: 36px;
-  border-radius: 12px;
-}
-
-.agenda-summary-card,
-.agenda-events-card {
-  min-height: 100%;
-}
-
 .goal-horizon-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -3599,6 +3596,31 @@ select {
   font-weight: 700;
   box-shadow: 0 12px 24px rgba(91, 72, 105, 0.1);
   pointer-events: none;
+}
+
+.workspace-card-tools {
+  position: absolute;
+  right: 12px;
+  top: 12px;
+  z-index: 2;
+}
+
+.workspace-cover-upload {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 7px 11px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.92);
+  color: var(--berry);
+  font-size: 0.74rem;
+  font-weight: 700;
+  box-shadow: 0 10px 22px rgba(59, 44, 72, 0.12);
+  cursor: pointer;
+}
+
+.workspace-cover-upload input {
+  display: none;
 }
 
 .workspace-card-badge {
@@ -4070,6 +4092,17 @@ select {
 }
 
 @media (max-width: 1100px) {
+  .agenda-form-horizontal {
+    grid-template-columns: 1fr;
+  }
+
+  .agenda-form-horizontal #agenda-title-input,
+  .agenda-form-horizontal #agenda-guests-input,
+  .agenda-form-horizontal #agenda-link-input,
+  .agenda-form-horizontal #agenda-description-input {
+    grid-column: auto;
+  }
+
   .agenda-cards-grid,
   .goal-horizon-grid,
   .study-main-grid,

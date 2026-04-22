@@ -21,90 +21,9 @@ const verses = [
   },
 ];
 
-const initialTasks = [
-  { id: crypto.randomUUID(), text: "Separar a roupa de amanha", done: true },
-  { id: crypto.randomUUID(), text: "Registrar os gastos do dia", done: false },
-  { id: crypto.randomUUID(), text: "Planejar a alimentacao da semana", done: false },
-  { id: crypto.randomUUID(), text: "Leitura biblica e oracao", done: true },
-];
+const initialTasks = [];
 
-const initialAgendaEvents = {
-  "2026-04-13": {
-    summary: "",
-    events: [
-      { id: crypto.randomUUID(), title: "Reunião Camila", time: "10:00", endTime: "11:00", location: "", color: "#a6d4ff", category: "Trabalho" },
-      { id: crypto.randomUUID(), title: "Preparo atendimento Valeria", time: "11:00", endTime: "12:45", location: "", color: "#f8bfd3", category: "Trabalho" },
-      { id: crypto.randomUUID(), title: "Almoço", time: "12:00", endTime: "1:00", location: "", color: "#e0d5ff", category: "Pessoal" },
-      { id: crypto.randomUUID(), title: "Preparo atendimento Valeria", time: "12:45", endTime: "1:30", location: "", color: "#f8bfd3", category: "Trabalho" },
-      { id: crypto.randomUUID(), title: "Editar Youtube + capas + thumbnail", time: "2:30", endTime: "5:30", location: "", color: "#f8bfd3", category: "Trabalho" },
-      { id: crypto.randomUUID(), title: "Confeccao 10", time: "7:00", endTime: "9:00", location: "", color: "#bfe8d6", category: "Pessoal" },
-      { id: crypto.randomUUID(), title: "Dormir, 9:30pm", time: "21:30", endTime: "23:00", location: "", color: "#a6d4ff", category: "Pessoal" },
-    ],
-    tasks: [],
-  },
-  "2026-04-14": {
-    summary: "",
-    events: [
-      { id: crypto.randomUUID(), title: "Reunião Origem Chem. 9:59am", time: "09:00", endTime: "10:30", location: "", color: "#f8bfd3", category: "Trabalho" },
-      { id: crypto.randomUUID(), title: "Editar shorts", time: "10:15", endTime: "11:00", location: "", color: "#f8bfd3", category: "Trabalho" },
-      { id: crypto.randomUUID(), title: "Programar/ Youtube (shorts)", time: "11:00", endTime: "12:00", location: "", color: "#a6d4ff", category: "Trabalho" },
-      { id: crypto.randomUUID(), title: "Almoço", time: "12:00", endTime: "1:00", location: "", color: "#e0d5ff", category: "Pessoal" },
-      { id: crypto.randomUUID(), title: "Sessão I | Consultoria de imagem - Valéria Maia", time: "1:00", endTime: "2:30", location: "", color: "#a6d4ff", category: "Trabalho" },
-      { id: crypto.randomUUID(), title: "Ação Afiliadas - Ação Afiliadas GE", time: "2:30", endTime: "5:30", location: "", color: "#f8bfd3", category: "Trabalho" },
-      { id: crypto.randomUUID(), title: "Dormir, 9:30pm", time: "21:30", endTime: "23:00", location: "", color: "#a6d4ff", category: "Pessoal" },
-    ],
-    tasks: [],
-  },
-  "2026-04-15": {
-    summary: "",
-    events: [
-      { id: crypto.randomUUID(), title: "Projeto Marlene (não terminei)", time: "9:45", endTime: "10:00", location: "", color: "#bfe8d6", category: "Trabalho" },
-      { id: crypto.randomUUID(), title: "Editar shorts", time: "10:15", endTime: "11:00", location: "", color: "#f8bfd3", category: "Trabalho" },
-      { id: crypto.randomUUID(), title: "Programar/ Youtube (shorts)", time: "11:00", endTime: "12:00", location: "", color: "#a6d4ff", category: "Trabalho" },
-      { id: crypto.randomUUID(), title: "Almoço", time: "12:00", endTime: "1:00", location: "", color: "#e0d5ff", category: "Pessoal" },
-      { id: crypto.randomUUID(), title: "Projeto Marlene Oliveira", time: "1:00", endTime: "3:00", location: "", color: "#bfe8d6", category: "Trabalho" },
-      { id: crypto.randomUUID(), title: "Visitar lar no hospital", time: "6:00", endTime: "9:30", location: "", color: "#f8bfd3", category: "Pessoal" },
-      { id: crypto.randomUUID(), title: "Dormir, 11pm", time: "23:00", endTime: "23:59", location: "", color: "#a6d4ff", category: "Pessoal" },
-    ],
-    tasks: [],
-  },
-  "2026-04-16": {
-    summary: "",
-    events: [
-      { id: crypto.randomUUID(), title: "SESSÃO 10 | Giselly Ramos | Formação/Mentoria na 11", time: "10:00", endTime: "11:00", location: "", color: "#a6d4ff", category: "Trabalho" },
-      { id: crypto.randomUUID(), title: "Laços de Moda - Laços de Moda", time: "12:00", endTime: "1:00", location: "", color: "#f8bfd3", category: "Trabalho" },
-      { id: crypto.randomUUID(), title: "Almoço", time: "12:00", endTime: "1:00", location: "", color: "#e0d5ff", category: "Pessoal" },
-      { id: crypto.randomUUID(), title: "Programar shorts - tiktok", time: "1:00", endTime: "5:00", location: "", color: "#f8bfd3", category: "Trabalho" },
-      { id: crypto.randomUUID(), title: "Cuidado", time: "6:00", endTime: "7:30", location: "", color: "#ddd2ff", category: "Pessoal" },
-      { id: crypto.randomUUID(), title: "Dormir, 11:30pm", time: "23:30", endTime: "23:59", location: "", color: "#a6d4ff", category: "Pessoal" },
-    ],
-    tasks: [],
-  },
-  "2026-04-17": {
-    summary: "",
-    events: [
-      { id: crypto.randomUUID(), title: "Laços de Moda - Laços de Moda", time: "12:00", endTime: "1:00", location: "", color: "#f8bfd3", category: "Trabalho" },
-      { id: crypto.randomUUID(), title: "Almoço", time: "12:00", endTime: "1:00", location: "", color: "#e0d5ff", category: "Pessoal" },
-    ],
-    tasks: [],
-  },
-  "2026-04-18": {
-    summary: "",
-    events: [
-      { id: crypto.randomUUID(), title: "Cuido", time: "6:00", endTime: "10:30", location: "", color: "#a6d4ff", category: "Pessoal" },
-    ],
-    tasks: [],
-  },
-  "2026-04-19": {
-    summary: "",
-    events: [
-      { id: crypto.randomUUID(), title: "Tarefa pendente", time: "8:00", endTime: "9:00", location: "", color: "#a6d4ff", category: "Pessoal" },
-      { id: crypto.randomUUID(), title: "Lavar e secar cabelo, 9:30", time: "09:30", endTime: "11:00", location: "", color: "#ddd2ff", category: "Pessoal" },
-      { id: crypto.randomUUID(), title: "Dormir, 11:30pm", time: "23:30", endTime: "23:59", location: "", color: "#a6d4ff", category: "Pessoal" },
-    ],
-    tasks: [],
-  },
-};
+const initialAgendaEvents = {};
 
 const defaultCalendars = [
   { id: "pessoal", name: "Pessoal", color: "#4285f4", visible: true },
@@ -113,28 +32,7 @@ const defaultCalendars = [
   { id: "espiritual", name: "Espiritual", color: "#a142f4", visible: true },
 ];
 
-const initialFinanceRecords = [
-  { id: crypto.randomUUID(), title: "Anuidade", date: "2025-03-02", type: "planning", category: "Pessoal", amount: 41.66, installments: 1, startMonth: 2, color: "#ffc885" },
-  { id: crypto.randomUUID(), title: "Google drive", date: "2026-03-26", type: "planning", category: "Pessoal", amount: 49.99, installments: 1, startMonth: 2, color: "#ffc885" },
-  { id: crypto.randomUUID(), title: "IOF compra internacional", date: "2026-03-23", type: "planning", category: "Pessoal", amount: 3.65, installments: 1, startMonth: 2, color: "#ffc885" },
-  { id: crypto.randomUUID(), title: "Presente mae do Roni", date: "2026-03-20", type: "planning", category: "Pessoal", amount: 228.9, installments: 1, startMonth: 2, color: "#ffc885" },
-  { id: crypto.randomUUID(), title: "Opus clip", date: "2026-03-20", type: "variable", category: "Pessoal", amount: 105.04, installments: 1, startMonth: 2, color: "#ffc885" },
-  { id: crypto.randomUUID(), title: "Telefone Vivo", date: "2026-03-13", type: "fixed", category: "Pessoal", amount: 105.04, installments: 1, startMonth: 2, color: "#ffc885" },
-  { id: crypto.randomUUID(), title: "Greatpages", date: "2026-03-07", type: "planning", category: "Pessoal", amount: 69.9, installments: 1, startMonth: 2, color: "#ffc885" },
-  { id: crypto.randomUUID(), title: "Trafego (meta)", date: "2026-03-04", type: "planning", category: "Pessoal", amount: 150.3, installments: 1, startMonth: 2, color: "#ffc885" },
-  { id: crypto.randomUUID(), title: "Microsoft", date: "2026-03-04", type: "planning", category: "Pessoal", amount: 12, installments: 1, startMonth: 2, color: "#ffc885" },
-  { id: crypto.randomUUID(), title: "Simple Organic", date: "2026-03-04", type: "variable", category: "Pessoal", amount: 192.8, installments: 2, startMonth: 2, color: "#ffc885" },
-  { id: crypto.randomUUID(), title: "IOF compra internacional", date: "2026-03-04", type: "planning", category: "Pessoal", amount: 1.89, installments: 1, startMonth: 2, color: "#ffc885" },
-  { id: crypto.randomUUID(), title: "IOF compra internacional", date: "2026-03-04", type: "variable", category: "Pessoal", amount: 251.43, installments: 1, startMonth: 2, color: "#ffc885" },
-  { id: crypto.randomUUID(), title: "Icloud", date: "2026-03-03", type: "planning", category: "Pessoal", amount: 19.9, installments: 1, startMonth: 2, color: "#ffc885" },
-  { id: crypto.randomUUID(), title: "Posto Dakota", date: "2026-03-03", type: "variable", category: "Pessoal", amount: 150, installments: 1, startMonth: 2, color: "#ffc885" },
-  { id: crypto.randomUUID(), title: "Iphone", date: "2026-03-03", type: "planning", category: "Pessoal", amount: 19.69, installments: 1, startMonth: 2, color: "#ffc885" },
-  { id: crypto.randomUUID(), title: "Sorvete 4D", date: "2026-03-03", type: "impulse", category: "Pessoal", amount: 54.25, installments: 1, startMonth: 2, color: "#ffc885" },
-  { id: crypto.randomUUID(), title: "Compra shopping China", date: "2026-03-03", type: "variable", category: "Pessoal", amount: 7183.93, installments: 1, startMonth: 2, color: "#ffc885" },
-  { id: crypto.randomUUID(), title: "Móveis escritório", date: "2026-02-08", type: "planning", category: "Pessoal", amount: 224.96, installments: 2, startMonth: 1, color: "#ffc885" },
-  { id: crypto.randomUUID(), title: "Móveis escritório", date: "2026-02-04", type: "planning", category: "Pessoal", amount: 111.06, installments: 2, startMonth: 1, color: "#ffc885" },
-  { id: crypto.randomUUID(), title: "Móveis escritório", date: "2026-02-03", type: "planning", category: "Pessoal", amount: 353.2, installments: 2, startMonth: 1, color: "#ffc885" },
-];
+const initialFinanceRecords = [];
 
 const headlineVerseText = document.querySelector("#headline-verse-text");
 const headlineVerseReference = document.querySelector("#headline-verse-reference");
@@ -358,6 +256,8 @@ const settingsSubscriptionStatus = document.querySelector("#settings-subscriptio
 const settingsRenewalLabel = document.querySelector("#settings-renewal-label");
 const customizableGrids = document.querySelectorAll(".customizable-grid");
 const draggableCards = document.querySelectorAll(".draggable-card");
+const dashboardCoverInputs = document.querySelectorAll("[data-cover-upload]");
+const workspaceCards = document.querySelectorAll(".workspace-card[data-cover-key]");
 const isTouchDevice =
   window.matchMedia("(pointer: coarse)").matches ||
   "ontouchstart" in window ||
@@ -448,7 +348,7 @@ financeStore = {
   planExpense: Number(financeStore.planExpense || 0),
   goal: Number(financeStore.goal || 0),
   notes: String(financeStore.notes || ""),
-  records: Array.isArray(financeStore.records) && financeStore.records.length > 0 ? financeStore.records : [...initialFinanceRecords],
+  records: Array.isArray(financeStore.records) ? financeStore.records : [...initialFinanceRecords],
 };
 
 const editableCardDefaults = Array.from(editableCards).reduce((defaults, card) => {
@@ -590,6 +490,41 @@ function mixColor(hex, ratio = 0.3) {
   };
 
   return `#${channel(0)}${channel(2)}${channel(4)}`;
+}
+
+function getAccountStateMeta(session = currentSession) {
+  const isActive = Boolean(session?.subscription_active);
+  return isActive
+    ? { label: "Conta ativa", className: "is-active" }
+    : { label: "Conta pendente", className: "is-pending" };
+}
+
+function getDashboardCoverMap() {
+  if (!moduleStore.dashboardCovers || typeof moduleStore.dashboardCovers !== "object") {
+    moduleStore.dashboardCovers = {};
+  }
+  return moduleStore.dashboardCovers;
+}
+
+function renderDashboardCovers() {
+  const coverMap = getDashboardCoverMap();
+  workspaceCards.forEach((card) => {
+    const cover = card.querySelector(".workspace-card-cover");
+    if (!cover) {
+      return;
+    }
+
+    const imageUrl = coverMap[card.dataset.coverKey || ""];
+    if (imageUrl) {
+      cover.style.backgroundImage = `linear-gradient(180deg, rgba(22, 16, 28, 0.08), rgba(22, 16, 28, 0.22)), url("${imageUrl}")`;
+      cover.style.backgroundSize = "cover";
+      cover.style.backgroundPosition = "center";
+    } else {
+      cover.style.backgroundImage = "";
+      cover.style.backgroundSize = "";
+      cover.style.backgroundPosition = "";
+    }
+  });
 }
 
 function setFeedback(element, message, type = "") {
@@ -1201,6 +1136,7 @@ function applyCloudState(state) {
   saveDreamVisionImages(Array.isArray(state.dreamImages) ? state.dreamImages : [], "main");
   saveDreamVisionImages(Array.isArray(state.plannerDreamImages) ? state.plannerDreamImages : [], "planner");
   applyPersistedFieldState(state.persistedFields || {});
+  renderDashboardCovers();
 
   isHydratingCloudState = false;
 }
@@ -2739,9 +2675,12 @@ function hydrateSessionUI(session) {
     settingsSubscriptionStatus.textContent = getSubscriptionLabel(session);
   }
   if (topbarPlan) {
+    const accountMeta = getAccountStateMeta(session);
     topbarPlan.textContent = isAdminSession(session)
       ? `Admin • ${getSubscriptionLabel(session)}`
-      : getSubscriptionLabel(session);
+      : accountMeta.label;
+    topbarPlan.classList.remove("is-active", "is-pending", "is-inactive");
+    topbarPlan.classList.add(accountMeta.className);
   }
   if (settingsRenewalLabel) {
     settingsRenewalLabel.textContent = session.subscription_url
@@ -4286,6 +4225,35 @@ if (calculatorDisplay) {
 
   renderCalculator();
 }
+
+dashboardCoverInputs.forEach((input) => {
+  input.closest(".workspace-cover-upload")?.addEventListener("click", (event) => {
+    event.stopPropagation();
+  });
+
+  input.addEventListener("click", (event) => {
+    event.stopPropagation();
+  });
+
+  input.addEventListener("change", () => {
+    const file = input.files?.[0];
+    const coverKey = input.dataset.coverUpload || "";
+    if (!file || !coverKey) {
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      getDashboardCoverMap()[coverKey] = String(reader.result || "");
+      renderDashboardCovers();
+      scheduleCloudSync();
+      input.value = "";
+    };
+    reader.readAsDataURL(file);
+  });
+});
+
+renderDashboardCovers();
 
 moduleOpenButtons.forEach((button) => {
   button.addEventListener("click", () => {

@@ -104,14 +104,14 @@
             <p class="eyebrow">Acesso da usuaria</p>
             <h3 id="user-greeting">Bem-vinda</h3>
               <p id="topbar-email" class="topbar-email">Seu email aparece aqui</p>
-              <span id="topbar-plan" class="tag">Conta ativa</span>
+              <span id="topbar-plan" class="topbar-status-pill is-pending">Conta pendente</span>
             </div>
           </div>
           <div class="topbar-actions">
             <button id="settings-button" class="ghost-button icon-only-button settings-gear-button" type="button" aria-label="Abrir configuracoes" title="Configuracoes">
               <span aria-hidden="true">⚙</span>
             </button>
-            <button id="logout-button" class="ghost-button" type="button">Sair</button>
+            <button id="logout-button" class="ghost-button topbar-action-button" type="button">Sair</button>
           </div>
         </section>
 
@@ -195,64 +195,133 @@
           </header>
 
           <section class="workspace-card-grid">
-            <button class="workspace-card workspace-card-planner is-featured" type="button" data-dashboard-open="planner">
+            <button class="workspace-card workspace-card-planner is-featured" type="button" data-dashboard-open="planner" data-cover-key="planner">
               <div class="workspace-card-cover">
+                <div class="workspace-card-tools">
+                  <label class="workspace-cover-upload">
+                    <input type="file" accept="image/*" data-cover-upload="planner" />
+                    Trocar capa
+                  </label>
+                </div>
                 <span class="workspace-card-badge">Meu planner</span>
               </div>
               <strong>My Planner</strong>
               <small>Abra e edite sua planner pessoal</small>
             </button>
 
-            <button class="workspace-card workspace-card-dreams" type="button" data-dashboard-open="sonhos">
-              <div class="workspace-card-cover"></div>
+            <button class="workspace-card workspace-card-dreams" type="button" data-dashboard-open="sonhos" data-cover-key="sonhos">
+              <div class="workspace-card-cover">
+                <div class="workspace-card-tools">
+                  <label class="workspace-cover-upload">
+                    <input type="file" accept="image/*" data-cover-upload="sonhos" />
+                    Trocar capa
+                  </label>
+                </div>
+              </div>
               <strong>Sonhos e Metas</strong>
               <small>Metas por prazo e mural dos sonhos</small>
             </button>
 
-            <button class="workspace-card workspace-card-body" type="button" data-dashboard-open="corpo">
-              <div class="workspace-card-cover"></div>
+            <button class="workspace-card workspace-card-body" type="button" data-dashboard-open="corpo" data-cover-key="corpo">
+              <div class="workspace-card-cover">
+                <div class="workspace-card-tools">
+                  <label class="workspace-cover-upload">
+                    <input type="file" accept="image/*" data-cover-upload="corpo" />
+                    Trocar capa
+                  </label>
+                </div>
+              </div>
               <strong>Saude | Beleza | Bem-estar</strong>
               <small>Autocuidado e rituais</small>
             </button>
 
-            <button class="workspace-card workspace-card-agenda" type="button" data-dashboard-open="agenda">
-              <div class="workspace-card-cover"></div>
+            <button class="workspace-card workspace-card-agenda" type="button" data-dashboard-open="agenda" data-cover-key="agenda">
+              <div class="workspace-card-cover">
+                <div class="workspace-card-tools">
+                  <label class="workspace-cover-upload">
+                    <input type="file" accept="image/*" data-cover-upload="agenda" />
+                    Trocar capa
+                  </label>
+                </div>
+              </div>
               <strong>Dia a Dia | Agenda</strong>
               <small id="agenda-next-meta">Abra a agenda e edite seus compromissos</small>
             </button>
 
-            <button class="workspace-card workspace-card-finance" type="button" data-dashboard-open="financas">
-              <div class="workspace-card-cover"></div>
+            <button class="workspace-card workspace-card-finance" type="button" data-dashboard-open="financas" data-cover-key="financas">
+              <div class="workspace-card-cover">
+                <div class="workspace-card-tools">
+                  <label class="workspace-cover-upload">
+                    <input type="file" accept="image/*" data-cover-upload="financas" />
+                    Trocar capa
+                  </label>
+                </div>
+              </div>
               <strong>Financas | Controle</strong>
               <small id="finance-caption">Sem movimentacao registrada</small>
             </button>
 
-            <button class="workspace-card workspace-card-study" type="button" data-dashboard-open="estudos">
-              <div class="workspace-card-cover"></div>
+            <button class="workspace-card workspace-card-study" type="button" data-dashboard-open="estudos" data-cover-key="estudos">
+              <div class="workspace-card-cover">
+                <div class="workspace-card-tools">
+                  <label class="workspace-cover-upload">
+                    <input type="file" accept="image/*" data-cover-upload="estudos" />
+                    Trocar capa
+                  </label>
+                </div>
+              </div>
               <strong>Estudos | Projetos</strong>
               <small>Livros, cursos e projetos</small>
             </button>
 
-            <button class="workspace-card workspace-card-image" type="button" data-dashboard-open="imagem">
-              <div class="workspace-card-cover"></div>
+            <button class="workspace-card workspace-card-image" type="button" data-dashboard-open="imagem" data-cover-key="imagem">
+              <div class="workspace-card-cover">
+                <div class="workspace-card-tools">
+                  <label class="workspace-cover-upload">
+                    <input type="file" accept="image/*" data-cover-upload="imagem" />
+                    Trocar capa
+                  </label>
+                </div>
+              </div>
               <strong>Imagem | Estilo</strong>
               <small>Guarda-roupa e composicao visual</small>
             </button>
 
-            <button class="workspace-card workspace-card-home" type="button" data-dashboard-open="casa">
-              <div class="workspace-card-cover"></div>
+            <button class="workspace-card workspace-card-home" type="button" data-dashboard-open="casa" data-cover-key="casa">
+              <div class="workspace-card-cover">
+                <div class="workspace-card-tools">
+                  <label class="workspace-cover-upload">
+                    <input type="file" accept="image/*" data-cover-upload="casa" />
+                    Trocar capa
+                  </label>
+                </div>
+              </div>
               <strong>Alimentacao | Mercado | Lar</strong>
               <small>Casa, refeicoes e reparos</small>
             </button>
 
-            <button class="workspace-card workspace-card-travel" type="button" data-dashboard-open="viagens">
-              <div class="workspace-card-cover"></div>
+            <button class="workspace-card workspace-card-travel" type="button" data-dashboard-open="viagens" data-cover-key="viagens">
+              <div class="workspace-card-cover">
+                <div class="workspace-card-tools">
+                  <label class="workspace-cover-upload">
+                    <input type="file" accept="image/*" data-cover-upload="viagens" />
+                    Trocar capa
+                  </label>
+                </div>
+              </div>
               <strong>Viagens</strong>
               <small>Planejamento, documentos e roteiro</small>
             </button>
 
-            <button class="workspace-card workspace-card-spiritual" type="button" data-dashboard-open="espiritual">
-              <div class="workspace-card-cover"></div>
+            <button class="workspace-card workspace-card-spiritual" type="button" data-dashboard-open="espiritual" data-cover-key="espiritual">
+              <div class="workspace-card-cover">
+                <div class="workspace-card-tools">
+                  <label class="workspace-cover-upload">
+                    <input type="file" accept="image/*" data-cover-upload="espiritual" />
+                    Trocar capa
+                  </label>
+                </div>
+              </div>
               <strong>Espiritual</strong>
               <small>Metas com Deus e vida devocional</small>
             </button>
@@ -466,6 +535,47 @@
           <button class="ghost-button page-return-button" type="button" data-go-home>← Voltar</button>
         </div>
         <section class="panel agenda-panel">
+          <article class="agenda-entry-card">
+            <div class="panel-heading agenda-subheading">
+              <div>
+                <p class="eyebrow">Cadastro de agenda</p>
+                <h3>Compromissos completos</h3>
+              </div>
+              <span class="tag">O que cadastrar aqui ja entra no calendario</span>
+            </div>
+
+            <form id="agenda-form" class="agenda-form agenda-form-horizontal">
+              <input id="agenda-date-input" type="date" aria-label="Data do compromisso" />
+              <input id="agenda-time-input" type="time" aria-label="Horario inicial do compromisso" />
+              <input id="agenda-end-time-input" type="time" aria-label="Horario final do compromisso" />
+              <input id="agenda-title-input" type="text" placeholder="Titulo do compromisso" aria-label="Titulo do compromisso" />
+              <input id="agenda-location-input" type="text" placeholder="Local" aria-label="Local do compromisso" />
+              <input id="agenda-link-input" type="url" placeholder="Link de reuniao ou referencia" aria-label="Link do compromisso" />
+              <input id="agenda-guests-input" type="text" placeholder="Convidados (emails separados por virgula)" aria-label="Convidados" />
+              <select id="agenda-calendar-input" aria-label="Calendario do compromisso"></select>
+              <select id="agenda-category-input" aria-label="Categoria do compromisso">
+                <option value="Pessoal">Pessoal</option>
+                <option value="Trabalho">Trabalho</option>
+                <option value="Casa">Casa</option>
+                <option value="Saude">Saude</option>
+                <option value="Espiritual">Espiritual</option>
+              </select>
+              <select id="agenda-recurrence-input" aria-label="Recorrencia">
+                <option value="none">Nao se repete</option>
+                <option value="daily">Diariamente</option>
+                <option value="weekly">Semanalmente</option>
+                <option value="monthly">Mensalmente</option>
+                <option value="yearly">Anualmente</option>
+              </select>
+              <label class="color-field">
+                Cor
+                <input id="agenda-color-input" type="color" value="#4285f4" aria-label="Cor do compromisso" />
+              </label>
+              <textarea id="agenda-description-input" rows="3" placeholder="Descricao, observacoes ou detalhes"></textarea>
+              <button type="submit">Salvar</button>
+            </form>
+          </article>
+
           <div class="agenda-google-shell">
             <section class="calendar-card google-calendar-card">
               <div class="calendar-google-header">
@@ -551,38 +661,6 @@
                   <h3>Compromissos completos</h3>
                 </div>
               </div>
-
-              <form id="agenda-form" class="agenda-form">
-                <input id="agenda-date-input" type="date" aria-label="Data do compromisso" />
-                <input id="agenda-time-input" type="time" aria-label="Horario inicial do compromisso" />
-                <input id="agenda-end-time-input" type="time" aria-label="Horario final do compromisso" />
-                <input id="agenda-title-input" type="text" placeholder="Titulo do compromisso" aria-label="Titulo do compromisso" />
-                <input id="agenda-location-input" type="text" placeholder="Local" aria-label="Local do compromisso" />
-                <input id="agenda-link-input" type="url" placeholder="Link de reuniao ou referencia" aria-label="Link do compromisso" />
-                <input id="agenda-guests-input" type="text" placeholder="Convidados (emails separados por virgula)" aria-label="Convidados" />
-                <select id="agenda-calendar-input" aria-label="Calendario do compromisso"></select>
-                <select id="agenda-category-input" aria-label="Categoria do compromisso">
-                  <option value="Pessoal">Pessoal</option>
-                  <option value="Trabalho">Trabalho</option>
-                  <option value="Casa">Casa</option>
-                  <option value="Saude">Saude</option>
-                  <option value="Espiritual">Espiritual</option>
-                </select>
-                <select id="agenda-recurrence-input" aria-label="Recorrencia">
-                  <option value="none">Nao se repete</option>
-                  <option value="daily">Diariamente</option>
-                  <option value="weekly">Semanalmente</option>
-                  <option value="monthly">Mensalmente</option>
-                  <option value="yearly">Anualmente</option>
-                </select>
-                <label class="color-field">
-                  Cor
-                  <input id="agenda-color-input" type="color" value="#4285f4" aria-label="Cor do compromisso" />
-                </label>
-                <textarea id="agenda-description-input" rows="3" placeholder="Descricao, observacoes ou detalhes"></textarea>
-                <button type="submit">Salvar</button>
-              </form>
-
               <ul id="agenda-events-list" class="task-list"></ul>
             </article>
 
@@ -594,32 +672,6 @@
                 </div>
               </div>
               <textarea class="summary-input" data-persist-key="agenda-next-week" placeholder="Liste tarefas pendentes e prioridades para a proxima semana."></textarea>
-            </article>
-
-            <article class="agenda-events-card agenda-month-planning">
-              <div class="panel-heading compact-heading">
-                <div>
-                  <p class="eyebrow">Planejamento mensal</p>
-                  <h3>Visao geral do mes</h3>
-                </div>
-                <button id="agenda-create-button" class="agenda-create-button" type="button">+ Criar</button>
-              </div>
-              <div class="calendar-mini-heading">
-                <strong id="calendar-mini-label">Mes</strong>
-              </div>
-              <div class="calendar-mini-weekdays">
-                <span>D</span><span>S</span><span>T</span><span>Q</span><span>Q</span><span>S</span><span>S</span>
-              </div>
-              <div id="calendar-mini-grid" class="calendar-mini-grid"></div>
-              <div class="panel-heading compact-heading agenda-month-side-heading">
-                <div>
-                  <p class="eyebrow">Minhas agendas</p>
-                  <h3>Calendarios</h3>
-                </div>
-                <button id="calendar-add-button" class="ghost-button" type="button">Nova</button>
-              </div>
-              <div id="calendar-list" class="calendar-list"></div>
-              <textarea class="summary-input" data-persist-key="agenda-month-plan" placeholder="Metas, eventos fixos e direcionamento do mes."></textarea>
             </article>
           </div>
         </section>
@@ -901,8 +953,8 @@
               <button class="ghost-button module-open-button" type="button" data-module="wardrobe">Abrir</button>
             </div>
             <div class="structured-card-grid">
-              <div class="detail-card"><span class="metric-label">Looks da semana</span><strong>4 montados</strong></div>
-              <div class="detail-card"><span class="metric-label">Pecas-chave</span><strong>Blazer, jeans, vestido</strong></div>
+              <div class="detail-card"><span class="metric-label">Looks da semana</span><strong>0 cadastrados</strong></div>
+              <div class="detail-card"><span class="metric-label">Pecas-chave</span><strong>Nenhuma peca cadastrada</strong></div>
             </div>
             <ul id="wardrobe-preview-list" class="mini-list module-preview-list"></ul>
             <ul class="mini-list">
