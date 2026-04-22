@@ -292,6 +292,7 @@ if (Object.keys(agendaStore).length === 0) {
 let activeFinanceFilter = localStorage.getItem("ela-em-ordem:finance-filter") || "all";
 let financeStore = JSON.parse(localStorage.getItem("ela-em-ordem:finance") || "{}");
 let calculatorExpression = "0";
+let calculatorJustEvaluated = false;
 let moduleStore = JSON.parse(localStorage.getItem("vida-nova:modules") || "{}");
 let plannerBoardStore = JSON.parse(localStorage.getItem("vida-nova:planner-boards") || "{}");
 let activeModule = null;
@@ -4107,9 +4108,17 @@ function normalizeCalculatorExpression(expression) {
 }
 
 function appendCalculatorValue(value) {
-  const operators = new Set(["+", "-", "*", "/"]);
+  const operators = new Set(["+", "-", "*", "/", "%"]);
   const current = calculatorExpression === "Erro" ? "0" : calculatorExpression;
   const lastChar = current.slice(-1);
+
+  if (calculatorJustEvaluated && /\d/.test(value)) {
+    calculatorExpression = value;
+    calculatorJustEvaluated = false;
+    return;
+  }
+
+  calculatorJustEvaluated = false;
 
   if (/\d/.test(value)) {
     calculatorExpression = current === "0" ? value : `${current}${value}`;
@@ -4165,6 +4174,7 @@ function appendCalculatorValue(value) {
     }
 
     calculatorExpression = `${current}${value}`;
+    return;
   }
 }
 
@@ -4194,8 +4204,10 @@ function evaluateCalculatorExpression() {
       typeof result === "number" && Number.isFinite(result)
         ? String(Number.parseFloat(result.toFixed(8)))
         : "Erro";
+    calculatorJustEvaluated = calculatorExpression !== "Erro";
   } catch {
     calculatorExpression = "Erro";
+    calculatorJustEvaluated = false;
   }
 }
 
@@ -4213,6 +4225,7 @@ if (calculatorDisplay) {
 
       if (action === "clear") {
         calculatorExpression = "0";
+        calculatorJustEvaluated = false;
       } else if (action === "equals") {
         evaluateCalculatorExpression();
       } else if (value) {
