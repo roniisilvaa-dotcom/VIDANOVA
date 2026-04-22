@@ -21,7 +21,7 @@
   <circle cx="256" cy="256" r="150" fill="none" stroke="#dbc2b0" stroke-width="2" opacity="0.95"/>
 
   <path
-    d="M158 340V172L248 312V172"
+    d="M138 172L198 340L258 172"
     fill="none"
     stroke="url(#ink)"
     stroke-linecap="round"
@@ -30,7 +30,7 @@
   />
 
   <path
-    d="M278 172L338 340L398 172"
+    d="M274 340V172L364 312V172"
     fill="none"
     stroke="url(#ink)"
     stroke-linecap="round"
