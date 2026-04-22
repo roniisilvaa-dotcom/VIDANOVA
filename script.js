@@ -249,6 +249,7 @@ const settingsPasswordInput = document.querySelector("#settings-password-input")
 const settingsPasswordConfirmInput = document.querySelector("#settings-password-confirm-input");
 const settingsPasswordFeedback = document.querySelector("#settings-password-feedback");
 const settingsAccentColor = document.querySelector("#settings-accent-color");
+const accentPresetButtons = document.querySelectorAll("[data-accent-preset]");
 const settingsRenewButton = document.querySelector("#settings-renew-button");
 const settingsOpenRenewal = document.querySelector("#settings-open-renewal");
 const settingsOpenInstall = document.querySelector("#settings-open-install");
@@ -2753,6 +2754,10 @@ function setAccentColor(color, shouldSync = true) {
     settingsAccentColor.value = nextColor;
   }
 
+  accentPresetButtons.forEach((button) => {
+    button.classList.toggle("is-active", button.dataset.accentPreset === nextColor);
+  });
+
   if (shouldSync) {
     scheduleCloudSync();
   }
@@ -2990,6 +2995,12 @@ if (settingsAccentColor) {
     setAccentColor(settingsAccentColor.value);
   });
 }
+
+accentPresetButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    setAccentColor(button.dataset.accentPreset || "#c55b84");
+  });
+});
 
 if (settingsButton) {
   settingsButton.addEventListener("click", () => {

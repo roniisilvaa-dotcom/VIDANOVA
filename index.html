@@ -1086,7 +1086,7 @@
                 <div class="panel-heading">
                   <div>
                     <p class="eyebrow">Perfil</p>
-                    <h3>Dados da usuaria</h3>
+                    <h3>Dados da usuária</h3>
                   </div>
                 </div>
 
@@ -1094,7 +1094,7 @@
                   <div class="profile-avatar" id="settings-avatar-preview">VN</div>
                   <div class="profile-copy">
                     <strong id="settings-profile-name">Vida Nova</strong>
-                    <small id="settings-profile-email">Seu email aparece aqui</small>
+                    <small id="settings-profile-email">Seu e-mail aparece aqui</small>
                   </div>
                 </div>
 
@@ -1112,12 +1112,12 @@
                     <input id="settings-email-input" type="email" placeholder="seuemail@provedor.com" />
                   </label>
                   <label>
-                    Link de renovacao do pacote
+                    Link de renovação do pacote
                     <input id="settings-subscription-url" type="url" placeholder="https://..." />
                   </label>
                   <div class="settings-inline-actions">
                     <button class="primary-button" type="submit">Salvar perfil</button>
-                    <button id="settings-renew-button" class="ghost-button" type="button">Renovar pacote</button>
+                    <button id="settings-renew-button" class="primary-button secondary-strong" type="button">Renovar pacote</button>
                   </div>
                   <p id="settings-profile-feedback" class="settings-feedback"></p>
                 </form>
@@ -1126,7 +1126,7 @@
               <article class="settings-card">
                 <div class="panel-heading">
                   <div>
-                    <p class="eyebrow">Seguranca</p>
+                    <p class="eyebrow">Segurança</p>
                     <h3>Senha e acesso</h3>
                   </div>
                 </div>
@@ -1134,7 +1134,7 @@
                 <form id="settings-password-form" class="settings-form">
                   <label>
                     Nova senha
-                    <input id="settings-password-input" type="password" placeholder="Minimo de 6 caracteres" />
+                    <input id="settings-password-input" type="password" placeholder="Mínimo de 6 caracteres" />
                   </label>
                   <label>
                     Confirmar nova senha
@@ -1150,8 +1150,8 @@
               <article class="settings-card">
                 <div class="panel-heading">
                   <div>
-                    <p class="eyebrow">Aparencia</p>
-                    <h3>Cor, tema e layout</h3>
+                    <p class="eyebrow">Aparência</p>
+                    <h3>Cor e tema</h3>
                   </div>
                 </div>
 
@@ -1165,11 +1165,20 @@
                   </div>
 
                   <div class="preference-group">
-                    <span class="preference-label">Layout</span>
-                    <div class="layout-switcher">
-                      <button class="preference-button" type="button" data-layout-choice="soft">Suave</button>
-                      <button class="preference-button" type="button" data-layout-choice="focus">Foco</button>
-                      <button class="preference-button" type="button" data-layout-choice="magazine">Editorial</button>
+                    <span class="preference-label">Paletas prontas</span>
+                    <div class="accent-preset-grid">
+                      <button class="accent-preset" type="button" data-accent-preset="#c55b84">
+                        <span class="accent-preset-swatch" style="background: linear-gradient(135deg, #c55b84, #ef8da9);"></span>
+                        Rose premium
+                      </button>
+                      <button class="accent-preset" type="button" data-accent-preset="#8f6ad9">
+                        <span class="accent-preset-swatch" style="background: linear-gradient(135deg, #8f6ad9, #d7c7ff);"></span>
+                        Degradê lilás
+                      </button>
+                      <button class="accent-preset" type="button" data-accent-preset="#3e7f76">
+                        <span class="accent-preset-swatch" style="background: linear-gradient(135deg, #3e7f76, #9fe0d5);"></span>
+                        Verde elegante
+                      </button>
                     </div>
                   </div>
 
@@ -1177,7 +1186,7 @@
                     Cor principal do app
                     <input id="settings-accent-color" type="color" value="#c55b84" />
                   </label>
-                  <p class="settings-feedback">Essas mudancas valem tanto para web quanto para mobile na mesma conta.</p>
+                  <p class="settings-feedback">Essas mudanças valem tanto para web quanto para mobile na mesma conta.</p>
                 </div>
               </article>
 
@@ -1185,7 +1194,7 @@
                 <div class="panel-heading">
                   <div>
                     <p class="eyebrow">Assinatura</p>
-                    <h3>Pacote e renovacao</h3>
+                    <h3>Pacote e renovação</h3>
                   </div>
                 </div>
 
@@ -1195,14 +1204,14 @@
                     <strong id="settings-subscription-status">Conta ativa</strong>
                   </div>
                   <div class="detail-card">
-                    <span class="metric-label">Renovacao</span>
+                    <span class="metric-label">Renovação</span>
                     <strong id="settings-renewal-label">Configurar link</strong>
                   </div>
                 </div>
 
                 <div class="settings-inline-actions">
-                  <button id="settings-open-renewal" class="primary-button" type="button">Abrir renovacao</button>
-                  <button id="settings-open-install" class="ghost-button" type="button">Instalar app</button>
+                  <button id="settings-open-renewal" class="primary-button" type="button">Abrir renovação</button>
+                  <button id="settings-open-install" class="primary-button secondary-strong" type="button">Instalar app</button>
                 </div>
                 <p class="settings-feedback">Use o link de renovacao da Kiwify ou do seu checkout para que a cliente consiga renovar por aqui.</p>
               </article>
