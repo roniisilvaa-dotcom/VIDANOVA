@@ -101,6 +101,7 @@ const agendaGuestsInput = document.querySelector("#agenda-guests-input");
 const agendaCalendarInput = document.querySelector("#agenda-calendar-input");
 const agendaCategoryInput = document.querySelector("#agenda-category-input");
 const agendaRecurrenceInput = document.querySelector("#agenda-recurrence-input");
+const agendaReminderInput = document.querySelector("#agenda-reminder-input");
 const agendaColorInput = document.querySelector("#agenda-color-input");
 const agendaDescriptionInput = document.querySelector("#agenda-description-input");
 const agendaEventsList = document.querySelector("#agenda-events-list");
@@ -201,6 +202,7 @@ const calendarModalGuests = document.querySelector("#calendar-modal-guests");
 const calendarModalCalendar = document.querySelector("#calendar-modal-calendar");
 const calendarModalCategory = document.querySelector("#calendar-modal-category");
 const calendarModalRecurrence = document.querySelector("#calendar-modal-recurrence");
+const calendarModalReminder = document.querySelector("#calendar-modal-reminder");
 const calendarModalColor = document.querySelector("#calendar-modal-color");
 const calendarModalDescription = document.querySelector("#calendar-modal-description");
 const moduleModal = document.querySelector("#module-modal");
@@ -326,6 +328,7 @@ let syncTimeoutId = null;
 let syncInFlight = null;
 let isHydratingCloudState = false;
 let pendingAvatarData = "";
+const scheduledAgendaNotifications = new Map();
 
 function getAuthStorage() {
   const localToken = window.localStorage.getItem(AUTH_TOKEN_KEY);
@@ -756,6 +759,15 @@ function renderAdminDetail(detail = adminDetailCache) {
   const user = detail.user;
   const dataTypes = Array.isArray(detail.dataTypes) ? detail.dataTypes : [];
   const activity = Array.isArray(detail.activity) ? detail.activity : [];
+  const storageSummary =
+    detail.storageSummary && typeof detail.storageSummary === "object"
+      ? detail.storageSummary
+      : {};
+  const appStateSnapshot =
+    storageSummary.appStateSnapshot && typeof storageSummary.appStateSnapshot === "object"
+      ? storageSummary.appStateSnapshot
+      : null;
+  const recentRecords = Array.isArray(storageSummary.recentRecords) ? storageSummary.recentRecords : [];
 
   adminUserDetail.innerHTML = `
     <div class="admin-detail-top">
@@ -781,8 +793,43 @@ function renderAdminDetail(detail = adminDetailCache) {
         <span class="metric-label">Expira em</span>
         <strong>${escapeHtml(formatAdminDate(user.subscription_expires))}</strong>
       </article>
+      <article class="admin-detail-card">
+        <span class="metric-label">Ultimo sync em nuvem</span>
+        <strong>${escapeHtml(formatAdminDateTime(storageSummary.lastCloudSyncAt))}</strong>
+      </article>
+      <article class="admin-detail-card">
+        <span class="metric-label">Registros no banco</span>
+        <strong>${escapeHtml(String(storageSummary.totalRecords || 0))}</strong>
+      </article>
+      <article class="admin-detail-card">
+        <span class="metric-label">Dados preservados</span>
+        <strong>${storageSummary.hasSavedData ? "Sim, mantidos no banco" : "Ainda sem snapshot"}</strong>
+      </article>
     </div>
     <div class="admin-detail-list">
+      <article class="admin-detail-item">
+        <strong>Acesso e persistencia</strong>
+        <div>Login fica salvo neste dispositivo usando armazenamento local do navegador ou app instalado.</div>
+        <div>Os dados da usuaria ficam sincronizados em ${escapeHtml(storageSummary.syncSource || "nuvem")}.</div>
+        <div>Se a assinatura cair, o acesso fica bloqueado, mas os dados continuam preservados para retorno apos o pagamento.</div>
+      </article>
+      <article class="admin-detail-item">
+        <strong>Resumo do app salvo</strong>
+        ${
+          appStateSnapshot
+            ? `
+              <div>Tarefas: ${escapeHtml(String(appStateSnapshot.tasks || 0))}</div>
+              <div>Dias com agenda: ${escapeHtml(String(appStateSnapshot.agendaDays || 0))}</div>
+              <div>Eventos de agenda: ${escapeHtml(String(appStateSnapshot.agendaEvents || 0))}</div>
+              <div>Lancamentos financeiros: ${escapeHtml(String(appStateSnapshot.financeRecords || 0))}</div>
+              <div>Modulos com dados: ${escapeHtml(String(appStateSnapshot.modules || 0))}</div>
+              <div>Boards da planner: ${escapeHtml(String(appStateSnapshot.plannerBoards || 0))}</div>
+              <div>Imagens de sonhos: ${escapeHtml(String(appStateSnapshot.dreamImages || 0))}</div>
+              <div>Imagens da planner: ${escapeHtml(String(appStateSnapshot.plannerDreamImages || 0))}</div>
+            `
+            : "<div>A conta ainda nao gravou um snapshot completo do app.</div>"
+        }
+      </article>
       <article class="admin-detail-item">
         <strong>Tipos de dados salvos</strong>
         ${
@@ -796,6 +843,21 @@ function renderAdminDetail(detail = adminDetailCache) {
                 )
                 .join("")
             : "<div>Nenhum dado salvo no backend ainda.</div>"
+        }
+      </article>
+      <article class="admin-detail-item">
+        <strong>Ultimos registros tecnicos</strong>
+        ${
+          recentRecords.length
+            ? recentRecords
+                .map(
+                  (item) =>
+                    `<div>${escapeHtml(item.data_type || "app_state")} / ${escapeHtml(
+                      item.data_key || "main",
+                    )} • ${escapeHtml(formatAdminDateTime(item.updated_at))}</div>`,
+                )
+                .join("")
+            : "<div>Sem registros tecnicos recentes.</div>"
         }
       </article>
       <article class="admin-detail-item">
@@ -1455,6 +1517,110 @@ function formatTimeRange(startTime, endTime) {
     return startTime || "--:--";
   }
   return `${startTime || "--:--"} - ${endTime}`;
+}
+
+function supportsAgendaNotifications() {
+  return typeof window !== "undefined" && "Notification" in window;
+}
+
+async function ensureAgendaNotificationPermission() {
+  if (!supportsAgendaNotifications()) {
+    return "unsupported";
+  }
+
+  if (Notification.permission === "granted" || Notification.permission === "denied") {
+    return Notification.permission;
+  }
+
+  return Notification.requestPermission();
+}
+
+function getEventStartTimestamp(dateKey, eventItem) {
+  const timeValue = String(eventItem?.time || "");
+  if (!dateKey || !/^\d{4}-\d{2}-\d{2}$/.test(dateKey) || !/^\d{2}:\d{2}$/.test(timeValue)) {
+    return Number.NaN;
+  }
+
+  return new Date(`${dateKey}T${timeValue}:00`).getTime();
+}
+
+function clearScheduledAgendaNotifications() {
+  scheduledAgendaNotifications.forEach((timeoutId) => {
+    window.clearTimeout(timeoutId);
+  });
+  scheduledAgendaNotifications.clear();
+}
+
+async function showAgendaNotification(dateKey, eventItem) {
+  if (!supportsAgendaNotifications() || Notification.permission !== "granted") {
+    return;
+  }
+
+  const title = eventItem?.title || "Compromisso";
+  const body = `${formatDisplayDate(dateKey)} • ${formatTimeRange(
+    eventItem?.time,
+    eventItem?.endTime,
+  )}${eventItem?.location ? ` • ${eventItem.location}` : ""}`;
+
+  try {
+    const registration = await navigator.serviceWorker?.getRegistration?.();
+    if (registration) {
+      await registration.showNotification(title, {
+        body,
+        tag: `agenda-${eventItem?.id || crypto.randomUUID()}`,
+        icon: "./icon-192.png?v=nv3",
+        badge: "./icon-192.png?v=nv3",
+      });
+      return;
+    }
+  } catch (error) {
+    console.error("Falha ao usar service worker para notificacao:", error);
+  }
+
+  new Notification(title, {
+    body,
+    icon: "./icon-192.png?v=nv3",
+  });
+}
+
+function scheduleAgendaNotification(dateKey, eventItem) {
+  if (!eventItem?.id) {
+    return;
+  }
+
+  const reminderMinutes = Number(eventItem.reminderMinutes ?? 15);
+  if (reminderMinutes < 0) {
+    return;
+  }
+
+  const startTimestamp = getEventStartTimestamp(dateKey, eventItem);
+  if (!Number.isFinite(startTimestamp)) {
+    return;
+  }
+
+  const triggerTimestamp = startTimestamp - reminderMinutes * 60 * 1000;
+  const delay = triggerTimestamp - Date.now();
+  if (delay <= 0 || delay > 2147483647) {
+    return;
+  }
+
+  const timerId = window.setTimeout(() => {
+    scheduledAgendaNotifications.delete(eventItem.id);
+    showAgendaNotification(dateKey, eventItem);
+  }, delay);
+
+  scheduledAgendaNotifications.set(eventItem.id, timerId);
+}
+
+function scheduleAllAgendaNotifications() {
+  clearScheduledAgendaNotifications();
+
+  Object.entries(agendaStore).forEach(([dateKey, dayData]) => {
+    const events = Array.isArray(dayData?.events) ? dayData.events : [];
+    events.forEach((eventItem) => {
+      scheduleAgendaNotification(dateKey, eventItem);
+    });
+  });
 }
 
 function getEventDurationMinutes(eventItem) {
@@ -2261,6 +2427,7 @@ function ensureAgendaDay(dateKey) {
     endTime: eventItem.time || "09:00",
     link: "",
     guests: [],
+    reminderMinutes: 15,
     recurrence: "none",
     calendarId: eventItem.category === "Trabalho" ? "trabalho" : "pessoal",
     ...eventItem,
@@ -2311,6 +2478,7 @@ function parseNaturalLanguageEvent(inputValue, baseDateKey = selectedDateKey) {
 
 function saveAgendaStore() {
   localStorage.setItem("ela-em-ordem:agenda-events", JSON.stringify(agendaStore));
+  scheduleAllAgendaNotifications();
   scheduleCloudSync();
 }
 
@@ -3376,7 +3544,7 @@ if (agendaSummaryInput) {
 }
 
 if (agendaForm) {
-  agendaForm.addEventListener("submit", (event) => {
+  agendaForm.addEventListener("submit", async (event) => {
     event.preventDefault();
 
     const parsed = parseNaturalLanguageEvent(agendaTitleInput.value, agendaDateInput.value || selectedDateKey);
@@ -3394,6 +3562,7 @@ if (agendaForm) {
     const category = agendaCategoryInput.value || "Pessoal";
     const color = agendaColorInput.value || getCalendarById(calendarId).color || "#4285f4";
     const recurrence = agendaRecurrenceInput?.value || "none";
+    const reminderMinutes = Number(agendaReminderInput?.value ?? 15);
     const description = agendaDescriptionInput.value.trim();
 
     if (!title) {
@@ -3410,10 +3579,15 @@ if (agendaForm) {
       guests,
       calendarId,
       recurrence,
+      reminderMinutes,
       category,
       color,
       description,
     });
+
+    if (reminderMinutes >= 0) {
+      await ensureAgendaNotificationPermission();
+    }
 
     selectedDateKey = targetDate;
     saveAgendaStore();
@@ -3423,6 +3597,9 @@ if (agendaForm) {
     agendaForm.reset();
     if (agendaCalendarInput) {
       agendaCalendarInput.value = calendarStore[0]?.id || "pessoal";
+    }
+    if (agendaReminderInput) {
+      agendaReminderInput.value = "15";
     }
   });
 }
@@ -4534,7 +4711,7 @@ if (calendarModal) {
 }
 
 if (calendarModalForm) {
-  calendarModalForm.addEventListener("submit", (event) => {
+  calendarModalForm.addEventListener("submit", async (event) => {
     event.preventDefault();
     const targetDate = calendarModalDate.value || selectedDateKey;
     const parsed = parseNaturalLanguageEvent(calendarModalTitleInput.value, targetDate);
@@ -4545,6 +4722,7 @@ if (calendarModalForm) {
     }
 
     const calendarId = calendarModalCalendar?.value || calendarStore[0]?.id || "pessoal";
+    const reminderMinutes = Number(calendarModalReminder?.value ?? 15);
 
     ensureAgendaDay(targetDate).events.push({
       id: crypto.randomUUID(),
@@ -4560,9 +4738,14 @@ if (calendarModalForm) {
       calendarId,
       category: calendarModalCategory.value || "Pessoal",
       recurrence: calendarModalRecurrence?.value || "none",
+      reminderMinutes,
       color: calendarModalColor.value || getCalendarById(calendarId).color || "#4285f4",
       description: calendarModalDescription.value.trim(),
     });
+
+    if (reminderMinutes >= 0) {
+      await ensureAgendaNotificationPermission();
+    }
 
     selectedDateKey = targetDate;
     saveAgendaStore();
@@ -4570,6 +4753,9 @@ if (calendarModalForm) {
     renderCalendar();
     openCalendarModal(targetDate);
     calendarModalForm.reset();
+    if (calendarModalReminder) {
+      calendarModalReminder.value = "15";
+    }
   });
 }
 
@@ -4776,6 +4962,7 @@ async function bootApp() {
   renderTasks();
   renderCalendar();
   renderAgendaEvents();
+  scheduleAllAgendaNotifications();
   renderFinance();
   renderDashboardMirror();
   renderModuleCards();

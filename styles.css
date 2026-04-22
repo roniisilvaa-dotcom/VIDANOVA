@@ -346,9 +346,9 @@ body.subscription-locked .subscription-gate {
 }
 
 .topbar-avatar-large {
-  width: 84px;
-  height: 84px;
-  border-radius: 28px;
+  width: 120px;
+  height: 120px;
+  border-radius: 34px;
 }
 
 .topbar-email {
@@ -4244,8 +4244,9 @@ select {
   }
 
   .topbar-avatar-large {
-    width: 58px;
-    height: 58px;
+    width: 88px;
+    height: 88px;
+    border-radius: 24px;
   }
 
   .workspace-card-grid {

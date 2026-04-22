@@ -565,6 +565,14 @@
                 <option value="monthly">Mensalmente</option>
                 <option value="yearly">Anualmente</option>
               </select>
+              <select id="agenda-reminder-input" aria-label="Alerta do compromisso">
+                <option value="15">Alertar 15 min antes</option>
+                <option value="5">Alertar 5 min antes</option>
+                <option value="30">Alertar 30 min antes</option>
+                <option value="60">Alertar 1 hora antes</option>
+                <option value="0">Alertar no horario</option>
+                <option value="-1">Sem alerta</option>
+              </select>
               <label class="color-field">
                 Cor
                 <input id="agenda-color-input" type="color" value="#4285f4" aria-label="Cor do compromisso" />
@@ -1459,6 +1467,17 @@
           <label>
             Hora final
             <input id="calendar-modal-end-time" type="time" />
+          </label>
+          <label>
+            Alerta
+            <select id="calendar-modal-reminder">
+              <option value="15">15 min antes</option>
+              <option value="5">5 min antes</option>
+              <option value="30">30 min antes</option>
+              <option value="60">1 hora antes</option>
+              <option value="0">No horario</option>
+              <option value="-1">Sem alerta</option>
+            </select>
           </label>
           <label>
             Titulo

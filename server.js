@@ -821,9 +821,57 @@ async function getRecentAdminActivity(limit = 25) {
     });
 }
 
+function countAgendaEvents(agendaStore = {}) {
+  return Object.values(agendaStore || {}).reduce((total, day) => {
+    return total + (Array.isArray(day?.events) ? day.events.length : 0);
+  }, 0);
+}
+
+function buildAdminStorageSummary(records = []) {
+  const normalizedRecords = Array.isArray(records) ? records : [];
+  const latestRecord = normalizedRecords[0] || null;
+  const appStateRecord = normalizedRecords.find(
+    (item) => item.data_type === "app_state" && item.data_key === "main",
+  );
+  const appState = appStateRecord?.data_value && typeof appStateRecord.data_value === "object"
+    ? appStateRecord.data_value
+    : null;
+
+  return {
+    totalRecords: normalizedRecords.length,
+    lastCloudSyncAt: latestRecord?.updated_at || latestRecord?.last_updated || null,
+    hasSavedData: normalizedRecords.length > 0,
+    hasAppState: Boolean(appState),
+    syncSource: isUsingDatabase ? "Neon / PostgreSQL" : "Fallback local",
+    appStateSnapshot: appState
+      ? {
+          tasks: Array.isArray(appState.tasks) ? appState.tasks.length : 0,
+          agendaDays: appState.agendaStore ? Object.keys(appState.agendaStore).length : 0,
+          agendaEvents: countAgendaEvents(appState.agendaStore),
+          financeRecords: Array.isArray(appState.financeStore?.records)
+            ? appState.financeStore.records.length
+            : 0,
+          dreamImages: Array.isArray(appState.dreamImages) ? appState.dreamImages.length : 0,
+          plannerDreamImages: Array.isArray(appState.plannerDreamImages)
+            ? appState.plannerDreamImages.length
+            : 0,
+          modules: appState.moduleStore ? Object.keys(appState.moduleStore).length : 0,
+          plannerBoards: appState.plannerBoardStore
+            ? Object.keys(appState.plannerBoardStore).length
+            : 0,
+        }
+      : null,
+    recentRecords: normalizedRecords.slice(0, 8).map((item) => ({
+      data_type: item.data_type || "app_state",
+      data_key: item.data_key || "main",
+      updated_at: item.updated_at || item.last_updated || null,
+    })),
+  };
+}
+
 async function getUserAdminDetail(userId) {
   if (isUsingDatabase) {
-    const [userResult, dataResult, activityResult] = await Promise.all([
+    const [userResult, dataResult, activityResult, recordResult] = await Promise.all([
       query(
         `SELECT id, name, email, role, avatar_url, subscription_url, subscription_active, subscription_status, subscription_expires, created_at, updated_at
          FROM users WHERE id = $1 LIMIT 1`,
@@ -845,20 +893,31 @@ async function getUserAdminDetail(userId) {
          LIMIT 12`,
         [userId],
       ),
+      query(
+        `SELECT data_type, data_key, data_value, updated_at
+         FROM app_data
+         WHERE user_id = $1
+         ORDER BY updated_at DESC
+         LIMIT 12`,
+        [userId],
+      ),
     ]);
 
     return {
       user: userResult.rows[0] || null,
       dataTypes: dataResult.rows,
       activity: activityResult.rows,
+      storageSummary: buildAdminStorageSummary(recordResult.rows),
     };
   }
 
   const store = await readStore();
   const user = store.users.find((entry) => Number(entry.id) === Number(userId)) || null;
+  const records = [...store.appData]
+    .filter((item) => Number(item.user_id) === Number(userId))
+    .sort((a, b) => new Date(b.updated_at || 0).getTime() - new Date(a.updated_at || 0).getTime());
   const dataTypes = Object.values(
-    store.appData
-      .filter((item) => Number(item.user_id) === Number(userId))
+    records
       .reduce((acc, item) => {
         const current = acc[item.data_type] || {
           data_type: item.data_type,
@@ -880,7 +939,12 @@ async function getUserAdminDetail(userId) {
     .sort((a, b) => new Date(b.created_at || 0).getTime() - new Date(a.created_at || 0).getTime())
     .slice(0, 12);
 
-  return { user, dataTypes, activity };
+  return {
+    user,
+    dataTypes,
+    activity,
+    storageSummary: buildAdminStorageSummary(records),
+  };
 }
 
 async function updateUserAdminControls(userId, payload = {}) {
@@ -1432,6 +1496,7 @@ app.post("/api/admin/users/detail", async (req, res) => {
         user: buildPublicUser(detail.user),
         dataTypes: detail.dataTypes || [],
         activity: detail.activity || [],
+        storageSummary: detail.storageSummary || {},
       },
       storageMode: isUsingDatabase ? "neon" : "fallback",
     });
