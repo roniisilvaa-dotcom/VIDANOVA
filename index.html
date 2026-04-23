@@ -531,7 +531,7 @@
                 <p class="eyebrow">Cadastro de agenda</p>
                 <h3>Compromissos completos</h3>
               </div>
-              <span class="tag">O que cadastrar aqui ja entra no calendario</span>
+              <span class="tag">Cadastre, edite e mova seus compromissos</span>
             </div>
 
             <form id="agenda-form" class="agenda-form agenda-form-horizontal">
@@ -570,72 +570,12 @@
                 <input id="agenda-color-input" type="color" value="#4285f4" aria-label="Cor do compromisso" />
               </label>
               <textarea id="agenda-description-input" rows="3" placeholder="Descricao, observacoes ou detalhes"></textarea>
-              <button type="submit">Salvar</button>
+              <div class="agenda-form-actions">
+                <button id="agenda-submit-button" type="submit">Salvar</button>
+                <button id="agenda-cancel-edit" class="ghost-button hidden" type="button">Cancelar edicao</button>
+              </div>
             </form>
           </article>
-
-          <div class="agenda-google-shell">
-            <section class="calendar-card google-calendar-card">
-              <div class="calendar-google-header">
-                <div class="calendar-google-left">
-                  <button id="calendar-today" class="ghost-button" type="button">Hoje</button>
-                  <button id="calendar-prev" class="ghost-button icon-button" type="button" aria-label="Periodo anterior">&#8249;</button>
-                  <button id="calendar-next" class="ghost-button icon-button" type="button" aria-label="Proximo periodo">&#8250;</button>
-                  <strong id="calendar-month-label">Mes</strong>
-                </div>
-
-                <div class="calendar-google-center">
-                  <label class="agenda-search">
-                    <span class="sr-only">Buscar eventos</span>
-                    <input id="agenda-search-input" type="search" placeholder="Buscar na agenda" aria-label="Buscar eventos" />
-                  </label>
-                </div>
-
-                <div class="calendar-google-right">
-                  <div class="calendar-view-switcher google-views">
-                    <button id="calendar-day-view" class="ghost-button" type="button">Dia</button>
-                    <button id="calendar-week-view" class="ghost-button is-active" type="button">Semana</button>
-                    <button id="calendar-month-view" class="ghost-button" type="button">Mes</button>
-                    <button id="calendar-year-view" class="ghost-button" type="button">Ano</button>
-                    <button id="calendar-schedule-view" class="ghost-button" type="button">Agenda</button>
-                    <button id="calendar-custom-view" class="ghost-button" type="button">Personalizada</button>
-                  </div>
-                  <label class="custom-days-field" id="custom-days-field">
-                    Dias
-                    <input id="calendar-custom-days-input" type="number" min="2" max="10" value="4" />
-                  </label>
-                </div>
-              </div>
-
-              <div class="calendar-experience google-calendar-experience">
-                <div class="calendar-main-stage">
-                  <div id="calendar-month-shell">
-                    <div class="calendar-weekdays">
-                      <span>Dom</span>
-                      <span>Seg</span>
-                      <span>Ter</span>
-                      <span>Qua</span>
-                      <span>Qui</span>
-                      <span>Sex</span>
-                      <span>Sab</span>
-                    </div>
-                    <div id="calendar-grid" class="calendar-grid"></div>
-                  </div>
-
-                  <div id="week-view-shell" class="week-view-shell">
-                    <div class="week-view-header" id="week-view-header"></div>
-                    <div class="week-view-body">
-                      <div class="week-hours-column" id="week-hours-column"></div>
-                      <div class="week-columns" id="week-columns"></div>
-                    </div>
-                  </div>
-
-                  <div id="year-view-shell" class="year-view-shell hidden"></div>
-                  <div id="schedule-view-shell" class="schedule-view-shell hidden"></div>
-                </div>
-              </div>
-            </section>
-          </div>
           <div class="agenda-cards-grid">
             <article class="agenda-summary-card">
               <div class="panel-heading compact-heading">
@@ -658,6 +598,10 @@
                   <p class="eyebrow">Agenda do dia</p>
                   <h3>Compromissos completos</h3>
                 </div>
+                <label class="agenda-search">
+                  <span class="sr-only">Buscar eventos</span>
+                  <input id="agenda-search-input" type="search" placeholder="Buscar na agenda" aria-label="Buscar eventos" />
+                </label>
               </div>
               <ul id="agenda-events-list" class="task-list"></ul>
             </article>

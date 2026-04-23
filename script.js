@@ -104,6 +104,8 @@ const agendaRecurrenceInput = document.querySelector("#agenda-recurrence-input")
 const agendaReminderInput = document.querySelector("#agenda-reminder-input");
 const agendaColorInput = document.querySelector("#agenda-color-input");
 const agendaDescriptionInput = document.querySelector("#agenda-description-input");
+const agendaSubmitButton = document.querySelector("#agenda-submit-button");
+const agendaCancelEditButton = document.querySelector("#agenda-cancel-edit");
 const agendaEventsList = document.querySelector("#agenda-events-list");
 const agendaSummaryInput = document.querySelector("#agenda-summary-input");
 const installBanner = document.querySelector("#install-banner");
@@ -337,6 +339,7 @@ let isHydratingCloudState = false;
 let pendingAvatarData = "";
 let serviceWorkerRefreshHandled = false;
 let pendingServiceWorkerRegistration = null;
+let agendaEditingEvent = null;
 const scheduledAgendaNotifications = new Map();
 
 function getAuthStorage() {
@@ -2557,6 +2560,86 @@ function saveAgendaStore() {
   scheduleCloudSync();
 }
 
+function resetAgendaForm() {
+  agendaEditingEvent = null;
+  agendaForm?.reset();
+
+  if (agendaDateInput) {
+    agendaDateInput.value = selectedDateKey;
+  }
+  if (agendaCalendarInput) {
+    agendaCalendarInput.value = calendarStore[0]?.id || "pessoal";
+  }
+  if (agendaReminderInput) {
+    agendaReminderInput.value = "15";
+  }
+  if (agendaColorInput) {
+    agendaColorInput.value = getCalendarById(agendaCalendarInput?.value).color || "#4285f4";
+  }
+  if (agendaSubmitButton) {
+    agendaSubmitButton.textContent = "Salvar";
+  }
+  if (agendaCancelEditButton) {
+    agendaCancelEditButton.classList.add("hidden");
+  }
+}
+
+function startAgendaEdit(eventItem, dateKey = selectedDateKey) {
+  agendaEditingEvent = {
+    id: eventItem.id,
+    originalDateKey: dateKey,
+  };
+
+  selectedDateKey = dateKey;
+  if (agendaDateInput) {
+    agendaDateInput.value = dateKey;
+  }
+  if (agendaTimeInput) {
+    agendaTimeInput.value = eventItem.time || "";
+  }
+  if (agendaEndTimeInput) {
+    agendaEndTimeInput.value = eventItem.endTime || "";
+  }
+  if (agendaTitleInput) {
+    agendaTitleInput.value = eventItem.title || "";
+  }
+  if (agendaLocationInput) {
+    agendaLocationInput.value = eventItem.location || "";
+  }
+  if (agendaLinkInput) {
+    agendaLinkInput.value = eventItem.link || "";
+  }
+  if (agendaGuestsInput) {
+    agendaGuestsInput.value = Array.isArray(eventItem.guests) ? eventItem.guests.join(", ") : "";
+  }
+  if (agendaCalendarInput) {
+    agendaCalendarInput.value = eventItem.calendarId || calendarStore[0]?.id || "pessoal";
+  }
+  if (agendaCategoryInput) {
+    agendaCategoryInput.value = eventItem.category || "Pessoal";
+  }
+  if (agendaRecurrenceInput) {
+    agendaRecurrenceInput.value = eventItem.recurrence || "none";
+  }
+  if (agendaReminderInput) {
+    agendaReminderInput.value = String(eventItem.reminderMinutes ?? 15);
+  }
+  if (agendaColorInput) {
+    agendaColorInput.value = eventItem.color || getCalendarById(eventItem.calendarId).color || "#4285f4";
+  }
+  if (agendaDescriptionInput) {
+    agendaDescriptionInput.value = eventItem.description || "";
+  }
+  if (agendaSubmitButton) {
+    agendaSubmitButton.textContent = "Atualizar compromisso";
+  }
+  if (agendaCancelEditButton) {
+    agendaCancelEditButton.classList.remove("hidden");
+  }
+
+  agendaTitleInput?.focus();
+}
+
 function renderAgendaEvents() {
   if (!agendaEventsList || !agendaSummaryInput || !selectedDateLabel) {
     return;
@@ -2591,6 +2674,17 @@ function renderAgendaEvents() {
         <small>${escapeHtml(calendar.name)} | ${escapeHtml(eventItem.category || "Pessoal")} | ${escapeHtml(eventItem.location || "Sem local")} | ${escapeHtml(eventItem.description || "Sem descricao")}${eventItem.link ? ` | <a href="${escapeHtml(eventItem.link)}" target="_blank" rel="noreferrer">abrir link</a>` : ""}</small>
       `;
 
+      const actions = document.createElement("div");
+      actions.className = "agenda-item-actions";
+
+      const edit = document.createElement("button");
+      edit.type = "button";
+      edit.className = "ghost-button";
+      edit.textContent = "Editar";
+      edit.addEventListener("click", () => {
+        startAgendaEdit(eventItem, selectedDateKey);
+      });
+
       const remove = document.createElement("button");
       remove.type = "button";
       remove.className = "task-remove";
@@ -2601,10 +2695,10 @@ function renderAgendaEvents() {
         );
         saveAgendaStore();
         renderAgendaEvents();
-        renderCalendar();
       });
 
-      item.append(time, text, remove);
+      actions.append(edit, remove);
+      item.append(time, text, actions);
       agendaEventsList.appendChild(item);
     });
 
@@ -3776,8 +3870,8 @@ if (agendaForm) {
       return;
     }
 
-    ensureAgendaDay(targetDate).events.push({
-      id: crypto.randomUUID(),
+    const eventPayload = {
+      id: agendaEditingEvent?.id || crypto.randomUUID(),
       time,
       endTime,
       title,
@@ -3790,7 +3884,16 @@ if (agendaForm) {
       category,
       color,
       description,
-    });
+    };
+
+    if (agendaEditingEvent?.id) {
+      const originalDateKey = agendaEditingEvent.originalDateKey || selectedDateKey;
+      ensureAgendaDay(originalDateKey).events = ensureAgendaDay(originalDateKey).events.filter(
+        (currentEvent) => currentEvent.id !== agendaEditingEvent.id,
+      );
+    }
+
+    ensureAgendaDay(targetDate).events.push(eventPayload);
 
     if (reminderMinutes >= 0) {
       await ensureAgendaNotificationPermission();
@@ -3799,15 +3902,8 @@ if (agendaForm) {
     selectedDateKey = targetDate;
     saveAgendaStore();
     renderAgendaEvents();
-    renderCalendar();
     renderScheduleView();
-    agendaForm.reset();
-    if (agendaCalendarInput) {
-      agendaCalendarInput.value = calendarStore[0]?.id || "pessoal";
-    }
-    if (agendaReminderInput) {
-      agendaReminderInput.value = "15";
-    }
+    resetAgendaForm();
   });
 }
 
@@ -3818,10 +3914,13 @@ if (agendaDateInput) {
     }
 
     selectedDateKey = agendaDateInput.value;
-    const [year, month] = selectedDateKey.split("-").map(Number);
-    calendarCursor = new Date(year, month - 1, 1);
-    renderCalendar();
     renderAgendaEvents();
+  });
+}
+
+if (agendaCancelEditButton) {
+  agendaCancelEditButton.addEventListener("click", () => {
+    resetAgendaForm();
   });
 }
 
@@ -5169,6 +5268,7 @@ async function bootApp() {
   renderTasks();
   renderCalendar();
   renderAgendaEvents();
+  resetAgendaForm();
   scheduleAllAgendaNotifications();
   renderFinance();
   renderDashboardMirror();

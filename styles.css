@@ -1347,6 +1347,10 @@ body.subscription-locked .subscription-gate {
   min-height: 112px;
 }
 
+.agenda-form-horizontal .agenda-form-actions {
+  grid-column: span 2;
+}
+
 .agenda-form-horizontal button[type="submit"] {
   min-height: 52px;
 }
@@ -1377,6 +1381,19 @@ body.subscription-locked .subscription-gate {
   color: white;
   cursor: pointer;
   box-shadow: var(--shadow);
+}
+
+.agenda-form-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.agenda-item-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
 }
 
 .color-field {
