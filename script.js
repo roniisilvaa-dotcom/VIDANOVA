@@ -259,8 +259,7 @@ const persistFields = document.querySelectorAll("[data-persist-key]");
 const tabShells = document.querySelectorAll("[data-tab-group]");
 const dreamVisionUpload = document.querySelector("#dream-vision-upload");
 const dreamVisionGallery = document.querySelector("#dream-vision-gallery");
-const plannerDreamVisionUpload = document.querySelector("#planner-dream-vision-upload");
-const plannerDreamVisionGallery = document.querySelector("#planner-dream-vision-gallery");
+const plannerDreamBoardGrid = document.querySelector("#planner-dream-board-grid");
 const plannerPostitBoards = document.querySelectorAll("[data-planner-postit-board]");
 const plannerMonthFocusInput = document.querySelector('[data-persist-key="planner-month-focus"]');
 const plannerMonthPhotoUpload = document.querySelector("#planner-month-photo-upload");
@@ -4532,11 +4531,14 @@ function getStoredDreamVisionImages(scope = "main") {
 
 function saveDreamVisionImages(images, scope = "main") {
   localStorage.setItem(getDreamVisionStorageKey(scope), JSON.stringify(images));
+  if (scope === "planner") {
+    renderPlannerDreamBoard();
+  }
   scheduleCloudSync();
 }
 
 function renderDreamVisionGallery(images = getStoredDreamVisionImages(), scope = "main") {
-  const targetGallery = scope === "planner" ? plannerDreamVisionGallery : dreamVisionGallery;
+  const targetGallery = dreamVisionGallery;
 
   if (!targetGallery) {
     return;
@@ -4561,6 +4563,45 @@ function renderDreamVisionGallery(images = getStoredDreamVisionImages(), scope =
     `;
     targetGallery.appendChild(card);
   });
+}
+
+function renderPlannerDreamBoard() {
+  if (!plannerDreamBoardGrid) {
+    return;
+  }
+
+  const images = getStoredDreamVisionImages("planner");
+  plannerDreamBoardGrid.innerHTML = "";
+
+  for (let index = 0; index < 10; index += 1) {
+    const image = images[index] || null;
+    const item = document.createElement("article");
+    item.className = `planner-dream-slot${image ? " has-image" : ""}`;
+    item.innerHTML = `
+      <div class="planner-dream-slot-frame">
+        ${
+          image
+            ? `<img src="${escapeHtml(image.src)}" alt="${escapeHtml(image.name || `Sonho ${index + 1}`)}" class="planner-dream-slot-image" />`
+            : `<div class="planner-dream-slot-empty">
+                <span>Espaco ${index + 1}</span>
+                <small>Escolha uma imagem do dispositivo</small>
+              </div>`
+        }
+      </div>
+      <div class="planner-dream-slot-actions">
+        <label class="dream-upload planner-dream-slot-upload">
+          <span>${image ? "Trocar imagem" : "Adicionar imagem"}</span>
+          <input type="file" accept="image/*" data-planner-dream-slot="${index}" />
+        </label>
+        ${
+          image
+            ? `<button type="button" class="task-remove" data-planner-dream-remove="${index}">Remover</button>`
+            : ""
+        }
+      </div>
+    `;
+    plannerDreamBoardGrid.appendChild(item);
+  }
 }
 
 function savePlannerBoardStore() {
@@ -4757,7 +4798,6 @@ function setupTabs() {
 function setupDreamVisionUpload() {
   const uploadConfigs = [
     { input: dreamVisionUpload, gallery: dreamVisionGallery, scope: "main" },
-    { input: plannerDreamVisionUpload, gallery: plannerDreamVisionGallery, scope: "planner" },
   ];
 
   uploadConfigs.forEach(({ input, gallery, scope }) => {
@@ -4841,6 +4881,56 @@ function setupDreamVisionUpload() {
       renderDreamVisionGallery(nextImages, removeScope);
     });
   });
+
+  renderPlannerDreamBoard();
+
+  if (plannerDreamBoardGrid) {
+    plannerDreamBoardGrid.addEventListener("change", (event) => {
+      const input = event.target.closest("[data-planner-dream-slot]");
+      if (!input) {
+        return;
+      }
+
+      const slotIndex = Number(input.dataset.plannerDreamSlot);
+      const file = input.files?.[0];
+      if (!Number.isInteger(slotIndex) || !file || !file.type.startsWith("image/")) {
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = () => {
+        const images = [...getStoredDreamVisionImages("planner")];
+        while (images.length < 10) {
+          images.push(null);
+        }
+        images[slotIndex] = {
+          name: file.name,
+          src: String(reader.result || ""),
+        };
+        saveDreamVisionImages(images.slice(0, 10), "planner");
+      };
+      reader.onerror = () => {
+        console.error("Falha ao carregar imagem do quadro dos sonhos.");
+      };
+      reader.readAsDataURL(file);
+    });
+
+    plannerDreamBoardGrid.addEventListener("click", (event) => {
+      const removeButton = event.target.closest("[data-planner-dream-remove]");
+      if (!removeButton) {
+        return;
+      }
+
+      const slotIndex = Number(removeButton.dataset.plannerDreamRemove);
+      if (!Number.isInteger(slotIndex)) {
+        return;
+      }
+
+      const images = [...getStoredDreamVisionImages("planner")];
+      images[slotIndex] = null;
+      saveDreamVisionImages(images, "planner");
+    });
+  }
 }
 
 function setupPlannerMediaBoard() {
