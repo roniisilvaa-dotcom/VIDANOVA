@@ -2695,6 +2695,7 @@ function renderAgendaEvents() {
         );
         saveAgendaStore();
         renderAgendaEvents();
+        renderCalendar();
       });
 
       actions.append(edit, remove);
@@ -3902,6 +3903,7 @@ if (agendaForm) {
     selectedDateKey = targetDate;
     saveAgendaStore();
     renderAgendaEvents();
+    renderCalendar();
     renderScheduleView();
     resetAgendaForm();
   });
@@ -3914,6 +3916,9 @@ if (agendaDateInput) {
     }
 
     selectedDateKey = agendaDateInput.value;
+    const [year, month] = selectedDateKey.split("-").map(Number);
+    calendarCursor = new Date(year, month - 1, 1);
+    renderCalendar();
     renderAgendaEvents();
   });
 }
