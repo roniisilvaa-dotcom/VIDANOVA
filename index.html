@@ -372,6 +372,16 @@
                   ></textarea>
                 </article>
 
+                <article class="planner-spotlight-card planner-postit-preview-card">
+                  <div class="planner-card-header planner-card-header-cream">
+                    <span>🗒️</span>
+                    <strong>Post-its do mes</strong>
+                  </div>
+                  <div class="planner-postit-preview-shell">
+                    <div class="planner-postit-board planner-postit-board-compact" data-planner-postit-board></div>
+                  </div>
+                </article>
+
               </div>
 
               <div class="planner-week-grid">
@@ -484,7 +494,7 @@
                 </div>
                 <div class="planner-month-vision-copy">
                   <p>As fotos do mes e das semanas aparecem aqui como mural visual do seu planejamento.</p>
-                  <div id="planner-postit-board" class="planner-postit-board"></div>
+                  <div class="planner-postit-board" data-planner-postit-board></div>
                 </div>
               </article>
             </section>
@@ -1770,6 +1780,7 @@
             <textarea id="calendar-modal-description" rows="4" placeholder="Descricao completa do compromisso"></textarea>
           </label>
           <div class="editor-actions">
+            <button id="calendar-modal-cancel-edit" class="ghost-button hidden" type="button">Cancelar edicao</button>
             <button class="primary-button" type="submit">Salvar compromisso</button>
           </div>
         </form>

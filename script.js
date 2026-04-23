@@ -212,6 +212,7 @@ const calendarModalRecurrence = document.querySelector("#calendar-modal-recurren
 const calendarModalReminder = document.querySelector("#calendar-modal-reminder");
 const calendarModalColor = document.querySelector("#calendar-modal-color");
 const calendarModalDescription = document.querySelector("#calendar-modal-description");
+const calendarModalCancelEditButton = document.querySelector("#calendar-modal-cancel-edit");
 const moduleModal = document.querySelector("#module-modal");
 const moduleModalClose = document.querySelector("#module-modal-close");
 const moduleModalTitle = document.querySelector("#module-modal-title");
@@ -260,7 +261,7 @@ const dreamVisionUpload = document.querySelector("#dream-vision-upload");
 const dreamVisionGallery = document.querySelector("#dream-vision-gallery");
 const plannerDreamVisionUpload = document.querySelector("#planner-dream-vision-upload");
 const plannerDreamVisionGallery = document.querySelector("#planner-dream-vision-gallery");
-const plannerPostitBoard = document.querySelector("#planner-postit-board");
+const plannerPostitBoards = document.querySelectorAll("[data-planner-postit-board]");
 const plannerMonthFocusInput = document.querySelector('[data-persist-key="planner-month-focus"]');
 const plannerMonthPhotoUpload = document.querySelector("#planner-month-photo-upload");
 const plannerWeekPhotoUpload1 = document.querySelector("#planner-week-photo-upload-1");
@@ -347,6 +348,8 @@ let pendingAvatarData = "";
 let serviceWorkerRefreshHandled = false;
 let pendingServiceWorkerRegistration = null;
 let agendaEditingEvent = null;
+let calendarModalEditingEvent = null;
+let weekEventDragPayload = null;
 const scheduledAgendaNotifications = new Map();
 
 function getAuthStorage() {
@@ -2215,6 +2218,20 @@ function openCalendarModal(dateKey, prefill = {}) {
   if (calendarModalTitleInput) {
     calendarModalTitleInput.value = prefill.title || "";
   }
+  const isEditing = Boolean(prefill.editing && prefill.id);
+  calendarModalEditingEvent = isEditing
+    ? {
+        id: prefill.id,
+        originalDateKey: prefill.originalDateKey || dateKey,
+      }
+    : null;
+  if (calendarModalCancelEditButton) {
+    calendarModalCancelEditButton.classList.toggle("hidden", !isEditing);
+  }
+  const calendarModalSubmitButton = calendarModalForm?.querySelector('button[type="submit"]');
+  if (calendarModalSubmitButton) {
+    calendarModalSubmitButton.textContent = isEditing ? "Atualizar compromisso" : "Salvar compromisso";
+  }
   calendarModalList.innerHTML = "";
   const visibleEvents = getFilteredEventsForDate(dateKey);
   if (visibleEvents.length) {
@@ -2244,7 +2261,23 @@ function openCalendarModal(dateKey, prefill = {}) {
           renderCalendar();
         });
 
-        item.append(text, remove);
+        const edit = document.createElement("button");
+        edit.type = "button";
+        edit.className = "ghost-button";
+        edit.textContent = "Editar";
+        edit.addEventListener("click", () => {
+          openCalendarModal(dateKey, {
+            ...eventItem,
+            editing: true,
+            originalDateKey: dateKey,
+          });
+        });
+
+        const actions = document.createElement("div");
+        actions.className = "agenda-item-actions";
+        actions.append(edit, remove);
+
+        item.append(text, actions);
         calendarModalList.appendChild(item);
       });
   }
@@ -2344,6 +2377,15 @@ function closeCalendarModal() {
   if (!calendarModal) {
     return;
   }
+  calendarModalEditingEvent = null;
+  if (calendarModalCancelEditButton) {
+    calendarModalCancelEditButton.classList.add("hidden");
+  }
+  const calendarModalSubmitButton = calendarModalForm?.querySelector('button[type="submit"]');
+  if (calendarModalSubmitButton) {
+    calendarModalSubmitButton.textContent = "Salvar compromisso";
+  }
+  calendarModalForm?.reset();
   calendarModal.classList.add("hidden");
   calendarModal.setAttribute("aria-hidden", "true");
 }
@@ -2581,6 +2623,42 @@ function saveAgendaStore() {
   localStorage.setItem("ela-em-ordem:agenda-events", JSON.stringify(agendaStore));
   scheduleAllAgendaNotifications();
   scheduleCloudSync();
+}
+
+function findAgendaEventById(dateKey, eventId) {
+  const dayData = ensureAgendaDay(dateKey);
+  return dayData.events.find((eventItem) => eventItem.id === eventId) || null;
+}
+
+function updateAgendaEventSchedule(eventId, sourceDateKey, targetDateKey, targetTime, options = {}) {
+  const sourceDay = ensureAgendaDay(sourceDateKey);
+  const eventItem = sourceDay.events.find((currentEvent) => currentEvent.id === eventId);
+  if (!eventItem) {
+    return false;
+  }
+
+  const durationMinutes = getEventDurationMinutes(eventItem);
+  const [hours = 9, minutes = 0] = String(targetTime || eventItem.time || "09:00").split(":").map(Number);
+  const endDate = new Date(2000, 0, 1, hours, minutes + durationMinutes);
+  const updatedEvent = {
+    ...eventItem,
+    time: `${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}`,
+    endTime: `${String(endDate.getHours()).padStart(2, "0")}:${String(endDate.getMinutes()).padStart(2, "0")}`,
+  };
+
+  sourceDay.events = sourceDay.events.filter((currentEvent) => currentEvent.id !== eventId);
+  ensureAgendaDay(targetDateKey).events.push(updatedEvent);
+
+  if (options.keepSelected !== false) {
+    selectedDateKey = targetDateKey;
+  }
+
+  saveAgendaStore();
+  renderAgendaEvents();
+  renderCalendar();
+  renderWeekView();
+  renderScheduleView();
+  return true;
 }
 
 function resetAgendaForm() {
@@ -2975,7 +3053,7 @@ function renderWeekView() {
         const top = (minutesFromStart / 15) * 20;
         const height = Math.max(20, (getEventDurationMinutes(eventItem) / 15) * 20);
         const baseColor = eventItem.color || getCalendarById(eventItem.calendarId).color || "#4285f4";
-        return `<button type="button" class="week-event-block" data-event-date="${dateKey}" data-event-id="${escapeHtml(eventItem.id)}" style="top:${top}px;height:${height}px;background:${toSoftColor(baseColor, 0.24)};border-color:${escapeHtml(baseColor)}">
+        return `<button type="button" class="week-event-block" draggable="true" data-event-date="${dateKey}" data-event-id="${escapeHtml(eventItem.id)}" style="top:${top}px;height:${height}px;background:${toSoftColor(baseColor, 0.24)};border-color:${escapeHtml(baseColor)}">
           <strong>${escapeHtml(eventItem.title)}</strong>
           <small>${escapeHtml(formatTimeRange(eventItem.time, eventItem.endTime))}${eventItem.location ? ` • ${escapeHtml(eventItem.location)}` : ""}</small>
         </button>`;
@@ -4400,7 +4478,7 @@ function savePlannerMediaBoard(board) {
 }
 
 function renderPlannerPostitBoard() {
-  if (!plannerPostitBoard) {
+  if (!plannerPostitBoards.length) {
     return;
   }
 
@@ -4420,29 +4498,31 @@ function renderPlannerPostitBoard() {
     { key: "week-4", label: "Semana 4" },
   ].filter((item) => item.type === "text" || board[item.key]?.src);
 
-  plannerPostitBoard.innerHTML = "";
+  plannerPostitBoards.forEach((boardElement) => {
+    boardElement.innerHTML = "";
 
-  if (!entries.length) {
-    plannerPostitBoard.innerHTML =
-      '<div class="dream-empty-state">Adicione o foco do mes ou as fotos das semanas para montar seu mural visual.</div>';
-    return;
-  }
-
-  entries.forEach((entry) => {
-    const card = document.createElement("figure");
-    card.className = `planner-postit-card${entry.type === "text" ? " planner-postit-card-note" : ""}`;
-    if (entry.type === "text") {
-      card.innerHTML = `
-        <div class="planner-postit-note-body">${escapeHtml(entry.value)}</div>
-        <figcaption>${escapeHtml(entry.label)}</figcaption>
-      `;
-    } else {
-      card.innerHTML = `
-        <img src="${escapeHtml(board[entry.key].src)}" alt="${escapeHtml(entry.label)}" />
-        <figcaption>${escapeHtml(entry.label)}</figcaption>
-      `;
+    if (!entries.length) {
+      boardElement.innerHTML =
+        '<div class="dream-empty-state">Adicione o foco do mes ou as fotos das semanas para montar seu mural visual.</div>';
+      return;
     }
-    plannerPostitBoard.appendChild(card);
+
+    entries.forEach((entry) => {
+      const card = document.createElement("figure");
+      card.className = `planner-postit-card${entry.type === "text" ? " planner-postit-card-note" : ""}`;
+      if (entry.type === "text") {
+        card.innerHTML = `
+          <div class="planner-postit-note-body">${escapeHtml(entry.value)}</div>
+          <figcaption>${escapeHtml(entry.label)}</figcaption>
+        `;
+      } else {
+        card.innerHTML = `
+          <img src="${escapeHtml(board[entry.key].src)}" alt="${escapeHtml(entry.label)}" />
+          <figcaption>${escapeHtml(entry.label)}</figcaption>
+        `;
+      }
+      boardElement.appendChild(card);
+    });
   });
 }
 
@@ -5205,8 +5285,8 @@ if (calendarModalForm) {
     const calendarId = calendarModalCalendar?.value || calendarStore[0]?.id || "pessoal";
     const reminderMinutes = Number(calendarModalReminder?.value ?? 15);
 
-    ensureAgendaDay(targetDate).events.push({
-      id: crypto.randomUUID(),
+    const eventPayload = {
+      id: calendarModalEditingEvent?.id || crypto.randomUUID(),
       time: calendarModalTime.value || parsed.time || "",
       endTime: calendarModalEndTime.value || parsed.endTime || "",
       title,
@@ -5222,7 +5302,16 @@ if (calendarModalForm) {
       reminderMinutes,
       color: calendarModalColor.value || getCalendarById(calendarId).color || "#4285f4",
       description: calendarModalDescription.value.trim(),
-    });
+    };
+
+    if (calendarModalEditingEvent?.id) {
+      const originalDateKey = calendarModalEditingEvent.originalDateKey || selectedDateKey;
+      ensureAgendaDay(originalDateKey).events = ensureAgendaDay(originalDateKey).events.filter(
+        (currentEvent) => currentEvent.id !== calendarModalEditingEvent.id,
+      );
+    }
+
+    ensureAgendaDay(targetDate).events.push(eventPayload);
 
     if (reminderMinutes >= 0) {
       await ensureAgendaNotificationPermission();
@@ -5233,10 +5322,18 @@ if (calendarModalForm) {
     renderAgendaEvents();
     renderCalendar();
     openCalendarModal(targetDate);
+    calendarModalEditingEvent = null;
     calendarModalForm.reset();
     if (calendarModalReminder) {
       calendarModalReminder.value = "15";
     }
+  });
+}
+
+if (calendarModalCancelEditButton) {
+  calendarModalCancelEditButton.addEventListener("click", () => {
+    calendarModalEditingEvent = null;
+    openCalendarModal(calendarModalDate?.value || selectedDateKey);
   });
 }
 
@@ -5315,7 +5412,16 @@ if (weekColumns) {
     if (eventBlock) {
       selectedDateKey = eventBlock.dataset.eventDate;
       renderAgendaEvents();
-      openCalendarModal(selectedDateKey);
+      const eventItem = findAgendaEventById(eventBlock.dataset.eventDate, eventBlock.dataset.eventId);
+      if (eventItem) {
+        openCalendarModal(selectedDateKey, {
+          ...eventItem,
+          editing: true,
+          originalDateKey: eventBlock.dataset.eventDate,
+        });
+      } else {
+        openCalendarModal(selectedDateKey);
+      }
       return;
     }
 
@@ -5338,6 +5444,71 @@ if (weekColumns) {
         endTime,
       });
     }
+  });
+
+  weekColumns.addEventListener("dragstart", (event) => {
+    const block = event.target.closest(".week-event-block");
+    if (!block) {
+      return;
+    }
+
+    weekEventDragPayload = {
+      eventId: block.dataset.eventId,
+      sourceDateKey: block.dataset.eventDate,
+    };
+    block.classList.add("is-dragging");
+    event.dataTransfer?.setData("text/plain", JSON.stringify(weekEventDragPayload));
+    if (event.dataTransfer) {
+      event.dataTransfer.effectAllowed = "move";
+    }
+  });
+
+  weekColumns.addEventListener("dragover", (event) => {
+    const column = event.target.closest("[data-week-column]");
+    if (!column || !weekEventDragPayload) {
+      return;
+    }
+    event.preventDefault();
+    column.classList.add("is-drop-target");
+  });
+
+  weekColumns.addEventListener("dragleave", (event) => {
+    const column = event.target.closest("[data-week-column]");
+    if (!column) {
+      return;
+    }
+    column.classList.remove("is-drop-target");
+  });
+
+  weekColumns.addEventListener("drop", (event) => {
+    const column = event.target.closest("[data-week-column]");
+    if (!column || !weekEventDragPayload) {
+      return;
+    }
+
+    event.preventDefault();
+    column.classList.remove("is-drop-target");
+    const bounds = column.getBoundingClientRect();
+    const offsetY = Math.max(0, event.clientY - bounds.top);
+    const targetTime = getRoundedTimeFromOffset(offsetY);
+    updateAgendaEventSchedule(
+      weekEventDragPayload.eventId,
+      weekEventDragPayload.sourceDateKey,
+      column.dataset.weekColumn,
+      targetTime,
+    );
+    weekEventDragPayload = null;
+  });
+
+  weekColumns.addEventListener("dragend", (event) => {
+    const block = event.target.closest(".week-event-block");
+    if (block) {
+      block.classList.remove("is-dragging");
+    }
+    weekColumns
+      .querySelectorAll(".week-day-column.is-drop-target")
+      .forEach((column) => column.classList.remove("is-drop-target"));
+    weekEventDragPayload = null;
   });
 }
 
