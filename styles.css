@@ -3780,6 +3780,129 @@ select {
   margin-bottom: 14px;
 }
 
+.home-planning-card {
+  display: grid;
+  gap: 12px;
+}
+
+.module-card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.planner-mini-copy {
+  margin: 6px 0 0;
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+.home-table-shell {
+  overflow: auto;
+  border: 1px solid rgba(89, 62, 87, 0.12);
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.84);
+}
+
+.home-table {
+  width: 100%;
+  min-width: 760px;
+  border-collapse: collapse;
+  font-size: 0.92rem;
+}
+
+.home-table th,
+.home-table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid rgba(89, 62, 87, 0.08);
+  text-align: left;
+  vertical-align: middle;
+}
+
+.home-table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: rgba(252, 244, 247, 0.98);
+  font-size: 0.78rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.home-table tbody tr:hover {
+  background: rgba(255, 248, 250, 0.86);
+}
+
+.home-table td:first-child {
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.home-table input,
+.home-table select {
+  width: 100%;
+  min-width: 120px;
+  padding: 10px 12px;
+  border: 1px solid rgba(89, 62, 87, 0.12);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.92);
+  color: var(--ink);
+  font: inherit;
+}
+
+.home-table-compact {
+  min-width: 700px;
+}
+
+.home-checklist-table {
+  min-width: 780px;
+}
+
+.check-cell {
+  display: inline-grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  position: relative;
+}
+
+.check-cell input {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+  min-width: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.check-cell span {
+  width: 22px;
+  height: 22px;
+  border-radius: 8px;
+  border: 1px solid rgba(89, 62, 87, 0.18);
+  background: rgba(255, 255, 255, 0.95);
+  transition: all 0.18s ease;
+}
+
+.check-cell input:checked + span {
+  background: linear-gradient(135deg, var(--berry), var(--berry-glow));
+  border-color: transparent;
+  box-shadow: 0 10px 22px rgba(197, 91, 132, 0.2);
+}
+
+.check-cell input:checked + span::after {
+  content: "";
+  position: absolute;
+  width: 6px;
+  height: 11px;
+  border-right: 2px solid white;
+  border-bottom: 2px solid white;
+  transform: rotate(45deg);
+  top: 6px;
+}
+
 .postit-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -4129,7 +4252,6 @@ select {
 
 .planner-tab-weekly { background: linear-gradient(135deg, #f4f2a7, #fff4c8); }
 .planner-tab-monthly { background: linear-gradient(135deg, #c8f0ba, #eafadf); }
-.planner-tab-calendar { background: linear-gradient(135deg, #f6cae4, #fde7f4); }
 .planner-tab-goals { background: linear-gradient(135deg, #cfe8ff, #ebf6ff); }
 .planner-tab-dreams { background: linear-gradient(135deg, #ffe7ad, #fff3d3); }
 
@@ -4246,36 +4368,31 @@ select {
   width: 100%;
   height: 100%;
   min-height: 262px;
+  display: grid;
+  justify-items: center;
+  align-content: center;
+  gap: 14px;
+  padding: 28px;
   background:
     radial-gradient(circle at 76% 24%, rgba(255,255,255,0.9), transparent 10%),
     linear-gradient(135deg, rgba(255,255,255,0.18), rgba(255,255,255,0.04)),
     linear-gradient(135deg, #f7bfd3, #ffe2ea 58%, #fff3f7);
-  position: relative;
 }
 
-.planner-photo-illustration::before,
-.planner-photo-illustration::after {
-  content: "";
-  position: absolute;
-  border-radius: 24px;
-  background: rgba(255, 255, 255, 0.72);
-  box-shadow: 0 12px 28px rgba(129, 91, 105, 0.1);
-}
-
-.planner-photo-illustration::before {
-  width: 150px;
-  height: 150px;
-  left: 38px;
-  bottom: 34px;
-  transform: rotate(-7deg);
-}
-
-.planner-photo-illustration::after {
-  width: 90px;
-  height: 90px;
-  right: 42px;
-  top: 34px;
+.planner-profile-avatar {
+  width: 112px;
+  height: 112px;
   border-radius: 50%;
+  border: 8px solid rgba(255, 255, 255, 0.9);
+  box-shadow: 0 18px 36px rgba(129, 91, 105, 0.14);
+}
+
+.planner-photo-copy {
+  display: grid;
+  gap: 4px;
+  justify-items: center;
+  text-align: center;
+  color: #5a4356;
 }
 
 .planner-week-grid {
@@ -4405,19 +4522,9 @@ select {
   min-height: 250px;
 }
 
-.planner-calendar-panel,
-.planner-dreams-panel {
+.planner-dreams-panel,
+.planner-month-vision-band {
   grid-template-columns: 280px minmax(0, 1fr);
-}
-
-.planner-calendar-copy {
-  display: grid;
-  gap: 14px;
-  padding: 18px;
-}
-
-.planner-open-agenda {
-  justify-self: start;
 }
 
 .planner-goals-grid {
@@ -4428,6 +4535,80 @@ select {
 
 .planner-dream-vision-shell {
   padding: 18px;
+}
+
+.planner-month-photo-controls {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  width: 100%;
+  padding: 20px;
+}
+
+.planner-upload-chip {
+  min-height: 86px;
+  justify-content: center;
+  border-radius: 18px;
+  background: rgba(255,255,255,0.8);
+  box-shadow: 0 12px 24px rgba(129, 91, 105, 0.08);
+}
+
+.planner-month-summary-card {
+  min-height: 320px;
+}
+
+.planner-month-vision-copy {
+  display: grid;
+  gap: 14px;
+  padding: 18px;
+}
+
+.planner-postit-board {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.planner-postit-card {
+  margin: 0;
+  padding: 12px;
+  border-radius: 22px;
+  background: linear-gradient(135deg, rgba(255, 250, 228, 0.96), rgba(255,255,255,0.92));
+  box-shadow: 0 14px 28px rgba(117, 95, 56, 0.12);
+  transform: rotate(-2deg);
+}
+
+.planner-postit-card:nth-child(2n) {
+  transform: rotate(2deg);
+}
+
+.planner-postit-card img {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  border-radius: 16px;
+}
+
+.planner-postit-card figcaption {
+  margin-top: 8px;
+  font-size: 0.85rem;
+  color: #5a4356;
+  text-align: center;
+}
+
+.planner-dream-tip {
+  margin: 0 18px;
+  color: var(--muted);
+  font-size: 0.88rem;
+}
+
+.dream-vision-card {
+  position: relative;
+  cursor: grab;
+}
+
+.dream-vision-card:active {
+  cursor: grabbing;
 }
 
 .workspace-rhythm-card {
@@ -4461,7 +4642,7 @@ select {
   .planner-summary-band,
   .planner-reflection-grid,
   .planner-goals-grid,
-  .planner-calendar-panel,
+  .planner-month-vision-band,
   .planner-dreams-panel,
   .workspace-overview-grid,
   .workspace-support-grid {
@@ -4506,6 +4687,11 @@ select {
   }
 
   .planner-task-form {
+    grid-template-columns: 1fr;
+  }
+
+  .planner-month-photo-controls,
+  .planner-postit-board {
     grid-template-columns: 1fr;
   }
 

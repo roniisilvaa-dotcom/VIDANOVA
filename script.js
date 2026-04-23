@@ -260,6 +260,13 @@ const dreamVisionUpload = document.querySelector("#dream-vision-upload");
 const dreamVisionGallery = document.querySelector("#dream-vision-gallery");
 const plannerDreamVisionUpload = document.querySelector("#planner-dream-vision-upload");
 const plannerDreamVisionGallery = document.querySelector("#planner-dream-vision-gallery");
+const plannerProfileAvatar = document.querySelector("#planner-profile-avatar");
+const plannerPostitBoard = document.querySelector("#planner-postit-board");
+const plannerMonthPhotoUpload = document.querySelector("#planner-month-photo-upload");
+const plannerWeekPhotoUpload1 = document.querySelector("#planner-week-photo-upload-1");
+const plannerWeekPhotoUpload2 = document.querySelector("#planner-week-photo-upload-2");
+const plannerWeekPhotoUpload3 = document.querySelector("#planner-week-photo-upload-3");
+const plannerWeekPhotoUpload4 = document.querySelector("#planner-week-photo-upload-4");
 const plannerTaskForms = document.querySelectorAll(".planner-task-form");
 const plannerTaskLists = document.querySelectorAll("[data-planner-list]");
 const projectUploads = document.querySelectorAll("[data-project-upload]");
@@ -1201,7 +1208,7 @@ function getPersistedFieldState() {
 
     const storedValue = localStorage.getItem(`vida-nova:field:${key}`);
     if (storedValue !== null) {
-      savedFields[key] = storedValue;
+      savedFields[key] = field.type === "checkbox" ? storedValue === "true" : storedValue;
     }
 
     return savedFields;
@@ -1217,6 +1224,7 @@ function collectCloudState() {
     plannerBoardStore,
     projectAttachments: getAllStoredProjectAttachments(),
     persistedFields: getPersistedFieldState(),
+    plannerMediaBoard: getStoredPlannerMediaBoard(),
     plannerDreamImages: getStoredDreamVisionImages("planner"),
     dreamImages: getStoredDreamVisionImages("main"),
     notes: notesInput?.value || localStorage.getItem("ela-em-ordem:notes") || "",
@@ -1251,6 +1259,7 @@ function createEmptyCloudState() {
     plannerBoardStore: {},
     projectAttachments: {},
     persistedFields: {},
+    plannerMediaBoard: {},
     plannerDreamImages: [],
     dreamImages: [],
     notes: "",
@@ -1274,7 +1283,19 @@ function applyPersistedFieldState(fields = {}) {
       return;
     }
 
-    const nextValue = Object.prototype.hasOwnProperty.call(fields, key) ? fields[key] : "";
+    const nextValue = Object.prototype.hasOwnProperty.call(fields, key)
+      ? fields[key]
+      : field.type === "checkbox"
+        ? false
+        : "";
+
+    if (field.type === "checkbox") {
+      const checked = Boolean(nextValue);
+      field.checked = checked;
+      localStorage.setItem(`vida-nova:field:${key}`, checked ? "true" : "false");
+      return;
+    }
+
     field.value = nextValue;
     if (nextValue) {
       localStorage.setItem(`vida-nova:field:${key}`, nextValue);
@@ -1346,10 +1367,12 @@ function applyCloudState(state) {
   });
 
   applyProjectAttachmentsState(state.projectAttachments || {});
+  savePlannerMediaBoard(state.plannerMediaBoard && typeof state.plannerMediaBoard === "object" ? state.plannerMediaBoard : {});
 
   saveDreamVisionImages(Array.isArray(state.dreamImages) ? state.dreamImages : [], "main");
   saveDreamVisionImages(Array.isArray(state.plannerDreamImages) ? state.plannerDreamImages : [], "planner");
   applyPersistedFieldState(state.persistedFields || {});
+  renderPlannerPostitBoard();
   renderDashboardCovers();
 
   isHydratingCloudState = false;
@@ -3129,6 +3152,8 @@ function hydrateSessionUI(session) {
   updateSubscriptionGate(session);
   syncAdminUi(session);
   updateImpersonationBanner();
+  renderPlannerProfileAvatar();
+  renderPlannerPostitBoard();
 }
 
 function registerServiceWorker() {
@@ -4337,17 +4362,80 @@ function setupPersistedFields() {
     }
     const savedValue = localStorage.getItem(`vida-nova:field:${key}`);
     if (savedValue !== null) {
-      field.value = savedValue;
+      if (field.type === "checkbox") {
+        field.checked = savedValue === "true";
+      } else {
+        field.value = savedValue;
+      }
     }
-    field.addEventListener("input", () => {
-      localStorage.setItem(`vida-nova:field:${key}`, field.value);
+
+    const persistValue = () => {
+      const value = field.type === "checkbox" ? (field.checked ? "true" : "false") : field.value;
+      localStorage.setItem(`vida-nova:field:${key}`, value);
       scheduleCloudSync();
-    });
+    };
+
+    field.addEventListener("input", persistValue);
+    field.addEventListener("change", persistValue);
   });
 }
 
 function getDreamVisionStorageKey(scope = "main") {
   return scope === "planner" ? "vida-nova:planner-dream-vision-images" : "vida-nova:dream-vision-images";
+}
+
+function getPlannerMediaStorageKey() {
+  return "vida-nova:planner-media-board";
+}
+
+function getStoredPlannerMediaBoard() {
+  return JSON.parse(localStorage.getItem(getPlannerMediaStorageKey()) || "{}");
+}
+
+function savePlannerMediaBoard(board) {
+  localStorage.setItem(getPlannerMediaStorageKey(), JSON.stringify(board));
+  scheduleCloudSync();
+}
+
+function renderPlannerProfileAvatar() {
+  if (!plannerProfileAvatar) {
+    return;
+  }
+
+  renderAvatar(plannerProfileAvatar, currentSession?.avatar_url || "", getSessionInitials());
+}
+
+function renderPlannerPostitBoard() {
+  if (!plannerPostitBoard) {
+    return;
+  }
+
+  const board = getStoredPlannerMediaBoard();
+  const entries = [
+    { key: "month", label: "Foto do mes" },
+    { key: "week-1", label: "Semana 1" },
+    { key: "week-2", label: "Semana 2" },
+    { key: "week-3", label: "Semana 3" },
+    { key: "week-4", label: "Semana 4" },
+  ].filter((item) => board[item.key]?.src);
+
+  plannerPostitBoard.innerHTML = "";
+
+  if (!entries.length) {
+    plannerPostitBoard.innerHTML =
+      '<div class="dream-empty-state">Adicione a foto do mes ou das semanas para montar seu mural visual.</div>';
+    return;
+  }
+
+  entries.forEach((entry) => {
+    const card = document.createElement("figure");
+    card.className = "planner-postit-card";
+    card.innerHTML = `
+      <img src="${escapeHtml(board[entry.key].src)}" alt="${escapeHtml(entry.label)}" />
+      <figcaption>${escapeHtml(entry.label)}</figcaption>
+    `;
+    plannerPostitBoard.appendChild(card);
+  });
 }
 
 function getStoredDreamVisionImages(scope = "main") {
@@ -4377,6 +4465,8 @@ function renderDreamVisionGallery(images = getStoredDreamVisionImages(), scope =
   images.forEach((image, index) => {
     const card = document.createElement("figure");
     card.className = "dream-vision-card";
+    card.draggable = true;
+    card.dataset.dreamIndex = String(index);
     card.innerHTML = `
       <img src="${escapeHtml(image.src)}" alt="${escapeHtml(image.name || `Imagem ${index + 1}`)}" />
       <button type="button" class="task-remove dream-remove-button" data-dream-remove="${index}" data-dream-scope="${scope}">Remover</button>
@@ -4619,6 +4709,37 @@ function setupDreamVisionUpload() {
         });
     });
 
+    gallery.addEventListener("dragstart", (event) => {
+      const card = event.target.closest(".dream-vision-card");
+      if (!card) {
+        return;
+      }
+      event.dataTransfer?.setData("text/plain", String(card.dataset.dreamIndex || ""));
+    });
+
+    gallery.addEventListener("dragover", (event) => {
+      if (event.target.closest(".dream-vision-card")) {
+        event.preventDefault();
+      }
+    });
+
+    gallery.addEventListener("drop", (event) => {
+      const targetCard = event.target.closest(".dream-vision-card");
+      const sourceIndex = Number(event.dataTransfer?.getData("text/plain"));
+      const targetIndex = Number(targetCard?.dataset.dreamIndex);
+
+      if (!Number.isInteger(sourceIndex) || !Number.isInteger(targetIndex) || sourceIndex === targetIndex) {
+        return;
+      }
+
+      event.preventDefault();
+      const items = [...getStoredDreamVisionImages(scope)];
+      const [moved] = items.splice(sourceIndex, 1);
+      items.splice(targetIndex, 0, moved);
+      saveDreamVisionImages(items, scope);
+      renderDreamVisionGallery(items, scope);
+    });
+
     gallery.addEventListener("click", (event) => {
       const removeButton = event.target.closest("[data-dream-remove]");
       if (!removeButton) {
@@ -4630,6 +4751,47 @@ function setupDreamVisionUpload() {
       const nextImages = getStoredDreamVisionImages(removeScope).filter((_, index) => index !== removeIndex);
       saveDreamVisionImages(nextImages, removeScope);
       renderDreamVisionGallery(nextImages, removeScope);
+    });
+  });
+}
+
+function setupPlannerMediaBoard() {
+  const uploadMap = [
+    { input: plannerMonthPhotoUpload, key: "month", label: "Foto do mes" },
+    { input: plannerWeekPhotoUpload1, key: "week-1", label: "Semana 1" },
+    { input: plannerWeekPhotoUpload2, key: "week-2", label: "Semana 2" },
+    { input: plannerWeekPhotoUpload3, key: "week-3", label: "Semana 3" },
+    { input: plannerWeekPhotoUpload4, key: "week-4", label: "Semana 4" },
+  ];
+
+  renderPlannerPostitBoard();
+
+  uploadMap.forEach(({ input, key, label }) => {
+    if (!input) {
+      return;
+    }
+
+    input.addEventListener("change", () => {
+      const file = input.files?.[0];
+      if (!file || !file.type.startsWith("image/")) {
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = () => {
+        const board = getStoredPlannerMediaBoard();
+        board[key] = {
+          label,
+          src: String(reader.result || ""),
+        };
+        savePlannerMediaBoard(board);
+        renderPlannerPostitBoard();
+        input.value = "";
+      };
+      reader.onerror = () => {
+        console.error("Falha ao carregar imagem do planner.");
+      };
+      reader.readAsDataURL(file);
     });
   });
 }
@@ -5280,6 +5442,7 @@ async function bootApp() {
   renderModuleCards();
   setupPersistedFields();
   setupPlannerBoards();
+  setupPlannerMediaBoard();
   setupTabs();
   setupDreamVisionUpload();
   setupProjectUploads();

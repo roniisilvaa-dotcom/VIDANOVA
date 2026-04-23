@@ -351,7 +351,6 @@
             <div class="planner-tab-ribbon planner-tab-buttons" aria-label="Abas da planner">
               <button class="planner-tab planner-tab-weekly is-active" type="button" data-tab-target="planner-weekly">Planejamento semanal</button>
               <button class="planner-tab planner-tab-monthly" type="button" data-tab-target="planner-monthly">Planejamento mensal</button>
-              <button class="planner-tab planner-tab-calendar" type="button" data-tab-target="planner-calendar">Calendario</button>
               <button class="planner-tab planner-tab-goals" type="button" data-tab-target="planner-goals">Lista de metas</button>
               <button class="planner-tab planner-tab-dreams" type="button" data-tab-target="planner-dreams">Mural dos sonhos</button>
             </div>
@@ -381,7 +380,13 @@
                 </article>
 
                 <article class="planner-spotlight-card planner-photo-card">
-                  <div class="planner-photo-illustration"></div>
+                  <div class="planner-photo-illustration">
+                    <div id="planner-profile-avatar" class="planner-profile-avatar">VN</div>
+                    <div class="planner-photo-copy">
+                      <strong>Seu planner do mes</strong>
+                      <small>A sua foto acompanha este destaque automaticamente.</small>
+                    </div>
+                  </div>
                 </article>
               </div>
 
@@ -437,17 +442,39 @@
             </section>
 
             <section class="tab-panel planner-tab-panel" data-tab-panel="planner-monthly">
-              <article class="planner-summary-band">
-                <div class="planner-card-header planner-card-header-green">
-                  <span>🔔</span>
-                  <strong>Resumo do mes</strong>
-                </div>
-                <textarea class="summary-input planner-input planner-band-input" data-persist-key="planner-month-summary" placeholder="Resuma o que este mes esta pedindo de voce, seus aprendizados e ajustes."></textarea>
-              </article>
-
               <div class="planner-reflection-grid">
+                <article class="planner-reflection-card planner-month-summary-card">
+                  <div class="planner-card-header planner-card-header-green">
+                    <span>🔔</span>
+                    <strong>Resumo do mes</strong>
+                  </div>
+                  <textarea class="summary-input planner-input planner-reflection-input" data-persist-key="planner-month-summary" placeholder="Resuma os objetivos do mes, compromissos mais importantes, sensacoes, aprendizados e a direcao que voce quer seguir."></textarea>
+                </article>
                 <article class="planner-reflection-card planner-reflection-photo">
-                  <div class="planner-reflection-illustration"></div>
+                  <div class="planner-reflection-illustration">
+                    <div class="planner-month-photo-controls">
+                      <label class="dream-upload planner-upload-chip">
+                        <span>Foto do mes</span>
+                        <input id="planner-month-photo-upload" type="file" accept="image/*" />
+                      </label>
+                      <label class="dream-upload planner-upload-chip">
+                        <span>Semana 1</span>
+                        <input id="planner-week-photo-upload-1" type="file" accept="image/*" />
+                      </label>
+                      <label class="dream-upload planner-upload-chip">
+                        <span>Semana 2</span>
+                        <input id="planner-week-photo-upload-2" type="file" accept="image/*" />
+                      </label>
+                      <label class="dream-upload planner-upload-chip">
+                        <span>Semana 3</span>
+                        <input id="planner-week-photo-upload-3" type="file" accept="image/*" />
+                      </label>
+                      <label class="dream-upload planner-upload-chip">
+                        <span>Semana 4</span>
+                        <input id="planner-week-photo-upload-4" type="file" accept="image/*" />
+                      </label>
+                    </div>
+                  </div>
                 </article>
 
                 <article class="planner-reflection-card">
@@ -466,18 +493,14 @@
                   <textarea class="summary-input planner-input planner-reflection-input" data-persist-key="planner-adjustments" placeholder="Liste o que precisa melhorar, simplificar, reorganizar ou deixar para depois."></textarea>
                 </article>
               </div>
-            </section>
-
-            <section class="tab-panel planner-tab-panel" data-tab-panel="planner-calendar">
-              <article class="planner-summary-band planner-calendar-panel">
-                <div class="planner-card-header planner-card-header-green">
-                  <span>🗓️</span>
-                  <strong>Calendario da planner</strong>
+              <article class="planner-summary-band planner-month-vision-band">
+                <div class="planner-card-header planner-card-header-cream">
+                  <span>🖼️</span>
+                  <strong>Mural do mes</strong>
                 </div>
-                <div class="planner-calendar-copy">
-                  <p>Use este espaco para anotar compromissos-chave, viradas da semana e eventos que merecem destaque.</p>
-                  <textarea class="summary-input planner-input planner-band-input" data-persist-key="planner-calendar-notes" placeholder="Exemplo: consultas, entregas importantes, reunioes, datas especiais e compromissos fixos."></textarea>
-                  <button class="primary-button planner-open-agenda" type="button" data-page-link="agenda">Abrir agenda completa</button>
+                <div class="planner-month-vision-copy">
+                  <p>As fotos do mes e das semanas aparecem aqui como mural visual do seu planejamento.</p>
+                  <div id="planner-postit-board" class="planner-postit-board"></div>
                 </div>
               </article>
             </section>
@@ -489,7 +512,7 @@
                     <strong>Lista de metas</strong>
                     <span>🎯</span>
                   </div>
-                  <textarea class="summary-input planner-input planner-reflection-input" data-persist-key="planner-goals-list" placeholder="Liste metas principais, desejos e marcos importantes deste ciclo."></textarea>
+                  <textarea class="summary-input planner-input planner-reflection-input" data-persist-key="planner-goals-list" placeholder="Liste metas principais, desejos e marcos importantes deste ciclo com clareza e prioridade."></textarea>
                 </article>
                 <article class="planner-reflection-card">
                   <div class="planner-card-header planner-card-header-cream">
@@ -497,6 +520,20 @@
                     <span>✅</span>
                   </div>
                   <textarea class="summary-input planner-input planner-reflection-input" data-persist-key="planner-goals-checklist" placeholder="Escreva metas quebradas em etapas praticas para acompanhar melhor."></textarea>
+                </article>
+                <article class="planner-reflection-card">
+                  <div class="planner-card-header planner-card-header-cream">
+                    <strong>Prazos e marcos</strong>
+                    <span>📅</span>
+                  </div>
+                  <textarea class="summary-input planner-input planner-reflection-input" data-persist-key="planner-goals-milestones" placeholder="Defina datas, prazos e checkpoints importantes para cada meta."></textarea>
+                </article>
+                <article class="planner-reflection-card">
+                  <div class="planner-card-header planner-card-header-cream">
+                    <strong>Recursos e apoio</strong>
+                    <span>🤝</span>
+                  </div>
+                  <textarea class="summary-input planner-input planner-reflection-input" data-persist-key="planner-goals-support" placeholder="Anote recursos, pessoas, ferramentas e atitudes que vao ajudar voce a concluir suas metas."></textarea>
                 </article>
               </div>
             </section>
@@ -512,6 +549,7 @@
                     <span>Adicionar imagens ao mural</span>
                     <input id="planner-dream-vision-upload" type="file" accept="image/*" multiple />
                   </label>
+                  <p class="planner-dream-tip">Arraste as imagens para mudar a ordem e montar o seu mosaico.</p>
                   <div id="planner-dream-vision-gallery" class="dream-vision-gallery"></div>
                 </div>
               </article>
@@ -977,10 +1015,121 @@
               </div>
             </div>
             <div class="study-main-grid">
-              <article class="agenda-summary-card"><h4>Planner de refeicao</h4><textarea class="summary-input" data-persist-key="meal-planner"></textarea></article>
-              <article class="agenda-summary-card"><h4>Lista do mercado</h4><textarea class="summary-input" data-persist-key="market-list"></textarea></article>
-              <article class="agenda-summary-card"><h4>Cronograma de limpeza</h4><textarea class="summary-input" data-persist-key="cleaning-schedule"></textarea></article>
-              <article class="agenda-summary-card"><h4>Checklist dos comodos</h4><textarea class="summary-input" data-persist-key="room-checklist"></textarea></article>
+              <article class="agenda-summary-card home-planning-card">
+                <div class="module-card-header">
+                  <div>
+                    <h4>Planner de refeicao</h4>
+                    <p class="planner-mini-copy">Planejamento semanal basico para a usuaria so preencher.</p>
+                  </div>
+                </div>
+                <div class="home-table-shell">
+                  <table class="home-table">
+                    <thead>
+                      <tr>
+                        <th>Dia</th>
+                        <th>Cafe da manha</th>
+                        <th>Almoco</th>
+                        <th>Lanche</th>
+                        <th>Jantar</th>
+                        <th>Agua / observacao</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr><td>Segunda</td><td><input data-persist-key="meal-mon-breakfast" placeholder="Ex.: ovos e fruta" /></td><td><input data-persist-key="meal-mon-lunch" placeholder="Ex.: arroz, feijao e frango" /></td><td><input data-persist-key="meal-mon-snack" placeholder="Ex.: iogurte" /></td><td><input data-persist-key="meal-mon-dinner" placeholder="Ex.: sopa" /></td><td><input data-persist-key="meal-mon-note" placeholder="Meta do dia" /></td></tr>
+                      <tr><td>Terca</td><td><input data-persist-key="meal-tue-breakfast" /></td><td><input data-persist-key="meal-tue-lunch" /></td><td><input data-persist-key="meal-tue-snack" /></td><td><input data-persist-key="meal-tue-dinner" /></td><td><input data-persist-key="meal-tue-note" /></td></tr>
+                      <tr><td>Quarta</td><td><input data-persist-key="meal-wed-breakfast" /></td><td><input data-persist-key="meal-wed-lunch" /></td><td><input data-persist-key="meal-wed-snack" /></td><td><input data-persist-key="meal-wed-dinner" /></td><td><input data-persist-key="meal-wed-note" /></td></tr>
+                      <tr><td>Quinta</td><td><input data-persist-key="meal-thu-breakfast" /></td><td><input data-persist-key="meal-thu-lunch" /></td><td><input data-persist-key="meal-thu-snack" /></td><td><input data-persist-key="meal-thu-dinner" /></td><td><input data-persist-key="meal-thu-note" /></td></tr>
+                      <tr><td>Sexta</td><td><input data-persist-key="meal-fri-breakfast" /></td><td><input data-persist-key="meal-fri-lunch" /></td><td><input data-persist-key="meal-fri-snack" /></td><td><input data-persist-key="meal-fri-dinner" /></td><td><input data-persist-key="meal-fri-note" /></td></tr>
+                      <tr><td>Sabado</td><td><input data-persist-key="meal-sat-breakfast" /></td><td><input data-persist-key="meal-sat-lunch" /></td><td><input data-persist-key="meal-sat-snack" /></td><td><input data-persist-key="meal-sat-dinner" /></td><td><input data-persist-key="meal-sat-note" /></td></tr>
+                      <tr><td>Domingo</td><td><input data-persist-key="meal-sun-breakfast" /></td><td><input data-persist-key="meal-sun-lunch" /></td><td><input data-persist-key="meal-sun-snack" /></td><td><input data-persist-key="meal-sun-dinner" /></td><td><input data-persist-key="meal-sun-note" /></td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </article>
+              <article class="agenda-summary-card home-planning-card">
+                <div class="module-card-header">
+                  <div>
+                    <h4>Lista do mercado</h4>
+                    <p class="planner-mini-copy">Categorias basicas para organizar a compra da semana.</p>
+                  </div>
+                </div>
+                <div class="home-table-shell">
+                  <table class="home-table home-table-compact">
+                    <thead>
+                      <tr>
+                        <th>Categoria</th>
+                        <th>Item 1</th>
+                        <th>Item 2</th>
+                        <th>Item 3</th>
+                        <th>Observacao</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr><td>Hortifruti</td><td><input data-persist-key="market-fruit-1" placeholder="Frutas" /></td><td><input data-persist-key="market-fruit-2" placeholder="Verduras" /></td><td><input data-persist-key="market-fruit-3" placeholder="Legumes" /></td><td><input data-persist-key="market-fruit-note" placeholder="Feira / mercado" /></td></tr>
+                      <tr><td>Proteinas</td><td><input data-persist-key="market-protein-1" placeholder="Frango" /></td><td><input data-persist-key="market-protein-2" placeholder="Carne" /></td><td><input data-persist-key="market-protein-3" placeholder="Ovos / peixe" /></td><td><input data-persist-key="market-protein-note" /></td></tr>
+                      <tr><td>Mercearia</td><td><input data-persist-key="market-pantry-1" placeholder="Arroz" /></td><td><input data-persist-key="market-pantry-2" placeholder="Feijao" /></td><td><input data-persist-key="market-pantry-3" placeholder="Macarrao" /></td><td><input data-persist-key="market-pantry-note" /></td></tr>
+                      <tr><td>Laticinios</td><td><input data-persist-key="market-dairy-1" placeholder="Leite" /></td><td><input data-persist-key="market-dairy-2" placeholder="Queijo" /></td><td><input data-persist-key="market-dairy-3" placeholder="Iogurte" /></td><td><input data-persist-key="market-dairy-note" /></td></tr>
+                      <tr><td>Limpeza</td><td><input data-persist-key="market-clean-1" placeholder="Detergente" /></td><td><input data-persist-key="market-clean-2" placeholder="Sabao" /></td><td><input data-persist-key="market-clean-3" placeholder="Desinfetante" /></td><td><input data-persist-key="market-clean-note" /></td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </article>
+              <article class="agenda-summary-card home-planning-card">
+                <div class="module-card-header">
+                  <div>
+                    <h4>Cronograma de limpeza</h4>
+                    <p class="planner-mini-copy">Rotina base da casa para acompanhar frequencia e responsavel.</p>
+                  </div>
+                </div>
+                <div class="home-table-shell">
+                  <table class="home-table home-table-compact">
+                    <thead>
+                      <tr>
+                        <th>Area</th>
+                        <th>Tarefa</th>
+                        <th>Frequencia</th>
+                        <th>Responsavel</th>
+                        <th>Ultima vez</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr><td>Cozinha</td><td><input data-persist-key="clean-kitchen-task" value="Limpar pia e bancada" /></td><td><select data-persist-key="clean-kitchen-frequency"><option>Diario</option><option>2x por semana</option><option>Semanal</option></select></td><td><input data-persist-key="clean-kitchen-owner" placeholder="Quem faz" /></td><td><input type="date" data-persist-key="clean-kitchen-last" /></td></tr>
+                      <tr><td>Banheiro</td><td><input data-persist-key="clean-bathroom-task" value="Lavar box e vaso" /></td><td><select data-persist-key="clean-bathroom-frequency"><option>Semanal</option><option>2x por semana</option><option>Quinzenal</option></select></td><td><input data-persist-key="clean-bathroom-owner" /></td><td><input type="date" data-persist-key="clean-bathroom-last" /></td></tr>
+                      <tr><td>Quarto</td><td><input data-persist-key="clean-bedroom-task" value="Trocar roupas de cama" /></td><td><select data-persist-key="clean-bedroom-frequency"><option>Semanal</option><option>Quinzenal</option><option>Mensal</option></select></td><td><input data-persist-key="clean-bedroom-owner" /></td><td><input type="date" data-persist-key="clean-bedroom-last" /></td></tr>
+                      <tr><td>Sala</td><td><input data-persist-key="clean-living-task" value="Organizar e tirar po" /></td><td><select data-persist-key="clean-living-frequency"><option>Semanal</option><option>2x por semana</option><option>Diario</option></select></td><td><input data-persist-key="clean-living-owner" /></td><td><input type="date" data-persist-key="clean-living-last" /></td></tr>
+                      <tr><td>Lavanderia</td><td><input data-persist-key="clean-laundry-task" value="Lavar roupas / organizar" /></td><td><select data-persist-key="clean-laundry-frequency"><option>Semanal</option><option>2x por semana</option><option>Diario</option></select></td><td><input data-persist-key="clean-laundry-owner" /></td><td><input type="date" data-persist-key="clean-laundry-last" /></td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </article>
+              <article class="agenda-summary-card home-planning-card">
+                <div class="module-card-header">
+                  <div>
+                    <h4>Checklist dos comodos</h4>
+                    <p class="planner-mini-copy">Linhas prontas para marcar o que ja foi feito.</p>
+                  </div>
+                </div>
+                <div class="home-table-shell">
+                  <table class="home-table home-checklist-table">
+                    <thead>
+                      <tr>
+                        <th>Feito</th>
+                        <th>Comodo</th>
+                        <th>Acao</th>
+                        <th>Prioridade</th>
+                        <th>Observacao</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr><td><label class="check-cell"><input type="checkbox" data-persist-key="room-kitchen-done" /><span></span></label></td><td>Cozinha</td><td><input data-persist-key="room-kitchen-task" value="Organizar armarios / despensa" /></td><td><select data-persist-key="room-kitchen-priority"><option>Alta</option><option>Media</option><option>Baixa</option></select></td><td><input data-persist-key="room-kitchen-note" placeholder="Ex.: revisar validade" /></td></tr>
+                      <tr><td><label class="check-cell"><input type="checkbox" data-persist-key="room-bathroom-done" /><span></span></label></td><td>Banheiro</td><td><input data-persist-key="room-bathroom-task" value="Repor itens e higienizar" /></td><td><select data-persist-key="room-bathroom-priority"><option>Alta</option><option>Media</option><option>Baixa</option></select></td><td><input data-persist-key="room-bathroom-note" /></td></tr>
+                      <tr><td><label class="check-cell"><input type="checkbox" data-persist-key="room-bedroom-done" /><span></span></label></td><td>Quarto</td><td><input data-persist-key="room-bedroom-task" value="Dobrar roupas / arrumar cama" /></td><td><select data-persist-key="room-bedroom-priority"><option>Media</option><option>Alta</option><option>Baixa</option></select></td><td><input data-persist-key="room-bedroom-note" /></td></tr>
+                      <tr><td><label class="check-cell"><input type="checkbox" data-persist-key="room-living-done" /><span></span></label></td><td>Sala</td><td><input data-persist-key="room-living-task" value="Organizar objetos e superfices" /></td><td><select data-persist-key="room-living-priority"><option>Media</option><option>Alta</option><option>Baixa</option></select></td><td><input data-persist-key="room-living-note" /></td></tr>
+                      <tr><td><label class="check-cell"><input type="checkbox" data-persist-key="room-laundry-done" /><span></span></label></td><td>Lavanderia</td><td><input data-persist-key="room-laundry-task" value="Separar roupas e produtos" /></td><td><select data-persist-key="room-laundry-priority"><option>Baixa</option><option>Media</option><option>Alta</option></select></td><td><input data-persist-key="room-laundry-note" /></td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </article>
             </div>
             <article class="agenda-events-card">
               <h4>Reformas e reparos do lar</h4>
