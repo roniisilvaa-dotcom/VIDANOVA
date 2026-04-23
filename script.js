@@ -260,8 +260,8 @@ const dreamVisionUpload = document.querySelector("#dream-vision-upload");
 const dreamVisionGallery = document.querySelector("#dream-vision-gallery");
 const plannerDreamVisionUpload = document.querySelector("#planner-dream-vision-upload");
 const plannerDreamVisionGallery = document.querySelector("#planner-dream-vision-gallery");
-const plannerProfileAvatar = document.querySelector("#planner-profile-avatar");
 const plannerPostitBoard = document.querySelector("#planner-postit-board");
+const plannerMonthFocusInput = document.querySelector('[data-persist-key="planner-month-focus"]');
 const plannerMonthPhotoUpload = document.querySelector("#planner-month-photo-upload");
 const plannerWeekPhotoUpload1 = document.querySelector("#planner-week-photo-upload-1");
 const plannerWeekPhotoUpload2 = document.querySelector("#planner-week-photo-upload-2");
@@ -3152,7 +3152,6 @@ function hydrateSessionUI(session) {
   updateSubscriptionGate(session);
   syncAdminUi(session);
   updateImpersonationBanner();
-  renderPlannerProfileAvatar();
   renderPlannerPostitBoard();
 }
 
@@ -4372,6 +4371,9 @@ function setupPersistedFields() {
     const persistValue = () => {
       const value = field.type === "checkbox" ? (field.checked ? "true" : "false") : field.value;
       localStorage.setItem(`vida-nova:field:${key}`, value);
+      if (key === "planner-month-focus") {
+        renderPlannerPostitBoard();
+      }
       scheduleCloudSync();
     };
 
@@ -4397,43 +4399,49 @@ function savePlannerMediaBoard(board) {
   scheduleCloudSync();
 }
 
-function renderPlannerProfileAvatar() {
-  if (!plannerProfileAvatar) {
-    return;
-  }
-
-  renderAvatar(plannerProfileAvatar, currentSession?.avatar_url || "", getSessionInitials());
-}
-
 function renderPlannerPostitBoard() {
   if (!plannerPostitBoard) {
     return;
   }
 
   const board = getStoredPlannerMediaBoard();
+  const focusText =
+    plannerMonthFocusInput?.value?.trim() ||
+    localStorage.getItem("vida-nova:field:planner-month-focus") ||
+    "";
   const entries = [
+    ...(focusText
+      ? [{ key: "focus", label: "Foco do mes", type: "text", value: focusText }]
+      : []),
     { key: "month", label: "Foto do mes" },
     { key: "week-1", label: "Semana 1" },
     { key: "week-2", label: "Semana 2" },
     { key: "week-3", label: "Semana 3" },
     { key: "week-4", label: "Semana 4" },
-  ].filter((item) => board[item.key]?.src);
+  ].filter((item) => item.type === "text" || board[item.key]?.src);
 
   plannerPostitBoard.innerHTML = "";
 
   if (!entries.length) {
     plannerPostitBoard.innerHTML =
-      '<div class="dream-empty-state">Adicione a foto do mes ou das semanas para montar seu mural visual.</div>';
+      '<div class="dream-empty-state">Adicione o foco do mes ou as fotos das semanas para montar seu mural visual.</div>';
     return;
   }
 
   entries.forEach((entry) => {
     const card = document.createElement("figure");
-    card.className = "planner-postit-card";
-    card.innerHTML = `
-      <img src="${escapeHtml(board[entry.key].src)}" alt="${escapeHtml(entry.label)}" />
-      <figcaption>${escapeHtml(entry.label)}</figcaption>
-    `;
+    card.className = `planner-postit-card${entry.type === "text" ? " planner-postit-card-note" : ""}`;
+    if (entry.type === "text") {
+      card.innerHTML = `
+        <div class="planner-postit-note-body">${escapeHtml(entry.value)}</div>
+        <figcaption>${escapeHtml(entry.label)}</figcaption>
+      `;
+    } else {
+      card.innerHTML = `
+        <img src="${escapeHtml(board[entry.key].src)}" alt="${escapeHtml(entry.label)}" />
+        <figcaption>${escapeHtml(entry.label)}</figcaption>
+      `;
+    }
     plannerPostitBoard.appendChild(card);
   });
 }
