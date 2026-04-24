@@ -47,6 +47,21 @@
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
+    <div id="vn-splash" style="position:fixed;inset:0;z-index:9999;background:linear-gradient(135deg,#c55b84,#e8829a);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;transition:opacity .5s ease">
+      <div style="width:80px;height:80px;border-radius:50%;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:2.4rem">🌸</div>
+      <div style="color:#fff;font-size:1.8rem;font-weight:900;letter-spacing:.04em">Vida Nova</div>
+      <div style="color:rgba(255,255,255,.8);font-size:.9rem">Abrindo seu planner...</div>
+      <div style="width:44px;height:4px;background:rgba(255,255,255,.3);border-radius:4px;overflow:hidden;margin-top:8px">
+        <div style="height:100%;background:#fff;border-radius:4px;animation:vnload 2s ease forwards"></div>
+      </div>
+    </div>
+    <style>@keyframes vnload{0%{width:0}70%{width:85%}100%{width:100%}}</style>
+    <script>
+      window.addEventListener("load",function(){
+        var s=document.getElementById("vn-splash");
+        if(s){setTimeout(function(){s.style.opacity="0";setTimeout(function(){s.remove()},520)},800);}
+      });
+    </script>
     <div class="app-shell">
       <aside class="sidebar">
         <div class="brand">

@@ -1914,6 +1914,20 @@ app.get("/api/health", async (req, res) => {
   }
 });
 
+function startKeepAlive() {
+  const selfUrl = process.env.RENDER_EXTERNAL_URL || process.env.SELF_URL || null;
+  if (!selfUrl) return;
+
+  const mod = selfUrl.startsWith("https") ? require("https") : require("http");
+  setInterval(() => {
+    mod.get(`${selfUrl}/api/health`, (res) => {
+      res.resume();
+    }).on("error", () => {});
+  }, 14 * 60 * 1000);
+
+  console.log(`Keep-alive ativo: pingando ${selfUrl}/api/health a cada 14 min`);
+}
+
 async function startServer() {
   try {
     await initDb();
@@ -1928,6 +1942,7 @@ async function startServer() {
       if (ADMIN_EMAIL) {
         console.log(`Admin principal configurado para ${ADMIN_EMAIL}`);
       }
+      startKeepAlive();
     });
   } catch (error) {
     console.error("Erro ao iniciar servidor:", error);
