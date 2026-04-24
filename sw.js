@@ -125,6 +125,26 @@ self.addEventListener("message", (event) => {
   }
 });
 
+self.addEventListener("push", (event) => {
+  let data = { title: "Vida Nova", body: "Você tem uma novidade!", url: "./" };
+  try {
+    if (event.data) {
+      const parsed = event.data.json();
+      data = { ...data, ...parsed };
+    }
+  } catch {}
+
+  event.waitUntil(
+    self.registration.showNotification(data.title, {
+      body: data.body,
+      icon: "./icon-192.png?v=nv3",
+      badge: "./icon-192.png?v=nv3",
+      data: { url: data.url },
+      vibrate: [200, 100, 200],
+    }),
+  );
+});
+
 self.addEventListener("notificationclick", (event) => {
   event.notification.close();
   const targetUrl = event.notification?.data?.url || "./index.html";

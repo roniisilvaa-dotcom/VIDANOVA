@@ -1749,6 +1749,22 @@
               <article class="settings-card">
                 <div class="panel-heading">
                   <div>
+                    <p class="eyebrow">Notificações</p>
+                    <h3>Avisos e novos vídeos</h3>
+                  </div>
+                </div>
+                <p class="settings-feedback">
+                  Ative as notificações para receber avisos quando um novo vídeo for publicado no canal e quando houver novidades no app.
+                </p>
+                <div class="settings-inline-actions">
+                  <button id="push-subscribe-btn" class="primary-button" type="button">Ativar notificações</button>
+                </div>
+                <p id="push-subscribe-status" class="settings-feedback">Ative para receber avisos de novos vídeos e novidades.</p>
+              </article>
+
+              <article class="settings-card">
+                <div class="panel-heading">
+                  <div>
                     <p class="eyebrow">App instalado</p>
                     <h3>Instalação e atualizações</h3>
                   </div>
@@ -1965,8 +1981,10 @@
                           <textarea id="admin-broadcast-message" rows="4" placeholder="Escreva a notificacao que vai aparecer no app das usuarias."></textarea>
                         </label>
                         <div class="settings-inline-actions">
-                          <button id="admin-broadcast-submit" class="primary-button" type="submit">Enviar notificacao</button>
+                          <button id="admin-broadcast-submit" class="primary-button" type="submit">Enviar notificacao no app</button>
+                          <button id="admin-push-send" class="primary-button secondary-strong" type="button">Enviar push nativo</button>
                         </div>
+                        <p id="admin-push-feedback" class="settings-feedback"></p>
                       </form>
                     </article>
                   </div>

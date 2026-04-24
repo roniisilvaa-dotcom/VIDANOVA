@@ -6053,6 +6053,143 @@ editorReset.addEventListener("click", () => {
   openEditor(activeCard);
 });
 
+async function getVapidPublicKey() {
+  const res = await fetch("/api/push/vapid-key");
+  const data = await res.json();
+  return data.publicKey;
+}
+
+function urlBase64ToUint8Array(base64String) {
+  const padding = "=".repeat((4 - (base64String.length % 4)) % 4);
+  const base64 = (base64String + padding).replace(/-/g, "+").replace(/_/g, "/");
+  const rawData = atob(base64);
+  return Uint8Array.from([...rawData].map((c) => c.charCodeAt(0)));
+}
+
+async function subscribeToPush() {
+  if (!("serviceWorker" in navigator) || !("PushManager" in window)) return null;
+  const permission = await Notification.requestPermission();
+  if (permission !== "granted") return null;
+
+  const reg = await navigator.serviceWorker.ready;
+  const existing = await reg.pushManager.getSubscription();
+  if (existing) return existing;
+
+  const vapidKey = await getVapidPublicKey();
+  const sub = await reg.pushManager.subscribe({
+    userVisibleOnly: true,
+    applicationServerKey: urlBase64ToUint8Array(vapidKey),
+  });
+
+  await fetch("/api/push/subscribe", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(sub.toJSON()),
+  });
+
+  return sub;
+}
+
+async function unsubscribeFromPush() {
+  if (!("serviceWorker" in navigator)) return;
+  const reg = await navigator.serviceWorker.ready;
+  const sub = await reg.pushManager.getSubscription();
+  if (!sub) return;
+
+  await fetch("/api/push/unsubscribe", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ endpoint: sub.endpoint }),
+  });
+
+  await sub.unsubscribe();
+}
+
+async function setupPushNotificationToggle() {
+  const btn = document.getElementById("push-subscribe-btn");
+  const statusEl = document.getElementById("push-subscribe-status");
+  if (!btn) return;
+
+  const updateUi = async () => {
+    if (!("PushManager" in window)) {
+      btn.textContent = "Notificações não suportadas";
+      btn.disabled = true;
+      return;
+    }
+    const reg = await navigator.serviceWorker.ready;
+    const sub = await reg.pushManager.getSubscription();
+    const perm = Notification.permission;
+
+    if (sub && perm === "granted") {
+      btn.textContent = "Desativar notificações";
+      btn.dataset.state = "subscribed";
+      if (statusEl) statusEl.textContent = "Você receberá avisos de novos vídeos e atualizações.";
+    } else {
+      btn.textContent = "Ativar notificações";
+      btn.dataset.state = "unsubscribed";
+      if (statusEl) statusEl.textContent = "Ative para receber avisos de novos vídeos e novidades.";
+    }
+  };
+
+  btn.addEventListener("click", async () => {
+    btn.disabled = true;
+    try {
+      if (btn.dataset.state === "subscribed") {
+        await unsubscribeFromPush();
+        if (statusEl) statusEl.textContent = "Notificações desativadas.";
+      } else {
+        const sub = await subscribeToPush();
+        if (!sub) {
+          if (statusEl) statusEl.textContent = "Permissão negada ou não suportada.";
+          btn.disabled = false;
+          return;
+        }
+        if (statusEl) statusEl.textContent = "Notificações ativadas com sucesso!";
+      }
+      await updateUi();
+    } catch (e) {
+      if (statusEl) statusEl.textContent = "Erro ao gerenciar notificações.";
+    }
+    btn.disabled = false;
+  });
+
+  await updateUi();
+
+  const adminPushBtn = document.getElementById("admin-push-send");
+  const adminPushFeedback = document.getElementById("admin-push-feedback");
+  if (adminPushBtn) {
+    adminPushBtn.addEventListener("click", async () => {
+      const titleEl = document.getElementById("admin-broadcast-title");
+      const msgEl = document.getElementById("admin-broadcast-message");
+      const title = titleEl?.value?.trim() || "";
+      const body = msgEl?.value?.trim() || "";
+      if (!title || !body) {
+        if (adminPushFeedback) adminPushFeedback.textContent = "Preencha o título e a mensagem antes de enviar.";
+        return;
+      }
+      adminPushBtn.disabled = true;
+      if (adminPushFeedback) adminPushFeedback.textContent = "Enviando...";
+      try {
+        const session = requireSession();
+        const res = await fetch("/api/push/send", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ token: session.token, title, body }),
+        });
+        const data = await res.json();
+        if (data.success) {
+          if (adminPushFeedback) adminPushFeedback.textContent = `Push enviado: ${data.sent} dispositivos, ${data.failed} falhas.`;
+        } else {
+          if (adminPushFeedback) adminPushFeedback.textContent = data.error || "Erro ao enviar.";
+        }
+      } catch {
+        if (adminPushFeedback) adminPushFeedback.textContent = "Erro ao enviar push.";
+      }
+      adminPushBtn.disabled = false;
+    });
+  }
+}
+
 async function bootApp() {
   await initializeAuthenticatedState();
 
@@ -6090,6 +6227,7 @@ async function bootApp() {
   setupBodyPhotos();
   setupInstallPrompt();
   updateInstallUi();
+  setupPushNotificationToggle();
 }
 
 bootApp().catch((error) => {

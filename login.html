@@ -69,17 +69,32 @@
       </section>
 
       <section class="auth-form-card">
-        <div>
-          <p class="eyebrow">Acesso da usuária</p>
-          <h2 id="auth-title">Entrar no app</h2>
+
+        <!-- Bloco de assinatura — visível para quem ainda não tem conta -->
+        <div id="paywall-block" class="paywall-block">
+          <p class="eyebrow">Acesso exclusivo para assinantes</p>
+          <h2>Comece seu Vida Nova</h2>
+          <p class="auth-copy">Para usar o app você precisa ter uma assinatura ativa. Clique abaixo para assinar e liberar o acesso completo.</p>
+          <div class="auth-actions">
+            <a id="paywall-subscribe-btn" href="#" target="_blank" rel="noopener noreferrer" class="primary-button paywall-subscribe-btn">Assinar agora</a>
+          </div>
+          <p class="auth-note">Já tem assinatura? <button id="show-login-form" class="link-button" type="button">Entrar com sua conta</button></p>
         </div>
 
-        <div class="auth-mode-switch" role="tablist" aria-label="Modo de autenticacao">
-          <button id="mode-login" class="secondary-button is-active" type="button">Entrar</button>
-          <button id="mode-register" class="secondary-button" type="button">Criar conta</button>
+        <!-- Formulário de login — oculto por padrão, exibido ao clicar em "Entrar" -->
+        <div id="login-block" class="hidden-field" style="display:none">
+          <div>
+            <p class="eyebrow">Acesso da assinante</p>
+            <h2 id="auth-title">Entrar no app</h2>
+          </div>
+
+          <div class="auth-mode-switch" role="tablist" aria-label="Modo de autenticacao">
+            <button id="mode-login" class="secondary-button is-active" type="button">Entrar</button>
+            <button id="mode-register" class="secondary-button" type="button">Criar conta</button>
+          </div>
         </div>
 
-        <form id="login-form" class="auth-form">
+        <form id="login-form" class="auth-form" style="display:none">
           <label id="name-field" class="auth-field hidden-field">
             Nome
             <input id="login-name" type="text" placeholder="Seu nome completo" />
@@ -104,16 +119,14 @@
 
           <div class="auth-actions">
             <button id="auth-submit" class="primary-button" type="submit">Entrar agora</button>
-            <button id="demo-access" class="secondary-button" type="button">
-              Sem acesso demo
-            </button>
+            <button id="back-to-paywall" class="secondary-button" type="button">Voltar</button>
           </div>
+          <button id="demo-access" class="secondary-button" type="button" style="display:none">Sem acesso demo</button>
         </form>
 
-        <p class="auth-note">
-          O acesso depende de conta real validada no servidor e no banco.
-          O login fica salvo neste dispositivo e o mesmo acesso também funciona
-          para a conta admin.
+        <p class="auth-note" id="login-note" style="display:none">
+          O acesso depende de conta real com assinatura ativa.
+          O login fica salvo neste dispositivo.
         </p>
 
         <section class="auth-install-box">

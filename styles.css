@@ -5540,6 +5540,40 @@ select {
   color: #5d4037;
 }
 
+/* Paywall login */
+.paywall-block {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.paywall-subscribe-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: linear-gradient(135deg, #c55b84, #e8829a);
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 700;
+  padding: 14px 28px;
+  border-radius: 12px;
+  text-decoration: none;
+  transition: opacity .2s;
+}
+.paywall-subscribe-btn:hover { opacity: .85; }
+
+.link-button {
+  background: none;
+  border: none;
+  color: #c55b84;
+  font-size: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0;
+  text-decoration: underline;
+}
+.link-button:hover { opacity: .8; }
+
 /* Responsivo mobile para módulos novos */
 @media (max-width: 768px) {
   .corpo-before-after,

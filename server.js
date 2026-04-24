@@ -6,6 +6,8 @@ const { Pool } = require("pg");
 const path = require("path");
 const fs = require("fs");
 const fsp = require("fs/promises");
+const https = require("https");
+const webPush = require("web-push");
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -20,6 +22,17 @@ const KIWIFY_PRODUCT_ID = process.env.KIWIFY_PRODUCT_ID || "";
 const KIWIFY_CHECKOUT_URL = process.env.KIWIFY_CHECKOUT_URL || "";
 const MONTHLY_SUBSCRIPTION_PRICE = Number(process.env.MONTHLY_SUBSCRIPTION_PRICE || 0);
 const DATA_FILE = path.join(__dirname, "vida-nova-fallback.json");
+
+const VAPID_PUBLIC_KEY = process.env.VAPID_PUBLIC_KEY || "BEXjy4tVUIHgrOsny2mSdzm9LQknr7RmsB749yLH84ULm4cr2pz3ZyL_xgb6bs9qdilkDw6rcpDgMvuHIgLVb7I";
+const VAPID_PRIVATE_KEY = process.env.VAPID_PRIVATE_KEY || "eVU7F8kgQp1XxGs6AgfePksCVhoSIJGiPDJ4CF8m8bo";
+const VAPID_SUBJECT = process.env.VAPID_SUBJECT || "mailto:admin@vidanova.app";
+const YOUTUBE_CHANNEL_ID = process.env.YOUTUBE_CHANNEL_ID || "UCCZ8WBRcpJuRXJGBlAGoKSA";
+
+try {
+  webPush.setVapidDetails(VAPID_SUBJECT, VAPID_PUBLIC_KEY, VAPID_PRIVATE_KEY);
+} catch (e) {
+  console.error("Erro ao configurar VAPID:", e.message);
+}
 
 const isUsingDatabase = Boolean(DATABASE_URL);
 const pool = isUsingDatabase
@@ -110,6 +123,7 @@ function getDefaultStore() {
     users: [],
     appData: [],
     activityLog: [],
+    pushSubscriptions: [],
   };
 }
 
@@ -280,6 +294,24 @@ async function initDb() {
   await query(`
     CREATE INDEX IF NOT EXISTS idx_activity_log_user
     ON activity_log (user_id, created_at DESC)
+  `);
+
+  await query(`
+    CREATE TABLE IF NOT EXISTS push_subscriptions (
+      id SERIAL PRIMARY KEY,
+      endpoint TEXT UNIQUE NOT NULL,
+      p256dh TEXT NOT NULL,
+      auth TEXT NOT NULL,
+      created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
+    )
+  `);
+
+  await query(`
+    CREATE TABLE IF NOT EXISTS app_settings (
+      key TEXT PRIMARY KEY,
+      value TEXT NOT NULL,
+      updated_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
+    )
   `);
 }
 
@@ -576,6 +608,161 @@ function extractKiwifyPayload(payload) {
     ]),
     raw: payload,
   };
+}
+
+async function savePushSubscription(endpoint, p256dh, auth) {
+  if (isUsingDatabase) {
+    await query(
+      `INSERT INTO push_subscriptions (endpoint, p256dh, auth)
+       VALUES ($1, $2, $3)
+       ON CONFLICT (endpoint) DO UPDATE SET p256dh = $2, auth = $3`,
+      [endpoint, p256dh, auth],
+    );
+    return;
+  }
+  const store = await readStore();
+  if (!store.pushSubscriptions) store.pushSubscriptions = [];
+  const idx = store.pushSubscriptions.findIndex((s) => s.endpoint === endpoint);
+  if (idx >= 0) {
+    store.pushSubscriptions[idx] = { endpoint, p256dh, auth };
+  } else {
+    store.pushSubscriptions.push({ endpoint, p256dh, auth });
+  }
+  await writeStore(store);
+}
+
+async function removePushSubscription(endpoint) {
+  if (isUsingDatabase) {
+    await query(`DELETE FROM push_subscriptions WHERE endpoint = $1`, [endpoint]);
+    return;
+  }
+  const store = await readStore();
+  if (!store.pushSubscriptions) return;
+  store.pushSubscriptions = store.pushSubscriptions.filter((s) => s.endpoint !== endpoint);
+  await writeStore(store);
+}
+
+async function getAllPushSubscriptions() {
+  if (isUsingDatabase) {
+    const result = await query(`SELECT endpoint, p256dh, auth FROM push_subscriptions`);
+    return result.rows;
+  }
+  const store = await readStore();
+  return store.pushSubscriptions || [];
+}
+
+async function sendPushToAll(title, body, url = "/") {
+  const subscriptions = await getAllPushSubscriptions();
+  if (!subscriptions.length) return { sent: 0, failed: 0, total: 0 };
+
+  const payload = JSON.stringify({ title, body, url });
+  const results = await Promise.allSettled(
+    subscriptions.map(async (sub) => {
+      try {
+        await webPush.sendNotification(
+          { endpoint: sub.endpoint, keys: { p256dh: sub.p256dh, auth: sub.auth } },
+          payload,
+        );
+      } catch (err) {
+        if (err.statusCode === 410 || err.statusCode === 404) {
+          await removePushSubscription(sub.endpoint).catch(() => {});
+        }
+        throw err;
+      }
+    }),
+  );
+
+  const sent = results.filter((r) => r.status === "fulfilled").length;
+  const failed = results.filter((r) => r.status === "rejected").length;
+  console.log(`Push enviado: ${sent} ok, ${failed} falhas`);
+  return { sent, failed, total: subscriptions.length };
+}
+
+async function getAppSetting(key) {
+  if (isUsingDatabase) {
+    const result = await query(`SELECT value FROM app_settings WHERE key = $1`, [key]);
+    return result.rows[0]?.value || null;
+  }
+  const store = await readStore();
+  return store.appSettings?.[key] || null;
+}
+
+async function setAppSetting(key, value) {
+  if (isUsingDatabase) {
+    await query(
+      `INSERT INTO app_settings (key, value) VALUES ($1, $2)
+       ON CONFLICT (key) DO UPDATE SET value = $2, updated_at = CURRENT_TIMESTAMP`,
+      [key, value],
+    );
+    return;
+  }
+  const store = await readStore();
+  if (!store.appSettings) store.appSettings = {};
+  store.appSettings[key] = value;
+  await writeStore(store);
+}
+
+function fetchYouTubeRss(channelId) {
+  return new Promise((resolve, reject) => {
+    const url = `https://www.youtube.com/feeds/videos.xml?channel_id=${channelId}`;
+    https.get(url, { headers: { "User-Agent": "Mozilla/5.0 VidaNovaBot/1.0" } }, (res) => {
+      let data = "";
+      res.on("data", (chunk) => { data += chunk; });
+      res.on("end", () => {
+        const entryMatch = data.match(/<entry>([\s\S]*?)<\/entry>/);
+        if (!entryMatch) return resolve(null);
+        const entryXml = entryMatch[1];
+        const videoIdMatch = entryXml.match(/<yt:videoId>([^<]+)<\/yt:videoId>/);
+        const titleMatch = entryXml.match(/<title>([^<]+)<\/title>/);
+        const publishedMatch = entryXml.match(/<published>([^<]+)<\/published>/);
+        const videoId = videoIdMatch?.[1]?.trim() || null;
+        const rawTitle = titleMatch?.[1]?.trim() || "";
+        const title = rawTitle.replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&quot;/g, '"');
+        const published = publishedMatch?.[1]?.trim() || null;
+        resolve(videoId ? { videoId, title, published } : null);
+      });
+      res.on("error", reject);
+    }).on("error", reject);
+  });
+}
+
+let _lastYouTubeVideoId = null;
+
+async function checkYouTubeForNewVideo() {
+  try {
+    const video = await fetchYouTubeRss(YOUTUBE_CHANNEL_ID);
+    if (!video?.videoId) return;
+
+    if (_lastYouTubeVideoId === null) {
+      _lastYouTubeVideoId = await getAppSetting("last_youtube_video_id");
+    }
+
+    if (_lastYouTubeVideoId === null) {
+      _lastYouTubeVideoId = video.videoId;
+      await setAppSetting("last_youtube_video_id", video.videoId);
+      console.log("YouTube: baseline definido —", video.videoId);
+      return;
+    }
+
+    if (video.videoId !== _lastYouTubeVideoId) {
+      console.log("YouTube: novo vídeo detectado —", video.title);
+      _lastYouTubeVideoId = video.videoId;
+      await setAppSetting("last_youtube_video_id", video.videoId);
+      await sendPushToAll(
+        "Novo vídeo no canal!",
+        video.title || "Veja agora o mais recente!",
+        `https://www.youtube.com/watch?v=${video.videoId}`,
+      );
+    }
+  } catch (err) {
+    console.error("Erro ao verificar YouTube RSS:", err.message);
+  }
+}
+
+function startYouTubePolling() {
+  checkYouTubeForNewVideo();
+  setInterval(checkYouTubeForNewVideo, 15 * 60 * 1000);
+  console.log("YouTube polling iniciado, canal:", YOUTUBE_CHANNEL_ID);
 }
 
 async function emailInUse(email, excludedUserId = null) {
@@ -1890,6 +2077,58 @@ app.post("/api/user/delete", async (req, res) => {
   }
 });
 
+app.get("/api/config", (req, res) => {
+  res.json({
+    checkoutUrl: KIWIFY_CHECKOUT_URL || "",
+    vapidPublicKey: VAPID_PUBLIC_KEY,
+  });
+});
+
+app.get("/api/push/vapid-key", (req, res) => {
+  res.json({ publicKey: VAPID_PUBLIC_KEY });
+});
+
+app.post("/api/push/subscribe", async (req, res) => {
+  try {
+    const { endpoint, keys } = req.body;
+    if (!endpoint || !keys?.p256dh || !keys?.auth) {
+      return res.status(400).json({ error: "Dados de assinatura incompletos." });
+    }
+    await savePushSubscription(endpoint, keys.p256dh, keys.auth);
+    res.json({ success: true });
+  } catch (error) {
+    console.error("Erro ao salvar push subscription:", error);
+    res.status(500).json({ error: "Erro ao registrar notificações." });
+  }
+});
+
+app.post("/api/push/unsubscribe", async (req, res) => {
+  try {
+    const { endpoint } = req.body;
+    if (!endpoint) return res.status(400).json({ error: "Endpoint obrigatório." });
+    await removePushSubscription(endpoint);
+    res.json({ success: true });
+  } catch (error) {
+    res.status(500).json({ error: "Erro ao cancelar notificações." });
+  }
+});
+
+app.post("/api/push/send", async (req, res) => {
+  try {
+    const { token, title, body, url } = req.body;
+    await requireAuthorizedUser(token, { requireAdmin: true });
+
+    if (!title || !body) {
+      return res.status(400).json({ error: "Título e mensagem são obrigatórios." });
+    }
+
+    const result = await sendPushToAll(title, body, url || "/");
+    res.json({ success: true, ...result });
+  } catch (error) {
+    res.status(error.status || 401).json({ error: error.message || "Não autorizado." });
+  }
+});
+
 app.get("/api/health", async (req, res) => {
   try {
     if (isUsingDatabase) {
@@ -1943,6 +2182,7 @@ async function startServer() {
         console.log(`Admin principal configurado para ${ADMIN_EMAIL}`);
       }
       startKeepAlive();
+      startYouTubePolling();
     });
   } catch (error) {
     console.error("Erro ao iniciar servidor:", error);

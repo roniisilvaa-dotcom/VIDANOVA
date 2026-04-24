@@ -14,6 +14,12 @@ const confirmPasswordField = document.querySelector("#confirm-password-field");
 const loginLiveLink = document.querySelector("#login-live-link");
 const loginInstallButton = document.querySelector("#login-install-button");
 const loginInstallStatus = document.querySelector("#login-install-status");
+const paywallBlock = document.querySelector("#paywall-block");
+const loginBlock = document.querySelector("#login-block");
+const loginNote = document.querySelector("#login-note");
+const showLoginFormButton = document.querySelector("#show-login-form");
+const backToPaywallButton = document.querySelector("#back-to-paywall");
+const paywallSubscribeBtn = document.querySelector("#paywall-subscribe-btn");
 
 const AUTH_TOKEN_KEY = "vida-nova:auth-token";
 const AUTH_USER_KEY = "vida-nova:auth-user";
@@ -22,6 +28,34 @@ const FALLBACK_PUBLIC_APP_URL = "https://vidanova-1.onrender.com";
 
 let authMode = "login";
 let deferredInstallPrompt = null;
+let _paywallVisible = true;
+
+function showPaywall() {
+  _paywallVisible = true;
+  if (paywallBlock) paywallBlock.style.display = "";
+  if (loginBlock) loginBlock.style.display = "none";
+  if (loginForm) loginForm.style.display = "none";
+  if (loginNote) loginNote.style.display = "none";
+}
+
+function showLoginSection() {
+  _paywallVisible = false;
+  if (paywallBlock) paywallBlock.style.display = "none";
+  if (loginBlock) loginBlock.style.display = "";
+  if (loginForm) loginForm.style.display = "";
+  if (loginNote) loginNote.style.display = "";
+}
+
+async function loadAppConfig() {
+  try {
+    const res = await fetch("/api/config");
+    if (!res.ok) return;
+    const config = await res.json();
+    if (paywallSubscribeBtn && config.checkoutUrl) {
+      paywallSubscribeBtn.href = config.checkoutUrl;
+    }
+  } catch {}
+}
 
 function getAuthStorage() {
   const localToken = window.localStorage.getItem(AUTH_TOKEN_KEY);
@@ -229,6 +263,19 @@ async function redirectIfAuthenticated() {
   try {
     const response = await postJson("/api/auth/verify", { token });
     saveSession(token, response.user);
+
+    const user = response.user;
+    const isAdmin = user?.is_admin || user?.role === "admin";
+    const hasSubscription = user?.subscription_status === "active";
+
+    if (!isAdmin && !hasSubscription) {
+      getAuthStorage().removeItem(AUTH_TOKEN_KEY);
+      getAuthStorage().removeItem(AUTH_USER_KEY);
+      getAuthStorage().removeItem(LEGACY_SESSION_KEY);
+      clearLegacyAuthCache();
+      return;
+    }
+
     window.location.href = getPostLoginTarget(response.user);
   } catch {
     getAuthStorage().removeItem(AUTH_TOKEN_KEY);
@@ -236,6 +283,14 @@ async function redirectIfAuthenticated() {
     getAuthStorage().removeItem(LEGACY_SESSION_KEY);
     clearLegacyAuthCache();
   }
+}
+
+if (showLoginFormButton) {
+  showLoginFormButton.addEventListener("click", () => showLoginSection());
+}
+
+if (backToPaywallButton) {
+  backToPaywallButton.addEventListener("click", () => showPaywall());
 }
 
 if (modeLoginButton) {
@@ -295,6 +350,27 @@ if (loginForm) {
       const response = await postJson(endpoint, payload);
 
       saveSession(response.token, response.user);
+
+      const user = response.user;
+      const isAdmin = user?.is_admin || user?.role === "admin";
+      const hasSubscription = user?.subscription_status === "active";
+
+      if (!isAdmin && !hasSubscription) {
+        const subscriptionUrl = user?.subscription_url || "";
+        let msg = "Sua assinatura está inativa.";
+        if (subscriptionUrl) {
+          msg += " Clique em Assinar agora para liberar o acesso.";
+        }
+        setFeedback(msg, "error");
+        if (paywallSubscribeBtn && subscriptionUrl) {
+          paywallSubscribeBtn.href = subscriptionUrl;
+        }
+        showPaywall();
+        authSubmit.disabled = false;
+        demoAccess.disabled = false;
+        return;
+      }
+
       setFeedback("Acesso liberado. Redirecionando...", "success");
       window.location.href = getPostLoginTarget(response.user);
     } catch (error) {
@@ -337,6 +413,8 @@ clearLegacyAuthCache();
 refreshInstallLinks();
 setMode("login");
 updateLoginInstallUi();
+showPaywall();
+loadAppConfig();
 redirectIfAuthenticated();
 
 // Auto-update: reload login page when a new version is deployed
