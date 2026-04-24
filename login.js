@@ -338,3 +338,31 @@ refreshInstallLinks();
 setMode("login");
 updateLoginInstallUi();
 redirectIfAuthenticated();
+
+// Auto-update: reload login page when a new version is deployed
+(async function startLoginVersionPolling() {
+  const fetchVersion = async () => {
+    try {
+      const res = await fetch("./version.json?_=" + Date.now());
+      if (!res.ok) return null;
+      const data = await res.json();
+      return data.buildTime || data.version || null;
+    } catch {
+      return null;
+    }
+  };
+
+  const baseline = await fetchVersion();
+  if (!baseline) return;
+
+  const check = async () => {
+    const latest = await fetchVersion();
+    if (latest && latest !== baseline) window.location.reload();
+  };
+
+  setInterval(check, 30000);
+  document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState === "visible") check();
+  });
+  window.addEventListener("focus", () => check());
+})();

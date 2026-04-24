@@ -47,6 +47,20 @@ const DEFAULT_DASHBOARD_COVERS = Object.freeze({
   espiritual: "assets/covers/espiritual.png",
 });
 
+const APP_IDENTITY_COLOR_PRESETS = Object.freeze([
+  "#f6d7e5",
+  "#ef8da9",
+  "#ffd9c9",
+  "#f0b86c",
+  "#ffe8a3",
+  "#d9f2c7",
+  "#9fe0d5",
+  "#cfe7ff",
+  "#6f9cf6",
+  "#8f6ad9",
+]);
+const DASHBOARD_CARD_COLOR_PRESETS = APP_IDENTITY_COLOR_PRESETS;
+
 const headlineVerseText = document.querySelector("#headline-verse-text");
 const headlineVerseReference = document.querySelector("#headline-verse-reference");
 const changeVerseButton = document.querySelector("#change-verse-button");
@@ -297,6 +311,7 @@ const customizableGrids = document.querySelectorAll(".customizable-grid");
 const draggableCards = document.querySelectorAll(".draggable-card");
 const dashboardCoverInputs = document.querySelectorAll("[data-cover-upload]");
 const workspaceCards = document.querySelectorAll(".workspace-card[data-cover-key]");
+const agendaColorPresetGrids = document.querySelectorAll("[data-color-preset-grid]");
 const isTouchDevice =
   window.matchMedia("(pointer: coarse)").matches ||
   "ontouchstart" in window ||
@@ -346,6 +361,7 @@ let isHydratingCloudState = false;
 let pendingAvatarData = "";
 let serviceWorkerRefreshHandled = false;
 let pendingServiceWorkerRegistration = null;
+let lastNotifiedAppUpdateKey = localStorage.getItem("vida-nova:last-update-notification") || "";
 let agendaEditingEvent = null;
 let calendarModalEditingEvent = null;
 let weekEventDragPayload = null;
@@ -552,6 +568,57 @@ function getDashboardCoverMap() {
   return moduleStore.dashboardCovers;
 }
 
+function getDashboardCardColorMap() {
+  if (!moduleStore.dashboardCardColors || typeof moduleStore.dashboardCardColors !== "object") {
+    moduleStore.dashboardCardColors = {};
+  }
+  return moduleStore.dashboardCardColors;
+}
+
+function getPageColorMap() {
+  if (!moduleStore.pageColors || typeof moduleStore.pageColors !== "object") {
+    moduleStore.pageColors = {};
+  }
+  return moduleStore.pageColors;
+}
+
+function renderDashboardCardTools() {
+  workspaceCards.forEach((card) => {
+    card.querySelector("[data-cover-color-palette]")?.remove();
+  });
+}
+
+function renderAgendaColorPalettes() {
+  agendaColorPresetGrids.forEach((grid) => {
+    const scope = grid.dataset.colorPresetGrid || "";
+    const input = scope === "agenda-modal" ? calendarModalColor : agendaColorInput;
+    const selectedColor = input?.value || APP_IDENTITY_COLOR_PRESETS[0];
+
+    grid.innerHTML = APP_IDENTITY_COLOR_PRESETS.map((color, index) => `
+      <button
+        class="app-color-swatch${selectedColor === color ? " is-active" : ""}"
+        type="button"
+        data-app-color-scope="${escapeHtml(scope)}"
+        data-app-color-value="${escapeHtml(color)}"
+        aria-label="Cor ${index + 1}"
+        title="Cor ${index + 1}"
+        style="--swatch-color: ${escapeHtml(color)};"
+      ></button>
+    `).join("");
+  });
+}
+
+function syncAgendaColorPalette(scope, color) {
+  const grid = document.querySelector(`[data-color-preset-grid="${scope}"]`);
+  if (!grid) {
+    return;
+  }
+
+  grid.querySelectorAll("[data-app-color-value]").forEach((swatch) => {
+    swatch.classList.toggle("is-active", swatch.dataset.appColorValue === color);
+  });
+}
+
 function renderDashboardCovers() {
   const coverMap = getDashboardCoverMap();
   workspaceCards.forEach((card) => {
@@ -572,6 +639,79 @@ function renderDashboardCovers() {
       cover.style.backgroundPosition = "";
     }
   });
+
+  renderDashboardCardTools();
+}
+
+function getColorablePageViews() {
+  return Array.from(pageViews).filter((view) => {
+    const name = view.dataset.pageView || "";
+    return !["dashboard", "admin"].includes(name);
+  });
+}
+
+function renderPageColorToolbars() {
+  const colorMap = getPageColorMap();
+
+  getColorablePageViews().forEach((view) => {
+    const pageName = view.dataset.pageView || "";
+    if (!pageName) {
+      return;
+    }
+
+    let toolbar = view.querySelector(`[data-page-color-toolbar="${pageName}"]`);
+    if (!toolbar) {
+      toolbar = document.createElement("section");
+      toolbar.className = "block-color-toolbar";
+      toolbar.dataset.pageColorToolbar = pageName;
+      toolbar.innerHTML = `
+        <div class="block-color-toolbar-copy">
+          <p class="eyebrow">Cor do bloco</p>
+          <strong>Escolha a cor desta area</strong>
+        </div>
+        <div class="block-color-swatch-grid"></div>
+      `;
+
+      const returnBar = view.querySelector(".page-return-bar");
+      if (returnBar) {
+        returnBar.insertAdjacentElement("afterend", toolbar);
+      } else {
+        view.prepend(toolbar);
+      }
+    }
+
+    const grid = toolbar.querySelector(".block-color-swatch-grid");
+    if (!grid) {
+      return;
+    }
+
+    const selectedColor = colorMap[pageName] || APP_IDENTITY_COLOR_PRESETS[0];
+    grid.innerHTML = APP_IDENTITY_COLOR_PRESETS.map((color, index) => `
+      <button
+        class="block-color-swatch${selectedColor === color ? " is-active" : ""}"
+        type="button"
+        data-page-color-key="${escapeHtml(pageName)}"
+        data-page-color-value="${escapeHtml(color)}"
+        aria-label="Cor ${index + 1}"
+        title="Cor ${index + 1}"
+        style="--swatch-color: ${escapeHtml(color)};"
+      ></button>
+    `).join("");
+  });
+}
+
+function applyPageColors() {
+  const colorMap = getPageColorMap();
+
+  getColorablePageViews().forEach((view) => {
+    const pageName = view.dataset.pageView || "";
+    const color = colorMap[pageName] || APP_IDENTITY_COLOR_PRESETS[0];
+    view.style.setProperty("--block-soft", mixColor(color, 0.86));
+    view.style.setProperty("--block-fade", mixColor(color, 0.93));
+    view.style.setProperty("--block-line", mixColor(color, 0.42));
+  });
+
+  renderPageColorToolbars();
 }
 
 function setFeedback(element, message, type = "") {
@@ -1376,6 +1516,7 @@ function applyCloudState(state) {
   applyPersistedFieldState(state.persistedFields || {});
   renderPlannerPostitBoard();
   renderDashboardCovers();
+  applyPageColors();
 
   isHydratingCloudState = false;
 }
@@ -1473,7 +1614,8 @@ if (changeVerseButton) {
 
 function setActivePage(pageName, syncHash = true) {
   const availablePages = Array.from(pageViews).map((view) => view.dataset.pageView);
-  const requestedPage = availablePages.includes(pageName) ? pageName : "dashboard";
+  const normalizedPage = pageName === "agenda" || pageName === "sonhos" ? "planner" : pageName;
+  const requestedPage = availablePages.includes(normalizedPage) ? normalizedPage : "dashboard";
   const nextPage = getAllowedPageForSession(requestedPage);
   activePage = nextPage;
 
@@ -1493,6 +1635,12 @@ function setActivePage(pageName, syncHash = true) {
 
   if (syncHash && window.location.hash !== `#${nextPage}`) {
     history.replaceState(null, "", `#${nextPage}`);
+  }
+
+  if (nextPage === "planner" && (pageName === "agenda" || currentPlannerTab === "planner-agenda")) {
+    setPlannerTab("planner-agenda");
+  } else if (nextPage === "planner" && (pageName === "sonhos" || currentPlannerTab === "planner-dreams")) {
+    setPlannerTab("planner-dreams");
   }
 
   if (nextPage === "admin" && isAdminSession()) {
@@ -2210,6 +2358,7 @@ function openCalendarModal(dateKey, prefill = {}) {
   }
   if (calendarModalColor) {
     calendarModalColor.value = prefill.color || getCalendarById(prefill.calendarId).color || "#4285f4";
+    syncAgendaColorPalette("agenda-modal", calendarModalColor.value);
   }
   if (calendarModalDescription) {
     calendarModalDescription.value = prefill.description || "";
@@ -2239,12 +2388,15 @@ function openCalendarModal(dateKey, prefill = {}) {
       .sort((a, b) => (a.time || "").localeCompare(b.time || ""))
       .forEach((eventItem) => {
         const calendar = getCalendarById(eventItem.calendarId);
+        const baseColor = eventItem.color || calendar.color || APP_IDENTITY_COLOR_PRESETS[0];
         const item = document.createElement("li");
-        item.className = "task-item";
+        item.className = "task-item agenda-event-item";
+        item.style.background = `linear-gradient(135deg, ${toSoftColor(baseColor, 0.22)}, ${toSoftColor(baseColor, 0.08)})`;
+        item.style.border = `1px solid ${toSoftColor(baseColor, 0.48)}`;
 
         const text = document.createElement("span");
         text.className = "task-text";
-        text.innerHTML = `<strong><span class="event-color-dot" style="background:${escapeHtml(eventItem.color || calendar.color)}"></span>${escapeHtml(formatTimeRange(eventItem.time, eventItem.endTime))} - ${escapeHtml(eventItem.title)}</strong><small>${escapeHtml(calendar.name)} | ${escapeHtml(eventItem.category || "Pessoal")} | ${escapeHtml(eventItem.location || "Sem local")}${eventItem.guests?.length ? ` | ${escapeHtml(eventItem.guests.join(", "))}` : ""}${eventItem.link ? ` | <a href="${escapeHtml(eventItem.link)}" target="_blank" rel="noreferrer">abrir link</a>` : ""}</small>`;
+        text.innerHTML = `<strong><span class="event-color-dot" style="background:${escapeHtml(baseColor)}"></span>${escapeHtml(formatTimeRange(eventItem.time, eventItem.endTime))} - ${escapeHtml(eventItem.title)}</strong><small>${escapeHtml(calendar.name)} | ${escapeHtml(eventItem.category || "Pessoal")} | ${escapeHtml(eventItem.location || "Sem local")}${eventItem.guests?.length ? ` | ${escapeHtml(eventItem.guests.join(", "))}` : ""}${eventItem.link ? ` | <a href="${escapeHtml(eventItem.link)}" target="_blank" rel="noreferrer">abrir link</a>` : ""}</small>`;
 
         const remove = document.createElement("button");
         remove.type = "button";
@@ -2535,6 +2687,56 @@ function renderDashboardMirror() {
   }
 }
 
+async function notifyAppUpdate(registration, updateKey = "app-update") {
+  if (!("Notification" in window)) {
+    return;
+  }
+
+  if (lastNotifiedAppUpdateKey === updateKey) {
+    return;
+  }
+
+  let permission = Notification.permission;
+  if (permission === "default") {
+    try {
+      permission = await Notification.requestPermission();
+    } catch (error) {
+      console.warn("Falha ao solicitar permissão de notificação.", error);
+    }
+  }
+
+  if (permission !== "granted") {
+    return;
+  }
+
+  lastNotifiedAppUpdateKey = updateKey;
+  localStorage.setItem("vida-nova:last-update-notification", updateKey);
+
+  try {
+    if (registration?.showNotification) {
+      await registration.showNotification("Atualização disponível no Vida Nova", {
+        body: "Toque para abrir o app e concluir a atualização. Seus dados e login salvos devem permanecer no dispositivo.",
+        icon: "./icon-192.png?v=nv3",
+        badge: "./icon-192.png?v=nv3",
+        tag: "vida-nova-app-update",
+        renotify: true,
+        data: {
+          url: "./index.html",
+        },
+      });
+      return;
+    }
+
+    new Notification("Atualização disponível no Vida Nova", {
+      body: "Abra o app e toque em atualizar para carregar a versão mais recente.",
+      icon: "./icon-192.png?v=nv3",
+      tag: "vida-nova-app-update",
+    });
+  } catch (error) {
+    console.warn("Falha ao mostrar notificação de atualização.", error);
+  }
+}
+
 function formatDateKey(date) {
   return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(
     date.getDate(),
@@ -2675,6 +2877,7 @@ function resetAgendaForm() {
   }
   if (agendaColorInput) {
     agendaColorInput.value = getCalendarById(agendaCalendarInput?.value).color || "#4285f4";
+    syncAgendaColorPalette("agenda-form", agendaColorInput.value);
   }
   if (agendaSubmitButton) {
     agendaSubmitButton.textContent = "Salvar";
@@ -2726,6 +2929,7 @@ function startAgendaEdit(eventItem, dateKey = selectedDateKey) {
   }
   if (agendaColorInput) {
     agendaColorInput.value = eventItem.color || getCalendarById(eventItem.calendarId).color || "#4285f4";
+    syncAgendaColorPalette("agenda-form", agendaColorInput.value);
   }
   if (agendaDescriptionInput) {
     agendaDescriptionInput.value = eventItem.description || "";
@@ -2758,19 +2962,24 @@ function renderAgendaEvents() {
     .sort((a, b) => (a.time || "").localeCompare(b.time || ""))
     .forEach((eventItem) => {
       const calendar = getCalendarById(eventItem.calendarId);
+      const baseColor = eventItem.color || calendar.color || APP_IDENTITY_COLOR_PRESETS[0];
       const item = document.createElement("li");
-      item.className = "task-item";
+      item.className = "task-item agenda-event-item";
+      item.style.background = `linear-gradient(135deg, ${toSoftColor(baseColor, 0.24)}, ${toSoftColor(baseColor, 0.1)})`;
+      item.style.border = `1px solid ${toSoftColor(baseColor, 0.48)}`;
 
       const time = document.createElement("button");
       time.type = "button";
       time.className = "task-check";
       time.textContent = "";
       time.setAttribute("aria-label", "Compromisso");
+      time.style.borderColor = baseColor;
+      time.style.background = toSoftColor(baseColor, 0.14);
 
       const text = document.createElement("span");
       text.className = "task-text";
       text.innerHTML = `
-        <strong><span class="event-color-dot" style="background:${escapeHtml(eventItem.color || calendar.color)}"></span>${escapeHtml(formatTimeRange(eventItem.time, eventItem.endTime))} - ${escapeHtml(eventItem.title)}</strong>
+        <strong><span class="event-color-dot" style="background:${escapeHtml(baseColor)}"></span>${escapeHtml(formatTimeRange(eventItem.time, eventItem.endTime))} - ${escapeHtml(eventItem.title)}</strong>
         <small>${escapeHtml(calendar.name)} | ${escapeHtml(eventItem.category || "Pessoal")} | ${escapeHtml(eventItem.location || "Sem local")} | ${escapeHtml(eventItem.description || "Sem descricao")}${eventItem.link ? ` | <a href="${escapeHtml(eventItem.link)}" target="_blank" rel="noreferrer">abrir link</a>` : ""}</small>
       `;
 
@@ -3239,7 +3448,7 @@ function registerServiceWorker() {
 
   window.addEventListener("load", () => {
     navigator.serviceWorker
-      .register("./sw.js")
+      .register("./sw.js", { updateViaCache: "none" })
       .then((registration) => {
         const activateWaitingWorker = () => {
           if (registration.waiting) {
@@ -3249,15 +3458,17 @@ function registerServiceWorker() {
 
         const handleUpdateReady = () => {
           pendingServiceWorkerRegistration = registration;
+          const updateKey = registration.waiting?.scriptURL || `update-${Date.now()}`;
           if (appUpdateBanner) {
             appUpdateBanner.classList.remove("hidden");
             appUpdateBanner.setAttribute("aria-hidden", "false");
           }
           setFeedback(
             settingsUpdateFeedback,
-            "Nova versao detectada. O app vai atualizar automaticamente.",
+            "Nova versão detectada. O app vai tentar atualizar automaticamente sem apagar seus dados nem exigir novo login, salvo se a sessão tiver expirado.",
             "success",
           );
+          notifyAppUpdate(registration, updateKey).catch(() => {});
 
           window.setTimeout(() => {
             activateWaitingWorker();
@@ -3294,22 +3505,80 @@ function registerServiceWorker() {
           window.location.reload();
         });
 
-        window.setTimeout(() => {
+        const runUpdateCheck = () => {
           registration.update().catch(() => {});
-        }, 1800);
+        };
+
+        window.setTimeout(runUpdateCheck, 1800);
+        window.setInterval(runUpdateCheck, 60000);
 
         document.addEventListener("visibilitychange", () => {
           if (document.visibilityState === "visible") {
-            registration.update().catch(() => {});
+            runUpdateCheck();
           }
         });
 
         window.addEventListener("focus", () => {
-          registration.update().catch(() => {});
+          runUpdateCheck();
         });
       })
       .catch(() => {});
   });
+}
+
+let _bootBuildTime = null;
+
+function setupBodyPhotos() {
+  document.querySelectorAll("input[data-body-photo]").forEach((input) => {
+    const key = input.dataset.bodyPhoto;
+    const imgEl = document.getElementById(`corpo-${key}-img`);
+    const stored = localStorage.getItem(`vida-nova:body-photo-${key}`);
+    if (stored && imgEl) { imgEl.src = stored; imgEl.style.display = "block"; }
+    input.addEventListener("change", () => {
+      const file = input.files?.[0];
+      if (!file || !file.type.startsWith("image/")) return;
+      const reader = new FileReader();
+      reader.onload = () => {
+        const src = String(reader.result || "");
+        localStorage.setItem(`vida-nova:body-photo-${key}`, src);
+        if (imgEl) { imgEl.src = src; imgEl.style.display = "block"; }
+        input.value = "";
+        scheduleCloudSync();
+      };
+      reader.readAsDataURL(file);
+    });
+  });
+}
+
+async function startVersionPolling() {
+  const fetchVersion = async () => {
+    try {
+      const res = await fetch("./version.json?_=" + Date.now());
+      if (!res.ok) return null;
+      const data = await res.json();
+      return data.buildTime || data.version || null;
+    } catch {
+      return null;
+    }
+  };
+
+  _bootBuildTime = await fetchVersion();
+
+  const check = async () => {
+    const latest = await fetchVersion();
+    if (latest && _bootBuildTime && latest !== _bootBuildTime) {
+      try { scheduleCloudSync(); } catch {}
+      setTimeout(() => window.location.reload(), 500);
+    }
+  };
+
+  setInterval(check, 30000);
+
+  document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState === "visible") check();
+  });
+
+  window.addEventListener("focus", () => check());
 }
 
 async function forceAppUpdate() {
@@ -3318,7 +3587,7 @@ async function forceAppUpdate() {
   }
   setFeedback(
     settingsUpdateFeedback,
-    "Buscando versao mais recente do app...",
+    "Buscando a versão mais recente do app...",
     "success",
   );
 
@@ -3344,7 +3613,7 @@ async function forceAppUpdate() {
   } catch (error) {
     setFeedback(
       settingsUpdateFeedback,
-      "Nao foi possivel atualizar agora. Feche e abra o app novamente.",
+      "Não foi possível atualizar agora. Feche e abra o app novamente.",
       "error",
     );
     if (settingsForceUpdate) {
@@ -3872,6 +4141,9 @@ pageLinks.forEach((link) => {
       return;
     }
     event.preventDefault();
+    if (link.dataset.plannerOpen) {
+      setPlannerTab(link.dataset.plannerOpen);
+    }
     setActivePage(page);
   });
 });
@@ -3880,6 +4152,9 @@ dashboardOpenButtons.forEach((button) => {
   button.addEventListener("click", () => {
     const targetPage = button.dataset.dashboardOpen;
     if (targetPage) {
+      if (button.dataset.plannerOpen) {
+        setPlannerTab(button.dataset.plannerOpen);
+      }
       setActivePage(targetPage);
     }
   });
@@ -3891,6 +4166,9 @@ document.addEventListener("click", (event) => {
     const targetPage = dashboardTrigger.dataset.dashboardOpen;
     if (targetPage) {
       event.preventDefault();
+      if (dashboardTrigger.dataset.plannerOpen) {
+        setPlannerTab(dashboardTrigger.dataset.plannerOpen);
+      }
       setActivePage(targetPage);
     }
   }
@@ -4188,6 +4466,7 @@ if (agendaCalendarInput) {
     const calendar = getCalendarById(agendaCalendarInput.value);
     if (agendaColorInput && calendar?.color) {
       agendaColorInput.value = calendar.color;
+      syncAgendaColorPalette("agenda-form", agendaColorInput.value);
     }
   });
 }
@@ -4197,6 +4476,7 @@ if (calendarModalCalendar) {
     const calendar = getCalendarById(calendarModalCalendar.value);
     if (calendarModalColor && calendar?.color) {
       calendarModalColor.value = calendar.color;
+      syncAgendaColorPalette("agenda-modal", calendarModalColor.value);
     }
   });
 }
@@ -4590,7 +4870,7 @@ function renderPlannerDreamBoard() {
       </div>
       <div class="planner-dream-slot-actions">
         <label class="dream-upload planner-dream-slot-upload">
-          <span>${image ? "Trocar imagem" : "Adicionar imagem"}</span>
+          <span>Escolher arquivo</span>
           <input type="file" accept="image/*" data-planner-dream-slot="${index}" />
         </label>
         ${
@@ -4775,6 +5055,27 @@ function renderAllProjectAttachments() {
   });
 }
 
+let currentPlannerTab = "planner-weekly";
+
+function setPlannerTab(target) {
+  const plannerShell = document.querySelector('.planner-tab-shell[data-tab-group="planner"]');
+  if (!plannerShell || !target) {
+    return;
+  }
+
+  const buttons = plannerShell.querySelectorAll("[data-tab-target]");
+  const panels = plannerShell.querySelectorAll("[data-tab-panel]");
+  currentPlannerTab = target;
+
+  buttons.forEach((button) => {
+    button.classList.toggle("is-active", button.dataset.tabTarget === target);
+  });
+
+  panels.forEach((panel) => {
+    panel.classList.toggle("is-active", panel.dataset.tabPanel === target);
+  });
+}
+
 function setupTabs() {
   tabShells.forEach((shell) => {
     shell.addEventListener("click", (event) => {
@@ -4785,6 +5086,9 @@ function setupTabs() {
       const target = trigger.dataset.tabTarget;
       const buttons = shell.querySelectorAll("[data-tab-target]");
       const panels = shell.querySelectorAll("[data-tab-panel]");
+      if (shell.dataset.tabGroup === "planner") {
+        currentPlannerTab = target;
+      }
       buttons.forEach((button) => {
         button.classList.toggle("is-active", button.dataset.tabTarget === target);
       });
@@ -5268,8 +5572,22 @@ if (calculatorDisplay) {
 }
 
 dashboardCoverInputs.forEach((input) => {
-  input.closest(".workspace-cover-upload")?.addEventListener("click", (event) => {
+  input.closest(".workspace-card-tools")?.addEventListener("click", (event) => {
     event.stopPropagation();
+  });
+
+  input.closest(".workspace-cover-upload")?.addEventListener("click", (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    if (typeof input.showPicker === "function") {
+      try {
+        input.showPicker();
+        return;
+      } catch (error) {
+        console.debug("showPicker indisponivel para este campo.", error);
+      }
+    }
+    input.click();
   });
 
   input.addEventListener("click", (event) => {
@@ -5295,6 +5613,58 @@ dashboardCoverInputs.forEach((input) => {
 });
 
 renderDashboardCovers();
+renderAgendaColorPalettes();
+applyPageColors();
+
+document.addEventListener("click", (event) => {
+  const colorSwatch = event.target.closest("[data-app-color-scope][data-app-color-value]");
+  if (colorSwatch) {
+    const scope = colorSwatch.dataset.appColorScope || "";
+    const color = colorSwatch.dataset.appColorValue || APP_IDENTITY_COLOR_PRESETS[0];
+    const input = scope === "agenda-modal" ? calendarModalColor : agendaColorInput;
+    if (!input) {
+      return;
+    }
+
+    input.value = color;
+    syncAgendaColorPalette(scope, color);
+    return;
+  }
+
+  const pageColorSwatch = event.target.closest("[data-page-color-key][data-page-color-value]");
+  if (!pageColorSwatch) {
+    return;
+  }
+
+  event.preventDefault();
+  const pageKey = pageColorSwatch.dataset.pageColorKey || "";
+  const color = pageColorSwatch.dataset.pageColorValue || APP_IDENTITY_COLOR_PRESETS[0];
+  if (!pageKey) {
+    return;
+  }
+
+  getPageColorMap()[pageKey] = color;
+  applyPageColors();
+  scheduleCloudSync();
+});
+
+document.addEventListener("keydown", (event) => {
+  const swatch = event.target.closest("[data-page-color-key][data-page-color-value]");
+  if (!swatch || (event.key !== "Enter" && event.key !== " ")) {
+    return;
+  }
+
+  event.preventDefault();
+  const pageKey = swatch.dataset.pageColorKey || "";
+  const color = swatch.dataset.pageColorValue || APP_IDENTITY_COLOR_PRESETS[0];
+  if (!pageKey) {
+    return;
+  }
+
+  getPageColorMap()[pageKey] = color;
+  applyPageColors();
+  scheduleCloudSync();
+});
 
 moduleOpenButtons.forEach((button) => {
   button.addEventListener("click", () => {
@@ -5716,6 +6086,8 @@ async function bootApp() {
   setupDreamVisionUpload();
   setupProjectUploads();
   registerServiceWorker();
+  startVersionPolling();
+  setupBodyPhotos();
   setupInstallPrompt();
   updateInstallUi();
 }

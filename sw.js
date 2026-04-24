@@ -1,5 +1,5 @@
-const CACHE_NAME = "vida-nova-v4";
-const CACHE_DYNAMIC = "vida-nova-dynamic-v4";
+const CACHE_NAME = "vida-nova-v5";
+const CACHE_DYNAMIC = "vida-nova-dynamic-v5";
 const APP_SHELL = [
   "./",
   "./index.html",
@@ -56,6 +56,12 @@ self.addEventListener("fetch", (event) => {
 
   const url = new URL(request.url);
   
+  // version.json is always fetched from network — never cached
+  if (url.pathname.endsWith("/version.json")) {
+    event.respondWith(fetch(request).catch(() => new Response("{}", { status: 503 })));
+    return;
+  }
+
   // Handle same-origin requests
   if (url.origin === location.origin) {
     const isAppAsset =
@@ -117,4 +123,26 @@ self.addEventListener("message", (event) => {
   if (event.data && event.data.type === "SKIP_WAITING") {
     self.skipWaiting();
   }
+});
+
+self.addEventListener("notificationclick", (event) => {
+  event.notification.close();
+  const targetUrl = event.notification?.data?.url || "./index.html";
+
+  event.waitUntil(
+    clients.matchAll({ type: "window", includeUncontrolled: true }).then((clientList) => {
+      for (const client of clientList) {
+        if ("focus" in client) {
+          client.navigate(targetUrl).catch(() => {});
+          return client.focus();
+        }
+      }
+
+      if (clients.openWindow) {
+        return clients.openWindow(targetUrl);
+      }
+
+      return Promise.resolve();
+    }),
+  );
 });

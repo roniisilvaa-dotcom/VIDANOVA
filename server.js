@@ -35,6 +35,14 @@ const pool = isUsingDatabase
 
 app.use(cors());
 app.use(express.json({ limit: "2mb" }));
+
+// version.json must never be cached so auto-update detection works
+app.get("/version.json", (req, res, next) => {
+  res.set("Cache-Control", "no-store, no-cache, must-revalidate");
+  res.set("Pragma", "no-cache");
+  next();
+});
+
 app.use(express.static(path.join(__dirname)));
 
 function shouldUseSsl(connectionString) {

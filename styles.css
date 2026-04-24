@@ -1411,6 +1411,32 @@ body.subscription-locked .subscription-gate {
   background: rgba(255, 255, 255, 0.85);
 }
 
+.agenda-color-field span {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #5a4356;
+}
+
+.app-color-preset-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.app-color-swatch {
+  min-height: 42px;
+  border: 1px solid rgba(113, 86, 104, 0.12);
+  border-radius: 14px;
+  background: var(--swatch-color);
+  cursor: pointer;
+  box-shadow: 0 10px 18px rgba(91, 72, 105, 0.08);
+}
+
+.app-color-swatch.is-active {
+  border-color: rgba(91, 72, 105, 0.38);
+  box-shadow: 0 0 0 3px rgba(91, 72, 105, 0.12), 0 12px 22px rgba(91, 72, 105, 0.12);
+}
+
 .week-view-shell {
   display: grid;
   gap: 12px;
@@ -2686,6 +2712,11 @@ body.subscription-locked .subscription-gate {
   padding: 12px 14px;
   border-radius: 16px;
   background: rgba(255, 255, 255, 0.7);
+}
+
+.agenda-event-item {
+  border: 1px solid rgba(91, 72, 105, 0.12);
+  box-shadow: 0 12px 24px rgba(91, 72, 105, 0.08);
 }
 
 .task-item.done {
@@ -4342,7 +4373,7 @@ select {
 }
 
 .planner-tab-weekly { background: linear-gradient(135deg, #f4f2a7, #fff4c8); }
-.planner-tab-monthly { background: linear-gradient(135deg, #c8f0ba, #eafadf); }
+.planner-tab-agenda { background: linear-gradient(135deg, #d6f0ff, #eef8ff); }
 .planner-tab-dreams { background: linear-gradient(135deg, #ffe7ad, #fff3d3); }
 
 .planner-hero-banner {
@@ -4381,7 +4412,7 @@ select {
 
 .planner-top-grid {
   display: grid;
-  grid-template-columns: minmax(0, 420px);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 18px;
   align-items: stretch;
 }
@@ -4393,8 +4424,63 @@ select {
   overflow: hidden;
   border-radius: 24px;
   border: 1px solid rgba(126, 95, 112, 0.12);
-  background: rgba(255, 255, 255, 0.92);
+  background: linear-gradient(180deg, rgba(255, 250, 246, 0.96), rgba(255, 245, 252, 0.92));
   box-shadow: 0 18px 34px rgba(112, 83, 96, 0.1);
+}
+
+.page-view:not([data-page-view="dashboard"]) .panel,
+.page-view:not([data-page-view="dashboard"]) .module-card,
+.page-view:not([data-page-view="dashboard"]) .calendar-card,
+.page-view:not([data-page-view="dashboard"]) .agenda-summary-card,
+.page-view:not([data-page-view="dashboard"]) .agenda-events-card,
+.page-view:not([data-page-view="dashboard"]) .detail-card,
+.page-view:not([data-page-view="dashboard"]) .project-card,
+.page-view:not([data-page-view="dashboard"]) .planner-spotlight-card,
+.page-view:not([data-page-view="dashboard"]) .planner-week-card,
+.page-view:not([data-page-view="dashboard"]) .planner-summary-band {
+  background: linear-gradient(180deg, var(--block-soft, rgba(255, 250, 246, 0.96)), var(--block-fade, rgba(255, 245, 252, 0.92)));
+  border-color: var(--block-line, rgba(126, 95, 112, 0.12));
+}
+
+.block-color-toolbar {
+  display: grid;
+  gap: 10px;
+  margin-bottom: 16px;
+  padding: 14px 16px;
+  border-radius: 20px;
+  border: 1px solid rgba(126, 95, 112, 0.12);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.9), rgba(250, 245, 252, 0.82));
+  box-shadow: 0 14px 28px rgba(112, 83, 96, 0.08);
+}
+
+.block-color-toolbar-copy {
+  display: grid;
+  gap: 4px;
+}
+
+.block-color-toolbar-copy strong {
+  color: #5a4356;
+  font-size: 1rem;
+}
+
+.block-color-swatch-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.block-color-swatch {
+  min-height: 42px;
+  border: 1px solid rgba(113, 86, 104, 0.12);
+  border-radius: 14px;
+  background: var(--swatch-color);
+  cursor: pointer;
+  box-shadow: 0 10px 18px rgba(91, 72, 105, 0.08);
+}
+
+.block-color-swatch.is-active {
+  border-color: rgba(91, 72, 105, 0.38);
+  box-shadow: 0 0 0 3px rgba(91, 72, 105, 0.12), 0 12px 22px rgba(91, 72, 105, 0.12);
 }
 
 .planner-card-header {
@@ -4424,6 +4510,11 @@ select {
   color: #214625;
 }
 
+.planner-card-header-lilac {
+  background: linear-gradient(135deg, #b58cff, #ead9ff);
+  color: #4a316a;
+}
+
 .planner-card-header-cream {
   background: linear-gradient(135deg, #fff0cf, #fff8ea);
 }
@@ -4431,15 +4522,6 @@ select {
 .planner-focus-card {
   display: grid;
   grid-template-rows: auto 1fr;
-}
-
-.planner-postit-preview-card {
-  display: grid;
-  grid-template-rows: auto 1fr;
-}
-
-.planner-postit-preview-shell {
-  padding: 16px;
 }
 
 .planner-input {
@@ -4467,6 +4549,10 @@ select {
   min-height: 238px;
   background:
     linear-gradient(180deg, rgba(255, 248, 229, 0.95), rgba(255, 250, 238, 0.82));
+}
+
+.planner-task-card {
+  background: linear-gradient(180deg, rgba(255, 250, 234, 0.98), rgba(255, 246, 224, 0.9));
 }
 
 .planner-task-form {
@@ -4538,59 +4624,9 @@ select {
   color: var(--muted);
 }
 
-.planner-summary-band {
-  display: grid;
-  grid-template-columns: 280px minmax(0, 1fr);
-  align-items: stretch;
-}
-
-.planner-band-input {
-  min-height: 140px;
-}
-
-.planner-reflection-grid {
-  display: grid;
-  grid-template-columns: 280px minmax(0, 1fr) minmax(0, 1fr);
-  gap: 18px;
-}
-
-.planner-reflection-photo {
-  min-height: 320px;
-  padding: 0;
-  background: linear-gradient(135deg, #e8c7b8, #f5e5dc);
-}
-
-.planner-reflection-illustration {
-  width: 100%;
-  height: 100%;
-  min-height: 320px;
-  background:
-    linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02)),
-    linear-gradient(135deg, #d9b7a5, #f2dfd5 62%, #f9efe8);
-  position: relative;
-}
-
-.planner-reflection-illustration::before {
-  content: "";
-  position: absolute;
-  inset: 24px;
-  border-radius: 26px;
-  background:
-    radial-gradient(circle at 60% 16%, rgba(255,255,255,0.82), transparent 12%),
-    linear-gradient(135deg, rgba(255,255,255,0.42), rgba(255,255,255,0.08));
-}
-
-.planner-reflection-input {
-  min-height: 250px;
-}
-
-.planner-dreams-panel,
-.planner-month-vision-band {
-  grid-template-columns: 280px minmax(0, 1fr);
-}
-
 .planner-dream-vision-shell {
-  padding: 18px;
+  padding: 22px;
+  background: linear-gradient(180deg, rgba(231, 248, 255, 0.72), rgba(255, 248, 236, 0.7));
 }
 
 .planner-dream-board-copy {
@@ -4606,99 +4642,6 @@ select {
   text-transform: uppercase;
 }
 
-.planner-month-photo-controls {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 10px;
-  width: 100%;
-  padding: 20px;
-}
-
-.planner-upload-chip {
-  min-height: 86px;
-  justify-content: center;
-  border-radius: 18px;
-  background: rgba(255,255,255,0.8);
-  box-shadow: 0 12px 24px rgba(129, 91, 105, 0.08);
-}
-
-.planner-month-summary-card {
-  min-height: 320px;
-}
-
-.planner-month-vision-copy {
-  display: grid;
-  gap: 14px;
-  padding: 18px;
-}
-
-.planner-postit-board {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 14px;
-}
-
-.planner-postit-board-compact {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-}
-
-.planner-postit-card {
-  margin: 0;
-  padding: 12px;
-  border-radius: 22px;
-  background: linear-gradient(135deg, rgba(255, 250, 228, 0.96), rgba(255,255,255,0.92));
-  box-shadow: 0 14px 28px rgba(117, 95, 56, 0.12);
-  transform: rotate(-2deg);
-}
-
-.planner-postit-card:nth-child(2n) {
-  transform: rotate(2deg);
-}
-
-.planner-postit-card img {
-  width: 100%;
-  aspect-ratio: 1 / 1;
-  object-fit: cover;
-  border-radius: 16px;
-}
-
-.planner-postit-card figcaption {
-  margin-top: 8px;
-  font-size: 0.85rem;
-  color: #5a4356;
-  text-align: center;
-}
-
-.planner-postit-card-note {
-  display: grid;
-  align-content: space-between;
-  min-height: 196px;
-  background: linear-gradient(135deg, rgba(255, 238, 179, 0.98), rgba(255, 248, 220, 0.94));
-}
-
-.planner-postit-board-compact .planner-postit-card,
-.planner-postit-board-compact .planner-postit-card-note {
-  min-height: 150px;
-}
-
-.planner-postit-board-compact .planner-postit-note-body {
-  min-height: 84px;
-  font-size: 0.94rem;
-  -webkit-line-clamp: 4;
-}
-
-.planner-postit-note-body {
-  display: -webkit-box;
-  overflow: hidden;
-  min-height: 120px;
-  color: #5a4356;
-  font-size: 1rem;
-  line-height: 1.55;
-  white-space: pre-wrap;
-  -webkit-line-clamp: 5;
-  -webkit-box-orient: vertical;
-}
-
 .planner-dream-tip {
   margin: 0;
   color: var(--muted);
@@ -4707,8 +4650,8 @@ select {
 
 .planner-dream-board-grid {
   display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: 18px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 20px;
 }
 
 .planner-dream-slot {
@@ -4716,14 +4659,14 @@ select {
   gap: 12px;
   padding: 14px;
   border-radius: 24px;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.94), rgba(246, 252, 255, 0.92));
+  background: linear-gradient(180deg, rgba(255, 250, 242, 0.98), rgba(240, 249, 255, 0.95));
   border: 1px solid rgba(83, 128, 148, 0.14);
   box-shadow: 0 18px 32px rgba(58, 87, 101, 0.1);
 }
 
 .planner-dream-slot-frame {
   position: relative;
-  min-height: 236px;
+  min-height: 286px;
   padding: 10px;
   border-radius: 18px;
   background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(241, 249, 252, 0.96));
@@ -4745,7 +4688,7 @@ select {
 .planner-dream-slot-image {
   width: 100%;
   height: 100%;
-  min-height: 216px;
+  min-height: 266px;
   object-fit: cover;
   border-radius: 14px;
 }
@@ -4753,7 +4696,7 @@ select {
 .planner-dream-slot-empty {
   display: grid;
   place-items: center;
-  min-height: 216px;
+  min-height: 266px;
   border-radius: 14px;
   border: 1px dashed rgba(83, 128, 148, 0.28);
   background: linear-gradient(180deg, rgba(236, 247, 251, 0.95), rgba(252, 255, 255, 0.98));
@@ -4786,6 +4729,34 @@ select {
   justify-content: center;
   border-radius: 14px;
   background: rgba(225, 244, 250, 0.9);
+  padding: 0 14px;
+  font-weight: 700;
+}
+
+.planner-goals-panel {
+  display: grid;
+  grid-template-columns: 260px minmax(0, 1fr);
+}
+
+.planner-goals-shell {
+  padding: 20px;
+  background: linear-gradient(180deg, rgba(246, 240, 255, 0.82), rgba(255, 249, 241, 0.76));
+}
+
+.planner-goal-horizon-grid {
+  margin-bottom: 0;
+}
+
+.planner-goal-card {
+  padding: 16px;
+  border-radius: 20px;
+  border: 1px solid rgba(153, 121, 185, 0.14);
+  background: linear-gradient(180deg, rgba(255, 250, 255, 0.96), rgba(245, 238, 255, 0.92));
+  box-shadow: 0 14px 26px rgba(111, 85, 128, 0.08);
+}
+
+.planner-goal-card .metric-label {
+  color: #6a4c7e;
 }
 
 .dream-vision-card {
@@ -4825,8 +4796,6 @@ select {
   .two-column,
   .planner-top-grid,
   .planner-week-grid,
-  .planner-summary-band,
-  .planner-reflection-grid,
   .planner-month-vision-band,
   .planner-dreams-panel,
   .workspace-overview-grid,
@@ -4875,8 +4844,6 @@ select {
     grid-template-columns: 1fr;
   }
 
-  .planner-month-photo-controls,
-  .planner-postit-board,
   .planner-dream-board-grid {
     grid-template-columns: 1fr;
   }
@@ -4899,4 +4866,698 @@ select {
   .workspace-card-grid {
     grid-template-columns: 1fr;
   }
+}
+
+/* ═══════════════════════════════════════════
+   CORPO — MÓDULO COMPLETO
+═══════════════════════════════════════════ */
+
+/* Aba wrapper */
+.corpo-tab-content { padding: 20px 0; }
+
+/* MEDIDAS — antes/depois */
+.corpo-before-after {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-bottom: 28px;
+}
+.corpo-before-card,
+.corpo-after-card {
+  border-radius: 18px;
+  padding: 20px;
+}
+.corpo-before-card { background: #fff0f3; border: 1.5px solid #f5c2cb; }
+.corpo-after-card  { background: #f0faf5; border: 1.5px solid #b7e4c7; }
+.corpo-label-pill {
+  display: inline-block;
+  padding: 3px 16px;
+  border-radius: 20px;
+  font-weight: 800;
+  font-size: .82rem;
+  letter-spacing: .06em;
+  margin-bottom: 14px;
+}
+.corpo-label-before { background: #e63946; color: #fff; }
+.corpo-label-after  { background: #2d6a4f; color: #fff; }
+.corpo-before-card label,
+.corpo-after-card label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: .8rem;
+  font-weight: 600;
+  color: #6b5a5e;
+  margin-bottom: 10px;
+}
+.corpo-before-card input,
+.corpo-after-card input {
+  border: 1px solid #e0c8cf;
+  border-radius: 10px;
+  padding: 7px 12px;
+  font-size: .88rem;
+  background: #fff;
+  width: 100%;
+}
+.corpo-photo-area {
+  border: 2px dashed #e0b0bc;
+  border-radius: 14px;
+  padding: 14px;
+  text-align: center;
+  cursor: pointer;
+  margin-bottom: 14px;
+  background: rgba(255,255,255,.6);
+  font-size: .82rem;
+  color: #b07080;
+  transition: border-color .2s;
+}
+.corpo-photo-area:hover { border-color: #c55b84; color: #c55b84; }
+.corpo-photo-area input[type=file] { display: none; }
+.corpo-photo-img {
+  width: 100%;
+  max-height: 180px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-top: 8px;
+  display: none;
+}
+.corpo-feeling-block {
+  border-radius: 14px;
+  padding: 12px 14px;
+  margin-top: 10px;
+}
+.corpo-feeling-before { background: #ffccd5; }
+.corpo-feeling-after  { background: #ffccd5; }
+.corpo-feeling-block h5 {
+  font-size: .88rem;
+  font-weight: 800;
+  margin-bottom: 8px;
+}
+.corpo-feeling-block textarea {
+  width: 100%;
+  border: none;
+  background: transparent;
+  font-size: .83rem;
+  resize: vertical;
+  min-height: 72px;
+  font-family: inherit;
+}
+.corpo-challenge-block {
+  background: #fff;
+  border-radius: 14px;
+  padding: 12px 14px;
+  margin-top: 10px;
+  border: 1px solid #f0e0e4;
+}
+.corpo-challenge-block h5 { font-size: .85rem; font-weight: 800; margin-bottom: 6px; }
+.corpo-challenge-block textarea {
+  width: 100%;
+  border: none;
+  background: transparent;
+  font-size: .83rem;
+  resize: vertical;
+  min-height: 56px;
+  font-family: inherit;
+}
+
+/* Tabela de medidas */
+.corpo-measures-wrap {
+  background: #fff;
+  border: 1px solid #f0e0e8;
+  border-radius: 18px;
+  padding: 20px;
+  margin-top: 4px;
+}
+.corpo-measures-wrap h4 {
+  font-size: 1rem;
+  font-weight: 800;
+  margin-bottom: 14px;
+  color: #c55b84;
+}
+.corpo-measures-table-shell { overflow-x: auto; }
+.corpo-measures-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: .82rem;
+  white-space: nowrap;
+}
+.corpo-measures-table th {
+  background: #fff0f5;
+  padding: 7px 12px;
+  font-weight: 700;
+  color: #9b3060;
+  border-bottom: 2px solid #f5c2d4;
+  text-align: left;
+}
+.corpo-measures-table td {
+  padding: 6px 10px;
+  border-bottom: 1px solid #fce4ec;
+}
+.corpo-measures-table td:first-child {
+  font-weight: 700;
+  color: #7a3050;
+  background: #fff8fb;
+  white-space: nowrap;
+}
+.corpo-measures-table input {
+  width: 80px;
+  border: 1px solid #f0d0dc;
+  border-radius: 8px;
+  padding: 4px 8px;
+  font-size: .8rem;
+  text-align: center;
+}
+
+/* EXERCÍCIOS */
+.corpo-workout-header {
+  margin-bottom: 18px;
+}
+.corpo-workout-name-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+.corpo-workout-name-row label {
+  font-size: .8rem;
+  font-weight: 700;
+  color: #7a5060;
+  white-space: nowrap;
+}
+.corpo-workout-name-row input {
+  flex: 1;
+  border: 1px solid #e8d0dc;
+  border-radius: 10px;
+  padding: 7px 12px;
+  font-size: .88rem;
+  background: #d8f3e4;
+}
+.corpo-workout-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 28px;
+}
+.corpo-workout-day {
+  background: #fff;
+  border: 1.5px solid #f0e0e8;
+  border-radius: 18px;
+  overflow: hidden;
+}
+.corpo-workout-day-header {
+  background: linear-gradient(135deg, #c55b84, #e8829a);
+  color: #fff;
+  padding: 12px 16px;
+  font-weight: 800;
+  font-size: .95rem;
+  letter-spacing: .04em;
+}
+.corpo-workout-day-body { padding: 14px; }
+.corpo-workout-treino-input {
+  width: 100%;
+  background: #d8f3e4;
+  border: 1px solid #b7e4c7;
+  border-radius: 10px;
+  padding: 7px 10px;
+  font-size: .85rem;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+.corpo-exercise-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: .78rem;
+}
+.corpo-exercise-table th {
+  background: #fff0f5;
+  padding: 5px 6px;
+  font-weight: 700;
+  color: #9b3060;
+  text-align: left;
+  border-bottom: 1px solid #f5c2d4;
+}
+.corpo-exercise-table td {
+  padding: 4px 4px;
+  border-bottom: 1px solid #fce4ec;
+  vertical-align: middle;
+}
+.corpo-exercise-table input[type=text] {
+  width: 100%;
+  border: 1px solid #f0d0dc;
+  border-radius: 6px;
+  padding: 3px 6px;
+  font-size: .77rem;
+}
+.corpo-exercise-table input[type=checkbox] {
+  width: 16px;
+  height: 16px;
+  accent-color: #c55b84;
+}
+
+/* Biblioteca de treinos */
+.corpo-library-wrap {
+  background: #fffaf5;
+  border: 1px solid #f0e0d8;
+  border-radius: 18px;
+  padding: 20px;
+}
+.corpo-library-wrap h4 {
+  text-align: center;
+  font-size: 1rem;
+  font-weight: 800;
+  margin-bottom: 14px;
+  color: #c55b84;
+}
+.corpo-library-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+.corpo-library-item {
+  background: #fff;
+  border: 1px solid #f0e0e8;
+  border-radius: 14px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.corpo-library-item input {
+  border: 1px solid #e8d0dc;
+  border-radius: 8px;
+  padding: 5px 10px;
+  font-size: .8rem;
+  width: 100%;
+}
+.corpo-library-item input:first-child { font-weight: 600; }
+
+/* SAÚDE */
+.corpo-saude-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+  margin-bottom: 20px;
+}
+.corpo-saude-card {
+  background: #fff;
+  border: 1.5px solid #f0e0e8;
+  border-radius: 18px;
+  padding: 18px;
+}
+.corpo-saude-card h5 {
+  font-size: .92rem;
+  font-weight: 800;
+  margin-bottom: 12px;
+  color: #c55b84;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.corpo-saude-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: .82rem;
+}
+.corpo-saude-table th {
+  background: #fff0f5;
+  padding: 6px 10px;
+  font-weight: 700;
+  color: #9b3060;
+  text-align: left;
+  border-bottom: 2px solid #f5c2d4;
+}
+.corpo-saude-table td {
+  padding: 5px 8px;
+  border-bottom: 1px solid #fce4ec;
+}
+.corpo-saude-table input {
+  width: 100%;
+  border: 1px solid #f0d0dc;
+  border-radius: 8px;
+  padding: 4px 8px;
+  font-size: .8rem;
+}
+.corpo-saude-table input[type=date] { width: 130px; }
+.corpo-saude-full { grid-column: 1 / -1; }
+.corpo-checklist-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 0;
+  border-bottom: 1px solid #fce4ec;
+  font-size: .85rem;
+}
+.corpo-checklist-item input[type=checkbox] {
+  width: 17px; height: 17px;
+  accent-color: #c55b84;
+  flex-shrink: 0;
+}
+.corpo-checklist-item input[type=text] {
+  flex: 1;
+  border: none;
+  border-bottom: 1px dashed #e0c8d0;
+  background: transparent;
+  font-size: .85rem;
+  padding: 2px 4px;
+}
+.corpo-saude-meds-badge {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 20px;
+  font-size: .75rem;
+  font-weight: 700;
+}
+
+/* BELEZA */
+.corpo-beleza-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+.corpo-beleza-card {
+  background: #fff;
+  border: 1.5px solid #f0e0e8;
+  border-radius: 18px;
+  overflow: hidden;
+}
+.corpo-beleza-card-header {
+  background: linear-gradient(135deg, #f4a0b8, #c55b84);
+  color: #fff;
+  padding: 12px 16px;
+  font-weight: 800;
+  font-size: .92rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.corpo-beleza-card-body { padding: 16px; }
+.corpo-routine-period {
+  background: #d8f3e4;
+  border-radius: 8px;
+  padding: 5px 12px;
+  font-size: .78rem;
+  font-weight: 700;
+  color: #2d6a4f;
+  margin-bottom: 8px;
+  display: inline-block;
+}
+.corpo-routine-period.noite { background: #e8d5f5; color: #5a2d82; }
+.corpo-routine-period.cabelo { background: #d5e8f5; color: #1d4e7a; }
+.corpo-beleza-check {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 0;
+  border-bottom: 1px solid #fce4ec;
+  font-size: .83rem;
+}
+.corpo-beleza-check input[type=checkbox] {
+  width: 16px; height: 16px;
+  accent-color: #c55b84;
+  flex-shrink: 0;
+}
+.corpo-beleza-check input[type=text] {
+  flex: 1;
+  border: none;
+  border-bottom: 1px dashed #e0c8d0;
+  background: transparent;
+  font-size: .83rem;
+  padding: 2px;
+}
+.corpo-beleza-link-list { list-style: none; padding: 0; }
+.corpo-beleza-link-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 0;
+  border-bottom: 1px solid #fce4ec;
+  font-size: .82rem;
+}
+.corpo-beleza-link-item input {
+  flex: 1;
+  border: none;
+  border-bottom: 1px dashed #e0c8d0;
+  background: transparent;
+  font-size: .82rem;
+  padding: 2px;
+}
+.corpo-beleza-full { grid-column: 1 / -1; }
+
+/* ESTUDOS — livros melhorados */
+.book-table-wrap { overflow-x: auto; }
+.book-enhanced-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: .82rem;
+  white-space: nowrap;
+}
+.book-enhanced-table th {
+  background: #fff8f0;
+  padding: 7px 10px;
+  font-weight: 700;
+  color: #9c5a20;
+  border-bottom: 2px solid #fde0b8;
+  text-align: left;
+}
+.book-enhanced-table td {
+  padding: 6px 8px;
+  border-bottom: 1px solid #fde8cc;
+  vertical-align: middle;
+}
+.book-enhanced-table input {
+  border: 1px solid #f0d8c0;
+  border-radius: 8px;
+  padding: 4px 8px;
+  font-size: .8rem;
+  background: #fff;
+}
+.book-enhanced-table input[type=number] { width: 64px; }
+.book-enhanced-table select {
+  border: 1px solid #f0d8c0;
+  border-radius: 8px;
+  padding: 4px 8px;
+  font-size: .78rem;
+  background: #fff;
+}
+.book-status-pill {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 20px;
+  font-size: .72rem;
+  font-weight: 700;
+}
+.book-status-done     { background: #b7e4c7; color: #2d6a4f; }
+.book-status-reading  { background: #a8dadc; color: #1d3557; }
+.book-status-wish     { background: #ffd6a5; color: #9c4221; }
+.book-stars { color: #f4a261; letter-spacing: 1px; font-size: .85rem; }
+
+/* Cursos — visual */
+.cursos-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+  margin-top: 4px;
+}
+.cursos-card {
+  border-radius: 18px;
+  padding: 18px;
+}
+.cursos-card-fazendo { background: #ffd6e7; border: 1.5px solid #f5b8d0; }
+.cursos-card-desejo  { background: #ffe8c8; border: 1.5px solid #f5d4a0; }
+.cursos-card-header {
+  font-weight: 800;
+  font-size: .95rem;
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.cursos-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 0;
+  border-bottom: 1px solid rgba(0,0,0,.07);
+  font-size: .85rem;
+}
+.cursos-item input[type=text] {
+  flex: 1;
+  border: none;
+  border-bottom: 1px dashed rgba(0,0,0,.15);
+  background: transparent;
+  font-size: .85rem;
+  padding: 2px 4px;
+}
+.cursos-item-icon { font-size: 1rem; flex-shrink: 0; color: #9b3060; }
+
+/* CASA — mercado completo */
+.casa-market-complete {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+}
+.casa-market-cat {
+  background: #fff;
+  border: 1.5px solid #f0e0d8;
+  border-radius: 16px;
+  overflow: hidden;
+}
+.casa-market-cat-header {
+  padding: 10px 14px;
+  font-weight: 800;
+  font-size: .88rem;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border-bottom: 1px solid #f0e0d8;
+}
+.casa-market-cat-header.hortifruti { background: #d8f3e4; color: #2d6a4f; }
+.casa-market-cat-header.acougue    { background: #fde8d8; color: #8b3820; }
+.casa-market-cat-header.laticinios { background: #e8f4ff; color: #1d4e7a; }
+.casa-market-cat-header.mercearia  { background: #fce4e4; color: #8b2020; }
+.casa-market-cat-header.padaria    { background: #fff3d8; color: #7a5020; }
+.casa-market-cat-header.congelados { background: #e0f0ff; color: #1a3d6e; }
+.casa-market-cat-header.higiene    { background: #f0e8ff; color: #5a2080; }
+.casa-market-cat-header.limpeza    { background: #e8f8e8; color: #205820; }
+.casa-market-cat-header.bebidas    { background: #fff0e8; color: #8b4020; }
+.casa-market-cat-body { padding: 10px 12px; }
+.casa-market-chk {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 5px 0;
+  border-bottom: 1px solid #f5ede8;
+  font-size: .82rem;
+}
+.casa-market-chk input[type=checkbox] {
+  width: 15px; height: 15px;
+  accent-color: #c55b84;
+  flex-shrink: 0;
+}
+.casa-market-chk em { font-style: normal; }
+
+/* CASA — cronograma de limpeza */
+.casa-clean-cards {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+.casa-clean-card {
+  background: #fff;
+  border: 1.5px solid #f0e0d8;
+  border-radius: 18px;
+  overflow: hidden;
+}
+.casa-clean-card-header {
+  padding: 12px 16px;
+  font-weight: 800;
+  font-size: .92rem;
+  background: #fde8d0;
+  color: #7a4020;
+}
+.casa-clean-card-body { padding: 14px; }
+.casa-clean-chk {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 0;
+  border-bottom: 1px solid #fce4d8;
+  font-size: .82rem;
+}
+.casa-clean-chk input[type=checkbox] {
+  width: 16px; height: 16px;
+  accent-color: #c55b84;
+  flex-shrink: 0;
+}
+.casa-clean-chk input[type=text] {
+  flex: 1;
+  border: none;
+  border-bottom: 1px dashed #e0c8b8;
+  background: transparent;
+  font-size: .82rem;
+  padding: 2px;
+}
+
+/* CASA — checklist cômodos */
+.casa-room-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+.casa-room-card {
+  background: #fff;
+  border: 1.5px solid #f0e0d8;
+  border-radius: 18px;
+  overflow: hidden;
+}
+.casa-room-card-header {
+  padding: 12px 16px;
+  font-weight: 800;
+  font-size: .95rem;
+  background: #e8f5e8;
+  color: #205820;
+  border-bottom: 1px solid #c8e8c8;
+}
+.casa-room-card-body { padding: 14px; }
+.casa-room-chk {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 0;
+  border-bottom: 1px solid #f0e8e4;
+  font-size: .82rem;
+}
+.casa-room-chk input[type=checkbox] {
+  width: 15px; height: 15px;
+  accent-color: #c55b84;
+  flex-shrink: 0;
+}
+.casa-room-chk input[type=text] {
+  flex: 1;
+  border: none;
+  border-bottom: 1px dashed #d8c8c0;
+  background: transparent;
+  font-size: .82rem;
+  padding: 2px;
+}
+.casa-room-note {
+  background: #fffde7;
+  border-radius: 10px;
+  padding: 8px 12px;
+  font-size: .78rem;
+  color: #5d4037;
+  margin-top: 10px;
+  border: 1px solid #f5e8a0;
+}
+.casa-room-note textarea {
+  width: 100%;
+  background: transparent;
+  border: none;
+  font-size: .78rem;
+  resize: vertical;
+  min-height: 48px;
+  font-family: inherit;
+  color: #5d4037;
+}
+
+/* Responsivo mobile para módulos novos */
+@media (max-width: 768px) {
+  .corpo-before-after,
+  .corpo-saude-grid,
+  .corpo-beleza-grid,
+  .cursos-grid { grid-template-columns: 1fr; }
+
+  .corpo-workout-grid,
+  .corpo-library-grid,
+  .casa-clean-cards,
+  .casa-room-cards { grid-template-columns: 1fr 1fr; }
+
+  .casa-market-complete { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 480px) {
+  .corpo-workout-grid,
+  .corpo-library-grid,
+  .casa-clean-cards,
+  .casa-room-cards,
+  .casa-market-complete { grid-template-columns: 1fr; }
 }
