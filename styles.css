@@ -1790,7 +1790,7 @@ body.subscription-locked .subscription-gate {
 
 .week-hours-column {
   display: grid;
-  grid-template-rows: repeat(17, 80px);
+  grid-template-rows: repeat(17, 56px);
   gap: 0;
 }
 
@@ -1811,7 +1811,7 @@ body.subscription-locked .subscription-gate {
 
 .week-day-column {
   position: relative;
-  min-height: 1360px;
+  min-height: 952px;
   border: 1px solid var(--line);
   border-radius: 18px;
   background:
@@ -1820,14 +1820,14 @@ body.subscription-locked .subscription-gate {
       rgba(89, 62, 87, 0.08) 0,
       rgba(89, 62, 87, 0.08) 1px,
       transparent 1px,
-      transparent 80px
+      transparent 56px
     ),
     repeating-linear-gradient(
       to bottom,
       rgba(89, 62, 87, 0.04) 0,
       rgba(89, 62, 87, 0.04) 1px,
       transparent 1px,
-      transparent 20px
+      transparent 14px
     ),
     rgba(255, 255, 255, 0.82);
   overflow: hidden;
@@ -7122,6 +7122,98 @@ select {
 }
 .mob-day-btn.is-active .mob-day-name { color: var(--berry, #c55b84); }
 
+/* ── View tabs ── */
+.agenda-view-tabs {
+  display: flex;
+  gap: 4px;
+  padding: 8px 16px;
+  border-bottom: 1.5px solid var(--line, rgba(0,0,0,.08));
+  background: var(--surface, #fff);
+}
+
+.agenda-view-tab {
+  flex: 1;
+  padding: 7px 4px;
+  border-radius: 10px;
+  border: 1.5px solid transparent;
+  background: transparent;
+  color: var(--muted, #9a7fa0);
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background .13s, color .13s, border-color .13s;
+  text-align: center;
+}
+
+.agenda-view-tab.is-active {
+  background: var(--berry, #c55b84);
+  color: #fff;
+  border-color: var(--berry, #c55b84);
+}
+
+.agenda-view-tab:hover:not(.is-active) {
+  background: rgba(197, 91, 132, .07);
+  color: var(--berry, #c55b84);
+  border-color: rgba(197, 91, 132, .2);
+}
+
+/* ── Month shell (visible area) ── */
+.agenda-month-shell {
+  padding: 12px;
+  overflow-y: auto;
+}
+
+.agenda-month-shell.hidden { display: none; }
+
+.agenda-month-shell .calendar-weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 4px;
+  margin-bottom: 6px;
+}
+
+.agenda-month-shell .calendar-weekdays span {
+  text-align: center;
+  font-size: 0.7rem;
+  color: var(--muted, #9a7fa0);
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.agenda-month-shell .calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 4px;
+}
+
+.agenda-month-shell .calendar-day {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 4px 2px;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  min-height: 52px;
+  font-size: 0.78rem;
+}
+
+.agenda-month-shell .calendar-day:hover { background: rgba(197,91,132,.07); }
+.agenda-month-shell .calendar-day.is-today { border-color: var(--berry, #c55b84); }
+.agenda-month-shell .calendar-day.is-selected { background: rgba(197,91,132,.12); }
+.agenda-month-shell .calendar-day-number { font-weight: 700; font-size: 0.9rem; }
+.agenda-month-shell .calendar-day-dots { display: flex; gap: 3px; flex-wrap: wrap; min-height: 8px; }
+.agenda-month-shell .calendar-day-meta { font-size: 0.62rem; color: var(--muted); text-align: center; overflow-wrap: anywhere; }
+
+/* ── Year shell (in mobile panel) ── */
+#year-view-shell:not(.hidden) {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  padding: 12px;
+  overflow-y: auto;
+}
+
 /* ── Timeline (mobile-only overrides) ── */
 .agenda-timeline-shell {
   overflow-y: auto;
@@ -7132,14 +7224,17 @@ select {
 @media (max-width: 767px) {
   .agenda-timeline-shell {
     flex: 1;
-    min-height: 400px;
+    height: calc(100svh - 310px);
+    max-height: calc(100svh - 310px);
+    min-height: 260px;
+    overflow-y: auto;
   }
 
   .agenda-timeline-body {
     display: grid !important;
-    grid-template-columns: 52px minmax(0, 1fr) !important;
+    grid-template-columns: 48px minmax(0, 1fr) !important;
     gap: 0 !important;
-    min-height: 1360px;
+    min-height: 952px;
   }
 
   /* Override week-view-shell min-width for mobile */
@@ -7155,16 +7250,16 @@ select {
   }
 
   .agenda-timeline-shell .week-hours-column {
-    grid-template-rows: repeat(17, 80px);
+    grid-template-rows: repeat(17, 56px);
     border-right: 1px solid var(--line, rgba(0,0,0,.07));
   }
 
   .agenda-timeline-shell .week-hour-label {
-    font-size: 0.7rem;
+    font-size: 0.66rem;
     color: var(--muted, #9a7fa0);
     justify-content: flex-end;
-    padding-right: 8px;
-    padding-top: 4px;
+    padding-right: 6px;
+    padding-top: 3px;
   }
 
   .agenda-timeline-shell .week-day-column {
@@ -7177,9 +7272,9 @@ select {
         rgba(89, 62, 87, 0.06) 0,
         rgba(89, 62, 87, 0.06) 1px,
         transparent 1px,
-        transparent 80px
+        transparent 56px
       );
-    min-height: 1360px;
+    min-height: 952px;
   }
 
   /* Mobile event blocks — solid color, white text */

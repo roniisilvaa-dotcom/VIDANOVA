@@ -443,12 +443,20 @@
                   <button id="calendar-today" class="agenda-mob-today-btn" type="button">Hoje</button>
                 </div>
 
-                <!-- 7-day week strip -->
-                <div class="agenda-week-strip-scroll">
+                <!-- View tabs: Dia / Semana / M&#234;s / Ano -->
+                <div class="agenda-view-tabs" id="agenda-view-tabs">
+                  <button class="agenda-view-tab is-active" data-view-tab="day" type="button">Dia</button>
+                  <button class="agenda-view-tab" data-view-tab="week" type="button">Semana</button>
+                  <button class="agenda-view-tab" data-view-tab="month" type="button">M&#234;s</button>
+                  <button class="agenda-view-tab" data-view-tab="year" type="button">Ano</button>
+                </div>
+
+                <!-- 7-day week strip (shown for Dia/Semana) -->
+                <div class="agenda-week-strip-scroll" id="agenda-week-strip-wrap">
                   <div class="agenda-week-strip" id="mob-week-strip"></div>
                 </div>
 
-                <!-- Day timeline -->
+                <!-- Day/Week timeline -->
                 <div id="week-view-shell" class="agenda-timeline-shell">
                   <div id="week-view-header" style="display:none" aria-hidden="true"></div>
                   <div class="week-view-body agenda-timeline-body">
@@ -456,6 +464,18 @@
                     <div class="week-columns" id="week-columns"></div>
                   </div>
                 </div>
+
+                <!-- Month grid (shown when Dia view is Month) -->
+                <div id="calendar-month-shell" class="agenda-month-shell hidden">
+                  <div class="calendar-weekdays">
+                    <span>Dom</span><span>Seg</span><span>Ter</span>
+                    <span>Qua</span><span>Qui</span><span>Sex</span><span>S&#225;b</span>
+                  </div>
+                  <div id="calendar-grid" class="calendar-grid"></div>
+                </div>
+
+                <!-- Year grid -->
+                <div id="year-view-shell" class="year-view-shell hidden"></div>
 
                 <!-- Day summary -->
                 <div class="agenda-day-notes">
@@ -628,11 +648,7 @@
 
                 <!-- Hidden compat elements (IDs required by existing JS) -->
                 <div style="display:none" aria-hidden="true">
-                  <div id="calendar-month-shell">
-                    <div class="calendar-weekdays"><span>Dom</span><span>Seg</span><span>Ter</span><span>Qua</span><span>Qui</span><span>Sex</span><span>S&#225;b</span></div>
-                    <div id="calendar-grid" class="calendar-grid"></div>
-                  </div>
-                  <div id="year-view-shell" class="year-view-shell"></div>
+
                   <div id="schedule-view-shell" class="schedule-view-shell"></div>
                   <ul id="agenda-events-list"></ul>
                   <button id="calendar-day-view" type="button"></button>

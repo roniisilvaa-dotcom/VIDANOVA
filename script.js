@@ -1750,7 +1750,7 @@ function toSoftColor(hex, alpha = 0.24) {
 }
 
 function getRoundedTimeFromOffset(offsetY) {
-  const minutesFromStart = Math.max(0, Math.round(offsetY / 20) * 15);
+  const minutesFromStart = Math.max(0, Math.round(offsetY / 14) * 15);
   const totalMinutes = 360 + minutesFromStart;
   const hours = Math.floor(totalMinutes / 60);
   const minutes = totalMinutes % 60;
@@ -3247,7 +3247,8 @@ function renderWeekView() {
 
   const todayKey = formatDateKey(new Date());
   const now = new Date();
-  const currentTop = ((now.getHours() * 60 + now.getMinutes() - 360) / 15) * 20;
+  const PX_PER_SLOT = 14; // 14px per 15 min = 56px per hour
+  const currentTop = ((now.getHours() * 60 + now.getMinutes() - 360) / 15) * PX_PER_SLOT;
 
   weekColumns.innerHTML = Array.from({ length: daysToShow }, (_, dayIndex) => {
     const date = new Date(weekStart);
@@ -3260,8 +3261,8 @@ function renderWeekView() {
         const [startHour = 6, startMinute = 0] = String(eventItem.time || "06:00").split(":").map(Number);
         const startTotal = startHour * 60 + startMinute;
         const minutesFromStart = Math.max(0, startTotal - 360);
-        const top = (minutesFromStart / 15) * 20;
-        const height = Math.max(20, (getEventDurationMinutes(eventItem) / 15) * 20);
+        const top = (minutesFromStart / 15) * PX_PER_SLOT;
+        const height = Math.max(PX_PER_SLOT, (getEventDurationMinutes(eventItem) / 15) * PX_PER_SLOT);
         const baseColor = eventItem.color || getCalendarById(eventItem.calendarId).color || "#4285f4";
         const isMobileDay = agendaView === "day" && window.innerWidth < 768;
         const bgStyle = isMobileDay ? baseColor : toSoftColor(baseColor, 0.24);
@@ -6917,27 +6918,60 @@ window.DynTable.initAll();
     });
   }
 
-  // Init strip on load
-  function tryInit() {
-    if (document.querySelector("[data-tab-panel='planner-agenda']")) {
-      renderMobWeekStrip();
-      updateMobDayLabel();
-    }
+  // View tabs: Dia / Semana / Mês / Ano
+  const viewTabBtns = document.querySelectorAll("[data-view-tab]");
+  const weekStripWrap = document.getElementById("agenda-week-strip-wrap");
+  const monthShell = document.getElementById("calendar-month-shell");
+  const yearShell = document.getElementById("year-view-shell");
+  const timelineShell = document.getElementById("week-view-shell");
+
+  function setAgendaView(view) {
+    agendaView = view;
+    localStorage.setItem("ela-em-ordem:agenda-view", view);
+
+    // Update tab active states
+    viewTabBtns.forEach((b) => b.classList.toggle("is-active", b.dataset.viewTab === view));
+
+    // Show/hide week strip (only for day/week)
+    if (weekStripWrap) weekStripWrap.classList.toggle("hidden", view === "month" || view === "year");
+
+    // Show/hide timeline vs month vs year
+    if (timelineShell) timelineShell.classList.toggle("hidden", view === "month" || view === "year");
+    if (monthShell) monthShell.classList.toggle("hidden", view !== "month");
+    if (yearShell) yearShell.classList.toggle("hidden", view !== "year");
+
+    renderCalendar();
+    renderWeekView();
+    renderAgendaEvents();
+    if (view === "year") renderYearView();
+    renderMobWeekStrip();
+    updateMobDayLabel();
   }
 
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", tryInit);
-  } else {
-    tryInit();
+  viewTabBtns.forEach((btn) => {
+    btn.addEventListener("click", () => setAgendaView(btn.dataset.viewTab));
+  });
+
+  // Sync initial tab state on load
+  function syncViewTabs() {
+    const v = agendaView;
+    viewTabBtns.forEach((b) => b.classList.toggle("is-active", b.dataset.viewTab === v));
+    if (weekStripWrap) weekStripWrap.classList.toggle("hidden", v === "month" || v === "year");
+    if (timelineShell) timelineShell.classList.toggle("hidden", v === "month" || v === "year");
+    if (monthShell) monthShell.classList.toggle("hidden", v !== "month");
+    if (yearShell) yearShell.classList.toggle("hidden", v !== "year");
   }
 
   // Also re-render strip when planner-agenda tab becomes visible
   document.addEventListener("click", (e) => {
     const tabBtn = e.target.closest("[data-tab-target]");
     if (tabBtn && tabBtn.dataset.tabTarget === "planner-agenda") {
-      setTimeout(() => { renderMobWeekStrip(); updateMobDayLabel(); }, 50);
+      setTimeout(() => { renderMobWeekStrip(); updateMobDayLabel(); syncViewTabs(); }, 50);
     }
   });
+
+  // Init
+  if (document.readyState !== "loading") syncViewTabs();
 })();
 
 bootApp().catch((error) => {
