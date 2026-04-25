@@ -1522,7 +1522,7 @@ function applyCloudState(state) {
 }
 
 function scheduleCloudSync() {
-  if (isHydratingCloudState || !getAuthToken() || !hasActiveSubscription()) {
+  if (isHydratingCloudState || !getAuthToken() || !canAccessLockedApp()) {
     return;
   }
 
@@ -1551,7 +1551,7 @@ async function initializeAuthenticatedState() {
   try {
     const verifyResponse = await apiPost("/api/auth/verify", { token });
     persistUserSession(verifyResponse.user, token);
-    if (!hasActiveSubscription(verifyResponse.user)) {
+    if (!canAccessLockedApp(verifyResponse.user)) {
       hydrateSessionUI(verifyResponse.user);
       setActivePage("configuracoes", false);
       return;
@@ -1634,6 +1634,11 @@ function setActivePage(pageName, syncHash = true) {
   }
 
   document.body.classList.toggle("page-not-dashboard", nextPage !== "dashboard");
+
+  // Remove classe de agenda full-screen ao sair da página planner
+  if (nextPage !== "planner") {
+    document.body.classList.remove("agenda-tab-active");
+  }
 
   if (syncHash && window.location.hash !== `#${nextPage}`) {
     history.replaceState(null, "", `#${nextPage}`);
@@ -5223,6 +5228,11 @@ function setPlannerTab(target) {
   panels.forEach((panel) => {
     panel.classList.toggle("is-active", panel.dataset.tabPanel === target);
   });
+
+  // No mobile: agenda ocupa tela cheia (bloqueia scroll da página)
+  if (window.innerWidth < 768) {
+    document.body.classList.toggle("agenda-tab-active", target === "planner-agenda");
+  }
 }
 
 function setupTabs() {
@@ -6996,6 +7006,26 @@ window.DynTable.initAll();
   // Init
   if (document.readyState !== "loading") syncViewTabs();
 })();
+
+// Garante sync antes de fechar/trocar aba — evita perda de dados entre dispositivos
+function flushSyncNow() {
+  if (!getAuthToken() || !canAccessLockedApp()) return;
+  window.clearTimeout(syncTimeoutId);
+  const payload = JSON.stringify({
+    token: getAuthToken(),
+    dataType: CLOUD_STATE_TYPE,
+    dataKey: CLOUD_STATE_KEY,
+    dataValue: collectCloudState(),
+  });
+  if (navigator.sendBeacon) {
+    navigator.sendBeacon("/api/data/save", new Blob([payload], { type: "application/json" }));
+  }
+}
+
+window.addEventListener("beforeunload", flushSyncNow);
+document.addEventListener("visibilitychange", () => {
+  if (document.visibilityState === "hidden") flushSyncNow();
+});
 
 bootApp().catch((error) => {
   console.error("Erro ao iniciar o app:", error);

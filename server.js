@@ -1495,10 +1495,13 @@ async function requireAuthorizedUser(token, options = {}) {
   }
 
   if (options.requireActiveSubscription && !isSubscriptionActive(user)) {
-    const error = new Error("Assinatura inativa. Atualize sua assinatura para continuar.");
-    error.status = 403;
-    error.user = buildPublicUser(user);
-    throw error;
+    // Admin sempre tem acesso mesmo sem assinatura ativa
+    if (getUserRole(user.email, user.role) !== "admin") {
+      const error = new Error("Assinatura inativa. Atualize sua assinatura para continuar.");
+      error.status = 403;
+      error.user = buildPublicUser(user);
+      throw error;
+    }
   }
 
   if (options.requireAdmin && getUserRole(user.email, user.role) !== "admin") {
