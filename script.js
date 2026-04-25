@@ -3294,6 +3294,17 @@ function renderWeekView() {
   const tShell = document.getElementById("week-view-shell");
   if (tShell) tShell.dataset.agendaView = agendaView;
 
+  // Auto-scroll timeline to current time (or 7h if before 7h)
+  if (tShell) {
+    requestAnimationFrame(() => {
+      const PX_PER_SLOT_SCROLL = 14;
+      const now = new Date();
+      const scrollHour = Math.max(7, now.getHours() - 1);
+      const scrollTop = ((scrollHour * 60 - 360) / 15) * PX_PER_SLOT_SCROLL;
+      tShell.scrollTop = Math.max(0, scrollTop);
+    });
+  }
+
   // Update mobile week strip after rendering
   if (typeof renderMobWeekStrip === "function") renderMobWeekStrip();
   if (typeof updateMobDayLabel === "function") updateMobDayLabel();
