@@ -3267,10 +3267,11 @@ function renderWeekView() {
         const top = (minutesFromStart / 15) * PX_PER_SLOT;
         const height = Math.max(PX_PER_SLOT, (getEventDurationMinutes(eventItem) / 15) * PX_PER_SLOT);
         const baseColor = eventItem.color || getCalendarById(eventItem.calendarId).color || "#4285f4";
-        const isMobileDay = agendaView === "day" && window.innerWidth < 768;
-        const bgStyle = isMobileDay ? baseColor : toSoftColor(baseColor, 0.24);
-        const colorStyle = isMobileDay ? "color:#fff" : "";
-        return `<button type="button" class="week-event-block${isMobileDay ? " mob-day-block" : ""}" draggable="true" data-event-date="${dateKey}" data-event-id="${escapeHtml(eventItem.id)}" style="top:${top}px;height:${height}px;background:${bgStyle};border-color:${escapeHtml(baseColor)};${colorStyle}">
+        const isMobile = window.innerWidth < 768;
+        const bgStyle = isMobile ? baseColor : toSoftColor(baseColor, 0.3);
+        const colorStyle = isMobile ? "color:#fff" : `color:${baseColor}`;
+        const visHeight = Math.max(44, height); // minimum 44px so text is always readable
+        return `<button type="button" class="week-event-block${isMobile ? " mob-day-block" : ""}" draggable="true" data-event-date="${dateKey}" data-event-id="${escapeHtml(eventItem.id)}" style="top:${top}px;height:${visHeight}px;background:${bgStyle};border-color:${escapeHtml(baseColor)};${colorStyle}">
           <strong>${escapeHtml(eventItem.title)}</strong>
           <small>${escapeHtml(formatTimeRange(eventItem.time, eventItem.endTime))}${eventItem.location ? ` • ${escapeHtml(eventItem.location)}` : ""}</small>
         </button>`;
