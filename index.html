@@ -814,196 +814,262 @@
             <div class="panel-heading">
               <div>
                 <p class="eyebrow">Finanças</p>
-                <h3>Controle financeiro premium</h3>
+                <h3>Controle financeiro</h3>
               </div>
-              <span class="tag">Consciente</span>
             </div>
-            <div class="finance-layout">
-              <div class="finance-chip-row">
-                <button class="finance-chip is-active" type="button" data-finance-filter="all">Planejamento financeiro</button>
-                <button class="finance-chip" type="button" data-finance-filter="impulse">Controle de compras</button>
-                <button class="finance-chip" type="button" data-finance-filter="savings">Metas financeiras</button>
-                <button class="finance-chip" type="button" data-finance-filter="planning">Orçamento de viagens</button>
+
+            <!-- Hidden legacy compat elements (used by renderFinance JS) -->
+            <div style="display:none">
+              <input id="finance-income-input" type="number" />
+              <input id="finance-expense-input" type="number" />
+              <input id="finance-goal-input" type="number" />
+              <span id="finance-goal-display"></span>
+              <span id="finance-status-display"></span>
+              <span id="finance-balance-hero"></span>
+              <span id="finance-caption"></span>
+              <span id="finance-savings-display"></span>
+              <span id="finance-fixed-display"></span>
+              <span id="finance-variable-display"></span>
+              <span id="finance-impulse-display"></span>
+              <span id="finance-planning-preview"></span>
+              <span id="finance-panel-balance"></span>
+              <span id="finance-panel-caption"></span>
+              <textarea id="finance-notes-input"></textarea>
+              <div id="finance-records-list"></div>
+              <div id="finance-comparison-grid"></div>
+              <form id="finance-entry-form">
+                <input id="finance-entry-title" /><input id="finance-entry-date" type="date" />
+                <select id="finance-entry-type"><option value="income">Entrada</option><option value="fixed">Fixo</option><option value="variable">Variavel</option><option value="impulse">Impulsivo</option><option value="savings">Poupança</option><option value="planning">Planejamento</option></select>
+                <input id="finance-entry-category" /><input id="finance-entry-amount" type="number" /><input id="finance-entry-installments" type="number" />
+                <select id="finance-entry-start-month"><option value="0">Jan</option><option value="1">Fev</option><option value="2">Mar</option><option value="3">Abr</option><option value="4">Mai</option><option value="5">Jun</option><option value="6">Jul</option><option value="7">Ago</option><option value="8">Set</option><option value="9">Out</option><option value="10">Nov</option><option value="11">Dez</option></select>
+                <input id="finance-entry-color" type="color" value="#ffd166" /><button type="submit">ok</button>
+              </form>
+              <table><tbody id="finance-table-body"></tbody></table>
+            </div>
+
+            <!-- 5 tabs -->
+            <div class="tab-shell" data-tab-group="financas">
+              <div class="tab-buttons tab-buttons-scroll">
+                <button class="ghost-button is-active" type="button" data-tab-target="fin-planejamento">Planejamento</button>
+                <button class="ghost-button" type="button" data-tab-target="fin-parceladas">Compras Parceladas</button>
+                <button class="ghost-button" type="button" data-tab-target="fin-desejos">Desejos</button>
+                <button class="ghost-button" type="button" data-tab-target="fin-metas">Metas</button>
+                <button class="ghost-button" type="button" data-tab-target="fin-mensal">Controle Mensal</button>
               </div>
-              <div class="finance-workspace">
-                <div class="finance-main-board">
-                  <div class="metric-row finance-summary-row">
-                    <div>
-                      <span class="metric-label">Entradas</span>
-                      <strong id="finance-income-display">R$ 0,00</strong>
-                    </div>
-                    <div>
-                      <span class="metric-label">Saidas</span>
-                      <strong id="finance-expense-display">R$ 0,00</strong>
-                    </div>
-                    <div>
-                      <span class="metric-label">Fluxo</span>
-                      <strong id="finance-balance-display">R$ 0,00</strong>
-                    </div>
+
+              <!-- Tab 1: Planejamento Financeiro -->
+              <section class="tab-panel is-active" data-tab-panel="fin-planejamento">
+                <div class="fin-summary-cards">
+                  <div class="fin-summary-card fin-card-entradas">
+                    <span class="fin-card-label">Entradas</span>
+                    <strong id="finance-income-display" class="fin-card-value">R$ 0,00</strong>
                   </div>
-
-                  <form id="finance-entry-form" class="finance-entry-form finance-entry-form-premium">
-                    <input id="finance-entry-title" class="module-input" type="text" placeholder="Descrição" />
-                    <input id="finance-entry-date" class="module-input" type="date" />
-                    <select id="finance-entry-type" class="module-input" aria-label="Tipo financeiro">
-                      <option value="income">Entrada</option>
-                      <option value="fixed">Fixo</option>
-                      <option value="variable">Variavel</option>
-                      <option value="impulse">Impulsivo</option>
-                      <option value="savings">Poupanca</option>
-                      <option value="planning">Planejamento</option>
-                    </select>
-                    <input id="finance-entry-category" class="module-input" type="text" placeholder="Categoria: casa, pessoal, profissional..." />
-                    <input id="finance-entry-amount" class="module-input" type="number" min="0" step="0.01" placeholder="Valor total" />
-                    <input id="finance-entry-installments" class="module-input" type="number" min="1" step="1" placeholder="Qtd parcelas" />
-                    <select id="finance-entry-start-month" class="module-input" aria-label="Mes inicial">
-                      <option value="0">Jan</option>
-                      <option value="1">Fev</option>
-                      <option value="2">Mar</option>
-                      <option value="3">Abr</option>
-                      <option value="4">Mai</option>
-                      <option value="5">Jun</option>
-                      <option value="6">Jul</option>
-                      <option value="7">Ago</option>
-                      <option value="8">Set</option>
-                      <option value="9">Out</option>
-                      <option value="10">Nov</option>
-                      <option value="11">Dez</option>
-                    </select>
-                    <label class="color-field finance-color-field">
-                      Cor
-                      <input id="finance-entry-color" class="finance-color-input" type="color" value="#ffd166" />
-                    </label>
-                    <button type="submit">Cadastrar</button>
-                  </form>
-
-                  <div class="finance-form-grid finance-plan-grid">
-                    <label>
-                      Entradas base
-                      <input id="finance-income-input" class="module-input" type="number" min="0" step="0.01" placeholder="0,00" />
-                    </label>
-                    <label>
-                      Saidas base
-                      <input id="finance-expense-input" class="module-input" type="number" min="0" step="0.01" placeholder="0,00" />
-                    </label>
-                    <label>
-                      Reserva desejada
-                      <input id="finance-goal-input" class="module-input" type="number" min="0" step="0.01" placeholder="0,00" />
-                    </label>
+                  <div class="fin-summary-card fin-card-custos">
+                    <span class="fin-card-label">Saídas</span>
+                    <strong id="finance-expense-display" class="fin-card-value">R$ 0,00</strong>
                   </div>
-
-                  <div class="finance-detail-grid">
-                    <div class="detail-card">
-                      <span class="metric-label">Meta</span>
-                      <strong id="finance-goal-display">R$ 0,00</strong>
-                    </div>
-                    <div class="detail-card">
-                      <span class="metric-label">Situacao</span>
-                      <strong id="finance-status-display">Ajustar planejamento</strong>
-                    </div>
-                    <div class="detail-card">
-                      <span class="metric-label">Poupanca</span>
-                      <strong id="finance-savings-display">R$ 0,00</strong>
-                    </div>
-                    <div class="detail-card">
-                      <span class="metric-label">Gastos fixos</span>
-                      <strong id="finance-fixed-display">R$ 0,00</strong>
-                    </div>
-                    <div class="detail-card">
-                      <span class="metric-label">Variaveis</span>
-                      <strong id="finance-variable-display">R$ 0,00</strong>
-                    </div>
-                    <div class="detail-card">
-                      <span class="metric-label">Impulsivos</span>
-                      <strong id="finance-impulse-display">R$ 0,00</strong>
-                    </div>
+                  <div class="fin-summary-card fin-card-dividas">
+                    <span class="fin-card-label">Dívidas</span>
+                    <input class="fin-card-input" data-persist-key="fin-total-dividas" type="text" placeholder="R$ 0,00" />
                   </div>
-
-                  <div class="finance-table-shell">
-                    <table class="finance-table">
-                      <thead>
-                        <tr>
-                          <th>Descrição</th>
-                          <th>Data</th>
-                          <th>Valor total</th>
-                          <th>Qtd parcela</th>
-                          <th>Valor parcela</th>
-                          <th>Jan</th>
-                          <th>Fev</th>
-                          <th>Mar</th>
-                          <th>Abr</th>
-                          <th>Mai</th>
-                          <th>Jun</th>
-                          <th>Jul</th>
-                          <th>Ago</th>
-                          <th>Set</th>
-                          <th>Out</th>
-                          <th>Nov</th>
-                          <th>Dez</th>
-                          <th></th>
-                        </tr>
-                      </thead>
-                      <tbody id="finance-table-body"></tbody>
-                    </table>
-                  </div>
-
-                  <div class="finance-comparison-card">
-                    <div class="panel-heading">
-                      <div>
-                        <p class="eyebrow">Comparativo mensal</p>
-                        <h3>Evolucao mes a mes</h3>
-                      </div>
-                    </div>
-                    <div class="finance-comparison-grid" id="finance-comparison-grid"></div>
+                  <div class="fin-summary-card fin-card-invest">
+                    <span class="fin-card-label">Investimentos</span>
+                    <input class="fin-card-input" data-persist-key="fin-total-invest" type="text" placeholder="R$ 0,00" />
                   </div>
                 </div>
 
-                <aside class="finance-side-board">
-                  <article class="finance-note-card">
-                    <p class="eyebrow">Observações do mes</p>
-                    <textarea id="finance-notes-input" class="notes-input finance-notes-input" placeholder="Anote custos do negocio, compras importantes, metas e observações do mes."></textarea>
-                  </article>
+                <div class="fin-saldo-banner">
+                  <span>Saldo: </span>
+                  <strong id="finance-balance-display">R$ 0,00</strong>
+                </div>
 
-                  <article class="finance-planning-box">
-                    <span class="metric-label">Planejamento mensal</span>
-                    <p id="finance-planning-preview" class="module-note">Nenhum planejamento registrado.</p>
-                    <strong id="finance-panel-balance">R$ 0,00</strong>
-                    <small id="finance-panel-caption">Sem movimentacao registrada</small>
-                  </article>
+                <div class="fin-section-block">
+                  <h4 class="fin-section-title">Acompanhamento Anual</h4>
+                  <div class="fin-table-scroll">
+                    <table class="fin-annual-table">
+                      <thead>
+                        <tr>
+                          <th>Categoria</th>
+                          <th>Jan</th><th>Fev</th><th>Mar</th><th>Abr</th><th>Mai</th><th>Jun</th>
+                          <th>Jul</th><th>Ago</th><th>Set</th><th>Out</th><th>Nov</th><th>Dez</th>
+                          <th>Total</th><th></th>
+                        </tr>
+                      </thead>
+                      <tbody data-dyntable="fin-annual" data-dyntable-cols="14"></tbody>
+                    </table>
+                    <button class="fin-add-row-btn" type="button" data-dyntable-add="fin-annual">+ Adicionar linha</button>
+                  </div>
+                </div>
 
-                  <div class="calculator-card">
-                    <div class="panel-heading calculator-heading">
-                      <div>
-                        <p class="eyebrow">Calculadora</p>
-                        <h3>Conta rapida</h3>
-                      </div>
-                    </div>
-                    <div class="calculator-display" id="calculator-display">0</div>
-                    <div class="calculator-grid">
-                      <button class="calc-key" type="button" data-calc-action="clear">AC</button>
-                      <button class="calc-key" type="button" data-calc-value="(">(</button>
-                      <button class="calc-key" type="button" data-calc-value=")">)</button>
-                      <button class="calc-key calc-operator" type="button" data-calc-value="/">/</button>
-                      <button class="calc-key" type="button" data-calc-value="7">7</button>
-                      <button class="calc-key" type="button" data-calc-value="8">8</button>
-                      <button class="calc-key" type="button" data-calc-value="9">9</button>
-                      <button class="calc-key calc-operator" type="button" data-calc-value="*">x</button>
-                      <button class="calc-key" type="button" data-calc-value="4">4</button>
-                      <button class="calc-key" type="button" data-calc-value="5">5</button>
-                      <button class="calc-key" type="button" data-calc-value="6">6</button>
-                      <button class="calc-key calc-operator" type="button" data-calc-value="-">-</button>
-                      <button class="calc-key" type="button" data-calc-value="1">1</button>
-                      <button class="calc-key" type="button" data-calc-value="2">2</button>
-                      <button class="calc-key" type="button" data-calc-value="3">3</button>
-                      <button class="calc-key calc-operator" type="button" data-calc-value="+">+</button>
-                      <button class="calc-key" type="button" data-calc-value="0">0</button>
-                      <button class="calc-key" type="button" data-calc-value=".">.</button>
-                      <button class="calc-key calc-equals" type="button" data-calc-action="equals">=</button>
+                <div class="calculator-card">
+                  <p class="eyebrow">Calculadora rápida</p>
+                  <div class="calculator-display" id="calculator-display">0</div>
+                  <div class="calculator-grid">
+                    <button class="calc-key" type="button" data-calc-action="clear">AC</button>
+                    <button class="calc-key" type="button" data-calc-value="(">(</button>
+                    <button class="calc-key" type="button" data-calc-value=")">)</button>
+                    <button class="calc-key calc-operator" type="button" data-calc-value="/">÷</button>
+                    <button class="calc-key" type="button" data-calc-value="7">7</button>
+                    <button class="calc-key" type="button" data-calc-value="8">8</button>
+                    <button class="calc-key" type="button" data-calc-value="9">9</button>
+                    <button class="calc-key calc-operator" type="button" data-calc-value="*">×</button>
+                    <button class="calc-key" type="button" data-calc-value="4">4</button>
+                    <button class="calc-key" type="button" data-calc-value="5">5</button>
+                    <button class="calc-key" type="button" data-calc-value="6">6</button>
+                    <button class="calc-key calc-operator" type="button" data-calc-value="-">−</button>
+                    <button class="calc-key" type="button" data-calc-value="1">1</button>
+                    <button class="calc-key" type="button" data-calc-value="2">2</button>
+                    <button class="calc-key" type="button" data-calc-value="3">3</button>
+                    <button class="calc-key calc-operator" type="button" data-calc-value="+">+</button>
+                    <button class="calc-key" type="button" data-calc-value="0">0</button>
+                    <button class="calc-key" type="button" data-calc-value=".">.</button>
+                    <button class="calc-key calc-equals" type="button" data-calc-action="equals">=</button>
+                  </div>
+                </div>
+              </section>
+
+              <!-- Tab 2: Controle de Compras Parceladas -->
+              <section class="tab-panel" data-tab-panel="fin-parceladas">
+                <div class="fin-cc-visual">
+                  <div class="fin-cc-chip"></div>
+                  <div class="fin-cc-number">•••• •••• •••• <input class="fin-cc-num-input" data-persist-key="fin-cc-last4" placeholder="0000" maxlength="4" /></div>
+                  <div class="fin-cc-row">
+                    <div><span class="fin-cc-micro">Titular</span><input class="fin-cc-name" data-persist-key="fin-cc-name" placeholder="Nome da titular" /></div>
+                    <div><span class="fin-cc-micro">Limite</span><input class="fin-cc-limit" data-persist-key="fin-cc-limit" placeholder="R$ 0,00" /></div>
+                  </div>
+                </div>
+                <div class="fin-section-block">
+                  <div class="fin-table-scroll">
+                    <table class="fin-parceladas-table">
+                      <thead>
+                        <tr>
+                          <th>Descrição</th>
+                          <th>Loja</th>
+                          <th>Valor Total</th>
+                          <th>Parcelas</th>
+                          <th>Valor/Parcela</th>
+                          <th>Início</th>
+                          <th>Vencimento</th>
+                          <th>Status</th>
+                          <th></th>
+                        </tr>
+                      </thead>
+                      <tbody data-dyntable="fin-parceladas" data-dyntable-cols="8"></tbody>
+                    </table>
+                    <button class="fin-add-row-btn" type="button" data-dyntable-add="fin-parceladas">+ Adicionar compra parcelada</button>
+                  </div>
+                </div>
+              </section>
+
+              <!-- Tab 3: Desejos de Compra -->
+              <section class="tab-panel" data-tab-panel="fin-desejos">
+                <div class="fin-desejos-columns">
+                  <div class="fin-desejo-col">
+                    <h4 class="fin-desejo-col-title">💖 Meus Desejos</h4>
+                    <div class="fin-table-scroll">
+                      <table class="fin-desejos-table">
+                        <thead><tr><th>Item</th><th>Categoria</th><th>Valor</th><th>Prioridade</th><th></th></tr></thead>
+                        <tbody data-dyntable="fin-desejos-eu" data-dyntable-cols="4"></tbody>
+                      </table>
+                      <button class="fin-add-row-btn" type="button" data-dyntable-add="fin-desejos-eu">+ Adicionar desejo</button>
                     </div>
                   </div>
-                </aside>
-              </div>
-            </div>
+                  <div class="fin-desejo-col">
+                    <h4 class="fin-desejo-col-title">🏠 Desejos da Casa</h4>
+                    <div class="fin-table-scroll">
+                      <table class="fin-desejos-table">
+                        <thead><tr><th>Item</th><th>Categoria</th><th>Valor</th><th>Prioridade</th><th></th></tr></thead>
+                        <tbody data-dyntable="fin-desejos-casa" data-dyntable-cols="4"></tbody>
+                      </table>
+                      <button class="fin-add-row-btn" type="button" data-dyntable-add="fin-desejos-casa">+ Adicionar desejo</button>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              <!-- Tab 4: Metas Financeiras -->
+              <section class="tab-panel" data-tab-panel="fin-metas">
+                <div class="fin-metas-grid" id="fin-metas-grid"></div>
+                <button class="fin-add-meta-btn primary-button" type="button" id="fin-add-meta-btn">+ Nova meta financeira</button>
+                <div class="fin-meta-modal hidden" id="fin-meta-modal">
+                  <div class="fin-meta-modal-box">
+                    <h4>Meta Financeira</h4>
+                    <label>Título <input id="fin-meta-title-inp" type="text" placeholder="Ex.: Viagem para Dubai" /></label>
+                    <label>Valor alvo <input id="fin-meta-valor-inp" type="text" placeholder="R$ 0,00" /></label>
+                    <label>Data alvo <input id="fin-meta-data-inp" type="date" /></label>
+                    <label>Progresso: <span id="fin-meta-prog-val">0%</span>
+                      <input id="fin-meta-prog-inp" type="range" min="0" max="100" value="0" />
+                    </label>
+                    <div class="fin-meta-modal-footer">
+                      <button class="ghost-button" type="button" id="fin-meta-cancel-btn">Cancelar</button>
+                      <button class="primary-button" type="button" id="fin-meta-save-btn">Salvar</button>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              <!-- Tab 5: Controle Mensal -->
+              <section class="tab-panel" data-tab-panel="fin-mensal">
+                <div class="fin-mensal-header">
+                  <label>Mês:
+                    <select id="fin-mensal-month-sel" data-persist-key="fin-mensal-month">
+                      <option value="jan">Janeiro</option><option value="fev">Fevereiro</option><option value="mar">Março</option><option value="abr">Abril</option><option value="mai">Maio</option><option value="jun">Junho</option><option value="jul">Julho</option><option value="ago">Agosto</option><option value="set">Setembro</option><option value="out">Outubro</option><option value="nov">Novembro</option><option value="dez">Dezembro</option>
+                    </select>
+                  </label>
+                </div>
+
+                <div class="fin-mensal-section">
+                  <h4 class="fin-mensal-title fin-color-entradas">⬆️ Entradas</h4>
+                  <div class="fin-table-scroll">
+                    <table class="fin-mensal-table"><thead><tr><th>Descrição</th><th>Data</th><th>Valor</th><th>Observação</th><th></th></tr></thead>
+                      <tbody data-dyntable="fin-mensal-entradas" data-dyntable-cols="4"></tbody>
+                    </table>
+                    <button class="fin-add-row-btn" type="button" data-dyntable-add="fin-mensal-entradas">+ Adicionar entrada</button>
+                  </div>
+                </div>
+
+                <div class="fin-mensal-section">
+                  <h4 class="fin-mensal-title fin-color-fixos">📌 Gastos Fixos</h4>
+                  <div class="fin-table-scroll">
+                    <table class="fin-mensal-table"><thead><tr><th>Descrição</th><th>Vencimento</th><th>Valor</th><th>Status</th><th></th></tr></thead>
+                      <tbody data-dyntable="fin-mensal-fixos" data-dyntable-cols="4"></tbody>
+                    </table>
+                    <button class="fin-add-row-btn" type="button" data-dyntable-add="fin-mensal-fixos">+ Adicionar gasto fixo</button>
+                  </div>
+                </div>
+
+                <div class="fin-mensal-section">
+                  <h4 class="fin-mensal-title fin-color-variaveis">🛒 Gastos Variáveis</h4>
+                  <div class="fin-table-scroll">
+                    <table class="fin-mensal-table"><thead><tr><th>Descrição</th><th>Data</th><th>Categoria</th><th>Valor</th><th></th></tr></thead>
+                      <tbody data-dyntable="fin-mensal-variaveis" data-dyntable-cols="4"></tbody>
+                    </table>
+                    <button class="fin-add-row-btn" type="button" data-dyntable-add="fin-mensal-variaveis">+ Adicionar gasto variável</button>
+                  </div>
+                </div>
+
+                <div class="fin-mensal-section">
+                  <h4 class="fin-mensal-title fin-color-dividas">🚵 Dívidas</h4>
+                  <div class="fin-table-scroll">
+                    <table class="fin-mensal-table"><thead><tr><th>Credor</th><th>Valor</th><th>Vencimento</th><th>Status</th><th></th></tr></thead>
+                      <tbody data-dyntable="fin-mensal-dividas" data-dyntable-cols="4"></tbody>
+                    </table>
+                    <button class="fin-add-row-btn" type="button" data-dyntable-add="fin-mensal-dividas">+ Adicionar dívida</button>
+                  </div>
+                </div>
+
+                <div class="fin-balanco-card">
+                  <h4>Balanço do Mês</h4>
+                  <div class="fin-balanco-grid">
+                    <div class="fin-balanco-item"><span>Total Entradas</span><strong class="fin-color-entradas" id="fin-balanco-entradas">R$ 0,00</strong></div>
+                    <div class="fin-balanco-item"><span>Total Saídas</span><strong class="fin-color-dividas" id="fin-balanco-saidas">R$ 0,00</strong></div>
+                    <div class="fin-balanco-item fin-balanco-total"><span>Saldo</span><strong id="fin-balanco-saldo">R$ 0,00</strong></div>
+                  </div>
+                  <textarea class="fin-mensal-notes" data-persist-key="fin-mensal-notes" placeholder="Observações do mês, metas alcançadas, próximos passos..."></textarea>
+                </div>
+              </section>
+
+            </div><!-- /tab-shell financas -->
           </article>
         </section>
 
@@ -1410,289 +1476,6 @@
         </section>
 
         <section class="page-view" data-page-view="corpo" id="corpo">
-              <article class="agenda-summary-card home-planning-card">
-                <div class="module-card-header">
-                  <div>
-                    <h4>Planner de refeição</h4>
-                    <p class="planner-mini-copy">Planejamento semanal básico para a usuária só preencher.</p>
-                  </div>
-                </div>
-                <div class="home-table-shell">
-                  <table class="home-table">
-                    <thead>
-                      <tr>
-                        <th>Dia</th>
-                        <th>Café da Manhã</th>
-                        <th>Almoço</th>
-                        <th>Lanche</th>
-                        <th>Jantar</th>
-                        <th>Agua / observacao</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr><td>Segunda</td><td><input data-persist-key="meal-mon-breakfast" placeholder="Ex.: ovos e fruta" /></td><td><input data-persist-key="meal-mon-lunch" placeholder="Ex.: arroz, feijao e frango" /></td><td><input data-persist-key="meal-mon-snack" placeholder="Ex.: iogurte" /></td><td><input data-persist-key="meal-mon-dinner" placeholder="Ex.: sopa" /></td><td><input data-persist-key="meal-mon-note" placeholder="Meta do dia" /></td></tr>
-                      <tr><td>Terça</td><td><input data-persist-key="meal-tue-breakfast" /></td><td><input data-persist-key="meal-tue-lunch" /></td><td><input data-persist-key="meal-tue-snack" /></td><td><input data-persist-key="meal-tue-dinner" /></td><td><input data-persist-key="meal-tue-note" /></td></tr>
-                      <tr><td>Quarta</td><td><input data-persist-key="meal-wed-breakfast" /></td><td><input data-persist-key="meal-wed-lunch" /></td><td><input data-persist-key="meal-wed-snack" /></td><td><input data-persist-key="meal-wed-dinner" /></td><td><input data-persist-key="meal-wed-note" /></td></tr>
-                      <tr><td>Quinta</td><td><input data-persist-key="meal-thu-breakfast" /></td><td><input data-persist-key="meal-thu-lunch" /></td><td><input data-persist-key="meal-thu-snack" /></td><td><input data-persist-key="meal-thu-dinner" /></td><td><input data-persist-key="meal-thu-note" /></td></tr>
-                      <tr><td>Sexta</td><td><input data-persist-key="meal-fri-breakfast" /></td><td><input data-persist-key="meal-fri-lunch" /></td><td><input data-persist-key="meal-fri-snack" /></td><td><input data-persist-key="meal-fri-dinner" /></td><td><input data-persist-key="meal-fri-note" /></td></tr>
-                      <tr><td>Sábado</td><td><input data-persist-key="meal-sat-breakfast" /></td><td><input data-persist-key="meal-sat-lunch" /></td><td><input data-persist-key="meal-sat-snack" /></td><td><input data-persist-key="meal-sat-dinner" /></td><td><input data-persist-key="meal-sat-note" /></td></tr>
-                      <tr><td>Domingo</td><td><input data-persist-key="meal-sun-breakfast" /></td><td><input data-persist-key="meal-sun-lunch" /></td><td><input data-persist-key="meal-sun-snack" /></td><td><input data-persist-key="meal-sun-dinner" /></td><td><input data-persist-key="meal-sun-note" /></td></tr>
-                    </tbody>
-                  </table>
-                </div>
-              </article>
-              <article class="agenda-summary-card home-planning-card">
-                <div class="module-card-header">
-                  <div>
-                    <h4>Lista do mercado</h4>
-                    <p class="planner-mini-copy">Lista básica padrão para todas as usuárias, com exemplo pronto para marcar e adaptar.</p>
-                  </div>
-                </div>
-                <div class="home-market-grid">
-                  <article class="home-market-card">
-                    <h5>Café da Manhã</h5>
-                    <div class="home-market-items">
-                      <label class="home-market-item"><input type="checkbox" data-persist-key="market-breakfast-coffee" /><span></span><em>Cafe</em></label>
-                      <label class="home-market-item"><input type="checkbox" data-persist-key="market-breakfast-juice" /><span></span><em>Suco</em></label>
-                      <label class="home-market-item"><input type="checkbox" data-persist-key="market-breakfast-choco" /><span></span><em>Achocolatado</em></label>
-                      <label class="home-market-item"><input type="checkbox" data-persist-key="market-breakfast-sweetener" /><span></span><em>Adocante</em></label>
-                      <label class="home-market-item"><input type="checkbox" data-persist-key="market-breakfast-cereal" /><span></span><em>Cereais</em></label>
-                      <label class="home-market-item"><input type="checkbox" data-persist-key="market-breakfast-biscuit" /><span></span><em>Biscoitos</em></label>
-                      <label class="home-market-item"><input type="checkbox" data-persist-key="market-breakfast-bread" /><span></span><em>Pao</em></label>
-                      <label class="home-market-item"><input type="checkbox" data-persist-key="market-breakfast-jam" /><span></span><em>Geleia</em></label>
-                      <label class="home-market-item"><input type="checkbox" data-persist-key="market-breakfast-sugar" /><span></span><em>Acucar</em></label>
-                      <label class="home-market-item"><input type="checkbox" data-persist-key="market-breakfast-yogurt" /><span></span><em>Iogurte</em></label>
-                    </div>
-                  </article>
-
-                  <article class="home-market-card">
-                    <h5>Mercearia</h5>
-                    <div class="home-market-items">
-                      <label class="home-market-item"><input type="checkbox" data-persist-key="market-grocery-rice" /><span></span><em>Arroz</em></label>
-                      <label class="home-market-item"><input type="checkbox" data-persist-key="market-grocery-pasta" /><span></span><em>Macarrao</em></label>
-                      <label class="home-market-item"><input type="checkbox" data-persist-key="market-grocery-beans" /><span></span><em>Feijao</em></label>
-                      <label class="home-market-item"><input type="checkbox" data-persist-key="market-grocery-sauce" /><span></span><em>Molho de tomate</em></label>
-                      <label class="home-market-item"><input type="checkbox" data-persist-key="market-grocery-flour" /><span></span><em>Farinha de trigo</em></label>
-                      <label class="home-market-item"><input type="checkbox" data-persist-key="market-grocery-oil" /><span></span><em>Oleo / azeite</em></label>
-                      <label class="home-market-item"><input type="checkbox" data-persist-key="market-grocery-starch" /><span></span><em>Amido de milho</em></label>
-                      <label class="home-market-item"><input type="checkbox" data-persist-key="market-grocery-eggs" /><span></span><em>Ovos</em></label>
-                      <label class="home-market-item"><input type="checkbox" data-persist-key="market-grocery-yeast" /><span></span><em>Fermento</em></label>
-                      <label class="home-market-item"><input type="checkbox" data-persist-key="market-grocery-seasoning" /><span></span><em>Tempero pronto / sal</em></label>
-                    </div>
-                  </article>
-
-                  <article class="home-market-card">
-                    <h5>Carnes</h5>
-                    <div class="home-market-items">
-                      <label class="home-market-item"><input type="checkbox" data-persist-key="market-meat-beef" /><span></span><em>Bife bovino</em></label>
-                      <label class="home-market-item"><input type="checkbox" data-persist-key="market-meat-chicken" /><span></span><em>Frango</em></label>
-                      <label class="home-market-item"><input type="checkbox" data-persist-key="market-meat-fish" /><span></span><em>Peixe</em></label>
-                      <label class="home-market-item"><input type="checkbox" data-persist-key="market-meat-ground" /><span></span><em>Carne moida</em></label>
-                      <label class="home-market-item"><input type="checkbox" data-persist-key="market-meat-sausage" /><span></span><em>Salsicha / linguica</em></label>
-                    </div>
-                  </article>
-
-                  <article class="home-market-card">
-                    <h5>Higiene</h5>
-                    <div class="home-market-items">
-                      <label class="home-market-item"><input type="checkbox" data-persist-key="market-hygiene-soap" /><span></span><em>Sabonete</em></label>
-                      <label class="home-market-item"><input type="checkbox" data-persist-key="market-hygiene-toothpaste" /><span></span><em>Creme dental</em></label>
-                      <label class="home-market-item"><input type="checkbox" data-persist-key="market-hygiene-shampoo" /><span></span><em>Shampoo / condicionador</em></label>
-                      <label class="home-market-item"><input type="checkbox" data-persist-key="market-hygiene-absorvent" /><span></span><em>Absorvente</em></label>
-                      <label class="home-market-item"><input type="checkbox" data-persist-key="market-hygiene-paper" /><span></span><em>Papel higienico</em></label>
-                    </div>
-                  </article>
-
-                  <article class="home-market-card">
-                    <h5>Laticinios / frios</h5>
-                    <div class="home-market-items">
-                      <label class="home-market-item"><input type="checkbox" data-persist-key="market-dairy-milk" /><span></span><em>Leite</em></label>
-                      <label class="home-market-item"><input type="checkbox" data-persist-key="market-dairy-ham" /><span></span><em>Presunto / queijo</em></label>
-                      <label class="home-market-item"><input type="checkbox" data-persist-key="market-dairy-creamcheese" /><span></span><em>Requeijao</em></label>
-                      <label class="home-market-item"><input type="checkbox" data-persist-key="market-dairy-butter" /><span></span><em>Manteiga</em></label>
-                      <label class="home-market-item"><input type="checkbox" data-persist-key="market-dairy-cream" /><span></span><em>Creme de leite</em></label>
-                    </div>
-                  </article>
-
-                  <article class="home-market-card">
-                    <h5>Limpeza</h5>
-                    <div class="home-market-items">
-                      <label class="home-market-item"><input type="checkbox" data-persist-key="market-clean-bleach" /><span></span><em>Agua sanitaria</em></label>
-                      <label class="home-market-item"><input type="checkbox" data-persist-key="market-clean-powder" /><span></span><em>Sabao em po</em></label>
-                      <label class="home-market-item"><input type="checkbox" data-persist-key="market-clean-steelwool" /><span></span><em>Palha de aco</em></label>
-                      <label class="home-market-item"><input type="checkbox" data-persist-key="market-clean-softener" /><span></span><em>Amaciante</em></label>
-                      <label class="home-market-item"><input type="checkbox" data-persist-key="market-clean-detergent" /><span></span><em>Detergente</em></label>
-                      <label class="home-market-item"><input type="checkbox" data-persist-key="market-clean-disinfectant" /><span></span><em>Desinfetante</em></label>
-                      <label class="home-market-item"><input type="checkbox" data-persist-key="market-clean-bag" /><span></span><em>Saco de lixo</em></label>
-                      <label class="home-market-item"><input type="checkbox" data-persist-key="market-clean-paper" /><span></span><em>Papel toalha</em></label>
-                    </div>
-                  </article>
-
-                  <article class="home-market-card">
-                    <h5>Hortifruti</h5>
-                    <div class="home-market-items">
-                      <label class="home-market-item"><input type="checkbox" data-persist-key="market-fruit-lettuce" /><span></span><em>Alface</em></label>
-                      <label class="home-market-item"><input type="checkbox" data-persist-key="market-fruit-lime" /><span></span><em>Limao</em></label>
-                      <label class="home-market-item"><input type="checkbox" data-persist-key="market-fruit-onion" /><span></span><em>Cebola</em></label>
-                      <label class="home-market-item"><input type="checkbox" data-persist-key="market-fruit-banana" /><span></span><em>Banana</em></label>
-                      <label class="home-market-item"><input type="checkbox" data-persist-key="market-fruit-garlic" /><span></span><em>Alho</em></label>
-                      <label class="home-market-item"><input type="checkbox" data-persist-key="market-fruit-apple" /><span></span><em>Maca</em></label>
-                      <label class="home-market-item"><input type="checkbox" data-persist-key="market-fruit-tomato" /><span></span><em>Tomate</em></label>
-                      <label class="home-market-item"><input type="checkbox" data-persist-key="market-fruit-potato" /><span></span><em>Batata</em></label>
-                    </div>
-                  </article>
-
-                  <article class="home-market-card home-market-card-notes">
-                    <h5>Observações da semana</h5>
-                    <textarea class="summary-input compact-area" data-persist-key="market-week-notes" placeholder="Exemplo: feira na quarta, repor itens de higiene, comprar mistura para o fim de semana."></textarea>
-                  </article>
-                </div>
-              </article>
-              <article class="agenda-summary-card home-planning-card">
-                <div class="module-card-header">
-                  <div>
-                    <h4>Cronograma de limpeza</h4>
-                    <p class="planner-mini-copy">Tarefas organizadas por frequência — marque ao fazer.</p>
-                  </div>
-                </div>
-                <div class="casa-clean-cards">
-                  <div class="casa-clean-card">
-                    <div class="casa-clean-card-header">📅 Diariamente</div>
-                    <div class="casa-clean-card-body">
-                      <div class="casa-clean-chk"><input type="checkbox" data-persist-key="cl-d-1-done" /><input type="text" data-persist-key="cl-d-1-task" placeholder="Ex.: Arrumar a cama" /></div>
-                      <div class="casa-clean-chk"><input type="checkbox" data-persist-key="cl-d-2-done" /><input type="text" data-persist-key="cl-d-2-task" placeholder="Ex.: Limpar bancada da cozinha" /></div>
-                      <div class="casa-clean-chk"><input type="checkbox" data-persist-key="cl-d-3-done" /><input type="text" data-persist-key="cl-d-3-task" placeholder="Ex.: Tirar o lixo" /></div>
-                      <div class="casa-clean-chk"><input type="checkbox" data-persist-key="cl-d-4-done" /><input type="text" data-persist-key="cl-d-4-task" placeholder="Ex.: Varrer o piso" /></div>
-                      <div class="casa-clean-chk"><input type="checkbox" data-persist-key="cl-d-5-done" /><input type="text" data-persist-key="cl-d-5-task" placeholder="Ex.: Lavar louça" /></div>
-                      <div class="casa-clean-chk"><input type="checkbox" data-persist-key="cl-d-6-done" /><input type="text" data-persist-key="cl-d-6-task" placeholder="Adicionar tarefa..." /></div>
-                    </div>
-                  </div>
-                  <div class="casa-clean-card">
-                    <div class="casa-clean-card-header">📆 Quinzenalmente</div>
-                    <div class="casa-clean-card-body">
-                      <div class="casa-clean-chk"><input type="checkbox" data-persist-key="cl-q-1-done" /><input type="text" data-persist-key="cl-q-1-task" placeholder="Ex.: Trocar roupa de cama" /></div>
-                      <div class="casa-clean-chk"><input type="checkbox" data-persist-key="cl-q-2-done" /><input type="text" data-persist-key="cl-q-2-task" placeholder="Ex.: Lavar banheiros" /></div>
-                      <div class="casa-clean-chk"><input type="checkbox" data-persist-key="cl-q-3-done" /><input type="text" data-persist-key="cl-q-3-task" placeholder="Ex.: Limpar geladeira" /></div>
-                      <div class="casa-clean-chk"><input type="checkbox" data-persist-key="cl-q-4-done" /><input type="text" data-persist-key="cl-q-4-task" placeholder="Ex.: Lavar tapetes" /></div>
-                      <div class="casa-clean-chk"><input type="checkbox" data-persist-key="cl-q-5-done" /><input type="text" data-persist-key="cl-q-5-task" placeholder="Ex.: Aspirar sofá" /></div>
-                      <div class="casa-clean-chk"><input type="checkbox" data-persist-key="cl-q-6-done" /><input type="text" data-persist-key="cl-q-6-task" placeholder="Adicionar tarefa..." /></div>
-                    </div>
-                  </div>
-                  <div class="casa-clean-card">
-                    <div class="casa-clean-card-header">🗓️ Mensalmente</div>
-                    <div class="casa-clean-card-body">
-                      <div class="casa-clean-chk"><input type="checkbox" data-persist-key="cl-m-1-done" /><input type="text" data-persist-key="cl-m-1-task" placeholder="Ex.: Limpar armários por dentro" /></div>
-                      <div class="casa-clean-chk"><input type="checkbox" data-persist-key="cl-m-2-done" /><input type="text" data-persist-key="cl-m-2-task" placeholder="Ex.: Faxinar maquiagens" /></div>
-                      <div class="casa-clean-chk"><input type="checkbox" data-persist-key="cl-m-3-done" /><input type="text" data-persist-key="cl-m-3-task" placeholder="Ex.: Lavar cortinas" /></div>
-                      <div class="casa-clean-chk"><input type="checkbox" data-persist-key="cl-m-4-done" /><input type="text" data-persist-key="cl-m-4-task" placeholder="Ex.: Limpar máquina de lavar" /></div>
-                      <div class="casa-clean-chk"><input type="checkbox" data-persist-key="cl-m-5-done" /><input type="text" data-persist-key="cl-m-5-task" placeholder="Ex.: Organizar roupeiro" /></div>
-                      <div class="casa-clean-chk"><input type="checkbox" data-persist-key="cl-m-6-done" /><input type="text" data-persist-key="cl-m-6-task" placeholder="Adicionar tarefa..." /></div>
-                    </div>
-                  </div>
-                  <div class="casa-clean-card">
-                    <div class="casa-clean-card-header">🔧 Por demanda</div>
-                    <div class="casa-clean-card-body">
-                      <div class="casa-clean-chk"><input type="checkbox" data-persist-key="cl-x-1-done" /><input type="text" data-persist-key="cl-x-1-task" placeholder="Ex.: Limpeza área externa" /></div>
-                      <div class="casa-clean-chk"><input type="checkbox" data-persist-key="cl-x-2-done" /><input type="text" data-persist-key="cl-x-2-task" placeholder="Ex.: Passar roupa" /></div>
-                      <div class="casa-clean-chk"><input type="checkbox" data-persist-key="cl-x-3-done" /><input type="text" data-persist-key="cl-x-3-task" placeholder="Ex.: Limpar vidros" /></div>
-                      <div class="casa-clean-chk"><input type="checkbox" data-persist-key="cl-x-4-done" /><input type="text" data-persist-key="cl-x-4-task" placeholder="Ex.: Lavar carro" /></div>
-                      <div class="casa-clean-chk"><input type="checkbox" data-persist-key="cl-x-5-done" /><input type="text" data-persist-key="cl-x-5-task" placeholder="Ex.: Organizar garage" /></div>
-                      <div class="casa-clean-chk"><input type="checkbox" data-persist-key="cl-x-6-done" /><input type="text" data-persist-key="cl-x-6-task" placeholder="Adicionar tarefa..." /></div>
-                    </div>
-                  </div>
-                </div>
-              </article>
-              <article class="agenda-summary-card home-planning-card">
-                <div class="module-card-header">
-                  <div>
-                    <h4>Checklist dos cômodos</h4>
-                    <p class="planner-mini-copy">Um card por cômodo com checklist editável e espaço para notas especiais.</p>
-                  </div>
-                </div>
-                <div class="casa-room-cards">
-                  <div class="casa-room-card">
-                    <div class="casa-room-card-header">🛏️ Quarto Casal</div>
-                    <div class="casa-room-card-body">
-                      <div class="casa-room-chk"><input type="checkbox" data-persist-key="rm-bed-1-done" /><input type="text" data-persist-key="rm-bed-1-task" placeholder="Ex.: Painel / Cabeceira" /></div>
-                      <div class="casa-room-chk"><input type="checkbox" data-persist-key="rm-bed-2-done" /><input type="text" data-persist-key="rm-bed-2-task" placeholder="Ex.: Espelhos" /></div>
-                      <div class="casa-room-chk"><input type="checkbox" data-persist-key="rm-bed-3-done" /><input type="text" data-persist-key="rm-bed-3-task" placeholder="Ex.: Abajours" /></div>
-                      <div class="casa-room-chk"><input type="checkbox" data-persist-key="rm-bed-4-done" /><input type="text" data-persist-key="rm-bed-4-task" placeholder="Ex.: Móveis ao lado da cama" /></div>
-                      <div class="casa-room-chk"><input type="checkbox" data-persist-key="rm-bed-5-done" /><input type="text" data-persist-key="rm-bed-5-task" placeholder="Ex.: Banco frente cama" /></div>
-                      <div class="casa-room-note"><textarea data-persist-key="rm-bed-note" placeholder="Notas especiais do quarto..."></textarea></div>
-                    </div>
-                  </div>
-                  <div class="casa-room-card">
-                    <div class="casa-room-card-header">🍳 Cozinha</div>
-                    <div class="casa-room-card-body">
-                      <div class="casa-room-chk"><input type="checkbox" data-persist-key="rm-kit-1-done" /><input type="text" data-persist-key="rm-kit-1-task" placeholder="Ex.: Todos os armários" /></div>
-                      <div class="casa-room-chk"><input type="checkbox" data-persist-key="rm-kit-2-done" /><input type="text" data-persist-key="rm-kit-2-task" placeholder="Ex.: Bancada e pia" /></div>
-                      <div class="casa-room-chk"><input type="checkbox" data-persist-key="rm-kit-3-done" /><input type="text" data-persist-key="rm-kit-3-task" placeholder="Ex.: Fogão" /></div>
-                      <div class="casa-room-chk"><input type="checkbox" data-persist-key="rm-kit-4-done" /><input type="text" data-persist-key="rm-kit-4-task" placeholder="Ex.: Microondas / Forno" /></div>
-                      <div class="casa-room-chk"><input type="checkbox" data-persist-key="rm-kit-5-done" /><input type="text" data-persist-key="rm-kit-5-task" placeholder="Ex.: Geladeira" /></div>
-                      <div class="casa-room-note"><textarea data-persist-key="rm-kit-note" placeholder="Ex.: Frigideiras — sempre limpar com parte macia da esponja..."></textarea></div>
-                    </div>
-                  </div>
-                  <div class="casa-room-card">
-                    <div class="casa-room-card-header">🚿 Banheiros</div>
-                    <div class="casa-room-card-body">
-                      <div class="casa-room-chk"><input type="checkbox" data-persist-key="rm-bath-1-done" /><input type="text" data-persist-key="rm-bath-1-task" placeholder="Ex.: Bancada da pia" /></div>
-                      <div class="casa-room-chk"><input type="checkbox" data-persist-key="rm-bath-2-done" /><input type="text" data-persist-key="rm-bath-2-task" placeholder="Ex.: Armários (dentro e fora)" /></div>
-                      <div class="casa-room-chk"><input type="checkbox" data-persist-key="rm-bath-3-done" /><input type="text" data-persist-key="rm-bath-3-task" placeholder="Ex.: Espelhos" /></div>
-                      <div class="casa-room-chk"><input type="checkbox" data-persist-key="rm-bath-4-done" /><input type="text" data-persist-key="rm-bath-4-task" placeholder="Ex.: Box / Vaso sanitário" /></div>
-                      <div class="casa-room-chk"><input type="checkbox" data-persist-key="rm-bath-5-done" /><input type="text" data-persist-key="rm-bath-5-task" placeholder="Ex.: Lixeira / Tapete" /></div>
-                      <div class="casa-room-note"><textarea data-persist-key="rm-bath-note" placeholder="Ex.: Sempre limpar banheiro com porta aberta..."></textarea></div>
-                    </div>
-                  </div>
-                  <div class="casa-room-card">
-                    <div class="casa-room-card-header">🛋️ Sala de Estar</div>
-                    <div class="casa-room-card-body">
-                      <div class="casa-room-chk"><input type="checkbox" data-persist-key="rm-liv-1-done" /><input type="text" data-persist-key="rm-liv-1-task" placeholder="Ex.: Limpar tapete" /></div>
-                      <div class="casa-room-chk"><input type="checkbox" data-persist-key="rm-liv-2-done" /><input type="text" data-persist-key="rm-liv-2-task" placeholder="Ex.: Mesas e mesinhas" /></div>
-                      <div class="casa-room-chk"><input type="checkbox" data-persist-key="rm-liv-3-done" /><input type="text" data-persist-key="rm-liv-3-task" placeholder="Ex.: Sofá" /></div>
-                      <div class="casa-room-chk"><input type="checkbox" data-persist-key="rm-liv-4-done" /><input type="text" data-persist-key="rm-liv-4-task" placeholder="Ex.: Ar condicionado" /></div>
-                      <div class="casa-room-chk"><input type="checkbox" data-persist-key="rm-liv-5-done" /><input type="text" data-persist-key="rm-liv-5-task" placeholder="Ex.: TV / painel" /></div>
-                      <div class="casa-room-note"><textarea data-persist-key="rm-liv-note" placeholder="Ex.: Não deixar cortina em cima do sofá..."></textarea></div>
-                    </div>
-                  </div>
-                  <div class="casa-room-card">
-                    <div class="casa-room-card-header">🍽️ Sala de Jantar</div>
-                    <div class="casa-room-card-body">
-                      <div class="casa-room-chk"><input type="checkbox" data-persist-key="rm-din-1-done" /><input type="text" data-persist-key="rm-din-1-task" placeholder="Ex.: Trocar toalha de mesa" /></div>
-                      <div class="casa-room-chk"><input type="checkbox" data-persist-key="rm-din-2-done" /><input type="text" data-persist-key="rm-din-2-task" placeholder="Ex.: Lavar cadeiras" /></div>
-                      <div class="casa-room-chk"><input type="checkbox" data-persist-key="rm-din-3-done" /><input type="text" data-persist-key="rm-din-3-task" placeholder="Ex.: Limpar geladeira" /></div>
-                      <div class="casa-room-chk"><input type="checkbox" data-persist-key="rm-din-4-done" /><input type="text" data-persist-key="rm-din-4-task" placeholder="Ex.: Aparador" /></div>
-                      <div class="casa-room-chk"><input type="checkbox" data-persist-key="rm-din-5-done" /><input type="text" data-persist-key="rm-din-5-task" placeholder="Ex.: Luminária" /></div>
-                      <div class="casa-room-note"><textarea data-persist-key="rm-din-note" placeholder="Notas do espaço..."></textarea></div>
-                    </div>
-                  </div>
-                  <div class="casa-room-card">
-                    <div class="casa-room-card-header">🧺 Lavanderia / Área de serviço</div>
-                    <div class="casa-room-card-body">
-                      <div class="casa-room-chk"><input type="checkbox" data-persist-key="rm-lav-1-done" /><input type="text" data-persist-key="rm-lav-1-task" placeholder="Ex.: Lavar roupas" /></div>
-                      <div class="casa-room-chk"><input type="checkbox" data-persist-key="rm-lav-2-done" /><input type="text" data-persist-key="rm-lav-2-task" placeholder="Ex.: Passar roupa" /></div>
-                      <div class="casa-room-chk"><input type="checkbox" data-persist-key="rm-lav-3-done" /><input type="text" data-persist-key="rm-lav-3-task" placeholder="Ex.: Máquina de lavar" /></div>
-                      <div class="casa-room-chk"><input type="checkbox" data-persist-key="rm-lav-4-done" /><input type="text" data-persist-key="rm-lav-4-task" placeholder="Ex.: Tanque" /></div>
-                      <div class="casa-room-chk"><input type="checkbox" data-persist-key="rm-lav-5-done" /><input type="text" data-persist-key="rm-lav-5-task" placeholder="Ex.: Organizar produtos" /></div>
-                      <div class="casa-room-note"><textarea data-persist-key="rm-lav-note" placeholder="Notas da lavanderia..."></textarea></div>
-                    </div>
-                  </div>
-                </div>
-              </article>
-            </div>
-            <article class="agenda-events-card">
-              <h4>Reformas e reparos do lar</h4>
-              <div class="two-column">
-                <label>Inicio <input type="date" data-persist-key="home-repair-start" /></label>
-                <label>Previsão de término <input type="date" data-persist-key="home-repair-end" /></label>
-              </div>
-              <textarea class="summary-input compact-area" data-persist-key="home-repair-summary" placeholder="Resumo / descrição da reforma"></textarea>
-              <input data-persist-key="home-repair-links" placeholder="Links relacionados a essa reforma" />
-            </article>
-            <ul id="home-preview-list" class="mini-list module-preview-list" style="display:none"></ul>
-          </article>
-        </section>
-
-        <section class="page-view" data-page-view="corpo" id="corpo">
           <div class="page-return-bar">
             <button class="ghost-button page-return-button" type="button" data-go-home>← Voltar</button>
           </div>
@@ -2049,24 +1832,137 @@
           <div class="page-return-bar">
             <button class="ghost-button page-return-button" type="button" data-go-home>← Voltar</button>
           </div>
-          <article class="panel module-card travel-card module-open-card" data-module="travel">
+          <article class="panel module-card travel-card">
             <div class="panel-heading">
               <div>
                 <p class="eyebrow">Viagens</p>
                 <h3>Planejador de viagens</h3>
               </div>
-              <button class="ghost-button module-open-button" type="button" data-module="travel">Abrir</button>
             </div>
-            <div class="structured-card-grid">
-              <div class="detail-card"><span class="metric-label">Destino</span><strong>Gramado</strong></div>
-              <div class="detail-card"><span class="metric-label">Orçamento</span><strong>R$ 3.500 alvo</strong></div>
+
+            <div class="travel-header">
+              <div class="travel-header-fields">
+                <label>Destino <input data-persist-key="travel-destino" placeholder="Ex.: Paris, Dubai, Gramado" /></label>
+                <label>Data de ida <input type="date" data-persist-key="travel-ida" /></label>
+                <label>Data de volta <input type="date" data-persist-key="travel-volta" /></label>
+                <label>Pessoas <input type="number" data-persist-key="travel-pessoas" placeholder="2" min="1" /></label>
+              </div>
+              <div class="travel-budget-total">
+                <span>Orçamento Total</span>
+                <strong id="travel-total-display">R$ 0,00</strong>
+              </div>
             </div>
-            <ul id="travel-preview-list" class="mini-list module-preview-list"></ul>
-            <ul class="mini-list">
-              <li>Prever transporte, hospedagem, alimentacao e extras</li>
-              <li>Checklist de documentos, malas e roteiro</li>
-              <li>Calculadora de custo e poupanca da viagem</li>
-            </ul>
+
+            <div class="travel-categories-grid">
+
+              <div class="travel-cat-card">
+                <div class="travel-cat-header">
+                  <span class="travel-cat-icon">✈️</span>
+                  <h4>Passagem</h4>
+                  <strong class="travel-cat-total" id="travel-total-passagem">R$ 0,00</strong>
+                </div>
+                <div class="fin-table-scroll">
+                  <table class="travel-cat-table">
+                    <thead><tr><th>Descrição</th><th>Tipo</th><th>Data</th><th>Valor</th><th></th></tr></thead>
+                    <tbody data-dyntable="travel-passagem" data-dyntable-cols="4"></tbody>
+                  </table>
+                  <button class="fin-add-row-btn" type="button" data-dyntable-add="travel-passagem">+ Adicionar</button>
+                </div>
+              </div>
+
+              <div class="travel-cat-card">
+                <div class="travel-cat-header">
+                  <span class="travel-cat-icon">🏨</span>
+                  <h4>Hospedagem</h4>
+                  <strong class="travel-cat-total" id="travel-total-hospedagem">R$ 0,00</strong>
+                </div>
+                <div class="fin-table-scroll">
+                  <table class="travel-cat-table">
+                    <thead><tr><th>Hotel/Casa</th><th>Check-in</th><th>Check-out</th><th>Valor</th><th></th></tr></thead>
+                    <tbody data-dyntable="travel-hospedagem" data-dyntable-cols="4"></tbody>
+                  </table>
+                  <button class="fin-add-row-btn" type="button" data-dyntable-add="travel-hospedagem">+ Adicionar</button>
+                </div>
+              </div>
+
+              <div class="travel-cat-card">
+                <div class="travel-cat-header">
+                  <span class="travel-cat-icon">🍽️</span>
+                  <h4>Alimentação</h4>
+                  <strong class="travel-cat-total" id="travel-total-alimentacao">R$ 0,00</strong>
+                </div>
+                <div class="fin-table-scroll">
+                  <table class="travel-cat-table">
+                    <thead><tr><th>Restaurante / Refeição</th><th>Dia</th><th>Pessoas</th><th>Valor</th><th></th></tr></thead>
+                    <tbody data-dyntable="travel-alimentacao" data-dyntable-cols="4"></tbody>
+                  </table>
+                  <button class="fin-add-row-btn" type="button" data-dyntable-add="travel-alimentacao">+ Adicionar</button>
+                </div>
+              </div>
+
+              <div class="travel-cat-card">
+                <div class="travel-cat-header">
+                  <span class="travel-cat-icon">🚗</span>
+                  <h4>Transporte</h4>
+                  <strong class="travel-cat-total" id="travel-total-transporte">R$ 0,00</strong>
+                </div>
+                <div class="fin-table-scroll">
+                  <table class="travel-cat-table">
+                    <thead><tr><th>Descrição</th><th>Tipo</th><th>Data</th><th>Valor</th><th></th></tr></thead>
+                    <tbody data-dyntable="travel-transporte" data-dyntable-cols="4"></tbody>
+                  </table>
+                  <button class="fin-add-row-btn" type="button" data-dyntable-add="travel-transporte">+ Adicionar</button>
+                </div>
+              </div>
+
+              <div class="travel-cat-card">
+                <div class="travel-cat-header">
+                  <span class="travel-cat-icon">🎡</span>
+                  <h4>Passeios</h4>
+                  <strong class="travel-cat-total" id="travel-total-passeios">R$ 0,00</strong>
+                </div>
+                <div class="fin-table-scroll">
+                  <table class="travel-cat-table">
+                    <thead><tr><th>Passeio</th><th>Data</th><th>Pessoas</th><th>Valor</th><th></th></tr></thead>
+                    <tbody data-dyntable="travel-passeios" data-dyntable-cols="4"></tbody>
+                  </table>
+                  <button class="fin-add-row-btn" type="button" data-dyntable-add="travel-passeios">+ Adicionar</button>
+                </div>
+              </div>
+
+              <div class="travel-cat-card">
+                <div class="travel-cat-header">
+                  <span class="travel-cat-icon">🛍️</span>
+                  <h4>Compras</h4>
+                  <strong class="travel-cat-total" id="travel-total-compras">R$ 0,00</strong>
+                </div>
+                <div class="fin-table-scroll">
+                  <table class="travel-cat-table">
+                    <thead><tr><th>Item</th><th>Loja</th><th>Qtd</th><th>Valor</th><th></th></tr></thead>
+                    <tbody data-dyntable="travel-compras" data-dyntable-cols="4"></tbody>
+                  </table>
+                  <button class="fin-add-row-btn" type="button" data-dyntable-add="travel-compras">+ Adicionar</button>
+                </div>
+              </div>
+
+            </div><!-- /travel-categories-grid -->
+
+            <div class="fin-section-block">
+              <h4 class="fin-section-title">Links Importantes</h4>
+              <div class="fin-table-scroll">
+                <table class="travel-links-table">
+                  <thead><tr><th>Descrição</th><th>URL</th><th>Categoria</th><th></th></tr></thead>
+                  <tbody data-dyntable="travel-links" data-dyntable-cols="3"></tbody>
+                </table>
+                <button class="fin-add-row-btn" type="button" data-dyntable-add="travel-links">+ Adicionar link</button>
+              </div>
+            </div>
+
+            <div class="fin-section-block">
+              <h4 class="fin-section-title">Notas da viagem</h4>
+              <textarea class="fin-mensal-notes" data-persist-key="travel-notas" placeholder="Roteiro, documentos necessários, dicas, observações..."></textarea>
+            </div>
+
           </article>
         </section>
 

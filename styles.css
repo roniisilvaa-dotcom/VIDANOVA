@@ -6396,3 +6396,399 @@ select {
   .comodos-grid  { grid-template-columns: 1fr 1fr; }
   .reforma-grid  { grid-template-columns: 1fr; }
 }
+
+/* =============================================
+   FINANÇAS — novo sistema de 5 abas
+   ============================================= */
+
+.tab-buttons-scroll {
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.tab-buttons-scroll::-webkit-scrollbar { display: none; }
+
+.fin-summary-cards {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-bottom: 20px;
+}
+.fin-summary-card {
+  border-radius: 14px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.fin-card-entradas { background: linear-gradient(135deg, #2ecc71, #27ae60); color: #fff; }
+.fin-card-custos   { background: linear-gradient(135deg, #e74c3c, #c0392b); color: #fff; }
+.fin-card-dividas  { background: linear-gradient(135deg, #e67e22, #d35400); color: #fff; }
+.fin-card-invest   { background: linear-gradient(135deg, #3498db, #2980b9); color: #fff; }
+.fin-card-label { font-size: .78rem; opacity: .85; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; }
+.fin-card-value { font-size: 1.3rem; font-weight: 900; color: inherit; }
+.fin-card-input {
+  background: rgba(255,255,255,.25);
+  border: 1px solid rgba(255,255,255,.4);
+  border-radius: 8px;
+  padding: 4px 8px;
+  color: #fff;
+  font-weight: 700;
+  font-size: 1.1rem;
+  width: 100%;
+}
+.fin-card-input::placeholder { color: rgba(255,255,255,.7); }
+
+.fin-saldo-banner {
+  background: var(--rose-soft);
+  border-radius: 10px;
+  padding: 10px 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 20px;
+  font-weight: 600;
+  color: var(--ink);
+}
+.fin-saldo-banner strong { color: var(--rose); font-size: 1.1rem; }
+
+.fin-section-block { margin-bottom: 24px; }
+.fin-section-title {
+  font-size: .9rem;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 10px;
+  padding-bottom: 6px;
+  border-bottom: 2px solid var(--rose-soft);
+}
+
+.fin-table-scroll {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+}
+.fin-annual-table,
+.fin-parceladas-table,
+.fin-desejos-table,
+.fin-mensal-table,
+.travel-cat-table,
+.travel-links-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: .85rem;
+  min-width: 500px;
+}
+.fin-annual-table { min-width: 900px; }
+.fin-annual-table th,
+.fin-annual-table td,
+.fin-parceladas-table th,
+.fin-parceladas-table td,
+.fin-desejos-table th,
+.fin-desejos-table td,
+.fin-mensal-table th,
+.fin-mensal-table td,
+.travel-cat-table th,
+.travel-cat-table td,
+.travel-links-table th,
+.travel-links-table td {
+  border: 1px solid var(--border);
+  padding: 6px 8px;
+  text-align: left;
+}
+.fin-annual-table th,
+.fin-parceladas-table th,
+.fin-desejos-table th,
+.fin-mensal-table th,
+.travel-cat-table th,
+.travel-links-table th {
+  background: var(--rose-soft);
+  font-weight: 700;
+  font-size: .78rem;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  white-space: nowrap;
+}
+.fin-annual-table td input,
+.fin-parceladas-table td input,
+.fin-desejos-table td input,
+.fin-mensal-table td input,
+.travel-cat-table td input,
+.travel-links-table td input {
+  border: none;
+  background: transparent;
+  width: 100%;
+  min-width: 60px;
+  font-size: .85rem;
+  color: var(--ink);
+  padding: 2px 0;
+}
+.fin-annual-table td input:focus,
+.fin-parceladas-table td input:focus,
+.fin-desejos-table td input:focus,
+.fin-mensal-table td input:focus,
+.travel-cat-table td input:focus,
+.travel-links-table td input:focus { outline: none; background: rgba(197,91,132,.08); border-radius: 4px; }
+
+.fin-add-row-btn {
+  display: block;
+  width: 100%;
+  padding: 8px 12px;
+  background: var(--rose-soft);
+  border: 1px dashed var(--rose);
+  border-top: none;
+  border-radius: 0 0 10px 10px;
+  color: var(--rose);
+  font-weight: 600;
+  font-size: .85rem;
+  cursor: pointer;
+  text-align: center;
+  transition: background .2s;
+}
+.fin-add-row-btn:hover { background: rgba(197,91,132,.15); }
+
+.dyntable-del-btn {
+  background: none;
+  border: none;
+  color: #e74c3c;
+  font-size: 1.1rem;
+  cursor: pointer;
+  padding: 2px 6px;
+  border-radius: 4px;
+  line-height: 1;
+}
+.dyntable-del-btn:hover { background: rgba(231,76,60,.1); }
+
+/* Credit card visual */
+.fin-cc-visual {
+  background: linear-gradient(135deg, #2c3e50, #4a5568);
+  border-radius: 16px;
+  padding: 20px 24px;
+  color: #fff;
+  margin-bottom: 20px;
+  position: relative;
+  overflow: hidden;
+  min-height: 120px;
+}
+.fin-cc-visual::before {
+  content: '';
+  position: absolute;
+  top: -30px; right: -30px;
+  width: 120px; height: 120px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.07);
+}
+.fin-cc-visual::after {
+  content: '';
+  position: absolute;
+  bottom: -40px; right: 20px;
+  width: 160px; height: 160px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.05);
+}
+.fin-cc-chip {
+  width: 36px; height: 26px;
+  background: linear-gradient(135deg, #f6d365, #fda085);
+  border-radius: 6px;
+  margin-bottom: 14px;
+}
+.fin-cc-number {
+  font-size: .95rem;
+  letter-spacing: .18em;
+  font-weight: 600;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.fin-cc-num-input {
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid rgba(255,255,255,.4);
+  color: #fff;
+  font-size: .95rem;
+  font-weight: 600;
+  width: 60px;
+  letter-spacing: .1em;
+}
+.fin-cc-num-input:focus { outline: none; }
+.fin-cc-row { display: flex; gap: 24px; }
+.fin-cc-row > div { display: flex; flex-direction: column; gap: 2px; }
+.fin-cc-micro { font-size: .65rem; opacity: .7; text-transform: uppercase; letter-spacing: .1em; }
+.fin-cc-name, .fin-cc-limit {
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid rgba(255,255,255,.3);
+  color: #fff;
+  font-size: .9rem;
+  font-weight: 600;
+  padding: 2px 0;
+  width: 140px;
+}
+.fin-cc-name:focus, .fin-cc-limit:focus { outline: none; }
+
+/* Desejos de compra */
+.fin-desejos-columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+.fin-desejo-col-title {
+  font-size: .9rem;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 8px;
+}
+
+/* Metas financeiras */
+.fin-metas-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 16px;
+  margin-bottom: 16px;
+}
+.fin-meta-card {
+  background: linear-gradient(135deg, var(--rose-soft), #fff);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 16px;
+  position: relative;
+}
+.fin-meta-card-title { font-weight: 700; font-size: .95rem; margin-bottom: 4px; color: var(--ink); }
+.fin-meta-card-valor { font-size: 1.15rem; font-weight: 900; color: var(--rose); margin-bottom: 4px; }
+.fin-meta-card-data { font-size: .78rem; color: var(--ink-muted, #888); margin-bottom: 10px; }
+.fin-meta-progress-bar { height: 8px; background: var(--border); border-radius: 4px; overflow: hidden; margin-bottom: 6px; }
+.fin-meta-progress-fill { height: 100%; background: linear-gradient(90deg, var(--rose), #e8829a); border-radius: 4px; transition: width .4s; }
+.fin-meta-progress-label { font-size: .75rem; color: var(--ink-muted, #888); }
+.fin-meta-del-btn { position: absolute; top: 10px; right: 10px; background: none; border: none; color: #e74c3c; cursor: pointer; font-size: .95rem; }
+.fin-add-meta-btn { display: block; width: 100%; margin-top: 8px; }
+
+/* Meta modal */
+.fin-meta-modal {
+  position: fixed; inset: 0; background: rgba(0,0,0,.5);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 1000;
+}
+.fin-meta-modal.hidden { display: none; }
+.fin-meta-modal-box {
+  background: #fff; border-radius: 16px;
+  padding: 24px; width: min(400px, 92vw);
+  display: flex; flex-direction: column; gap: 14px;
+}
+.fin-meta-modal-box h4 { font-size: 1.1rem; font-weight: 800; color: var(--rose); margin: 0; }
+.fin-meta-modal-box label { display: flex; flex-direction: column; gap: 4px; font-size: .85rem; font-weight: 600; color: var(--ink); }
+.fin-meta-modal-box input[type=text],
+.fin-meta-modal-box input[type=date] { padding: 8px 12px; border: 1px solid var(--border); border-radius: 8px; font-size: .9rem; }
+.fin-meta-modal-box input[type=range] { width: 100%; }
+.fin-meta-modal-footer { display: flex; justify-content: flex-end; gap: 10px; margin-top: 6px; }
+
+/* Controle Mensal */
+.fin-mensal-header { margin-bottom: 16px; }
+.fin-mensal-header select { padding: 6px 10px; border: 1px solid var(--border); border-radius: 8px; font-size: .9rem; }
+.fin-mensal-section { margin-bottom: 20px; }
+.fin-mensal-title { font-size: .9rem; font-weight: 700; margin-bottom: 8px; }
+.fin-color-entradas { color: #27ae60; }
+.fin-color-fixos    { color: #e67e22; }
+.fin-color-variaveis { color: #8e44ad; }
+.fin-color-dividas  { color: #e74c3c; }
+.fin-balanco-card { background: var(--rose-soft); border-radius: 14px; padding: 16px; margin-top: 20px; }
+.fin-balanco-card h4 { font-size: .95rem; font-weight: 800; margin-bottom: 12px; color: var(--ink); }
+.fin-balanco-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 14px; }
+.fin-balanco-item { display: flex; flex-direction: column; gap: 4px; }
+.fin-balanco-item span { font-size: .75rem; font-weight: 600; color: var(--ink); opacity: .7; text-transform: uppercase; }
+.fin-balanco-item strong { font-size: 1rem; font-weight: 900; }
+.fin-balanco-total strong { font-size: 1.2rem; color: var(--rose); }
+.fin-mensal-notes { width: 100%; min-height: 80px; padding: 10px; border: 1px solid var(--border); border-radius: 8px; font-size: .88rem; resize: vertical; }
+
+/* =============================================
+   VIAGENS — planejador de orçamento
+   ============================================= */
+
+.travel-header {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  border-radius: 14px;
+  padding: 20px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+.travel-header-fields {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 10px;
+  flex: 1;
+}
+.travel-header-fields label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: .75rem;
+  font-weight: 700;
+  color: rgba(255,255,255,.9);
+  text-transform: uppercase;
+  letter-spacing: .05em;
+}
+.travel-header-fields input {
+  background: rgba(255,255,255,.2);
+  border: 1px solid rgba(255,255,255,.3);
+  border-radius: 8px;
+  padding: 6px 10px;
+  color: #fff;
+  font-size: .9rem;
+}
+.travel-header-fields input::placeholder { color: rgba(255,255,255,.6); }
+.travel-header-fields input:focus { outline: none; background: rgba(255,255,255,.3); }
+.travel-budget-total {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+  color: rgba(255,255,255,.85);
+  font-size: .8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+}
+.travel-budget-total strong { font-size: 1.5rem; font-weight: 900; color: #fff; }
+
+.travel-categories-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+.travel-cat-card {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,.05);
+}
+.travel-cat-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+.travel-cat-icon { font-size: 1.3rem; }
+.travel-cat-header h4 { flex: 1; font-size: .95rem; font-weight: 700; color: var(--ink); margin: 0; }
+.travel-cat-total { font-size: .95rem; font-weight: 800; color: var(--rose); }
+
+/* Responsive */
+@media (max-width: 700px) {
+  .fin-summary-cards { grid-template-columns: 1fr 1fr; }
+  .fin-desejos-columns { grid-template-columns: 1fr; }
+  .fin-balanco-grid { grid-template-columns: 1fr 1fr; }
+  .travel-categories-grid { grid-template-columns: 1fr; }
+  .travel-header { flex-direction: column; }
+  .travel-budget-total { align-items: flex-start; }
+}
+@media (max-width: 400px) {
+  .fin-summary-cards { grid-template-columns: 1fr 1fr; }
+  .fin-metas-grid { grid-template-columns: 1fr; }
+}

@@ -6380,6 +6380,114 @@ async function bootApp() {
   setupPushNotificationToggle();
 }
 
+// ── DynamicTable: tabelas infinitas com persistência ──────────────────────────
+(function setupDynamicTables() {
+  const PREFIX = "vida-nova:dt:";
+
+  function saveTable(key, tbody) {
+    const rows = [];
+    tbody.querySelectorAll("tr").forEach((tr) => {
+      const cells = [];
+      tr.querySelectorAll("input, select, textarea").forEach((inp) => cells.push(inp.value));
+      rows.push(cells);
+    });
+    try { localStorage.setItem(PREFIX + key, JSON.stringify(rows)); } catch (_) {}
+  }
+
+  function buildRow(key, tbody, cols, values) {
+    const tr = document.createElement("tr");
+    for (let i = 0; i < cols; i++) {
+      const td = document.createElement("td");
+      const inp = document.createElement("input");
+      inp.type = "text";
+      inp.value = values ? (values[i] || "") : "";
+      inp.addEventListener("input", () => saveTable(key, tbody));
+      td.appendChild(inp);
+      tr.appendChild(td);
+    }
+    const tdDel = document.createElement("td");
+    const del = document.createElement("button");
+    del.type = "button";
+    del.className = "dyntable-del-btn";
+    del.textContent = "×";
+    del.addEventListener("click", () => { tr.remove(); saveTable(key, tbody); });
+    tdDel.appendChild(del);
+    tr.appendChild(tdDel);
+    tbody.appendChild(tr);
+  }
+
+  document.querySelectorAll("[data-dyntable-add]").forEach((btn) => {
+    const key = btn.dataset.dyntableAdd;
+    const tbody = document.querySelector(`[data-dyntable="${key}"]`);
+    if (!tbody) return;
+    const cols = parseInt(tbody.dataset.dyntableCols || "3", 10);
+    // Load
+    try {
+      const saved = JSON.parse(localStorage.getItem(PREFIX + key) || "null");
+      if (Array.isArray(saved)) saved.forEach((row) => buildRow(key, tbody, cols, row));
+    } catch (_) {}
+    // Add
+    btn.addEventListener("click", () => { buildRow(key, tbody, cols, null); saveTable(key, tbody); });
+  });
+})();
+
+// ── Metas Financeiras ─────────────────────────────────────────────────────────
+(function setupFinMetas() {
+  const STORAGE_KEY = "vida-nova:fin-metas";
+  const grid = document.querySelector("#fin-metas-grid");
+  const addBtn = document.querySelector("#fin-add-meta-btn");
+  const modal = document.querySelector("#fin-meta-modal");
+  const titleInp = document.querySelector("#fin-meta-title-inp");
+  const valorInp = document.querySelector("#fin-meta-valor-inp");
+  const dataInp = document.querySelector("#fin-meta-data-inp");
+  const progInp = document.querySelector("#fin-meta-prog-inp");
+  const progVal = document.querySelector("#fin-meta-prog-val");
+  const cancelBtn = document.querySelector("#fin-meta-cancel-btn");
+  const saveBtn = document.querySelector("#fin-meta-save-btn");
+  if (!grid || !addBtn) return;
+
+  let metas = [];
+  try { metas = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]"); } catch (_) {}
+
+  function save() { try { localStorage.setItem(STORAGE_KEY, JSON.stringify(metas)); } catch (_) {} }
+
+  function renderMetas() {
+    grid.innerHTML = "";
+    metas.forEach((m, idx) => {
+      const card = document.createElement("div");
+      card.className = "fin-meta-card";
+      card.innerHTML = `
+        <button class="fin-meta-del-btn" data-idx="${idx}" type="button">×</button>
+        <div class="fin-meta-card-title">${m.title || "Meta"}</div>
+        <div class="fin-meta-card-valor">${m.valor || "R$ 0,00"}</div>
+        <div class="fin-meta-card-data">${m.data ? "Até " + m.data : ""}</div>
+        <div class="fin-meta-progress-bar"><div class="fin-meta-progress-fill" style="width:${m.progress || 0}%"></div></div>
+        <div class="fin-meta-progress-label">${m.progress || 0}% concluído</div>`;
+      grid.appendChild(card);
+    });
+    grid.querySelectorAll(".fin-meta-del-btn").forEach((b) => {
+      b.addEventListener("click", () => { metas.splice(+b.dataset.idx, 1); save(); renderMetas(); });
+    });
+  }
+
+  if (progInp && progVal) progInp.addEventListener("input", () => { progVal.textContent = progInp.value + "%"; });
+
+  addBtn.addEventListener("click", () => { if (modal) modal.classList.remove("hidden"); });
+  if (cancelBtn) cancelBtn.addEventListener("click", () => { if (modal) modal.classList.add("hidden"); });
+  if (saveBtn) saveBtn.addEventListener("click", () => {
+    metas.push({ title: titleInp?.value || "", valor: valorInp?.value || "", data: dataInp?.value || "", progress: +(progInp?.value || 0) });
+    save(); renderMetas();
+    if (modal) modal.classList.add("hidden");
+    if (titleInp) titleInp.value = "";
+    if (valorInp) valorInp.value = "";
+    if (dataInp) dataInp.value = "";
+    if (progInp) progInp.value = 0;
+    if (progVal) progVal.textContent = "0%";
+  });
+
+  renderMetas();
+})();
+
 bootApp().catch((error) => {
   console.error("Erro ao iniciar o app:", error);
   clearAuthSession();
