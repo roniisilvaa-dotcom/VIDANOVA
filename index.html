@@ -431,58 +431,6 @@
 
             <section class="tab-panel planner-tab-panel" data-tab-panel="planner-agenda">
               <section class="panel agenda-panel">
-                <article class="agenda-entry-card">
-                  <div class="panel-heading agenda-subheading">
-                    <div>
-                      <p class="eyebrow">Cadastro de agenda</p>
-                      <h3>Compromissos completos</h3>
-                    </div>
-                    <span class="tag">Cadastre, edite e mova seus compromissos</span>
-                  </div>
-
-                  <form id="agenda-form" class="agenda-form agenda-form-horizontal">
-                    <input id="agenda-date-input" type="date" aria-label="Data do compromisso" />
-                    <input id="agenda-time-input" type="time" aria-label="Horario inicial do compromisso" />
-                    <input id="agenda-end-time-input" type="time" aria-label="Horario final do compromisso" />
-                    <input id="agenda-title-input" type="text" placeholder="Titulo do compromisso" aria-label="Titulo do compromisso" />
-                    <input id="agenda-location-input" type="text" placeholder="Local" aria-label="Local do compromisso" />
-                    <input id="agenda-link-input" type="url" placeholder="Link de reuniao ou referencia" aria-label="Link do compromisso" />
-                    <input id="agenda-guests-input" type="text" placeholder="Convidados (emails separados por virgula)" aria-label="Convidados" />
-                    <select id="agenda-calendar-input" aria-label="Calendario do compromisso"></select>
-                    <select id="agenda-category-input" aria-label="Categoria do compromisso">
-                      <option value="Pessoal">Pessoal</option>
-                      <option value="Trabalho">Trabalho</option>
-                      <option value="Casa">Casa</option>
-                      <option value="Saude">Saude</option>
-                      <option value="Espiritual">Espiritual</option>
-                    </select>
-                    <select id="agenda-recurrence-input" aria-label="Recorrencia">
-                      <option value="none">Nao se repete</option>
-                      <option value="daily">Diariamente</option>
-                      <option value="weekly">Semanalmente</option>
-                      <option value="monthly">Mensalmente</option>
-                      <option value="yearly">Anualmente</option>
-                    </select>
-                    <select id="agenda-reminder-input" aria-label="Alerta do compromisso">
-                      <option value="15">Alertar 15 min antes</option>
-                      <option value="5">Alertar 5 min antes</option>
-                      <option value="30">Alertar 30 min antes</option>
-                      <option value="60">Alertar 1 hora antes</option>
-                      <option value="0">Alertar no horario</option>
-                      <option value="-1">Sem alerta</option>
-                    </select>
-                    <div class="color-field agenda-color-field">
-                      <span>Cor</span>
-                      <input id="agenda-color-input" type="hidden" value="#c55b84" aria-label="Cor do compromisso" />
-                      <div class="app-color-preset-grid" data-color-preset-grid="agenda-form"></div>
-                    </div>
-                    <textarea id="agenda-description-input" rows="3" placeholder="Descricao, observacoes ou detalhes"></textarea>
-                    <div class="agenda-form-actions">
-                      <button id="agenda-submit-button" type="submit">Salvar</button>
-                      <button id="agenda-cancel-edit" class="ghost-button hidden" type="button">Cancelar edicao</button>
-                    </div>
-                  </form>
-                </article>
                 <div class="agenda-google-shell">
                   <section class="calendar-card google-calendar-card">
                     <div class="calendar-google-header">
@@ -581,6 +529,60 @@
                     <textarea class="summary-input" data-persist-key="agenda-next-week" placeholder="Liste tarefas pendentes e prioridades para a proxima semana."></textarea>
                   </article>
                 </div>
+
+                <article class="agenda-entry-card">
+                  <div class="panel-heading agenda-subheading">
+                    <div>
+                      <p class="eyebrow">Cadastro de agenda</p>
+                      <h3>Novo compromisso</h3>
+                    </div>
+                    <span class="tag">Cadastre, edite e mova seus compromissos</span>
+                  </div>
+
+                  <form id="agenda-form" class="agenda-form agenda-form-horizontal">
+                    <input id="agenda-date-input" type="date" aria-label="Data do compromisso" />
+                    <input id="agenda-time-input" type="time" aria-label="Horario inicial do compromisso" />
+                    <input id="agenda-end-time-input" type="time" aria-label="Horario final do compromisso" />
+                    <input id="agenda-title-input" type="text" placeholder="Titulo do compromisso" aria-label="Titulo do compromisso" />
+                    <input id="agenda-location-input" type="text" placeholder="Local" aria-label="Local do compromisso" />
+                    <input id="agenda-link-input" type="url" placeholder="Link de reuniao ou referencia" aria-label="Link do compromisso" />
+                    <input id="agenda-guests-input" type="text" placeholder="Convidados (emails separados por virgula)" aria-label="Convidados" />
+                    <select id="agenda-calendar-input" aria-label="Calendario do compromisso"></select>
+                    <select id="agenda-category-input" aria-label="Categoria do compromisso">
+                      <option value="Pessoal">Pessoal</option>
+                      <option value="Trabalho">Trabalho</option>
+                      <option value="Casa">Casa</option>
+                      <option value="Saude">Saude</option>
+                      <option value="Espiritual">Espiritual</option>
+                    </select>
+                    <select id="agenda-recurrence-input" aria-label="Recorrencia">
+                      <option value="none">Nao se repete</option>
+                      <option value="daily">Todos os dias</option>
+                      <option value="weekly">Semanal</option>
+                      <option value="monthly">Mensal</option>
+                      <option value="yearly">Anual</option>
+                      <option value="weekdays">Dias de semana (Seg a Sex)</option>
+                    </select>
+                    <select id="agenda-reminder-input" aria-label="Alerta do compromisso">
+                      <option value="15">Alertar 15 min antes</option>
+                      <option value="5">Alertar 5 min antes</option>
+                      <option value="30">Alertar 30 min antes</option>
+                      <option value="60">Alertar 1 hora antes</option>
+                      <option value="0">Alertar no horario</option>
+                      <option value="-1">Sem alerta</option>
+                    </select>
+                    <div class="color-field agenda-color-field">
+                      <span>Cor</span>
+                      <input id="agenda-color-input" type="hidden" value="#c55b84" aria-label="Cor do compromisso" />
+                      <div class="app-color-preset-grid" data-color-preset-grid="agenda-form"></div>
+                    </div>
+                    <textarea id="agenda-description-input" rows="3" placeholder="Descricao, observacoes ou detalhes"></textarea>
+                    <div class="agenda-form-actions">
+                      <button id="agenda-submit-button" type="submit">Salvar compromisso</button>
+                      <button id="agenda-cancel-edit" class="ghost-button hidden" type="button">Cancelar edicao</button>
+                    </div>
+                  </form>
+                </article>
               </section>
             </section>
 
@@ -920,7 +922,373 @@
                 <h3>Planejamento da casa e refeicoes</h3>
               </div>
             </div>
-            <div class="study-main-grid">
+
+            <!-- Abas da Casa -->
+            <div class="tab-shell casa-tab-shell" data-tab-group="casa">
+              <div class="casa-tab-ribbon" role="tablist" aria-label="Abas da casa">
+                <button class="casa-tab is-active" type="button" data-tab-target="casa-refeicao">🍽️ Planner de Refeicao</button>
+                <button class="casa-tab" type="button" data-tab-target="casa-mercado">🛒 Lista do Mercado</button>
+                <button class="casa-tab" type="button" data-tab-target="casa-limpeza">🧹 Cronograma de Limpeza</button>
+                <button class="casa-tab" type="button" data-tab-target="casa-comodos">🏠 Checklist Comodos</button>
+                <button class="casa-tab" type="button" data-tab-target="casa-reforma">🔨 Reforma da Casa</button>
+              </div>
+
+              <!-- ABA 1: Planner de Refeicao -->
+              <section class="tab-panel casa-tab-panel is-active" data-tab-panel="casa-refeicao">
+                <div class="refeicao-cols">
+                  <div class="refeicao-col">
+                    <div class="refeicao-col-header">Dia 1</div>
+                    <div class="refeicao-meal-card"><div class="refeicao-meal-label">☕ Cafe da Manha</div><textarea class="refeicao-area" data-persist-key="rf-d1-cafe" placeholder="Ex.: 2 ovos mexidos, fruta, cafe preto"></textarea></div>
+                    <div class="refeicao-meal-card"><div class="refeicao-meal-label">🥗 Almoco</div><textarea class="refeicao-area" data-persist-key="rf-d1-almoco" placeholder="Ex.: 100g frango, arroz integral, salada"></textarea></div>
+                    <div class="refeicao-meal-card"><div class="refeicao-meal-label">🍎 Lanche</div><textarea class="refeicao-area" data-persist-key="rf-d1-lanche" placeholder="Ex.: Iogurte com fruta"></textarea></div>
+                    <div class="refeicao-meal-card"><div class="refeicao-meal-label">🥘 Jantar</div><textarea class="refeicao-area" data-persist-key="rf-d1-jantar" placeholder="Ex.: Sopa de legumes"></textarea></div>
+                  </div>
+                  <div class="refeicao-col">
+                    <div class="refeicao-col-header">Dia 2</div>
+                    <div class="refeicao-meal-card"><div class="refeicao-meal-label">☕ Cafe da Manha</div><textarea class="refeicao-area" data-persist-key="rf-d2-cafe" placeholder="Ex.: Tapioca com queijo"></textarea></div>
+                    <div class="refeicao-meal-card"><div class="refeicao-meal-label">🥗 Almoco</div><textarea class="refeicao-area" data-persist-key="rf-d2-almoco" placeholder="Ex.: Carne moida, pure de batata"></textarea></div>
+                    <div class="refeicao-meal-card"><div class="refeicao-meal-label">🍎 Lanche</div><textarea class="refeicao-area" data-persist-key="rf-d2-lanche" placeholder="Ex.: Castanhas e cafe"></textarea></div>
+                    <div class="refeicao-meal-card"><div class="refeicao-meal-label">🥘 Jantar</div><textarea class="refeicao-area" data-persist-key="rf-d2-jantar" placeholder="Ex.: Omelete e salada"></textarea></div>
+                  </div>
+                  <div class="refeicao-col">
+                    <div class="refeicao-col-header">Dia 3</div>
+                    <div class="refeicao-meal-card"><div class="refeicao-meal-label">☕ Cafe da Manha</div><textarea class="refeicao-area" data-persist-key="rf-d3-cafe" placeholder="Ex.: Mingau de aveia"></textarea></div>
+                    <div class="refeicao-meal-card"><div class="refeicao-meal-label">🥗 Almoco</div><textarea class="refeicao-area" data-persist-key="rf-d3-almoco" placeholder="Ex.: Peixe grelhado, legumes"></textarea></div>
+                    <div class="refeicao-meal-card"><div class="refeicao-meal-label">🍎 Lanche</div><textarea class="refeicao-area" data-persist-key="rf-d3-lanche" placeholder="Ex.: Vitamina de banana"></textarea></div>
+                    <div class="refeicao-meal-card"><div class="refeicao-meal-label">🥘 Jantar</div><textarea class="refeicao-area" data-persist-key="rf-d3-jantar" placeholder="Ex.: Frango assado e arroz"></textarea></div>
+                  </div>
+                  <div class="refeicao-col">
+                    <div class="refeicao-col-header">Dias 4 e 5</div>
+                    <div class="refeicao-meal-card"><div class="refeicao-meal-label">☕ Cafe da Manha</div><textarea class="refeicao-area" data-persist-key="rf-d45-cafe" placeholder="Ex.: Tapioca com recheio de tofu"></textarea></div>
+                    <div class="refeicao-meal-card"><div class="refeicao-meal-label">🥗 Almoco</div><textarea class="refeicao-area" data-persist-key="rf-d45-almoco" placeholder="Ex.: Carne grelha, salada verde"></textarea></div>
+                    <div class="refeicao-meal-card"><div class="refeicao-meal-label">🍎 Lanche</div><textarea class="refeicao-area" data-persist-key="rf-d45-lanche" placeholder="Ex.: Fruta da estacao"></textarea></div>
+                    <div class="refeicao-meal-card"><div class="refeicao-meal-label">🥘 Jantar</div><textarea class="refeicao-area" data-persist-key="rf-d45-jantar" placeholder="Ex.: Sopa ou wrap leve"></textarea></div>
+                  </div>
+                  <div class="refeicao-col">
+                    <div class="refeicao-col-header">Dias 6 e 7</div>
+                    <div class="refeicao-meal-card"><div class="refeicao-meal-label">☕ Cafe da Manha</div><textarea class="refeicao-area" data-persist-key="rf-d67-cafe" placeholder="Ex.: 2 ovos cozidos, aveia"></textarea></div>
+                    <div class="refeicao-meal-card"><div class="refeicao-meal-label">🥗 Almoco</div><textarea class="refeicao-area" data-persist-key="rf-d67-almoco" placeholder="Ex.: Frango assado, pure"></textarea></div>
+                    <div class="refeicao-meal-card"><div class="refeicao-meal-label">🍎 Lanche</div><textarea class="refeicao-area" data-persist-key="rf-d67-lanche" placeholder="Ex.: Iogurte com granola"></textarea></div>
+                    <div class="refeicao-meal-card"><div class="refeicao-meal-label">🥘 Jantar</div><textarea class="refeicao-area" data-persist-key="rf-d67-jantar" placeholder="Ex.: Salada completa"></textarea></div>
+                  </div>
+                </div>
+              </section>
+
+              <!-- ABA 2: Lista do Mercado -->
+              <section class="tab-panel casa-tab-panel" data-tab-panel="casa-mercado">
+                <div class="home-market-grid">
+                  <article class="home-market-card">
+                    <h5>🥦 Hortifruti</h5>
+                    <div class="home-market-items">
+                      <label class="home-market-item"><input type="checkbox" data-persist-key="mkt-h-alface" /><span></span><em>Alface</em></label>
+                      <label class="home-market-item"><input type="checkbox" data-persist-key="mkt-h-tomate" /><span></span><em>Tomate</em></label>
+                      <label class="home-market-item"><input type="checkbox" data-persist-key="mkt-h-cebola" /><span></span><em>Cebola</em></label>
+                      <label class="home-market-item"><input type="checkbox" data-persist-key="mkt-h-cenoura" /><span></span><em>Cenoura</em></label>
+                      <label class="home-market-item"><input type="checkbox" data-persist-key="mkt-h-banana" /><span></span><em>Banana</em></label>
+                      <label class="home-market-item"><input type="checkbox" data-persist-key="mkt-h-limao" /><span></span><em>Limao</em></label>
+                      <label class="home-market-item"><input type="checkbox" data-persist-key="mkt-h-brocolis" /><span></span><em>Brocolis</em></label>
+                      <label class="home-market-item"><input type="checkbox" data-persist-key="mkt-h-batata" /><span></span><em>Batata</em></label>
+                      <label class="home-market-item"><input type="checkbox" data-persist-key="mkt-h-maca" /><span></span><em>Maca</em></label>
+                      <label class="home-market-item"><input type="checkbox" data-persist-key="mkt-h-alho" /><span></span><em>Alho</em></label>
+                      <label class="home-market-item"><input type="checkbox" data-persist-key="mkt-h-pepino" /><span></span><em>Pepino</em></label>
+                      <label class="home-market-item"><input type="checkbox" data-persist-key="mkt-h-pimentao" /><span></span><em>Pimentao</em></label>
+                    </div>
+                  </article>
+                  <article class="home-market-card">
+                    <h5>🥩 Acougue e Peixaria</h5>
+                    <div class="home-market-items">
+                      <label class="home-market-item"><input type="checkbox" data-persist-key="mkt-a-frango" /><span></span><em>Peito de frango</em></label>
+                      <label class="home-market-item"><input type="checkbox" data-persist-key="mkt-a-patinho" /><span></span><em>Bife magro</em></label>
+                      <label class="home-market-item"><input type="checkbox" data-persist-key="mkt-a-salmao" /><span></span><em>Salmao</em></label>
+                      <label class="home-market-item"><input type="checkbox" data-persist-key="mkt-a-moida" /><span></span><em>Carne moida</em></label>
+                      <label class="home-market-item"><input type="checkbox" data-persist-key="mkt-a-peixe" /><span></span><em>Peixe branco</em></label>
+                      <label class="home-market-item"><input type="checkbox" data-persist-key="mkt-a-tilapia" /><span></span><em>Tilapia</em></label>
+                    </div>
+                  </article>
+                  <article class="home-market-card">
+                    <h5>🧀 Laticinios e Frios</h5>
+                    <div class="home-market-items">
+                      <label class="home-market-item"><input type="checkbox" data-persist-key="mkt-l-iogurte" /><span></span><em>Iogurte</em></label>
+                      <label class="home-market-item"><input type="checkbox" data-persist-key="mkt-l-queijo" /><span></span><em>Queijo</em></label>
+                      <label class="home-market-item"><input type="checkbox" data-persist-key="mkt-l-manteiga" /><span></span><em>Manteiga</em></label>
+                      <label class="home-market-item"><input type="checkbox" data-persist-key="mkt-l-presunto" /><span></span><em>Presunto</em></label>
+                      <label class="home-market-item"><input type="checkbox" data-persist-key="mkt-l-requeijao" /><span></span><em>Requeijao</em></label>
+                      <label class="home-market-item"><input type="checkbox" data-persist-key="mkt-l-creme" /><span></span><em>Creme de leite</em></label>
+                    </div>
+                  </article>
+                  <article class="home-market-card">
+                    <h5>🛒 Mercearia</h5>
+                    <div class="home-market-items">
+                      <label class="home-market-item"><input type="checkbox" data-persist-key="mkt-m-arroz" /><span></span><em>Arroz</em></label>
+                      <label class="home-market-item"><input type="checkbox" data-persist-key="mkt-m-feijao" /><span></span><em>Feijao</em></label>
+                      <label class="home-market-item"><input type="checkbox" data-persist-key="mkt-m-macarrao" /><span></span><em>Macarrao</em></label>
+                      <label class="home-market-item"><input type="checkbox" data-persist-key="mkt-m-molho" /><span></span><em>Molho de tomate</em></label>
+                      <label class="home-market-item"><input type="checkbox" data-persist-key="mkt-m-acucar" /><span></span><em>Acucar</em></label>
+                      <label class="home-market-item"><input type="checkbox" data-persist-key="mkt-m-sal" /><span></span><em>Sal</em></label>
+                      <label class="home-market-item"><input type="checkbox" data-persist-key="mkt-m-cafe" /><span></span><em>Cafe</em></label>
+                      <label class="home-market-item"><input type="checkbox" data-persist-key="mkt-m-azeite" /><span></span><em>Azeite</em></label>
+                      <label class="home-market-item"><input type="checkbox" data-persist-key="mkt-m-farinha" /><span></span><em>Farinha de trigo</em></label>
+                      <label class="home-market-item"><input type="checkbox" data-persist-key="mkt-m-tempero" /><span></span><em>Temperos</em></label>
+                    </div>
+                  </article>
+                  <article class="home-market-card">
+                    <h5>🥖 Padaria</h5>
+                    <div class="home-market-items">
+                      <label class="home-market-item"><input type="checkbox" data-persist-key="mkt-p-frances" /><span></span><em>Pao frances</em></label>
+                      <label class="home-market-item"><input type="checkbox" data-persist-key="mkt-p-forma" /><span></span><em>Pao de forma</em></label>
+                      <label class="home-market-item"><input type="checkbox" data-persist-key="mkt-p-tapioca" /><span></span><em>Tapioca</em></label>
+                      <label class="home-market-item"><input type="checkbox" data-persist-key="mkt-p-bolo" /><span></span><em>Bolo</em></label>
+                    </div>
+                  </article>
+                  <article class="home-market-card">
+                    <h5>❄️ Congelados</h5>
+                    <div class="home-market-items">
+                      <label class="home-market-item"><input type="checkbox" data-persist-key="mkt-c-sorvete" /><span></span><em>Sorvete</em></label>
+                      <label class="home-market-item"><input type="checkbox" data-persist-key="mkt-c-nuggets" /><span></span><em>Frango nuggets</em></label>
+                      <label class="home-market-item"><input type="checkbox" data-persist-key="mkt-c-hamburguer" /><span></span><em>Hamburguer</em></label>
+                      <label class="home-market-item"><input type="checkbox" data-persist-key="mkt-c-lasanha" /><span></span><em>Lasanha</em></label>
+                    </div>
+                  </article>
+                  <article class="home-market-card">
+                    <h5>🧴 Higiene Pessoal</h5>
+                    <div class="home-market-items">
+                      <label class="home-market-item"><input type="checkbox" data-persist-key="mkt-hg-sabonete" /><span></span><em>Sabonete</em></label>
+                      <label class="home-market-item"><input type="checkbox" data-persist-key="mkt-hg-shampoo" /><span></span><em>Shampoo</em></label>
+                      <label class="home-market-item"><input type="checkbox" data-persist-key="mkt-hg-desodorante" /><span></span><em>Desodorante</em></label>
+                      <label class="home-market-item"><input type="checkbox" data-persist-key="mkt-hg-papel" /><span></span><em>Papel higienico</em></label>
+                      <label class="home-market-item"><input type="checkbox" data-persist-key="mkt-hg-absorvente" /><span></span><em>Absorvente</em></label>
+                      <label class="home-market-item"><input type="checkbox" data-persist-key="mkt-hg-dental" /><span></span><em>Creme dental</em></label>
+                    </div>
+                  </article>
+                  <article class="home-market-card">
+                    <h5>🧼 Limpeza</h5>
+                    <div class="home-market-items">
+                      <label class="home-market-item"><input type="checkbox" data-persist-key="mkt-lp-detergente" /><span></span><em>Detergente</em></label>
+                      <label class="home-market-item"><input type="checkbox" data-persist-key="mkt-lp-sabao" /><span></span><em>Sabao em po</em></label>
+                      <label class="home-market-item"><input type="checkbox" data-persist-key="mkt-lp-amaciante" /><span></span><em>Amaciante</em></label>
+                      <label class="home-market-item"><input type="checkbox" data-persist-key="mkt-lp-sanitaria" /><span></span><em>Agua sanitaria</em></label>
+                      <label class="home-market-item"><input type="checkbox" data-persist-key="mkt-lp-desinfetante" /><span></span><em>Desinfetante</em></label>
+                      <label class="home-market-item"><input type="checkbox" data-persist-key="mkt-lp-lixo" /><span></span><em>Saco de lixo</em></label>
+                    </div>
+                  </article>
+                  <article class="home-market-card">
+                    <h5>🥤 Bebidas</h5>
+                    <div class="home-market-items">
+                      <label class="home-market-item"><input type="checkbox" data-persist-key="mkt-b-agua" /><span></span><em>Agua</em></label>
+                      <label class="home-market-item"><input type="checkbox" data-persist-key="mkt-b-suco" /><span></span><em>Suco natural</em></label>
+                      <label class="home-market-item"><input type="checkbox" data-persist-key="mkt-b-mate" /><span></span><em>Mate / cha</em></label>
+                      <label class="home-market-item"><input type="checkbox" data-persist-key="mkt-b-coco" /><span></span><em>Agua de coco</em></label>
+                      <label class="home-market-item"><input type="checkbox" data-persist-key="mkt-b-refri" /><span></span><em>Refrigerante</em></label>
+                      <label class="home-market-item"><input type="checkbox" data-persist-key="mkt-b-vinho" /><span></span><em>Vinho</em></label>
+                    </div>
+                  </article>
+                </div>
+              </section>
+
+              <!-- ABA 3: Cronograma de Limpeza -->
+              <section class="tab-panel casa-tab-panel" data-tab-panel="casa-limpeza">
+                <div class="limpeza-cols">
+                  <div class="limpeza-col">
+                    <div class="limpeza-col-photo limpeza-photo-diario">
+                      <span class="limpeza-photo-icon">🧹</span>
+                    </div>
+                    <div class="limpeza-col-title">Diariamente</div>
+                    <div class="limpeza-col-tasks">
+                      <label class="limpeza-task"><input type="checkbox" data-persist-key="lp-d-1" /><span>Arrumar a cama</span></label>
+                      <label class="limpeza-task"><input type="checkbox" data-persist-key="lp-d-2" /><span>Lavar louça da cozinha</span></label>
+                      <label class="limpeza-task"><input type="checkbox" data-persist-key="lp-d-3" /><span>Tirar o lixo</span></label>
+                      <label class="limpeza-task"><input type="checkbox" data-persist-key="lp-d-4" /><span>Varrer sala e cozinha</span></label>
+                      <label class="limpeza-task"><input type="checkbox" data-persist-key="lp-d-5" /><span>Limpar bancada da pia</span></label>
+                      <div class="limpeza-custom"><input type="text" data-persist-key="lp-d-extra1" placeholder="Adicionar tarefa..." /></div>
+                      <div class="limpeza-custom"><input type="text" data-persist-key="lp-d-extra2" placeholder="Adicionar tarefa..." /></div>
+                    </div>
+                  </div>
+                  <div class="limpeza-col">
+                    <div class="limpeza-col-photo limpeza-photo-quinzenal">
+                      <span class="limpeza-photo-icon">🪣</span>
+                    </div>
+                    <div class="limpeza-col-title">Quinzenalmente</div>
+                    <div class="limpeza-col-tasks">
+                      <label class="limpeza-task"><input type="checkbox" data-persist-key="lp-q-1" /><span>Trocar roupa de cama</span></label>
+                      <label class="limpeza-task"><input type="checkbox" data-persist-key="lp-q-2" /><span>Lavar banheiros</span></label>
+                      <label class="limpeza-task"><input type="checkbox" data-persist-key="lp-q-3" /><span>Limpar geladeira</span></label>
+                      <label class="limpeza-task"><input type="checkbox" data-persist-key="lp-q-4" /><span>Lavar tapetes</span></label>
+                      <label class="limpeza-task"><input type="checkbox" data-persist-key="lp-q-5" /><span>Lavar e passar roupa</span></label>
+                      <div class="limpeza-custom"><input type="text" data-persist-key="lp-q-extra1" placeholder="Adicionar tarefa..." /></div>
+                      <div class="limpeza-custom"><input type="text" data-persist-key="lp-q-extra2" placeholder="Adicionar tarefa..." /></div>
+                    </div>
+                  </div>
+                  <div class="limpeza-col">
+                    <div class="limpeza-col-photo limpeza-photo-mensal">
+                      <span class="limpeza-photo-icon">🫧</span>
+                    </div>
+                    <div class="limpeza-col-title">Mensalmente</div>
+                    <div class="limpeza-col-tasks">
+                      <label class="limpeza-task"><input type="checkbox" data-persist-key="lp-m-1" /><span>Limpar armarios por dentro</span></label>
+                      <label class="limpeza-task"><input type="checkbox" data-persist-key="lp-m-2" /><span>Trocar maquiagens vencidas</span></label>
+                      <label class="limpeza-task"><input type="checkbox" data-persist-key="lp-m-3" /><span>Lavar cortinas</span></label>
+                      <label class="limpeza-task"><input type="checkbox" data-persist-key="lp-m-4" /><span>Limpar maquina de lavar</span></label>
+                      <div class="limpeza-custom"><input type="text" data-persist-key="lp-m-extra1" placeholder="Adicionar tarefa..." /></div>
+                      <div class="limpeza-custom"><input type="text" data-persist-key="lp-m-extra2" placeholder="Adicionar tarefa..." /></div>
+                    </div>
+                  </div>
+                  <div class="limpeza-col">
+                    <div class="limpeza-col-photo limpeza-photo-demanda">
+                      <span class="limpeza-photo-icon">🔧</span>
+                    </div>
+                    <div class="limpeza-col-title">Por Demanda</div>
+                    <div class="limpeza-col-tasks">
+                      <label class="limpeza-task"><input type="checkbox" data-persist-key="lp-x-1" /><span>Limpeza area externa</span></label>
+                      <label class="limpeza-task"><input type="checkbox" data-persist-key="lp-x-2" /><span>Lavar roupa</span></label>
+                      <label class="limpeza-task"><input type="checkbox" data-persist-key="lp-x-3" /><span>Limpar vidros</span></label>
+                      <label class="limpeza-task"><input type="checkbox" data-persist-key="lp-x-4" /><span>Limpar sofas</span></label>
+                      <div class="limpeza-custom"><input type="text" data-persist-key="lp-x-extra1" placeholder="Adicionar tarefa..." /></div>
+                      <div class="limpeza-custom"><input type="text" data-persist-key="lp-x-extra2" placeholder="Adicionar tarefa..." /></div>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              <!-- ABA 4: Checklist Comodos -->
+              <section class="tab-panel casa-tab-panel" data-tab-panel="casa-comodos">
+                <div class="comodos-grid">
+                  <div class="comodo-card">
+                    <div class="comodo-photo comodo-photo-quarto"><span class="comodo-photo-icon">🛏️</span></div>
+                    <div class="comodo-card-body">
+                      <div class="comodo-title">Quarto Casal</div>
+                      <label class="limpeza-task"><input type="checkbox" data-persist-key="cm-q-tv" /><span>Painel / TV</span></label>
+                      <label class="limpeza-task"><input type="checkbox" data-persist-key="cm-q-moveis" /><span>Moveis ao lado da cama</span></label>
+                      <label class="limpeza-task"><input type="checkbox" data-persist-key="cm-q-abajur" /><span>Abajur</span></label>
+                      <label class="limpeza-task"><input type="checkbox" data-persist-key="cm-q-espelhos" /><span>Espelhos</span></label>
+                      <label class="limpeza-task"><input type="checkbox" data-persist-key="cm-q-cabeceira" /><span>Cabeceira</span></label>
+                      <label class="limpeza-task"><input type="checkbox" data-persist-key="cm-q-banco" /><span>Banco frente cama</span></label>
+                    </div>
+                  </div>
+                  <div class="comodo-card">
+                    <div class="comodo-photo comodo-photo-cozinha"><span class="comodo-photo-icon">🍳</span></div>
+                    <div class="comodo-card-body">
+                      <div class="comodo-title">Cozinha</div>
+                      <label class="limpeza-task"><input type="checkbox" data-persist-key="cm-k-armarios" /><span>Todos os armarios</span></label>
+                      <label class="limpeza-task"><input type="checkbox" data-persist-key="cm-k-bancada" /><span>Bancada e pia</span></label>
+                      <label class="limpeza-task"><input type="checkbox" data-persist-key="cm-k-fogao" /><span>Fogao</span></label>
+                      <label class="limpeza-task"><input type="checkbox" data-persist-key="cm-k-micro" /><span>Microondas / Forno</span></label>
+                      <label class="limpeza-task"><input type="checkbox" data-persist-key="cm-k-gelad" /><span>Geladeira</span></label>
+                      <textarea class="comodo-note" data-persist-key="cm-k-note" placeholder="Notas especiais da cozinha..."></textarea>
+                    </div>
+                  </div>
+                  <div class="comodo-card">
+                    <div class="comodo-photo comodo-photo-banheiro"><span class="comodo-photo-icon">🚿</span></div>
+                    <div class="comodo-card-body">
+                      <div class="comodo-title">Banheiros</div>
+                      <label class="limpeza-task"><input type="checkbox" data-persist-key="cm-b-bancada" /><span>Bancada da pia</span></label>
+                      <label class="limpeza-task"><input type="checkbox" data-persist-key="cm-b-armarios" /><span>Armarios (dentro e fora)</span></label>
+                      <label class="limpeza-task"><input type="checkbox" data-persist-key="cm-b-box" /><span>Box / Vaso sanitario</span></label>
+                      <label class="limpeza-task"><input type="checkbox" data-persist-key="cm-b-espelhos" /><span>Espelhos</span></label>
+                      <label class="limpeza-task"><input type="checkbox" data-persist-key="cm-b-lixeira" /><span>Lixeira / Tapete</span></label>
+                      <textarea class="comodo-note" data-persist-key="cm-b-note" placeholder="Notas especiais do banheiro..."></textarea>
+                    </div>
+                  </div>
+                  <div class="comodo-card">
+                    <div class="comodo-photo comodo-photo-sala"><span class="comodo-photo-icon">🛋️</span></div>
+                    <div class="comodo-card-body">
+                      <div class="comodo-title">Sala de Estar</div>
+                      <label class="limpeza-task"><input type="checkbox" data-persist-key="cm-s-tapete" /><span>Limpar tapete</span></label>
+                      <label class="limpeza-task"><input type="checkbox" data-persist-key="cm-s-mesas" /><span>Mesas e mesinhas</span></label>
+                      <label class="limpeza-task"><input type="checkbox" data-persist-key="cm-s-sofa" /><span>Sofa</span></label>
+                      <label class="limpeza-task"><input type="checkbox" data-persist-key="cm-s-ar" /><span>Ar condicionado</span></label>
+                      <label class="limpeza-task"><input type="checkbox" data-persist-key="cm-s-tv" /><span>TV / Painel</span></label>
+                      <textarea class="comodo-note" data-persist-key="cm-s-note" placeholder="Notas especiais da sala..."></textarea>
+                    </div>
+                  </div>
+                  <div class="comodo-card">
+                    <div class="comodo-photo comodo-photo-jantar"><span class="comodo-photo-icon">🍽️</span></div>
+                    <div class="comodo-card-body">
+                      <div class="comodo-title">Sala de Jantar</div>
+                      <label class="limpeza-task"><input type="checkbox" data-persist-key="cm-j-toalha" /><span>Trocar toalha de mesa</span></label>
+                      <label class="limpeza-task"><input type="checkbox" data-persist-key="cm-j-cadeiras" /><span>Lavar cadeiras</span></label>
+                      <label class="limpeza-task"><input type="checkbox" data-persist-key="cm-j-aparador" /><span>Aparador</span></label>
+                      <label class="limpeza-task"><input type="checkbox" data-persist-key="cm-j-luminaria" /><span>Luminaria</span></label>
+                      <textarea class="comodo-note" data-persist-key="cm-j-note" placeholder="Notas especiais da sala de jantar..."></textarea>
+                    </div>
+                  </div>
+                  <div class="comodo-card">
+                    <div class="comodo-photo comodo-photo-lavanderia"><span class="comodo-photo-icon">🧺</span></div>
+                    <div class="comodo-card-body">
+                      <div class="comodo-title">Lavanderia / Area de Servico</div>
+                      <label class="limpeza-task"><input type="checkbox" data-persist-key="cm-l-roupas" /><span>Lavar roupas</span></label>
+                      <label class="limpeza-task"><input type="checkbox" data-persist-key="cm-l-passar" /><span>Passar roupa</span></label>
+                      <label class="limpeza-task"><input type="checkbox" data-persist-key="cm-l-maquina" /><span>Maquina de lavar</span></label>
+                      <label class="limpeza-task"><input type="checkbox" data-persist-key="cm-l-tanque" /><span>Tanque</span></label>
+                      <textarea class="comodo-note" data-persist-key="cm-l-note" placeholder="Notas da area de servico..."></textarea>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              <!-- ABA 5: Reforma da Casa -->
+              <section class="tab-panel casa-tab-panel" data-tab-panel="casa-reforma">
+                <div class="reforma-grid">
+                  <div class="reforma-card">
+                    <div class="reforma-photo reforma-photo-quarto"><span class="reforma-photo-icon">🛏️</span></div>
+                    <div class="reforma-card-body">
+                      <div class="reforma-title-row">
+                        <input class="reforma-title-input" data-persist-key="reforma-q-titulo" placeholder="Ex.: Reforma do Quarto" />
+                      </div>
+                      <div class="reforma-dates">
+                        <label>Data de inicio<input type="date" data-persist-key="reforma-q-inicio" /></label>
+                        <label>Data de termino<input type="date" data-persist-key="reforma-q-fim" /></label>
+                      </div>
+                      <textarea class="refeicao-area" data-persist-key="reforma-q-plan" placeholder="Planejamento, orcamento, materiais e observacoes..."></textarea>
+                    </div>
+                  </div>
+                  <div class="reforma-card">
+                    <div class="reforma-photo reforma-photo-cozinha"><span class="reforma-photo-icon">🍳</span></div>
+                    <div class="reforma-card-body">
+                      <div class="reforma-title-row">
+                        <input class="reforma-title-input" data-persist-key="reforma-k-titulo" placeholder="Ex.: Reforma da Cozinha" />
+                      </div>
+                      <div class="reforma-dates">
+                        <label>Data de inicio<input type="date" data-persist-key="reforma-k-inicio" /></label>
+                        <label>Data de termino<input type="date" data-persist-key="reforma-k-fim" /></label>
+                      </div>
+                      <textarea class="refeicao-area" data-persist-key="reforma-k-plan" placeholder="Planejamento, orcamento, materiais e observacoes..."></textarea>
+                    </div>
+                  </div>
+                  <div class="reforma-card">
+                    <div class="reforma-photo reforma-photo-sala"><span class="reforma-photo-icon">🛋️</span></div>
+                    <div class="reforma-card-body">
+                      <div class="reforma-title-row">
+                        <input class="reforma-title-input" data-persist-key="reforma-s-titulo" placeholder="Ex.: Reforma da Sala de Estar" />
+                      </div>
+                      <div class="reforma-dates">
+                        <label>Data de inicio<input type="date" data-persist-key="reforma-s-inicio" /></label>
+                        <label>Data de termino<input type="date" data-persist-key="reforma-s-fim" /></label>
+                      </div>
+                      <textarea class="refeicao-area" data-persist-key="reforma-s-plan" placeholder="Planejamento, orcamento, materiais e observacoes..."></textarea>
+                    </div>
+                  </div>
+                  <div class="reforma-card">
+                    <div class="reforma-photo reforma-photo-banheiro"><span class="reforma-photo-icon">🚿</span></div>
+                    <div class="reforma-card-body">
+                      <div class="reforma-title-row">
+                        <input class="reforma-title-input" data-persist-key="reforma-b-titulo" placeholder="Ex.: Reforma do Banheiro" />
+                      </div>
+                      <div class="reforma-dates">
+                        <label>Data de inicio<input type="date" data-persist-key="reforma-b-inicio" /></label>
+                        <label>Data de termino<input type="date" data-persist-key="reforma-b-fim" /></label>
+                      </div>
+                      <textarea class="refeicao-area" data-persist-key="reforma-b-plan" placeholder="Planejamento, orcamento, materiais e observacoes..."></textarea>
+                    </div>
+                  </div>
+                </div>
+              </section>
+            </div><!-- /casa-tab-shell -->
+
+            <ul id="home-preview-list" class="mini-list module-preview-list" style="display:none"></ul>
+          </article>
+        </section>
+
+        <section class="page-view" data-page-view="corpo" id="corpo">
               <article class="agenda-summary-card home-planning-card">
                 <div class="module-card-header">
                   <div>
