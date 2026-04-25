@@ -3225,7 +3225,10 @@ function renderWeekView() {
     return;
   }
 
-  const weekStart = getWeekStart(selectedDateKey);
+  // For day view, start from selectedDateKey directly so the correct day is shown
+  const weekStart = agendaView === "day"
+    ? new Date(`${selectedDateKey}T12:00:00`)
+    : getWeekStart(selectedDateKey);
   const daysToShow =
     agendaView === "day" ? 1 : agendaView === "custom" ? Math.max(2, Math.min(10, customAgendaDays)) : 7;
   const hours = Array.from({ length: 17 }, (_, index) => 6 + index);
@@ -3285,6 +3288,10 @@ function renderWeekView() {
       ${blocks}
     </div>`;
   }).join("");
+
+  // Tag the timeline shell with current view for CSS scoping
+  const tShell = document.getElementById("week-view-shell");
+  if (tShell) tShell.dataset.agendaView = agendaView;
 
   // Update mobile week strip after rendering
   if (typeof renderMobWeekStrip === "function") renderMobWeekStrip();
@@ -6929,6 +6936,9 @@ window.DynTable.initAll();
     agendaView = view;
     localStorage.setItem("ela-em-ordem:agenda-view", view);
 
+    // Tag timeline shell for CSS scoping
+    if (timelineShell) timelineShell.dataset.agendaView = view;
+
     // Update tab active states
     viewTabBtns.forEach((b) => b.classList.toggle("is-active", b.dataset.viewTab === view));
 
@@ -6956,6 +6966,7 @@ window.DynTable.initAll();
   function syncViewTabs() {
     const v = agendaView;
     viewTabBtns.forEach((b) => b.classList.toggle("is-active", b.dataset.viewTab === v));
+    if (timelineShell) timelineShell.dataset.agendaView = v;
     if (weekStripWrap) weekStripWrap.classList.toggle("hidden", v === "month" || v === "year");
     if (timelineShell) timelineShell.classList.toggle("hidden", v === "month" || v === "year");
     if (monthShell) monthShell.classList.toggle("hidden", v !== "month");

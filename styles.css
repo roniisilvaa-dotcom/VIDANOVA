@@ -7242,11 +7242,19 @@ select {
     min-width: 0 !important;
   }
 
-  /* Single-column event area */
-  .agenda-timeline-shell .week-columns {
+  /* Single-column event area — only for day view */
+  .agenda-timeline-shell[data-agenda-view="day"] .week-columns {
     display: grid !important;
     grid-template-columns: 1fr !important;
     gap: 0 !important;
+  }
+
+  /* Week view on mobile: allow horizontal scroll */
+  .agenda-timeline-shell[data-agenda-view="week"] .week-columns {
+    display: grid !important;
+    grid-template-columns: repeat(7, minmax(90px, 1fr)) !important;
+    gap: 4px !important;
+    overflow-x: auto;
   }
 
   .agenda-timeline-shell .week-hours-column {
@@ -7431,3 +7439,270 @@ select {
 .gcal-times-btn:hover:not(.is-active) { background: rgba(197, 91, 132, .08); border-color: var(--berry, #c55b84); }
 
 /* Bump SW cache - append to force reload */
+
+/* ═══════════════════════════════════════════════════════════════
+   MOBILE GLOBAL OPTIMIZATIONS — iPhone & Android
+   ═══════════════════════════════════════════════════════════════ */
+
+@media (max-width: 767px) {
+
+  /* ── Prevent iOS auto-zoom on inputs (must be 16px+) ── */
+  input, select, textarea, button {
+    font-size: 16px !important;
+  }
+
+  /* Exception: small UI chips can stay small but not on form inputs */
+  .mob-day-btn,
+  .mob-day-name,
+  .mob-day-num,
+  .agenda-view-tab,
+  .gcal-times-btn,
+  .gcal-weekly-times-label,
+  .week-hour-label,
+  .agenda-mob-day-label,
+  .tag,
+  .eyebrow {
+    font-size: inherit !important;
+  }
+
+  /* ── All form inputs: good touch target & readable ── */
+  .gcal-input,
+  .gcal-select,
+  .gcal-textarea,
+  .gcal-title-input {
+    font-size: 16px;
+    min-height: 44px;
+  }
+
+  /* ── All buttons: minimum 44px touch target ── */
+  button,
+  [role="button"],
+  .primary-button,
+  .ghost-button {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  /* Exception: small icon-only buttons */
+  .agenda-mob-nav,
+  .agenda-drawer-close,
+  .mob-day-btn,
+  .gcal-times-btn {
+    min-height: unset;
+    min-width: unset;
+  }
+
+  /* ── Prevent horizontal overflow on entire app ── */
+  .app-shell,
+  .main-content,
+  .page-view {
+    overflow-x: hidden;
+    max-width: 100vw;
+  }
+
+  /* ── Panels: full width, smaller radius ── */
+  .panel,
+  .module-card,
+  .article-card {
+    border-radius: 18px;
+  }
+
+  /* ── Main content: less padding on small screens ── */
+  .main-content {
+    padding: 12px !important;
+    padding-bottom: 100px !important;
+  }
+
+  /* ── FAB: account for iPhone home indicator ── */
+  .agenda-fab {
+    bottom: max(80px, calc(60px + env(safe-area-inset-bottom)));
+    right: max(20px, calc(16px + env(safe-area-inset-right)));
+  }
+
+  /* ── Agenda panel: use full available height ── */
+  .agenda-mobile-panel {
+    border-radius: 16px;
+    min-height: calc(100svh - 80px);
+  }
+
+  /* ── Agenda header: smaller on very small screens ── */
+  .agenda-mob-month { font-size: 0.95rem; }
+
+  /* ── Tables: scroll horizontally, don't break layout ── */
+  .dyntable-wrap,
+  [data-dyntable],
+  .fin-table-wrap {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    display: block;
+    max-width: 100%;
+  }
+
+  /* ── Dynamic tables: min column widths ── */
+  [data-dyntable] td,
+  [data-dyntable] th {
+    min-width: 80px;
+    white-space: nowrap;
+  }
+
+  /* ── Finance summary cards: 2 columns ── */
+  .fin-summary-cards {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 8px;
+  }
+
+  /* ── Finance tab buttons: scroll horizontally ── */
+  .tab-buttons-scroll {
+    overflow-x: auto;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 2px;
+  }
+  .tab-buttons-scroll::-webkit-scrollbar { display: none; }
+
+  /* ── Credit card tabs: smaller ── */
+  .fin-cc-tab-btn {
+    font-size: 0.78rem;
+    padding: 6px 10px;
+    white-space: nowrap;
+  }
+
+  /* ── Travel categories: 2 columns ── */
+  .travel-categories-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  /* ── Travel header fields: 1 column ── */
+  .travel-header {
+    grid-template-columns: 1fr !important;
+    gap: 8px;
+  }
+
+  /* ── Planner tabs: scrollable ── */
+  .planner-tabs {
+    overflow-x: auto;
+    scrollbar-width: none;
+    flex-wrap: nowrap;
+    -webkit-overflow-scrolling: touch;
+  }
+  .planner-tabs::-webkit-scrollbar { display: none; }
+
+  .planner-tab {
+    white-space: nowrap;
+    flex-shrink: 0;
+    font-size: 0.82rem;
+    padding: 8px 12px;
+  }
+
+  /* ── Goals / Metas grid: 1 column ── */
+  .fin-metas-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* ── Modals and drawers: full screen ── */
+  .editor-modal .editor-sheet,
+  .fin-cc-modal-box,
+  .travel-modal-box {
+    width: 100% !important;
+    max-width: 100% !important;
+    max-height: 90svh;
+    overflow-y: auto;
+    border-radius: 20px 20px 0 0;
+    padding: 20px 16px;
+  }
+
+  .editor-modal,
+  .fin-cc-modal,
+  .travel-modal {
+    align-items: flex-end !important;
+  }
+
+  /* ── Agenda month grid (in mobile panel): smaller cells ── */
+  .agenda-month-shell .calendar-day {
+    min-height: 42px;
+    padding: 3px 1px;
+    border-radius: 8px;
+  }
+
+  .agenda-month-shell .calendar-day-number {
+    font-size: 0.82rem;
+  }
+
+  .agenda-month-shell .calendar-day-meta {
+    display: none; /* too small on mobile */
+  }
+
+  /* ── Year view: 2 columns ── */
+  #year-view-shell:not(.hidden) {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 10px;
+    padding: 10px;
+  }
+
+  /* ── Dashboard cards: 1 column grid ── */
+  .dashboard-grid,
+  .planning-grid,
+  .bottom-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* ── Hero section ── */
+  .hero {
+    grid-template-columns: 1fr;
+  }
+
+  /* ── Agenda day notes: smaller ── */
+  .agenda-day-notes {
+    padding: 8px 12px;
+  }
+
+  .agenda-day-notes-textarea {
+    min-height: 48px;
+    font-size: 15px !important;
+  }
+
+  /* ── Recurrence modal: full screen on mobile ── */
+  .recurrence-overlay {
+    padding: 0;
+    align-items: flex-end;
+  }
+
+  .recurrence-dialog {
+    width: 100%;
+    max-height: 85svh;
+    border-radius: 20px 20px 0 0;
+    overflow-y: auto;
+    padding: 20px 16px;
+    padding-bottom: calc(20px + env(safe-area-inset-bottom));
+  }
+
+  /* ── Form drawer: account for safe area ── */
+  .agenda-form-drawer {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  /* ── gcal form: better mobile layout ── */
+  .gcal-datetime-wrap {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .gcal-time {
+    width: 90px !important;
+  }
+
+  /* ── Weekly times buttons: bigger ── */
+  .gcal-times-btn {
+    padding: 8px 16px;
+    font-size: 0.9rem;
+  }
+
+}
+
+/* ── Very small screens (iPhone SE, etc.) ── */
+@media (max-width: 375px) {
+  .agenda-mob-today-btn { display: none; }
+  .agenda-view-tab { padding: 6px 2px; font-size: 0.72rem; }
+  .mob-day-btn { min-width: 38px; padding: 5px 6px; }
+}
+
