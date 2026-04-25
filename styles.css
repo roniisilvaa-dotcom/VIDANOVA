@@ -3907,7 +3907,7 @@ select {
 /* Livros e cursos — grade lateral */
 .study-books-grid {
   display: grid;
-  grid-template-columns: 1.4fr 1fr;
+  grid-template-columns: minmax(0, 1fr);
   gap: 14px;
   margin-bottom: 14px;
   align-items: start;
@@ -3922,10 +3922,17 @@ select {
 
 .study-table-shell {
   margin-top: 0;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .study-books-table {
-  min-width: 680px;
+  min-width: 620px;
+}
+
+.study-books-card .home-table input {
+  min-width: 80px;
+  padding: 8px 8px;
 }
 
 /* Casa — planner refeição */
@@ -5760,7 +5767,6 @@ select {
 
 /* Responsivo mobile para módulos novos */
 @media (max-width: 768px) {
-  .study-books-grid,
   .study-main-grid { grid-template-columns: 1fr; }
 
   .corpo-before-after,
