@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node server.js",
     "dev": "nodemon server.js",
-    "build": "echo 'No build needed for this PWA'",
+    "build": "node -e \"const fs=require('fs');fs.writeFileSync('version.json',JSON.stringify({version:'auto',buildTime:new Date().toISOString()})+'\\n','utf8');console.log('version.json updated')\"",
     "test": "echo 'Run tests here'"
   },
   "keywords": [

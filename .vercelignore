@@ -1,0 +1,7 @@
+node_modules/
+.env
+.env.*
+.render/
+test.py
+styles.fixed.css
+vida-nova-fallback.json

@@ -154,6 +154,7 @@ function resolveLoginIdentifier(value = "") {
 }
 
 async function ensureFallbackFile() {
+  if (process.env.VERCEL) return; // filesystem read-only in serverless
   if (!fs.existsSync(DATA_FILE)) {
     await fsp.writeFile(DATA_FILE, JSON.stringify(getDefaultStore(), null, 2));
   }
@@ -2215,4 +2216,12 @@ process.on("SIGINT", async () => {
   process.exit(0);
 });
 
-startServer();
+// Vercel serverless: export app; local: start HTTP server
+if (process.env.VERCEL) {
+  initDb()
+    .then(() => ensureAdminUser())
+    .catch((err) => console.error("Erro ao iniciar (serverless):", err.message));
+  module.exports = app;
+} else {
+  startServer();
+}
