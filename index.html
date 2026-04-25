@@ -77,14 +77,14 @@
           <a href="#planner" data-page-link="planner" data-planner-open="planner-agenda">Agenda</a>
           <a href="#planner" data-page-link="planner" data-planner-open="planner-dreams">Sonhos e Metas</a>
           <a href="#estudos" data-page-link="estudos">Estudos e Projetos</a>
-          <a href="#financas" data-page-link="financas">Financas</a>
+          <a href="#finanças" data-page-link="finanças">Finanças</a>
           <a href="#imagem" data-page-link="imagem">Imagem</a>
-          <a href="#casa" data-page-link="casa">Alimentacao e Lar</a>
+          <a href="#casa" data-page-link="casa">Alimentação e Lar</a>
           <a href="#corpo" data-page-link="corpo">Autocuidado</a>
           <a href="#viagens" data-page-link="viagens">Viagens</a>
           <a href="#espiritual" data-page-link="espiritual">Espiritual</a>
           <a href="#admin" data-page-link="admin" id="sidebar-admin-link" class="hidden">Admin</a>
-          <a href="#configuracoes" data-page-link="configuracoes">Configuracoes</a>
+          <a href="#configurações" data-page-link="configurações">Configurações</a>
         </nav>
 
         <section class="membership-card">
@@ -216,20 +216,20 @@
                   </label>
                 </div>
               </div>
-              <strong>Saude | Beleza | Bem-estar</strong>
+              <strong>Saúde | Beleza | Bem-estar</strong>
               <small>Autocuidado e rituais</small>
             </button>
 
-            <button class="workspace-card workspace-card-finance" type="button" data-dashboard-open="financas" data-cover-key="financas">
+            <button class="workspace-card workspace-card-finance" type="button" data-dashboard-open="finanças" data-cover-key="finanças">
               <div class="workspace-card-cover">
                 <div class="workspace-card-tools">
                   <label class="workspace-cover-upload">
-                    <input type="file" accept="image/*" data-cover-upload="financas" />
+                    <input type="file" accept="image/*" data-cover-upload="finanças" />
                     Trocar capa
                   </label>
                 </div>
               </div>
-              <strong>Financas | Controle</strong>
+              <strong>Finanças | Controle</strong>
               <small id="finance-caption">Sem movimentacao registrada</small>
             </button>
 
@@ -312,7 +312,7 @@
             <small id="agenda-next-meta"></small>
             <strong id="finance-balance-hero">R$ 0,00</strong>
             <strong id="summary-spotlight">Seu resumo aparece aqui</strong>
-            <small id="notes-preview">As anotacoes mais importantes sobem para o topo</small>
+            <small id="notes-preview">As anotações mais importantes sobem para o topo</small>
             <i id="graph-routine"></i>
             <i id="graph-agenda"></i>
             <i id="graph-finance"></i>
@@ -436,8 +436,8 @@
                     <div class="calendar-google-header">
                       <div class="calendar-google-left">
                         <button id="calendar-today" class="ghost-button" type="button">Hoje</button>
-                        <button id="calendar-prev" class="ghost-button icon-button" type="button" aria-label="Periodo anterior">&#8249;</button>
-                        <button id="calendar-next" class="ghost-button icon-button" type="button" aria-label="Proximo periodo">&#8250;</button>
+                        <button id="calendar-prev" class="ghost-button icon-button" type="button" aria-label="Período anterior">&#8249;</button>
+                        <button id="calendar-next" class="ghost-button icon-button" type="button" aria-label="Próximo período">&#8250;</button>
                         <strong id="calendar-month-label">Mes</strong>
                       </div>
 
@@ -498,14 +498,14 @@
                     <div class="panel-heading compact-heading">
                       <div>
                         <p class="eyebrow">Resumo principal</p>
-                        <h3>Detalhes do periodo</h3>
+                        <h3>Detalhes do período</h3>
                       </div>
                       <span id="selected-date-label" class="tag">Selecione um dia</span>
                     </div>
                     <textarea
                       id="agenda-summary-input"
                       class="summary-input"
-                      placeholder="Resumo do dia, foco principal, observacoes e prioridades."
+                      placeholder="Resumo do dia, foco principal, observações e prioridades."
                     ></textarea>
                   </article>
 
@@ -523,10 +523,10 @@
                     <div class="panel-heading compact-heading">
                       <div>
                         <p class="eyebrow">Planejamento semanal</p>
-                        <h3>Tarefas que ficam para a proxima semana</h3>
+                        <h3>Tarefas que ficam para a próxima semana</h3>
                       </div>
                     </div>
-                    <textarea class="summary-input" data-persist-key="agenda-next-week" placeholder="Liste tarefas pendentes e prioridades para a proxima semana."></textarea>
+                    <textarea class="summary-input" data-persist-key="agenda-next-week" placeholder="Liste tarefas pendentes e prioridades para a próxima semana."></textarea>
                   </article>
                 </div>
 
@@ -536,53 +536,174 @@
                       <p class="eyebrow">Cadastro de agenda</p>
                       <h3>Novo compromisso</h3>
                     </div>
-                    <span class="tag">Cadastre, edite e mova seus compromissos</span>
                   </div>
 
-                  <form id="agenda-form" class="agenda-form agenda-form-horizontal">
-                    <input id="agenda-date-input" type="date" aria-label="Data do compromisso" />
-                    <input id="agenda-time-input" type="time" aria-label="Horario inicial do compromisso" />
-                    <input id="agenda-end-time-input" type="time" aria-label="Horario final do compromisso" />
-                    <input id="agenda-title-input" type="text" placeholder="Titulo do compromisso" aria-label="Titulo do compromisso" />
-                    <input id="agenda-location-input" type="text" placeholder="Local" aria-label="Local do compromisso" />
-                    <input id="agenda-link-input" type="url" placeholder="Link de reuniao ou referencia" aria-label="Link do compromisso" />
-                    <input id="agenda-guests-input" type="text" placeholder="Convidados (emails separados por virgula)" aria-label="Convidados" />
-                    <select id="agenda-calendar-input" aria-label="Calendario do compromisso"></select>
-                    <select id="agenda-category-input" aria-label="Categoria do compromisso">
-                      <option value="Pessoal">Pessoal</option>
-                      <option value="Trabalho">Trabalho</option>
-                      <option value="Casa">Casa</option>
-                      <option value="Saude">Saude</option>
-                      <option value="Espiritual">Espiritual</option>
-                    </select>
-                    <select id="agenda-recurrence-input" aria-label="Recorrencia">
-                      <option value="none">Nao se repete</option>
-                      <option value="daily">Todos os dias</option>
-                      <option value="weekly">Semanal</option>
-                      <option value="monthly">Mensal</option>
-                      <option value="yearly">Anual</option>
-                      <option value="weekdays">Dias de semana (Seg a Sex)</option>
-                    </select>
-                    <select id="agenda-reminder-input" aria-label="Alerta do compromisso">
-                      <option value="15">Alertar 15 min antes</option>
-                      <option value="5">Alertar 5 min antes</option>
-                      <option value="30">Alertar 30 min antes</option>
-                      <option value="60">Alertar 1 hora antes</option>
-                      <option value="0">Alertar no horario</option>
-                      <option value="-1">Sem alerta</option>
-                    </select>
-                    <div class="color-field agenda-color-field">
-                      <span>Cor</span>
-                      <input id="agenda-color-input" type="hidden" value="#c55b84" aria-label="Cor do compromisso" />
-                      <div class="app-color-preset-grid" data-color-preset-grid="agenda-form"></div>
+                  <form id="agenda-form" class="gcal-form">
+                    <!-- Título -->
+                    <div class="gcal-title-row">
+                      <input id="agenda-title-input" type="text" class="gcal-title-input" placeholder="Título do compromisso" aria-label="Título" />
                     </div>
-                    <textarea id="agenda-description-input" rows="3" placeholder="Descricao, observacoes ou detalhes"></textarea>
-                    <div class="agenda-form-actions">
-                      <button id="agenda-submit-button" type="submit">Salvar compromisso</button>
-                      <button id="agenda-cancel-edit" class="ghost-button hidden" type="button">Cancelar edicao</button>
+
+                    <!-- Data e hora -->
+                    <div class="gcal-form-row">
+                      <span class="gcal-row-icon">📅</span>
+                      <div class="gcal-row-content gcal-datetime-wrap">
+                        <input id="agenda-date-input" type="date" class="gcal-input" aria-label="Data" />
+                        <input id="agenda-time-input" type="time" class="gcal-input gcal-time" aria-label="Horário inicial" />
+                        <span class="gcal-dash">–</span>
+                        <input id="agenda-end-time-input" type="time" class="gcal-input gcal-time" aria-label="Horário final" />
+                        <label class="gcal-allday">
+                          <input id="agenda-allday-input" type="checkbox" />
+                          <span>Dia inteiro</span>
+                        </label>
+                      </div>
+                    </div>
+
+                    <!-- Recorrência -->
+                    <div class="gcal-form-row">
+                      <span class="gcal-row-icon">🔄</span>
+                      <div class="gcal-row-content">
+                        <select id="agenda-recurrence-input" class="gcal-select" aria-label="Recorrência">
+                          <option value="none">Não se repete</option>
+                          <option value="daily">Todos os dias</option>
+                          <option value="weekly">Semanal</option>
+                          <option value="monthly">Mensal</option>
+                          <option value="yearly">Anual</option>
+                          <option value="weekdays">Dias de semana (Seg a Sex)</option>
+                          <option value="custom">Personalizar...</option>
+                        </select>
+                        <span id="recurrence-custom-label" class="gcal-custom-rec-label hidden"></span>
+                      </div>
+                    </div>
+
+                    <!-- Convidados -->
+                    <div class="gcal-form-row">
+                      <span class="gcal-row-icon">👥</span>
+                      <div class="gcal-row-content">
+                        <input id="agenda-guests-input" type="text" class="gcal-input" placeholder="Adicionar convidados" aria-label="Convidados" />
+                      </div>
+                    </div>
+
+                    <!-- Videoconferência -->
+                    <div class="gcal-form-row">
+                      <span class="gcal-row-icon">📹</span>
+                      <div class="gcal-row-content">
+                        <button id="agenda-videocall-button" type="button" class="gcal-add-button">Adicionar videoconferência</button>
+                        <span id="agenda-videocall-link" class="gcal-videocall-link hidden"></span>
+                      </div>
+                    </div>
+
+                    <!-- Local -->
+                    <div class="gcal-form-row">
+                      <span class="gcal-row-icon">📍</span>
+                      <div class="gcal-row-content">
+                        <input id="agenda-location-input" type="text" class="gcal-input" placeholder="Adicionar local" aria-label="Local" />
+                      </div>
+                    </div>
+
+                    <!-- Link / Descrição -->
+                    <div class="gcal-form-row">
+                      <span class="gcal-row-icon">📝</span>
+                      <div class="gcal-row-content">
+                        <textarea id="agenda-description-input" class="gcal-textarea" rows="2" placeholder="Adicionar descrição ou link de referência"></textarea>
+                      </div>
+                    </div>
+
+                    <!-- Cor -->
+                    <div class="gcal-form-row">
+                      <span class="gcal-row-icon">🎨</span>
+                      <div class="gcal-row-content gcal-color-row">
+                        <input id="agenda-color-input" type="hidden" value="#c55b84" aria-label="Cor" />
+                        <div class="app-color-preset-grid" data-color-preset-grid="agenda-form"></div>
+                      </div>
+                    </div>
+
+                    <!-- Calendário -->
+                    <div class="gcal-form-row">
+                      <span class="gcal-row-icon">🗂️</span>
+                      <div class="gcal-row-content">
+                        <select id="agenda-calendar-input" class="gcal-select" aria-label="Calendário"></select>
+                        <select id="agenda-category-input" class="gcal-select" aria-label="Categoria">
+                          <option value="Pessoal">Pessoal</option>
+                          <option value="Trabalho">Trabalho</option>
+                          <option value="Casa">Casa</option>
+                          <option value="Saúde">Saúde</option>
+                          <option value="Espiritual">Espiritual</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <!-- Alerta -->
+                    <div class="gcal-form-row">
+                      <span class="gcal-row-icon">🔔</span>
+                      <div class="gcal-row-content">
+                        <select id="agenda-reminder-input" class="gcal-select" aria-label="Alerta">
+                          <option value="15">15 min antes</option>
+                          <option value="5">5 min antes</option>
+                          <option value="30">30 min antes</option>
+                          <option value="60">1 hora antes</option>
+                          <option value="0">No horário</option>
+                          <option value="-1">Sem alerta</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <!-- Link (oculto, mantido por compatibilidade) -->
+                    <input id="agenda-link-input" type="hidden" aria-label="Link" />
+
+                    <div class="gcal-form-footer">
+                      <button id="agenda-cancel-edit" class="ghost-button hidden" type="button">Cancelar edição</button>
+                      <button id="agenda-submit-button" type="submit" class="primary-button">Salvar compromisso</button>
                     </div>
                   </form>
                 </article>
+
+                <!-- Modal de recorrência personalizada -->
+                <div id="recurrence-modal" class="recurrence-overlay hidden" role="dialog" aria-modal="true" aria-label="Recorrência personalizada">
+                  <div class="recurrence-dialog">
+                    <h3 class="recurrence-dialog-title">Recorrência personalizada</h3>
+
+                    <div class="recurrence-field-row">
+                      <span class="recurrence-field-label">Repetir a cada</span>
+                      <div class="recurrence-interval-wrap">
+                        <input id="recurrence-interval" type="number" min="1" max="99" value="1" class="recurrence-num" />
+                        <select id="recurrence-unit" class="recurrence-unit-sel">
+                          <option value="day">dia(s)</option>
+                          <option value="week" selected>semana(s)</option>
+                          <option value="month">mês(es)</option>
+                          <option value="year">ano(s)</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div id="recurrence-weekdays-row" class="recurrence-field-row recurrence-days-row">
+                      <span class="recurrence-field-label">Repetir em:</span>
+                      <div class="recurrence-days-wrap">
+                        <button type="button" data-day="0" class="rec-day-btn">D</button>
+                        <button type="button" data-day="1" class="rec-day-btn">S</button>
+                        <button type="button" data-day="2" class="rec-day-btn">T</button>
+                        <button type="button" data-day="3" class="rec-day-btn">Q</button>
+                        <button type="button" data-day="4" class="rec-day-btn">Q</button>
+                        <button type="button" data-day="5" class="rec-day-btn">S</button>
+                        <button type="button" data-day="6" class="rec-day-btn">S</button>
+                      </div>
+                    </div>
+
+                    <div class="recurrence-field-row recurrence-end-row">
+                      <span class="recurrence-field-label">Termina em:</span>
+                      <div class="recurrence-end-opts">
+                        <label class="recurrence-end-opt"><input type="radio" name="rec-end" value="never" checked /><span>Nunca</span></label>
+                        <label class="recurrence-end-opt"><input type="radio" name="rec-end" value="on" /><span>Em</span><input id="recurrence-end-date" type="date" class="recurrence-date-inp" /></label>
+                        <label class="recurrence-end-opt"><input type="radio" name="rec-end" value="after" /><span>Após</span><input id="recurrence-end-count" type="number" min="1" value="13" class="recurrence-count-inp" /><span>ocorrências</span></label>
+                      </div>
+                    </div>
+
+                    <div class="recurrence-dialog-footer">
+                      <button type="button" id="recurrence-cancel-btn" class="ghost-button">Cancelar</button>
+                      <button type="button" id="recurrence-confirm-btn" class="primary-button">Concluir</button>
+                    </div>
+                  </div>
+                </div>
               </section>
             </section>
 
@@ -631,9 +752,9 @@
                 <h4 class="study-section-title">Livros</h4>
                 <div class="home-table-shell study-table-shell">
                   <table class="home-table study-books-table">
-                    <thead><tr><th>Livro</th><th>Autor</th><th>Inicio</th><th>Fim</th><th>Páginas</th><th>Progresso %</th><th>Status</th><th>Observacoes</th></tr></thead>
+                    <thead><tr><th>Livro</th><th>Autor</th><th>Inicio</th><th>Fim</th><th>Páginas</th><th>Progresso %</th><th>Status</th><th>Observações</th></tr></thead>
                     <tbody>
-                      <tr><td><input data-persist-key="book-1-title" placeholder="Titulo" /></td><td><input data-persist-key="book-1-author" placeholder="Autor" /></td><td><input type="date" data-persist-key="book-1-start" /></td><td><input type="date" data-persist-key="book-1-end" /></td><td><input type="number" data-persist-key="book-1-pages" /></td><td><input type="number" min="0" max="100" data-persist-key="book-1-progress" /></td><td><input data-persist-key="book-1-status" placeholder="lendo..." /></td><td><input data-persist-key="book-1-notes" /></td></tr>
+                      <tr><td><input data-persist-key="book-1-title" placeholder="Título" /></td><td><input data-persist-key="book-1-author" placeholder="Autor" /></td><td><input type="date" data-persist-key="book-1-start" /></td><td><input type="date" data-persist-key="book-1-end" /></td><td><input type="number" data-persist-key="book-1-pages" /></td><td><input type="number" min="0" max="100" data-persist-key="book-1-progress" /></td><td><input data-persist-key="book-1-status" placeholder="lendo..." /></td><td><input data-persist-key="book-1-notes" /></td></tr>
                       <tr><td><input data-persist-key="book-2-title" /></td><td><input data-persist-key="book-2-author" /></td><td><input type="date" data-persist-key="book-2-start" /></td><td><input type="date" data-persist-key="book-2-end" /></td><td><input type="number" data-persist-key="book-2-pages" /></td><td><input type="number" min="0" max="100" data-persist-key="book-2-progress" /></td><td><input data-persist-key="book-2-status" /></td><td><input data-persist-key="book-2-notes" /></td></tr>
                       <tr><td><input data-persist-key="book-3-title" /></td><td><input data-persist-key="book-3-author" /></td><td><input type="date" data-persist-key="book-3-start" /></td><td><input type="date" data-persist-key="book-3-end" /></td><td><input type="number" data-persist-key="book-3-pages" /></td><td><input type="number" min="0" max="100" data-persist-key="book-3-progress" /></td><td><input data-persist-key="book-3-status" /></td><td><input data-persist-key="book-3-notes" /></td></tr>
                       <tr><td><input data-persist-key="book-4-title" /></td><td><input data-persist-key="book-4-author" /></td><td><input type="date" data-persist-key="book-4-start" /></td><td><input type="date" data-persist-key="book-4-end" /></td><td><input type="number" data-persist-key="book-4-pages" /></td><td><input type="number" min="0" max="100" data-persist-key="book-4-progress" /></td><td><input data-persist-key="book-4-status" /></td><td><input data-persist-key="book-4-notes" /></td></tr>
@@ -677,22 +798,22 @@
             </div>
             <div class="panel-heading"><div><p class="eyebrow">Projetos</p><h3>Projeto A, B, C e D</h3></div></div>
             <div class="project-grid">
-              <article class="agenda-events-card project-card"><h4>Projeto A</h4><textarea class="summary-input compact-area" data-persist-key="proj-a-what" placeholder="O que e"></textarea><textarea class="summary-input compact-area" data-persist-key="proj-a-desc" placeholder="Descricao"></textarea><textarea class="summary-input compact-area" data-persist-key="proj-a-plan" placeholder="Plano de acao"></textarea><select data-persist-key="proj-a-status"><option>a começar</option><option>em andamento</option><option>pronto</option></select><input data-persist-key="proj-a-people" placeholder="Pessoas envolvidas" /><input data-persist-key="proj-a-links" placeholder="Links e documentos" /><label class="project-upload-field">Anexos e referencias<input type="file" data-project-upload="a" multiple /></label><div class="project-attachments" data-project-gallery="a"></div></article>
-              <article class="agenda-events-card project-card"><h4>Projeto B</h4><textarea class="summary-input compact-area" data-persist-key="proj-b-what" placeholder="O que e"></textarea><textarea class="summary-input compact-area" data-persist-key="proj-b-desc" placeholder="Descricao"></textarea><textarea class="summary-input compact-area" data-persist-key="proj-b-plan" placeholder="Plano de acao"></textarea><select data-persist-key="proj-b-status"><option>a começar</option><option>em andamento</option><option>pronto</option></select><input data-persist-key="proj-b-people" placeholder="Pessoas envolvidas" /><input data-persist-key="proj-b-links" placeholder="Links e documentos" /><label class="project-upload-field">Anexos e referencias<input type="file" data-project-upload="b" multiple /></label><div class="project-attachments" data-project-gallery="b"></div></article>
-              <article class="agenda-events-card project-card"><h4>Projeto C</h4><textarea class="summary-input compact-area" data-persist-key="proj-c-what" placeholder="O que e"></textarea><textarea class="summary-input compact-area" data-persist-key="proj-c-desc" placeholder="Descricao"></textarea><textarea class="summary-input compact-area" data-persist-key="proj-c-plan" placeholder="Plano de acao"></textarea><select data-persist-key="proj-c-status"><option>a começar</option><option>em andamento</option><option>pronto</option></select><input data-persist-key="proj-c-people" placeholder="Pessoas envolvidas" /><input data-persist-key="proj-c-links" placeholder="Links e documentos" /><label class="project-upload-field">Anexos e referencias<input type="file" data-project-upload="c" multiple /></label><div class="project-attachments" data-project-gallery="c"></div></article>
-              <article class="agenda-events-card project-card"><h4>Projeto D</h4><textarea class="summary-input compact-area" data-persist-key="proj-d-what" placeholder="O que e"></textarea><textarea class="summary-input compact-area" data-persist-key="proj-d-desc" placeholder="Descricao"></textarea><textarea class="summary-input compact-area" data-persist-key="proj-d-plan" placeholder="Plano de acao"></textarea><select data-persist-key="proj-d-status"><option>a começar</option><option>em andamento</option><option>pronto</option></select><input data-persist-key="proj-d-people" placeholder="Pessoas envolvidas" /><input data-persist-key="proj-d-links" placeholder="Links e documentos" /><label class="project-upload-field">Anexos e referencias<input type="file" data-project-upload="d" multiple /></label><div class="project-attachments" data-project-gallery="d"></div></article>
+              <article class="agenda-events-card project-card"><h4>Projeto A</h4><textarea class="summary-input compact-area" data-persist-key="proj-a-what" placeholder="O que e"></textarea><textarea class="summary-input compact-area" data-persist-key="proj-a-desc" placeholder="Descrição"></textarea><textarea class="summary-input compact-area" data-persist-key="proj-a-plan" placeholder="Plano de acao"></textarea><select data-persist-key="proj-a-status"><option>a começar</option><option>em andamento</option><option>pronto</option></select><input data-persist-key="proj-a-people" placeholder="Pessoas envolvidas" /><input data-persist-key="proj-a-links" placeholder="Links e documentos" /><label class="project-upload-field">Anexos e referencias<input type="file" data-project-upload="a" multiple /></label><div class="project-attachments" data-project-gallery="a"></div></article>
+              <article class="agenda-events-card project-card"><h4>Projeto B</h4><textarea class="summary-input compact-area" data-persist-key="proj-b-what" placeholder="O que e"></textarea><textarea class="summary-input compact-area" data-persist-key="proj-b-desc" placeholder="Descrição"></textarea><textarea class="summary-input compact-area" data-persist-key="proj-b-plan" placeholder="Plano de acao"></textarea><select data-persist-key="proj-b-status"><option>a começar</option><option>em andamento</option><option>pronto</option></select><input data-persist-key="proj-b-people" placeholder="Pessoas envolvidas" /><input data-persist-key="proj-b-links" placeholder="Links e documentos" /><label class="project-upload-field">Anexos e referencias<input type="file" data-project-upload="b" multiple /></label><div class="project-attachments" data-project-gallery="b"></div></article>
+              <article class="agenda-events-card project-card"><h4>Projeto C</h4><textarea class="summary-input compact-area" data-persist-key="proj-c-what" placeholder="O que e"></textarea><textarea class="summary-input compact-area" data-persist-key="proj-c-desc" placeholder="Descrição"></textarea><textarea class="summary-input compact-area" data-persist-key="proj-c-plan" placeholder="Plano de acao"></textarea><select data-persist-key="proj-c-status"><option>a começar</option><option>em andamento</option><option>pronto</option></select><input data-persist-key="proj-c-people" placeholder="Pessoas envolvidas" /><input data-persist-key="proj-c-links" placeholder="Links e documentos" /><label class="project-upload-field">Anexos e referencias<input type="file" data-project-upload="c" multiple /></label><div class="project-attachments" data-project-gallery="c"></div></article>
+              <article class="agenda-events-card project-card"><h4>Projeto D</h4><textarea class="summary-input compact-area" data-persist-key="proj-d-what" placeholder="O que e"></textarea><textarea class="summary-input compact-area" data-persist-key="proj-d-desc" placeholder="Descrição"></textarea><textarea class="summary-input compact-area" data-persist-key="proj-d-plan" placeholder="Plano de acao"></textarea><select data-persist-key="proj-d-status"><option>a começar</option><option>em andamento</option><option>pronto</option></select><input data-persist-key="proj-d-people" placeholder="Pessoas envolvidas" /><input data-persist-key="proj-d-links" placeholder="Links e documentos" /><label class="project-upload-field">Anexos e referencias<input type="file" data-project-upload="d" multiple /></label><div class="project-attachments" data-project-gallery="d"></div></article>
             </div>
           </article>
         </section>
 
-        <section class="page-view" data-page-view="financas" id="financas">
+        <section class="page-view" data-page-view="finanças" id="finanças">
           <div class="page-return-bar">
             <button class="ghost-button page-return-button" type="button" data-go-home>← Voltar</button>
           </div>
           <article class="panel module-card finance-card">
             <div class="panel-heading">
               <div>
-                <p class="eyebrow">Financas</p>
+                <p class="eyebrow">Finanças</p>
                 <h3>Controle financeiro premium</h3>
               </div>
               <span class="tag">Consciente</span>
@@ -702,7 +823,7 @@
                 <button class="finance-chip is-active" type="button" data-finance-filter="all">Planejamento financeiro</button>
                 <button class="finance-chip" type="button" data-finance-filter="impulse">Controle de compras</button>
                 <button class="finance-chip" type="button" data-finance-filter="savings">Metas financeiras</button>
-                <button class="finance-chip" type="button" data-finance-filter="planning">Orcamento de viagens</button>
+                <button class="finance-chip" type="button" data-finance-filter="planning">Orçamento de viagens</button>
               </div>
               <div class="finance-workspace">
                 <div class="finance-main-board">
@@ -722,7 +843,7 @@
                   </div>
 
                   <form id="finance-entry-form" class="finance-entry-form finance-entry-form-premium">
-                    <input id="finance-entry-title" class="module-input" type="text" placeholder="Descricao" />
+                    <input id="finance-entry-title" class="module-input" type="text" placeholder="Descrição" />
                     <input id="finance-entry-date" class="module-input" type="date" />
                     <select id="finance-entry-type" class="module-input" aria-label="Tipo financeiro">
                       <option value="income">Entrada</option>
@@ -802,7 +923,7 @@
                     <table class="finance-table">
                       <thead>
                         <tr>
-                          <th>Descricao</th>
+                          <th>Descrição</th>
                           <th>Data</th>
                           <th>Valor total</th>
                           <th>Qtd parcela</th>
@@ -839,8 +960,8 @@
 
                 <aside class="finance-side-board">
                   <article class="finance-note-card">
-                    <p class="eyebrow">Observacoes do mes</p>
-                    <textarea id="finance-notes-input" class="notes-input finance-notes-input" placeholder="Anote custos do negocio, compras importantes, metas e observacoes do mes."></textarea>
+                    <p class="eyebrow">Observações do mes</p>
+                    <textarea id="finance-notes-input" class="notes-input finance-notes-input" placeholder="Anote custos do negocio, compras importantes, metas e observações do mes."></textarea>
                   </article>
 
                   <article class="finance-planning-box">
@@ -918,58 +1039,58 @@
           <article class="panel module-card home-card">
             <div class="panel-heading">
               <div>
-                <p class="eyebrow">Alimentacao e Lar</p>
-                <h3>Planejamento da casa e refeicoes</h3>
+                <p class="eyebrow">Alimentação e Lar</p>
+                <h3>Planejamento da casa e refeições</h3>
               </div>
             </div>
 
             <!-- Abas da Casa -->
             <div class="tab-shell casa-tab-shell" data-tab-group="casa">
               <div class="casa-tab-ribbon" role="tablist" aria-label="Abas da casa">
-                <button class="casa-tab is-active" type="button" data-tab-target="casa-refeicao">🍽️ Planner de Refeicao</button>
+                <button class="casa-tab is-active" type="button" data-tab-target="casa-refeição">🍽️ Planner de Refeição</button>
                 <button class="casa-tab" type="button" data-tab-target="casa-mercado">🛒 Lista do Mercado</button>
                 <button class="casa-tab" type="button" data-tab-target="casa-limpeza">🧹 Cronograma de Limpeza</button>
-                <button class="casa-tab" type="button" data-tab-target="casa-comodos">🏠 Checklist Comodos</button>
+                <button class="casa-tab" type="button" data-tab-target="casa-cômodos">🏠 Checklist Cômodos</button>
                 <button class="casa-tab" type="button" data-tab-target="casa-reforma">🔨 Reforma da Casa</button>
               </div>
 
-              <!-- ABA 1: Planner de Refeicao -->
-              <section class="tab-panel casa-tab-panel is-active" data-tab-panel="casa-refeicao">
-                <div class="refeicao-cols">
-                  <div class="refeicao-col">
-                    <div class="refeicao-col-header">Dia 1</div>
-                    <div class="refeicao-meal-card"><div class="refeicao-meal-label">☕ Cafe da Manha</div><textarea class="refeicao-area" data-persist-key="rf-d1-cafe" placeholder="Ex.: 2 ovos mexidos, fruta, cafe preto"></textarea></div>
-                    <div class="refeicao-meal-card"><div class="refeicao-meal-label">🥗 Almoco</div><textarea class="refeicao-area" data-persist-key="rf-d1-almoco" placeholder="Ex.: 100g frango, arroz integral, salada"></textarea></div>
-                    <div class="refeicao-meal-card"><div class="refeicao-meal-label">🍎 Lanche</div><textarea class="refeicao-area" data-persist-key="rf-d1-lanche" placeholder="Ex.: Iogurte com fruta"></textarea></div>
-                    <div class="refeicao-meal-card"><div class="refeicao-meal-label">🥘 Jantar</div><textarea class="refeicao-area" data-persist-key="rf-d1-jantar" placeholder="Ex.: Sopa de legumes"></textarea></div>
+              <!-- ABA 1: Planner de Refeição -->
+              <section class="tab-panel casa-tab-panel is-active" data-tab-panel="casa-refeição">
+                <div class="refeição-cols">
+                  <div class="refeição-col">
+                    <div class="refeição-col-header">Dia 1</div>
+                    <div class="refeição-meal-card"><div class="refeição-meal-label">☕ Café da Manhã</div><textarea class="refeição-area" data-persist-key="rf-d1-cafe" placeholder="Ex.: 2 ovos mexidos, fruta, cafe preto"></textarea></div>
+                    <div class="refeição-meal-card"><div class="refeição-meal-label">🥗 Almoço</div><textarea class="refeição-area" data-persist-key="rf-d1-almoço" placeholder="Ex.: 100g frango, arroz integral, salada"></textarea></div>
+                    <div class="refeição-meal-card"><div class="refeição-meal-label">🍎 Lanche</div><textarea class="refeição-area" data-persist-key="rf-d1-lanche" placeholder="Ex.: Iogurte com fruta"></textarea></div>
+                    <div class="refeição-meal-card"><div class="refeição-meal-label">🥘 Jantar</div><textarea class="refeição-area" data-persist-key="rf-d1-jantar" placeholder="Ex.: Sopa de legumes"></textarea></div>
                   </div>
-                  <div class="refeicao-col">
-                    <div class="refeicao-col-header">Dia 2</div>
-                    <div class="refeicao-meal-card"><div class="refeicao-meal-label">☕ Cafe da Manha</div><textarea class="refeicao-area" data-persist-key="rf-d2-cafe" placeholder="Ex.: Tapioca com queijo"></textarea></div>
-                    <div class="refeicao-meal-card"><div class="refeicao-meal-label">🥗 Almoco</div><textarea class="refeicao-area" data-persist-key="rf-d2-almoco" placeholder="Ex.: Carne moida, pure de batata"></textarea></div>
-                    <div class="refeicao-meal-card"><div class="refeicao-meal-label">🍎 Lanche</div><textarea class="refeicao-area" data-persist-key="rf-d2-lanche" placeholder="Ex.: Castanhas e cafe"></textarea></div>
-                    <div class="refeicao-meal-card"><div class="refeicao-meal-label">🥘 Jantar</div><textarea class="refeicao-area" data-persist-key="rf-d2-jantar" placeholder="Ex.: Omelete e salada"></textarea></div>
+                  <div class="refeição-col">
+                    <div class="refeição-col-header">Dia 2</div>
+                    <div class="refeição-meal-card"><div class="refeição-meal-label">☕ Café da Manhã</div><textarea class="refeição-area" data-persist-key="rf-d2-cafe" placeholder="Ex.: Tapioca com queijo"></textarea></div>
+                    <div class="refeição-meal-card"><div class="refeição-meal-label">🥗 Almoço</div><textarea class="refeição-area" data-persist-key="rf-d2-almoço" placeholder="Ex.: Carne moida, pure de batata"></textarea></div>
+                    <div class="refeição-meal-card"><div class="refeição-meal-label">🍎 Lanche</div><textarea class="refeição-area" data-persist-key="rf-d2-lanche" placeholder="Ex.: Castanhas e cafe"></textarea></div>
+                    <div class="refeição-meal-card"><div class="refeição-meal-label">🥘 Jantar</div><textarea class="refeição-area" data-persist-key="rf-d2-jantar" placeholder="Ex.: Omelete e salada"></textarea></div>
                   </div>
-                  <div class="refeicao-col">
-                    <div class="refeicao-col-header">Dia 3</div>
-                    <div class="refeicao-meal-card"><div class="refeicao-meal-label">☕ Cafe da Manha</div><textarea class="refeicao-area" data-persist-key="rf-d3-cafe" placeholder="Ex.: Mingau de aveia"></textarea></div>
-                    <div class="refeicao-meal-card"><div class="refeicao-meal-label">🥗 Almoco</div><textarea class="refeicao-area" data-persist-key="rf-d3-almoco" placeholder="Ex.: Peixe grelhado, legumes"></textarea></div>
-                    <div class="refeicao-meal-card"><div class="refeicao-meal-label">🍎 Lanche</div><textarea class="refeicao-area" data-persist-key="rf-d3-lanche" placeholder="Ex.: Vitamina de banana"></textarea></div>
-                    <div class="refeicao-meal-card"><div class="refeicao-meal-label">🥘 Jantar</div><textarea class="refeicao-area" data-persist-key="rf-d3-jantar" placeholder="Ex.: Frango assado e arroz"></textarea></div>
+                  <div class="refeição-col">
+                    <div class="refeição-col-header">Dia 3</div>
+                    <div class="refeição-meal-card"><div class="refeição-meal-label">☕ Café da Manhã</div><textarea class="refeição-area" data-persist-key="rf-d3-cafe" placeholder="Ex.: Mingau de aveia"></textarea></div>
+                    <div class="refeição-meal-card"><div class="refeição-meal-label">🥗 Almoço</div><textarea class="refeição-area" data-persist-key="rf-d3-almoço" placeholder="Ex.: Peixe grelhado, legumes"></textarea></div>
+                    <div class="refeição-meal-card"><div class="refeição-meal-label">🍎 Lanche</div><textarea class="refeição-area" data-persist-key="rf-d3-lanche" placeholder="Ex.: Vitamina de banana"></textarea></div>
+                    <div class="refeição-meal-card"><div class="refeição-meal-label">🥘 Jantar</div><textarea class="refeição-area" data-persist-key="rf-d3-jantar" placeholder="Ex.: Frango assado e arroz"></textarea></div>
                   </div>
-                  <div class="refeicao-col">
-                    <div class="refeicao-col-header">Dias 4 e 5</div>
-                    <div class="refeicao-meal-card"><div class="refeicao-meal-label">☕ Cafe da Manha</div><textarea class="refeicao-area" data-persist-key="rf-d45-cafe" placeholder="Ex.: Tapioca com recheio de tofu"></textarea></div>
-                    <div class="refeicao-meal-card"><div class="refeicao-meal-label">🥗 Almoco</div><textarea class="refeicao-area" data-persist-key="rf-d45-almoco" placeholder="Ex.: Carne grelha, salada verde"></textarea></div>
-                    <div class="refeicao-meal-card"><div class="refeicao-meal-label">🍎 Lanche</div><textarea class="refeicao-area" data-persist-key="rf-d45-lanche" placeholder="Ex.: Fruta da estacao"></textarea></div>
-                    <div class="refeicao-meal-card"><div class="refeicao-meal-label">🥘 Jantar</div><textarea class="refeicao-area" data-persist-key="rf-d45-jantar" placeholder="Ex.: Sopa ou wrap leve"></textarea></div>
+                  <div class="refeição-col">
+                    <div class="refeição-col-header">Dias 4 e 5</div>
+                    <div class="refeição-meal-card"><div class="refeição-meal-label">☕ Café da Manhã</div><textarea class="refeição-area" data-persist-key="rf-d45-cafe" placeholder="Ex.: Tapioca com recheio de tofu"></textarea></div>
+                    <div class="refeição-meal-card"><div class="refeição-meal-label">🥗 Almoço</div><textarea class="refeição-area" data-persist-key="rf-d45-almoço" placeholder="Ex.: Carne grelha, salada verde"></textarea></div>
+                    <div class="refeição-meal-card"><div class="refeição-meal-label">🍎 Lanche</div><textarea class="refeição-area" data-persist-key="rf-d45-lanche" placeholder="Ex.: Fruta da estacao"></textarea></div>
+                    <div class="refeição-meal-card"><div class="refeição-meal-label">🥘 Jantar</div><textarea class="refeição-area" data-persist-key="rf-d45-jantar" placeholder="Ex.: Sopa ou wrap leve"></textarea></div>
                   </div>
-                  <div class="refeicao-col">
-                    <div class="refeicao-col-header">Dias 6 e 7</div>
-                    <div class="refeicao-meal-card"><div class="refeicao-meal-label">☕ Cafe da Manha</div><textarea class="refeicao-area" data-persist-key="rf-d67-cafe" placeholder="Ex.: 2 ovos cozidos, aveia"></textarea></div>
-                    <div class="refeicao-meal-card"><div class="refeicao-meal-label">🥗 Almoco</div><textarea class="refeicao-area" data-persist-key="rf-d67-almoco" placeholder="Ex.: Frango assado, pure"></textarea></div>
-                    <div class="refeicao-meal-card"><div class="refeicao-meal-label">🍎 Lanche</div><textarea class="refeicao-area" data-persist-key="rf-d67-lanche" placeholder="Ex.: Iogurte com granola"></textarea></div>
-                    <div class="refeicao-meal-card"><div class="refeicao-meal-label">🥘 Jantar</div><textarea class="refeicao-area" data-persist-key="rf-d67-jantar" placeholder="Ex.: Salada completa"></textarea></div>
+                  <div class="refeição-col">
+                    <div class="refeição-col-header">Dias 6 e 7</div>
+                    <div class="refeição-meal-card"><div class="refeição-meal-label">☕ Café da Manhã</div><textarea class="refeição-area" data-persist-key="rf-d67-cafe" placeholder="Ex.: 2 ovos cozidos, aveia"></textarea></div>
+                    <div class="refeição-meal-card"><div class="refeição-meal-label">🥗 Almoço</div><textarea class="refeição-area" data-persist-key="rf-d67-almoço" placeholder="Ex.: Frango assado, pure"></textarea></div>
+                    <div class="refeição-meal-card"><div class="refeição-meal-label">🍎 Lanche</div><textarea class="refeição-area" data-persist-key="rf-d67-lanche" placeholder="Ex.: Iogurte com granola"></textarea></div>
+                    <div class="refeição-meal-card"><div class="refeição-meal-label">🥘 Jantar</div><textarea class="refeição-area" data-persist-key="rf-d67-jantar" placeholder="Ex.: Salada completa"></textarea></div>
                   </div>
                 </div>
               </section>
@@ -991,7 +1112,7 @@
                       <label class="home-market-item"><input type="checkbox" data-persist-key="mkt-h-maca" /><span></span><em>Maca</em></label>
                       <label class="home-market-item"><input type="checkbox" data-persist-key="mkt-h-alho" /><span></span><em>Alho</em></label>
                       <label class="home-market-item"><input type="checkbox" data-persist-key="mkt-h-pepino" /><span></span><em>Pepino</em></label>
-                      <label class="home-market-item"><input type="checkbox" data-persist-key="mkt-h-pimentao" /><span></span><em>Pimentao</em></label>
+                      <label class="home-market-item"><input type="checkbox" data-persist-key="mkt-h-pimentão" /><span></span><em>Pimentão</em></label>
                     </div>
                   </article>
                   <article class="home-market-card">
@@ -1149,13 +1270,13 @@
                 </div>
               </section>
 
-              <!-- ABA 4: Checklist Comodos -->
-              <section class="tab-panel casa-tab-panel" data-tab-panel="casa-comodos">
-                <div class="comodos-grid">
-                  <div class="comodo-card">
-                    <div class="comodo-photo comodo-photo-quarto"><span class="comodo-photo-icon">🛏️</span></div>
-                    <div class="comodo-card-body">
-                      <div class="comodo-title">Quarto Casal</div>
+              <!-- ABA 4: Checklist Cômodos -->
+              <section class="tab-panel casa-tab-panel" data-tab-panel="casa-cômodos">
+                <div class="cômodos-grid">
+                  <div class="cômodo-card">
+                    <div class="cômodo-photo cômodo-photo-quarto"><span class="cômodo-photo-icon">🛏️</span></div>
+                    <div class="cômodo-card-body">
+                      <div class="cômodo-title">Quarto Casal</div>
                       <label class="limpeza-task"><input type="checkbox" data-persist-key="cm-q-tv" /><span>Painel / TV</span></label>
                       <label class="limpeza-task"><input type="checkbox" data-persist-key="cm-q-moveis" /><span>Moveis ao lado da cama</span></label>
                       <label class="limpeza-task"><input type="checkbox" data-persist-key="cm-q-abajur" /><span>Abajur</span></label>
@@ -1164,62 +1285,62 @@
                       <label class="limpeza-task"><input type="checkbox" data-persist-key="cm-q-banco" /><span>Banco frente cama</span></label>
                     </div>
                   </div>
-                  <div class="comodo-card">
-                    <div class="comodo-photo comodo-photo-cozinha"><span class="comodo-photo-icon">🍳</span></div>
-                    <div class="comodo-card-body">
-                      <div class="comodo-title">Cozinha</div>
+                  <div class="cômodo-card">
+                    <div class="cômodo-photo cômodo-photo-cozinha"><span class="cômodo-photo-icon">🍳</span></div>
+                    <div class="cômodo-card-body">
+                      <div class="cômodo-title">Cozinha</div>
                       <label class="limpeza-task"><input type="checkbox" data-persist-key="cm-k-armarios" /><span>Todos os armarios</span></label>
                       <label class="limpeza-task"><input type="checkbox" data-persist-key="cm-k-bancada" /><span>Bancada e pia</span></label>
                       <label class="limpeza-task"><input type="checkbox" data-persist-key="cm-k-fogao" /><span>Fogao</span></label>
                       <label class="limpeza-task"><input type="checkbox" data-persist-key="cm-k-micro" /><span>Microondas / Forno</span></label>
                       <label class="limpeza-task"><input type="checkbox" data-persist-key="cm-k-gelad" /><span>Geladeira</span></label>
-                      <textarea class="comodo-note" data-persist-key="cm-k-note" placeholder="Notas especiais da cozinha..."></textarea>
+                      <textarea class="cômodo-note" data-persist-key="cm-k-note" placeholder="Notas especiais da cozinha..."></textarea>
                     </div>
                   </div>
-                  <div class="comodo-card">
-                    <div class="comodo-photo comodo-photo-banheiro"><span class="comodo-photo-icon">🚿</span></div>
-                    <div class="comodo-card-body">
-                      <div class="comodo-title">Banheiros</div>
+                  <div class="cômodo-card">
+                    <div class="cômodo-photo cômodo-photo-banheiro"><span class="cômodo-photo-icon">🚿</span></div>
+                    <div class="cômodo-card-body">
+                      <div class="cômodo-title">Banheiros</div>
                       <label class="limpeza-task"><input type="checkbox" data-persist-key="cm-b-bancada" /><span>Bancada da pia</span></label>
                       <label class="limpeza-task"><input type="checkbox" data-persist-key="cm-b-armarios" /><span>Armarios (dentro e fora)</span></label>
                       <label class="limpeza-task"><input type="checkbox" data-persist-key="cm-b-box" /><span>Box / Vaso sanitario</span></label>
                       <label class="limpeza-task"><input type="checkbox" data-persist-key="cm-b-espelhos" /><span>Espelhos</span></label>
                       <label class="limpeza-task"><input type="checkbox" data-persist-key="cm-b-lixeira" /><span>Lixeira / Tapete</span></label>
-                      <textarea class="comodo-note" data-persist-key="cm-b-note" placeholder="Notas especiais do banheiro..."></textarea>
+                      <textarea class="cômodo-note" data-persist-key="cm-b-note" placeholder="Notas especiais do banheiro..."></textarea>
                     </div>
                   </div>
-                  <div class="comodo-card">
-                    <div class="comodo-photo comodo-photo-sala"><span class="comodo-photo-icon">🛋️</span></div>
-                    <div class="comodo-card-body">
-                      <div class="comodo-title">Sala de Estar</div>
+                  <div class="cômodo-card">
+                    <div class="cômodo-photo cômodo-photo-sala"><span class="cômodo-photo-icon">🛋️</span></div>
+                    <div class="cômodo-card-body">
+                      <div class="cômodo-title">Sala de Estar</div>
                       <label class="limpeza-task"><input type="checkbox" data-persist-key="cm-s-tapete" /><span>Limpar tapete</span></label>
                       <label class="limpeza-task"><input type="checkbox" data-persist-key="cm-s-mesas" /><span>Mesas e mesinhas</span></label>
                       <label class="limpeza-task"><input type="checkbox" data-persist-key="cm-s-sofa" /><span>Sofa</span></label>
                       <label class="limpeza-task"><input type="checkbox" data-persist-key="cm-s-ar" /><span>Ar condicionado</span></label>
                       <label class="limpeza-task"><input type="checkbox" data-persist-key="cm-s-tv" /><span>TV / Painel</span></label>
-                      <textarea class="comodo-note" data-persist-key="cm-s-note" placeholder="Notas especiais da sala..."></textarea>
+                      <textarea class="cômodo-note" data-persist-key="cm-s-note" placeholder="Notas especiais da sala..."></textarea>
                     </div>
                   </div>
-                  <div class="comodo-card">
-                    <div class="comodo-photo comodo-photo-jantar"><span class="comodo-photo-icon">🍽️</span></div>
-                    <div class="comodo-card-body">
-                      <div class="comodo-title">Sala de Jantar</div>
+                  <div class="cômodo-card">
+                    <div class="cômodo-photo cômodo-photo-jantar"><span class="cômodo-photo-icon">🍽️</span></div>
+                    <div class="cômodo-card-body">
+                      <div class="cômodo-title">Sala de Jantar</div>
                       <label class="limpeza-task"><input type="checkbox" data-persist-key="cm-j-toalha" /><span>Trocar toalha de mesa</span></label>
                       <label class="limpeza-task"><input type="checkbox" data-persist-key="cm-j-cadeiras" /><span>Lavar cadeiras</span></label>
                       <label class="limpeza-task"><input type="checkbox" data-persist-key="cm-j-aparador" /><span>Aparador</span></label>
                       <label class="limpeza-task"><input type="checkbox" data-persist-key="cm-j-luminaria" /><span>Luminaria</span></label>
-                      <textarea class="comodo-note" data-persist-key="cm-j-note" placeholder="Notas especiais da sala de jantar..."></textarea>
+                      <textarea class="cômodo-note" data-persist-key="cm-j-note" placeholder="Notas especiais da sala de jantar..."></textarea>
                     </div>
                   </div>
-                  <div class="comodo-card">
-                    <div class="comodo-photo comodo-photo-lavanderia"><span class="comodo-photo-icon">🧺</span></div>
-                    <div class="comodo-card-body">
-                      <div class="comodo-title">Lavanderia / Area de Servico</div>
+                  <div class="cômodo-card">
+                    <div class="cômodo-photo cômodo-photo-lavanderia"><span class="cômodo-photo-icon">🧺</span></div>
+                    <div class="cômodo-card-body">
+                      <div class="cômodo-title">Lavanderia / Area de Servico</div>
                       <label class="limpeza-task"><input type="checkbox" data-persist-key="cm-l-roupas" /><span>Lavar roupas</span></label>
                       <label class="limpeza-task"><input type="checkbox" data-persist-key="cm-l-passar" /><span>Passar roupa</span></label>
                       <label class="limpeza-task"><input type="checkbox" data-persist-key="cm-l-maquina" /><span>Maquina de lavar</span></label>
                       <label class="limpeza-task"><input type="checkbox" data-persist-key="cm-l-tanque" /><span>Tanque</span></label>
-                      <textarea class="comodo-note" data-persist-key="cm-l-note" placeholder="Notas da area de servico..."></textarea>
+                      <textarea class="cômodo-note" data-persist-key="cm-l-note" placeholder="Notas da area de servico..."></textarea>
                     </div>
                   </div>
                 </div>
@@ -1232,52 +1353,52 @@
                     <div class="reforma-photo reforma-photo-quarto"><span class="reforma-photo-icon">🛏️</span></div>
                     <div class="reforma-card-body">
                       <div class="reforma-title-row">
-                        <input class="reforma-title-input" data-persist-key="reforma-q-titulo" placeholder="Ex.: Reforma do Quarto" />
+                        <input class="reforma-title-input" data-persist-key="reforma-q-título" placeholder="Ex.: Reforma do Quarto" />
                       </div>
                       <div class="reforma-dates">
                         <label>Data de inicio<input type="date" data-persist-key="reforma-q-inicio" /></label>
-                        <label>Data de termino<input type="date" data-persist-key="reforma-q-fim" /></label>
+                        <label>Data de término<input type="date" data-persist-key="reforma-q-fim" /></label>
                       </div>
-                      <textarea class="refeicao-area" data-persist-key="reforma-q-plan" placeholder="Planejamento, orcamento, materiais e observacoes..."></textarea>
+                      <textarea class="refeição-area" data-persist-key="reforma-q-plan" placeholder="Planejamento, orçamento, materiais e observações..."></textarea>
                     </div>
                   </div>
                   <div class="reforma-card">
                     <div class="reforma-photo reforma-photo-cozinha"><span class="reforma-photo-icon">🍳</span></div>
                     <div class="reforma-card-body">
                       <div class="reforma-title-row">
-                        <input class="reforma-title-input" data-persist-key="reforma-k-titulo" placeholder="Ex.: Reforma da Cozinha" />
+                        <input class="reforma-title-input" data-persist-key="reforma-k-título" placeholder="Ex.: Reforma da Cozinha" />
                       </div>
                       <div class="reforma-dates">
                         <label>Data de inicio<input type="date" data-persist-key="reforma-k-inicio" /></label>
-                        <label>Data de termino<input type="date" data-persist-key="reforma-k-fim" /></label>
+                        <label>Data de término<input type="date" data-persist-key="reforma-k-fim" /></label>
                       </div>
-                      <textarea class="refeicao-area" data-persist-key="reforma-k-plan" placeholder="Planejamento, orcamento, materiais e observacoes..."></textarea>
+                      <textarea class="refeição-area" data-persist-key="reforma-k-plan" placeholder="Planejamento, orçamento, materiais e observações..."></textarea>
                     </div>
                   </div>
                   <div class="reforma-card">
                     <div class="reforma-photo reforma-photo-sala"><span class="reforma-photo-icon">🛋️</span></div>
                     <div class="reforma-card-body">
                       <div class="reforma-title-row">
-                        <input class="reforma-title-input" data-persist-key="reforma-s-titulo" placeholder="Ex.: Reforma da Sala de Estar" />
+                        <input class="reforma-title-input" data-persist-key="reforma-s-título" placeholder="Ex.: Reforma da Sala de Estar" />
                       </div>
                       <div class="reforma-dates">
                         <label>Data de inicio<input type="date" data-persist-key="reforma-s-inicio" /></label>
-                        <label>Data de termino<input type="date" data-persist-key="reforma-s-fim" /></label>
+                        <label>Data de término<input type="date" data-persist-key="reforma-s-fim" /></label>
                       </div>
-                      <textarea class="refeicao-area" data-persist-key="reforma-s-plan" placeholder="Planejamento, orcamento, materiais e observacoes..."></textarea>
+                      <textarea class="refeição-area" data-persist-key="reforma-s-plan" placeholder="Planejamento, orçamento, materiais e observações..."></textarea>
                     </div>
                   </div>
                   <div class="reforma-card">
                     <div class="reforma-photo reforma-photo-banheiro"><span class="reforma-photo-icon">🚿</span></div>
                     <div class="reforma-card-body">
                       <div class="reforma-title-row">
-                        <input class="reforma-title-input" data-persist-key="reforma-b-titulo" placeholder="Ex.: Reforma do Banheiro" />
+                        <input class="reforma-title-input" data-persist-key="reforma-b-título" placeholder="Ex.: Reforma do Banheiro" />
                       </div>
                       <div class="reforma-dates">
                         <label>Data de inicio<input type="date" data-persist-key="reforma-b-inicio" /></label>
-                        <label>Data de termino<input type="date" data-persist-key="reforma-b-fim" /></label>
+                        <label>Data de término<input type="date" data-persist-key="reforma-b-fim" /></label>
                       </div>
-                      <textarea class="refeicao-area" data-persist-key="reforma-b-plan" placeholder="Planejamento, orcamento, materiais e observacoes..."></textarea>
+                      <textarea class="refeição-area" data-persist-key="reforma-b-plan" placeholder="Planejamento, orçamento, materiais e observações..."></textarea>
                     </div>
                   </div>
                 </div>
@@ -1292,8 +1413,8 @@
               <article class="agenda-summary-card home-planning-card">
                 <div class="module-card-header">
                   <div>
-                    <h4>Planner de refeicao</h4>
-                    <p class="planner-mini-copy">Planejamento semanal basico para a usuaria so preencher.</p>
+                    <h4>Planner de refeição</h4>
+                    <p class="planner-mini-copy">Planejamento semanal básico para a usuária só preencher.</p>
                   </div>
                 </div>
                 <div class="home-table-shell">
@@ -1301,8 +1422,8 @@
                     <thead>
                       <tr>
                         <th>Dia</th>
-                        <th>Cafe da manha</th>
-                        <th>Almoco</th>
+                        <th>Café da Manhã</th>
+                        <th>Almoço</th>
                         <th>Lanche</th>
                         <th>Jantar</th>
                         <th>Agua / observacao</th>
@@ -1310,11 +1431,11 @@
                     </thead>
                     <tbody>
                       <tr><td>Segunda</td><td><input data-persist-key="meal-mon-breakfast" placeholder="Ex.: ovos e fruta" /></td><td><input data-persist-key="meal-mon-lunch" placeholder="Ex.: arroz, feijao e frango" /></td><td><input data-persist-key="meal-mon-snack" placeholder="Ex.: iogurte" /></td><td><input data-persist-key="meal-mon-dinner" placeholder="Ex.: sopa" /></td><td><input data-persist-key="meal-mon-note" placeholder="Meta do dia" /></td></tr>
-                      <tr><td>Terca</td><td><input data-persist-key="meal-tue-breakfast" /></td><td><input data-persist-key="meal-tue-lunch" /></td><td><input data-persist-key="meal-tue-snack" /></td><td><input data-persist-key="meal-tue-dinner" /></td><td><input data-persist-key="meal-tue-note" /></td></tr>
+                      <tr><td>Terça</td><td><input data-persist-key="meal-tue-breakfast" /></td><td><input data-persist-key="meal-tue-lunch" /></td><td><input data-persist-key="meal-tue-snack" /></td><td><input data-persist-key="meal-tue-dinner" /></td><td><input data-persist-key="meal-tue-note" /></td></tr>
                       <tr><td>Quarta</td><td><input data-persist-key="meal-wed-breakfast" /></td><td><input data-persist-key="meal-wed-lunch" /></td><td><input data-persist-key="meal-wed-snack" /></td><td><input data-persist-key="meal-wed-dinner" /></td><td><input data-persist-key="meal-wed-note" /></td></tr>
                       <tr><td>Quinta</td><td><input data-persist-key="meal-thu-breakfast" /></td><td><input data-persist-key="meal-thu-lunch" /></td><td><input data-persist-key="meal-thu-snack" /></td><td><input data-persist-key="meal-thu-dinner" /></td><td><input data-persist-key="meal-thu-note" /></td></tr>
                       <tr><td>Sexta</td><td><input data-persist-key="meal-fri-breakfast" /></td><td><input data-persist-key="meal-fri-lunch" /></td><td><input data-persist-key="meal-fri-snack" /></td><td><input data-persist-key="meal-fri-dinner" /></td><td><input data-persist-key="meal-fri-note" /></td></tr>
-                      <tr><td>Sabado</td><td><input data-persist-key="meal-sat-breakfast" /></td><td><input data-persist-key="meal-sat-lunch" /></td><td><input data-persist-key="meal-sat-snack" /></td><td><input data-persist-key="meal-sat-dinner" /></td><td><input data-persist-key="meal-sat-note" /></td></tr>
+                      <tr><td>Sábado</td><td><input data-persist-key="meal-sat-breakfast" /></td><td><input data-persist-key="meal-sat-lunch" /></td><td><input data-persist-key="meal-sat-snack" /></td><td><input data-persist-key="meal-sat-dinner" /></td><td><input data-persist-key="meal-sat-note" /></td></tr>
                       <tr><td>Domingo</td><td><input data-persist-key="meal-sun-breakfast" /></td><td><input data-persist-key="meal-sun-lunch" /></td><td><input data-persist-key="meal-sun-snack" /></td><td><input data-persist-key="meal-sun-dinner" /></td><td><input data-persist-key="meal-sun-note" /></td></tr>
                     </tbody>
                   </table>
@@ -1324,12 +1445,12 @@
                 <div class="module-card-header">
                   <div>
                     <h4>Lista do mercado</h4>
-                    <p class="planner-mini-copy">Lista basica padrao para todas as usuarias, com exemplo pronto para marcar e adaptar.</p>
+                    <p class="planner-mini-copy">Lista básica padrão para todas as usuárias, com exemplo pronto para marcar e adaptar.</p>
                   </div>
                 </div>
                 <div class="home-market-grid">
                   <article class="home-market-card">
-                    <h5>Cafe da manha</h5>
+                    <h5>Café da Manhã</h5>
                     <div class="home-market-items">
                       <label class="home-market-item"><input type="checkbox" data-persist-key="market-breakfast-coffee" /><span></span><em>Cafe</em></label>
                       <label class="home-market-item"><input type="checkbox" data-persist-key="market-breakfast-juice" /><span></span><em>Suco</em></label>
@@ -1422,7 +1543,7 @@
                   </article>
 
                   <article class="home-market-card home-market-card-notes">
-                    <h5>Observacoes da semana</h5>
+                    <h5>Observações da semana</h5>
                     <textarea class="summary-input compact-area" data-persist-key="market-week-notes" placeholder="Exemplo: feira na quarta, repor itens de higiene, comprar mistura para o fim de semana."></textarea>
                   </article>
                 </div>
@@ -1562,9 +1683,9 @@
               <h4>Reformas e reparos do lar</h4>
               <div class="two-column">
                 <label>Inicio <input type="date" data-persist-key="home-repair-start" /></label>
-                <label>Previsao de termino <input type="date" data-persist-key="home-repair-end" /></label>
+                <label>Previsão de término <input type="date" data-persist-key="home-repair-end" /></label>
               </div>
-              <textarea class="summary-input compact-area" data-persist-key="home-repair-summary" placeholder="Resumo / descricao da reforma"></textarea>
+              <textarea class="summary-input compact-area" data-persist-key="home-repair-summary" placeholder="Resumo / descrição da reforma"></textarea>
               <input data-persist-key="home-repair-links" placeholder="Links relacionados a essa reforma" />
             </article>
             <ul id="home-preview-list" class="mini-list module-preview-list" style="display:none"></ul>
@@ -1579,14 +1700,14 @@
             <div class="panel-heading">
               <div>
                 <p class="eyebrow">Corpo e autocuidado</p>
-                <h3>Gestao completa do autocuidado</h3>
+                <h3>Gestão completa do autocuidado</h3>
               </div>
             </div>
             <div class="tab-shell" data-tab-group="autocuidado">
               <div class="tab-buttons">
                 <button class="ghost-button is-active" type="button" data-tab-target="medidas">Progresso de medidas</button>
                 <button class="ghost-button" type="button" data-tab-target="exercicios">Cronograma de exercicios</button>
-                <button class="ghost-button" type="button" data-tab-target="saude">Cuidados de saude</button>
+                <button class="ghost-button" type="button" data-tab-target="saúde">Cuidados de saúde</button>
                 <button class="ghost-button" type="button" data-tab-target="beleza">Rituais de beleza</button>
               </div>
               <!-- MEDIDAS -->
@@ -1781,10 +1902,10 @@
               </section>
 
               <!-- SAÚDE -->
-              <section class="tab-panel" data-tab-panel="saude">
+              <section class="tab-panel" data-tab-panel="saúde">
                 <div class="corpo-tab-content">
-                  <div class="corpo-saude-grid">
-                    <div class="corpo-saude-card">
+                  <div class="corpo-saúde-grid">
+                    <div class="corpo-saúde-card">
                       <h5>👩‍⚕️ Médicos que preciso ir</h5>
                       <div class="corpo-checklist-item"><input type="checkbox" data-persist-key="doc-1-done" /><input type="text" data-persist-key="doc-1-name" placeholder="Especialidade / médico" /></div>
                       <div class="corpo-checklist-item"><input type="checkbox" data-persist-key="doc-2-done" /><input type="text" data-persist-key="doc-2-name" placeholder="Especialidade / médico" /></div>
@@ -1792,14 +1913,14 @@
                       <div class="corpo-checklist-item"><input type="checkbox" data-persist-key="doc-4-done" /><input type="text" data-persist-key="doc-4-name" placeholder="Especialidade / médico" /></div>
                       <div class="corpo-checklist-item"><input type="checkbox" data-persist-key="doc-5-done" /><input type="text" data-persist-key="doc-5-name" placeholder="Especialidade / médico" /></div>
                     </div>
-                    <div class="corpo-saude-card">
+                    <div class="corpo-saúde-card">
                       <h5>🤔 Sintomas / Queixas</h5>
                       <textarea class="summary-input compact-area" data-persist-key="health-symptoms" placeholder="Anote aqui dores, sintomas ou queixas para levar ao médico..."></textarea>
                     </div>
-                    <div class="corpo-saude-card corpo-saude-full">
+                    <div class="corpo-saúde-card corpo-saúde-full">
                       <h5>📋 Lista de Consultas</h5>
                       <div style="overflow-x:auto">
-                        <table class="corpo-saude-table">
+                        <table class="corpo-saúde-table">
                           <thead><tr><th>Especialidade</th><th>Data</th><th>Horário</th><th>Endereço / Plataforma</th></tr></thead>
                           <tbody>
                             <tr><td><input data-persist-key="consult-1-spec" /></td><td><input type="date" data-persist-key="consult-1-date" /></td><td><input type="time" data-persist-key="consult-1-time" /></td><td><input data-persist-key="consult-1-addr" /></td></tr>
@@ -1811,10 +1932,10 @@
                         </table>
                       </div>
                     </div>
-                    <div class="corpo-saude-card corpo-saude-full">
+                    <div class="corpo-saúde-card corpo-saúde-full">
                       <h5>🔬 Lista de Exames</h5>
                       <div style="overflow-x:auto">
-                        <table class="corpo-saude-table">
+                        <table class="corpo-saúde-table">
                           <thead><tr><th>Exame</th><th>Data pedido</th><th>Data realizado</th><th>Local</th><th>Resultado</th></tr></thead>
                           <tbody>
                             <tr><td><input data-persist-key="exam-1-name" /></td><td><input type="date" data-persist-key="exam-1-req" /></td><td><input type="date" data-persist-key="exam-1-done" /></td><td><input data-persist-key="exam-1-local" /></td><td><input data-persist-key="exam-1-result" /></td></tr>
@@ -1826,10 +1947,10 @@
                         </table>
                       </div>
                     </div>
-                    <div class="corpo-saude-card corpo-saude-full">
+                    <div class="corpo-saúde-card corpo-saúde-full">
                       <h5>💊 Remédios e Suplementos</h5>
                       <div style="overflow-x:auto">
-                        <table class="corpo-saude-table">
+                        <table class="corpo-saúde-table">
                           <thead><tr><th>Nome</th><th>Horário</th><th>Frequência</th><th>Observação</th></tr></thead>
                           <tbody>
                             <tr><td><input data-persist-key="med-1-name" placeholder="Ex.: Ômega 3" /></td><td><input data-persist-key="med-1-time" placeholder="Ex.: Manhã no café" /></td><td><input data-persist-key="med-1-freq" placeholder="Ex.: 1x ao dia" /></td><td><input data-persist-key="med-1-note" /></td></tr>
@@ -1938,7 +2059,7 @@
             </div>
             <div class="structured-card-grid">
               <div class="detail-card"><span class="metric-label">Destino</span><strong>Gramado</strong></div>
-              <div class="detail-card"><span class="metric-label">Orcamento</span><strong>R$ 3.500 alvo</strong></div>
+              <div class="detail-card"><span class="metric-label">Orçamento</span><strong>R$ 3.500 alvo</strong></div>
             </div>
             <ul id="travel-preview-list" class="mini-list module-preview-list"></ul>
             <ul class="mini-list">
@@ -1974,7 +2095,7 @@
           </article>
         </section>
 
-        <section class="page-view" data-page-view="configuracoes" id="configuracoes">
+        <section class="page-view" data-page-view="configurações" id="configurações">
           <div class="page-return-bar">
             <button class="ghost-button page-return-button" type="button" data-go-home>← Voltar</button>
           </div>
@@ -2218,7 +2339,7 @@
                 <button class="admin-shell-link" type="button">Cadastros</button>
                 <button class="admin-shell-link" type="button">Comunicacao</button>
                 <button class="admin-shell-link" type="button">Registros</button>
-                <button class="admin-shell-link" type="button">Configuracoes</button>
+                <button class="admin-shell-link" type="button">Configurações</button>
               </nav>
             </aside>
 
@@ -2265,7 +2386,7 @@
                 <article class="admin-stat-card admin-stat-card-highlight">
                   <span class="metric-label">Prestes a renovar</span>
                   <strong id="admin-renew-soon-users">0</strong>
-                  <small>Expiram nos proximos 7 dias</small>
+                  <small>Expiram nos próximos 7 dias</small>
                 </article>
                 <article class="admin-stat-card admin-stat-card-accent">
                   <span class="metric-label">Receita mensal ativa</span>
@@ -2280,11 +2401,11 @@
                     <div class="panel-heading">
                       <div>
                         <p class="eyebrow">Detalhes da usuaria</p>
-                        <h3>Perfil e operacao</h3>
+                        <h3>Perfil e operação</h3>
                       </div>
                     </div>
                     <div id="admin-user-detail" class="admin-user-detail">
-                      <div class="admin-empty-state">Selecione uma usuaria em "Ver detalhes" para abrir esta visao.</div>
+                      <div class="admin-empty-state">Selecione uma usuaria em "Ver detalhes" para abrir está visao.</div>
                     </div>
                   </article>
 
@@ -2292,7 +2413,7 @@
                     <div class="panel-heading">
                       <div>
                         <p class="eyebrow">Registros recentes</p>
-                        <h3>Historico resumido</h3>
+                        <h3>Histórico resumido</h3>
                       </div>
                     </div>
                     <div id="admin-activity-list" class="admin-activity-list admin-activity-list-compact"></div>
@@ -2336,7 +2457,7 @@
                       <div class="panel-heading">
                         <div>
                           <p class="eyebrow">Central de comunicacao</p>
-                          <h3>Mensagens e notificacoes</h3>
+                          <h3>Mensagens e notificações</h3>
                         </div>
                         <span class="tag tag--pink">ADM</span>
                       </div>
@@ -2348,10 +2469,10 @@
 
                       <!-- Push nativo -->
                       <div class="admin-comm-panel" data-comm-panel="push">
-                        <p class="admin-comm-desc">Envia uma notificacao push para todos os dispositivos com notificacoes ativas. Aparece mesmo com o app fechado.</p>
+                        <p class="admin-comm-desc">Envia uma notificacao push para todos os dispositivos com notificações ativas. Aparece mesmo com o app fechado.</p>
                         <form id="admin-push-form" class="settings-form admin-create-form">
                           <label>
-                            Titulo da notificacao
+                            Título da notificacao
                             <input id="admin-push-title" type="text" placeholder="Ex.: Novo video no canal!" maxlength="80" />
                           </label>
                           <label>
@@ -2374,7 +2495,7 @@
                         <p class="admin-comm-desc">Envia um aviso dentro do app que a usuaria ve ao abrir. Util para comunicados internos.</p>
                         <form id="admin-broadcast-form" class="settings-form admin-create-form">
                           <label>
-                            Titulo
+                            Título
                             <input id="admin-broadcast-title" type="text" placeholder="Ex.: Aviso importante" maxlength="80" />
                           </label>
                           <label>
@@ -2428,7 +2549,7 @@
                       <span>Status</span>
                       <span>Dados</span>
                       <span>Criacao</span>
-                      <span>Acoes</span>
+                      <span>Ações</span>
                     </div>
                     <div class="admin-users-list" id="admin-users-list"></div>
                   </article>
@@ -2454,12 +2575,12 @@
 
         <form id="editor-form" class="editor-form">
           <label>
-            Titulo
+            Título
             <input id="editor-heading" name="heading" type="text" />
           </label>
 
           <label>
-            Subtitulo
+            Subtítulo
             <input id="editor-subheading" name="subheading" type="text" />
           </label>
 
@@ -2538,12 +2659,12 @@
               <option value="5">5 min antes</option>
               <option value="30">30 min antes</option>
               <option value="60">1 hora antes</option>
-              <option value="0">No horario</option>
+              <option value="0">No horário</option>
               <option value="-1">Sem alerta</option>
             </select>
           </label>
           <label>
-            Titulo
+            Título
             <input id="calendar-modal-title-input" type="text" placeholder="Compromisso" />
           </label>
           <label>
@@ -2568,14 +2689,14 @@
               <option value="Pessoal">Pessoal</option>
               <option value="Trabalho">Trabalho</option>
               <option value="Casa">Casa</option>
-              <option value="Saude">Saude</option>
+              <option value="Saúde">Saúde</option>
               <option value="Espiritual">Espiritual</option>
             </select>
           </label>
           <label>
-            Recorrencia
+            Recorrência
             <select id="calendar-modal-recurrence">
-              <option value="none">Nao se repete</option>
+              <option value="none">Não se repete</option>
               <option value="daily">Diariamente</option>
               <option value="weekly">Semanalmente</option>
               <option value="monthly">Mensalmente</option>
@@ -2588,11 +2709,11 @@
             <div class="app-color-preset-grid" data-color-preset-grid="agenda-modal"></div>
           </div>
           <label>
-            Descricao
-            <textarea id="calendar-modal-description" rows="4" placeholder="Descricao completa do compromisso"></textarea>
+            Descrição
+            <textarea id="calendar-modal-description" rows="4" placeholder="Descrição completa do compromisso"></textarea>
           </label>
           <div class="editor-actions">
-            <button id="calendar-modal-cancel-edit" class="ghost-button hidden" type="button">Cancelar edicao</button>
+            <button id="calendar-modal-cancel-edit" class="ghost-button hidden" type="button">Cancelar edição</button>
             <button class="primary-button" type="submit">Salvar compromisso</button>
           </div>
         </form>
@@ -2612,15 +2733,15 @@
         <p id="module-modal-copy" class="module-note">Cadastre seus itens aqui.</p>
         <form id="module-modal-form" class="editor-form">
           <label>
-            Titulo
-            <input id="module-entry-title" type="text" placeholder="Titulo do item" />
+            Título
+            <input id="module-entry-title" type="text" placeholder="Título do item" />
           </label>
           <label>
             Categoria
             <input id="module-entry-category" type="text" placeholder="Categoria ou tipo" />
           </label>
           <label>
-            Descricao
+            Descrição
             <textarea id="module-entry-description" rows="4" placeholder="Detalhes do item"></textarea>
           </label>
           <div class="editor-actions">
@@ -2676,7 +2797,7 @@
           <button id="install-modal-chrome-button" class="ghost-button install-cta" type="button">Instalar neste dispositivo</button>
         </div>
         <p id="install-platform-status" class="install-platform-status">Em iPhone e iPad a instalacao acontece pelo Safari com “Adicionar a Tela de Inicio”. Em Android, Chrome ou Edge podem mostrar o prompt automatico.</p>
-        <p class="module-note">Para manter os mesmos dados em qualquer navegador, desktop ou celular, use sempre a versao publicada do app. O ZIP nao substitui a instalacao sincronizada.</p>
+        <p class="module-note">Para manter os mesmos dados em qualquer navegador, desktop ou celular, use sempre a versao publicada do app. O ZIP não substitui a instalacao sincronizada.</p>
       </section>
     </div>
 

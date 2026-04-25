@@ -4327,6 +4327,107 @@ if (agendaCancelEditButton) {
   });
 }
 
+// ── Recorrência personalizada ──
+(function setupCustomRecurrence() {
+  const recurrenceModal   = document.querySelector("#recurrence-modal");
+  const recurrenceInput   = document.querySelector("#agenda-recurrence-input");
+  const customLabel       = document.querySelector("#recurrence-custom-label");
+  const intervalInput     = document.querySelector("#recurrence-interval");
+  const unitSelect        = document.querySelector("#recurrence-unit");
+  const weekdaysRow       = document.querySelector("#recurrence-weekdays-row");
+  const dayBtns           = document.querySelectorAll(".rec-day-btn");
+  const endDateInput      = document.querySelector("#recurrence-end-date");
+  const endCountInput     = document.querySelector("#recurrence-end-count");
+  const cancelBtn         = document.querySelector("#recurrence-cancel-btn");
+  const confirmBtn        = document.querySelector("#recurrence-confirm-btn");
+
+  if (!recurrenceModal || !recurrenceInput) return;
+
+  const unitLabels = { day: "dia(s)", week: "semana(s)", month: "mês(es)", year: "ano(s)" };
+  const dayNames   = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"];
+  let customData   = null;
+
+  function toggleWeekdayRow() {
+    if (weekdaysRow) weekdaysRow.style.display = unitSelect.value === "week" ? "" : "none";
+  }
+
+  function buildCustomLabel(data) {
+    if (!data) return "";
+    const unit = unitLabels[data.unit] || data.unit;
+    let label = `A cada ${data.interval} ${unit}`;
+    if (data.unit === "week" && data.days && data.days.length) {
+      label += " — " + data.days.map(d => dayNames[d]).join(", ");
+    }
+    if (data.end === "on" && data.endDate) label += ` até ${data.endDate}`;
+    if (data.end === "after" && data.endCount) label += ` por ${data.endCount}x`;
+    return label;
+  }
+
+  recurrenceInput.addEventListener("change", () => {
+    if (recurrenceInput.value !== "custom") {
+      if (customLabel) { customLabel.textContent = ""; customLabel.classList.add("hidden"); }
+      customData = null;
+      return;
+    }
+    recurrenceModal.classList.remove("hidden");
+    toggleWeekdayRow();
+  });
+
+  if (unitSelect) unitSelect.addEventListener("change", toggleWeekdayRow);
+
+  dayBtns.forEach(btn => {
+    btn.addEventListener("click", () => btn.classList.toggle("is-active"));
+  });
+
+  function closeModal() { recurrenceModal.classList.add("hidden"); }
+
+  if (cancelBtn) cancelBtn.addEventListener("click", () => {
+    recurrenceInput.value = "none";
+    if (customLabel) { customLabel.textContent = ""; customLabel.classList.add("hidden"); }
+    customData = null;
+    closeModal();
+  });
+
+  if (confirmBtn) confirmBtn.addEventListener("click", () => {
+    const activeDays = [...dayBtns].filter(b => b.classList.contains("is-active")).map(b => Number(b.dataset.day));
+    const endRadio   = document.querySelector('input[name="rec-end"]:checked');
+    customData = {
+      interval : Number(intervalInput?.value) || 1,
+      unit     : unitSelect?.value || "week",
+      days     : activeDays,
+      end      : endRadio?.value || "never",
+      endDate  : endDateInput?.value || "",
+      endCount : Number(endCountInput?.value) || 0,
+    };
+    if (customLabel) {
+      customLabel.textContent = buildCustomLabel(customData);
+      customLabel.classList.remove("hidden");
+    }
+    closeModal();
+  });
+
+  recurrenceModal.addEventListener("click", e => { if (e.target === recurrenceModal) cancelBtn?.click(); });
+
+  window.getAgendaCustomRecurrence = () => customData;
+})();
+
+// ── Videoconferência ──
+(function setupVideocall() {
+  const btn  = document.querySelector("#agenda-videocall-button");
+  const link = document.querySelector("#agenda-videocall-link");
+  const linkInput = document.querySelector("#agenda-link-input");
+  if (!btn) return;
+
+  btn.addEventListener("click", () => {
+    const id  = Math.random().toString(36).slice(2, 10) + "-" + Math.random().toString(36).slice(2, 6);
+    const url = `https://meet.jit.si/vidanova-${id}`;
+    if (link) { link.textContent = url; link.classList.remove("hidden"); }
+    if (linkInput) linkInput.value = url;
+    btn.textContent = "Link gerado ✓";
+    btn.disabled = true;
+  });
+})();
+
 if (calendarPrev) {
   calendarPrev.addEventListener("click", () => {
     if (agendaView === "month") {
