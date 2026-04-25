@@ -48,16 +48,16 @@ const DEFAULT_DASHBOARD_COVERS = Object.freeze({
 });
 
 const APP_IDENTITY_COLOR_PRESETS = Object.freeze([
-  "#f6d7e5",
-  "#ef8da9",
-  "#ffd9c9",
-  "#f0b86c",
-  "#ffe8a3",
-  "#d9f2c7",
-  "#9fe0d5",
-  "#cfe7ff",
-  "#6f9cf6",
-  "#8f6ad9",
+  "#c55b84",  // berry — rosa principal
+  "#ef8da9",  // berry-glow — rosa médio
+  "#f8bfd3",  // rose — rosa claro
+  "#ffd5c8",  // peach — pêssego
+  "#ffc885",  // apricot — laranja suave
+  "#f3dfa6",  // gold — dourado
+  "#bfe8d6",  // mint — menta
+  "#95c4aa",  // sage — verde sálvia
+  "#cfe6ff",  // sky — azul céu
+  "#ddd2ff",  // lavender — lavanda
 ]);
 const DASHBOARD_CARD_COLOR_PRESETS = APP_IDENTITY_COLOR_PRESETS;
 

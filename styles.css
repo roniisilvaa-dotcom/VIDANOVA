@@ -1424,17 +1424,25 @@ body.subscription-locked .subscription-gate {
 }
 
 .app-color-swatch {
-  min-height: 42px;
-  border: 1px solid rgba(113, 86, 104, 0.12);
+  min-height: 46px;
+  border: 2px solid transparent;
   border-radius: 14px;
   background: var(--swatch-color);
   cursor: pointer;
-  box-shadow: 0 10px 18px rgba(91, 72, 105, 0.08);
+  transition: transform .15s, box-shadow .15s, border-color .15s;
+  box-shadow: 0 4px 14px rgba(91, 72, 105, 0.14);
+  outline: none;
+}
+
+.app-color-swatch:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(91, 72, 105, 0.22);
 }
 
 .app-color-swatch.is-active {
-  border-color: rgba(91, 72, 105, 0.38);
-  box-shadow: 0 0 0 3px rgba(91, 72, 105, 0.12), 0 12px 22px rgba(91, 72, 105, 0.12);
+  border-color: #2b2232;
+  box-shadow: 0 0 0 3px rgba(43, 34, 50, 0.18), 0 6px 18px rgba(91, 72, 105, 0.18);
+  transform: scale(1.06);
 }
 
 .week-view-shell {
