@@ -1447,7 +1447,7 @@ async function updateSubscriptionFromKiwify(userId, details) {
 
 function verifyKiwifyWebhook(req) {
   if (!KIWIFY_WEBHOOK_TOKEN) {
-    return true;
+    return false;
   }
 
   const candidate = pickFirstString([
