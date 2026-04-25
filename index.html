@@ -1956,36 +1956,68 @@
                       </form>
                     </article>
 
-                    <article class="admin-feature-card">
+                    <article class="admin-feature-card admin-comm-card">
                       <div class="panel-heading">
                         <div>
-                          <p class="eyebrow">Comunicacao em massa</p>
-                          <h3>Notificar usuarias</h3>
+                          <p class="eyebrow">Central de comunicacao</p>
+                          <h3>Mensagens e notificacoes</h3>
                         </div>
-                        <span class="tag">ADM</span>
+                        <span class="tag tag--pink">ADM</span>
                       </div>
-                      <form id="admin-broadcast-form" class="settings-form admin-create-form">
-                        <label>
-                          Titulo
-                          <input id="admin-broadcast-title" type="text" placeholder="Ex.: Aviso importante" />
-                        </label>
-                        <label>
-                          Publico
-                          <select id="admin-broadcast-audience">
-                            <option value="active">Somente contas ativas</option>
-                            <option value="all">Todas as usuarias</option>
-                          </select>
-                        </label>
-                        <label class="admin-broadcast-message">
-                          Mensagem
-                          <textarea id="admin-broadcast-message" rows="4" placeholder="Escreva a notificacao que vai aparecer no app das usuarias."></textarea>
-                        </label>
-                        <div class="settings-inline-actions">
-                          <button id="admin-broadcast-submit" class="primary-button" type="submit">Enviar notificacao no app</button>
-                          <button id="admin-push-send" class="primary-button secondary-strong" type="button">Enviar push nativo</button>
-                        </div>
-                        <p id="admin-push-feedback" class="settings-feedback"></p>
-                      </form>
+
+                      <div class="admin-comm-tabs">
+                        <button class="admin-comm-tab is-active" type="button" data-comm-tab="push">Push nativo</button>
+                        <button class="admin-comm-tab" type="button" data-comm-tab="inapp">Aviso no app</button>
+                      </div>
+
+                      <!-- Push nativo -->
+                      <div class="admin-comm-panel" data-comm-panel="push">
+                        <p class="admin-comm-desc">Envia uma notificacao push para todos os dispositivos com notificacoes ativas. Aparece mesmo com o app fechado.</p>
+                        <form id="admin-push-form" class="settings-form admin-create-form">
+                          <label>
+                            Titulo da notificacao
+                            <input id="admin-push-title" type="text" placeholder="Ex.: Novo video no canal!" maxlength="80" />
+                          </label>
+                          <label>
+                            Mensagem
+                            <textarea id="admin-push-message" rows="3" placeholder="Texto da notificacao que aparecera no celular." maxlength="200"></textarea>
+                          </label>
+                          <label>
+                            Link ao clicar (opcional)
+                            <input id="admin-push-url" type="url" placeholder="https://..." />
+                          </label>
+                          <div class="settings-inline-actions">
+                            <button id="admin-push-send" class="primary-button" type="submit">Enviar push para todos</button>
+                          </div>
+                          <p id="admin-push-feedback" class="settings-feedback admin-comm-feedback"></p>
+                        </form>
+                      </div>
+
+                      <!-- Aviso no app -->
+                      <div class="admin-comm-panel" data-comm-panel="inapp" style="display:none">
+                        <p class="admin-comm-desc">Envia um aviso dentro do app que a usuaria ve ao abrir. Util para comunicados internos.</p>
+                        <form id="admin-broadcast-form" class="settings-form admin-create-form">
+                          <label>
+                            Titulo
+                            <input id="admin-broadcast-title" type="text" placeholder="Ex.: Aviso importante" maxlength="80" />
+                          </label>
+                          <label>
+                            Publico
+                            <select id="admin-broadcast-audience">
+                              <option value="active">Somente contas ativas</option>
+                              <option value="all">Todas as usuarias</option>
+                            </select>
+                          </label>
+                          <label>
+                            Mensagem
+                            <textarea id="admin-broadcast-message" rows="4" placeholder="Texto do aviso que aparecera dentro do app." maxlength="400"></textarea>
+                          </label>
+                          <div class="settings-inline-actions">
+                            <button id="admin-broadcast-submit" class="primary-button" type="submit">Enviar aviso no app</button>
+                          </div>
+                          <p id="admin-broadcast-feedback" class="settings-feedback admin-comm-feedback"></p>
+                        </form>
+                      </div>
                     </article>
                   </div>
 

@@ -1633,6 +1633,8 @@ function setActivePage(pageName, syncHash = true) {
     verseBanner.setAttribute("aria-hidden", shouldHideVerse ? "true" : "false");
   }
 
+  document.body.classList.toggle("page-not-dashboard", nextPage !== "dashboard");
+
   if (syncHash && window.location.hash !== `#${nextPage}`) {
     history.replaceState(null, "", `#${nextPage}`);
   }
@@ -6110,10 +6112,23 @@ async function setupPushNotificationToggle() {
   const statusEl = document.getElementById("push-subscribe-status");
   if (!btn) return;
 
+  const isIosSafari = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+  const isStandalone = window.matchMedia?.("(display-mode: standalone)").matches || window.navigator.standalone === true;
+  const supportsPush = "serviceWorker" in navigator && "PushManager" in window;
+
   const updateUi = async () => {
-    if (!("PushManager" in window)) {
-      btn.textContent = "Notificações não suportadas";
-      btn.disabled = true;
+    if (!supportsPush) {
+      if (isIosSafari && !isStandalone) {
+        btn.textContent = "Instalar app para ativar";
+        btn.disabled = false;
+        btn.dataset.state = "ios-install";
+        if (statusEl) statusEl.textContent = "No iPhone/iPad, instale o app na Tela de Início pelo Safari e abra por lá para ativar as notificações.";
+      } else {
+        btn.textContent = "Ativar notificações";
+        btn.disabled = false;
+        btn.dataset.state = "unsupported";
+        if (statusEl) statusEl.textContent = "Seu navegador pode não suportar push nativo. Tente no Chrome ou Edge instalado.";
+      }
       return;
     }
     const reg = await navigator.serviceWorker.ready;
@@ -6123,15 +6138,19 @@ async function setupPushNotificationToggle() {
     if (sub && perm === "granted") {
       btn.textContent = "Desativar notificações";
       btn.dataset.state = "subscribed";
-      if (statusEl) statusEl.textContent = "Você receberá avisos de novos vídeos e atualizações.";
+      if (statusEl) statusEl.textContent = "Notificações ativas. Você receberá avisos de novos vídeos e atualizações.";
     } else {
       btn.textContent = "Ativar notificações";
       btn.dataset.state = "unsubscribed";
-      if (statusEl) statusEl.textContent = "Ative para receber avisos de novos vídeos e novidades.";
+      if (statusEl) statusEl.textContent = "Ative para receber avisos de novos vídeos e novidades do app.";
     }
   };
 
   btn.addEventListener("click", async () => {
+    if (btn.dataset.state === "ios-install" || btn.dataset.state === "unsupported") {
+      if (statusEl) statusEl.textContent = "Abra o app instalado (Tela de Início) no Safari e ative por lá.";
+      return;
+    }
     btn.disabled = true;
     try {
       if (btn.dataset.state === "subscribed") {
@@ -6140,7 +6159,7 @@ async function setupPushNotificationToggle() {
       } else {
         const sub = await subscribeToPush();
         if (!sub) {
-          if (statusEl) statusEl.textContent = "Permissão negada ou não suportada.";
+          if (statusEl) statusEl.textContent = "Permissão negada. Verifique as configurações do seu navegador.";
           btn.disabled = false;
           return;
         }
@@ -6155,37 +6174,50 @@ async function setupPushNotificationToggle() {
 
   await updateUi();
 
-  const adminPushBtn = document.getElementById("admin-push-send");
+  // Abas da central de comunicação admin
+  document.querySelectorAll(".admin-comm-tab").forEach((tab) => {
+    tab.addEventListener("click", () => {
+      const target = tab.dataset.commTab;
+      document.querySelectorAll(".admin-comm-tab").forEach((t) => t.classList.toggle("is-active", t === tab));
+      document.querySelectorAll(".admin-comm-panel").forEach((p) => {
+        p.style.display = p.dataset.commPanel === target ? "" : "none";
+      });
+    });
+  });
+
+  // Push nativo — formulário
+  const adminPushForm = document.getElementById("admin-push-form");
   const adminPushFeedback = document.getElementById("admin-push-feedback");
-  if (adminPushBtn) {
-    adminPushBtn.addEventListener("click", async () => {
-      const titleEl = document.getElementById("admin-broadcast-title");
-      const msgEl = document.getElementById("admin-broadcast-message");
-      const title = titleEl?.value?.trim() || "";
-      const body = msgEl?.value?.trim() || "";
+  if (adminPushForm) {
+    adminPushForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const title = document.getElementById("admin-push-title")?.value?.trim() || "";
+      const body = document.getElementById("admin-push-message")?.value?.trim() || "";
+      const url = document.getElementById("admin-push-url")?.value?.trim() || "/";
       if (!title || !body) {
-        if (adminPushFeedback) adminPushFeedback.textContent = "Preencha o título e a mensagem antes de enviar.";
+        if (adminPushFeedback) adminPushFeedback.textContent = "Preencha o titulo e a mensagem.";
         return;
       }
-      adminPushBtn.disabled = true;
+      const btn = adminPushForm.querySelector("button[type=submit]");
+      if (btn) btn.disabled = true;
       if (adminPushFeedback) adminPushFeedback.textContent = "Enviando...";
       try {
         const session = requireSession();
         const res = await fetch("/api/push/send", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ token: session.token, title, body }),
+          body: JSON.stringify({ token: session.token, title, body, url }),
         });
         const data = await res.json();
-        if (data.success) {
-          if (adminPushFeedback) adminPushFeedback.textContent = `Push enviado: ${data.sent} dispositivos, ${data.failed} falhas.`;
-        } else {
-          if (adminPushFeedback) adminPushFeedback.textContent = data.error || "Erro ao enviar.";
+        if (adminPushFeedback) {
+          adminPushFeedback.textContent = data.success
+            ? `Enviado para ${data.sent} dispositivo(s). ${data.failed > 0 ? `${data.failed} falha(s).` : ""}`
+            : (data.error || "Erro ao enviar.");
         }
       } catch {
-        if (adminPushFeedback) adminPushFeedback.textContent = "Erro ao enviar push.";
+        if (adminPushFeedback) adminPushFeedback.textContent = "Erro de conexao ao enviar push.";
       }
-      adminPushBtn.disabled = false;
+      if (btn) btn.disabled = false;
     });
   }
 }
