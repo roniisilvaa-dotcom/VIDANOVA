@@ -21,6 +21,8 @@ const KIWIFY_WEBHOOK_TOKEN = process.env.KIWIFY_WEBHOOK_TOKEN || "";
 const KIWIFY_PRODUCT_ID = process.env.KIWIFY_PRODUCT_ID || "";
 const KIWIFY_CHECKOUT_URL = process.env.KIWIFY_CHECKOUT_URL || "";
 const MONTHLY_SUBSCRIPTION_PRICE = Number(process.env.MONTHLY_SUBSCRIPTION_PRICE || 0);
+const ANNUAL_SUBSCRIPTION_PRICE = Number(process.env.ANNUAL_SUBSCRIPTION_PRICE || 0);
+const KIWIFY_CHECKOUT_URL_ANNUAL = process.env.KIWIFY_CHECKOUT_URL_ANNUAL || "";
 const DATA_FILE = path.join(__dirname, "vida-nova-fallback.json");
 
 const VAPID_PUBLIC_KEY = process.env.VAPID_PUBLIC_KEY || "BEXjy4tVUIHgrOsny2mSdzm9LQknr7RmsB749yLH84ULm4cr2pz3ZyL_xgb6bs9qdilkDw6rcpDgMvuHIgLVb7I";
@@ -2080,6 +2082,9 @@ app.post("/api/user/delete", async (req, res) => {
 app.get("/api/config", (req, res) => {
   res.json({
     checkoutUrl: KIWIFY_CHECKOUT_URL || "",
+    checkoutUrlAnnual: KIWIFY_CHECKOUT_URL_ANNUAL || KIWIFY_CHECKOUT_URL || "",
+    monthlyPrice: MONTHLY_SUBSCRIPTION_PRICE,
+    annualPrice: ANNUAL_SUBSCRIPTION_PRICE,
     vapidPublicKey: VAPID_PUBLIC_KEY,
   });
 });

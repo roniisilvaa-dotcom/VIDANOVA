@@ -3904,16 +3904,43 @@ select {
   background: rgba(255, 255, 255, 0.75);
 }
 
+/* Livros e cursos — grade lateral */
+.study-books-grid {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 14px;
+  margin-bottom: 14px;
+  align-items: start;
+}
+
+.study-section-title {
+  margin: 0 0 12px;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.study-table-shell {
+  margin-top: 0;
+}
+
+.study-books-table {
+  min-width: 680px;
+}
+
+/* Casa — planner refeição */
 .study-main-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 14px;
   margin-bottom: 14px;
+  align-items: start;
 }
 
 .home-planning-card {
-  display: grid;
-  gap: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .module-card-header {
@@ -3923,10 +3950,17 @@ select {
   gap: 12px;
 }
 
+.module-card-header h4 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 700;
+}
+
 .planner-mini-copy {
-  margin: 6px 0 0;
+  margin: 4px 0 0;
+  font-size: .82rem;
   color: var(--muted);
-  line-height: 1.45;
+  line-height: 1.4;
 }
 
 .home-table-shell {
@@ -5637,6 +5671,65 @@ select {
   flex-direction: column;
   gap: 16px;
 }
+
+.paywall-plans {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.paywall-plan {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 18px 16px 16px;
+  border-radius: 18px;
+  border: 2px solid #f0dce8;
+  background: #fff8fb;
+  text-align: center;
+}
+
+.paywall-plan-featured {
+  border-color: #c55b84;
+  background: linear-gradient(135deg, #fff0f6, #ffe8f2);
+}
+
+.paywall-plan-badge {
+  position: absolute;
+  top: -11px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(135deg, #c55b84, #e8829a);
+  color: #fff;
+  font-size: .7rem;
+  font-weight: 800;
+  padding: 2px 12px;
+  border-radius: 20px;
+  white-space: nowrap;
+  letter-spacing: .04em;
+}
+
+.paywall-plan-label {
+  font-size: .78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: var(--muted);
+}
+
+.paywall-plan-price {
+  font-size: 1.6rem;
+  font-weight: 900;
+  color: #c55b84;
+  line-height: 1;
+}
+
+.paywall-plan-period {
+  font-size: .75rem;
+  color: var(--muted);
+}
 .paywall-subscribe-btn {
   display: inline-flex;
   align-items: center;
@@ -5667,6 +5760,9 @@ select {
 
 /* Responsivo mobile para módulos novos */
 @media (max-width: 768px) {
+  .study-books-grid,
+  .study-main-grid { grid-template-columns: 1fr; }
+
   .corpo-before-after,
   .corpo-saude-grid,
   .corpo-beleza-grid,

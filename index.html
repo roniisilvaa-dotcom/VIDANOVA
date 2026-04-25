@@ -623,19 +623,24 @@
           </div>
           <article class="panel module-card">
             <div class="panel-heading"><div><p class="eyebrow">Estudos</p><h3>Livros e cursos</h3></div></div>
-            <div class="study-main-grid">
-              <section class="agenda-events-card">
-                <h4>Livros</h4>
-                <table class="finance-table">
-                  <thead><tr><th>Livro</th><th>Autor</th><th>Inicio</th><th>Fim</th><th>Paginas</th><th>Progresso</th><th>Status</th><th>Observacoes</th></tr></thead>
-                  <tbody>
-                    <tr><td><input data-persist-key="book-1-title" /></td><td><input data-persist-key="book-1-author" /></td><td><input type="date" data-persist-key="book-1-start" /></td><td><input type="date" data-persist-key="book-1-end" /></td><td><input type="number" data-persist-key="book-1-pages" /></td><td><input type="number" min="0" max="100" data-persist-key="book-1-progress" /></td><td><input data-persist-key="book-1-status" /></td><td><input data-persist-key="book-1-notes" /></td></tr>
-                    <tr><td><input data-persist-key="book-2-title" /></td><td><input data-persist-key="book-2-author" /></td><td><input type="date" data-persist-key="book-2-start" /></td><td><input type="date" data-persist-key="book-2-end" /></td><td><input type="number" data-persist-key="book-2-pages" /></td><td><input type="number" min="0" max="100" data-persist-key="book-2-progress" /></td><td><input data-persist-key="book-2-status" /></td><td><input data-persist-key="book-2-notes" /></td></tr>
-                  </tbody>
-                </table>
+            <div class="study-books-grid">
+              <section class="agenda-events-card study-books-card">
+                <h4 class="study-section-title">Livros</h4>
+                <div class="home-table-shell study-table-shell">
+                  <table class="home-table study-books-table">
+                    <thead><tr><th>Livro</th><th>Autor</th><th>Inicio</th><th>Fim</th><th>Páginas</th><th>Progresso %</th><th>Status</th><th>Observacoes</th></tr></thead>
+                    <tbody>
+                      <tr><td><input data-persist-key="book-1-title" placeholder="Titulo" /></td><td><input data-persist-key="book-1-author" placeholder="Autor" /></td><td><input type="date" data-persist-key="book-1-start" /></td><td><input type="date" data-persist-key="book-1-end" /></td><td><input type="number" data-persist-key="book-1-pages" /></td><td><input type="number" min="0" max="100" data-persist-key="book-1-progress" /></td><td><input data-persist-key="book-1-status" placeholder="lendo..." /></td><td><input data-persist-key="book-1-notes" /></td></tr>
+                      <tr><td><input data-persist-key="book-2-title" /></td><td><input data-persist-key="book-2-author" /></td><td><input type="date" data-persist-key="book-2-start" /></td><td><input type="date" data-persist-key="book-2-end" /></td><td><input type="number" data-persist-key="book-2-pages" /></td><td><input type="number" min="0" max="100" data-persist-key="book-2-progress" /></td><td><input data-persist-key="book-2-status" /></td><td><input data-persist-key="book-2-notes" /></td></tr>
+                      <tr><td><input data-persist-key="book-3-title" /></td><td><input data-persist-key="book-3-author" /></td><td><input type="date" data-persist-key="book-3-start" /></td><td><input type="date" data-persist-key="book-3-end" /></td><td><input type="number" data-persist-key="book-3-pages" /></td><td><input type="number" min="0" max="100" data-persist-key="book-3-progress" /></td><td><input data-persist-key="book-3-status" /></td><td><input data-persist-key="book-3-notes" /></td></tr>
+                      <tr><td><input data-persist-key="book-4-title" /></td><td><input data-persist-key="book-4-author" /></td><td><input type="date" data-persist-key="book-4-start" /></td><td><input type="date" data-persist-key="book-4-end" /></td><td><input type="number" data-persist-key="book-4-pages" /></td><td><input type="number" min="0" max="100" data-persist-key="book-4-progress" /></td><td><input data-persist-key="book-4-status" /></td><td><input data-persist-key="book-4-notes" /></td></tr>
+                      <tr><td><input data-persist-key="book-5-title" /></td><td><input data-persist-key="book-5-author" /></td><td><input type="date" data-persist-key="book-5-start" /></td><td><input type="date" data-persist-key="book-5-end" /></td><td><input type="number" data-persist-key="book-5-pages" /></td><td><input type="number" min="0" max="100" data-persist-key="book-5-progress" /></td><td><input data-persist-key="book-5-status" /></td><td><input data-persist-key="book-5-notes" /></td></tr>
+                    </tbody>
+                  </table>
+                </div>
               </section>
-              <section class="agenda-events-card">
-                <h4>Cursos</h4>
+              <section class="agenda-events-card study-cursos-card">
+                <h4 class="study-section-title">Cursos</h4>
                 <div class="cursos-grid">
                   <div class="cursos-card cursos-card-fazendo">
                     <div class="cursos-card-header">🎓 Cursos que estou fazendo</div>
@@ -659,7 +664,7 @@
                   </div>
                 </div>
               </section>
-            </div>
+            </div><!-- /study-books-grid -->
             <div class="postit-grid">
               <article class="agenda-summary-card"><h4>Habilidades que quero desenvolver</h4><textarea class="summary-input compact-area" data-persist-key="skills-develop"></textarea></article>
               <article class="agenda-summary-card"><h4>O que eu faco muito bem</h4><textarea class="summary-input compact-area" data-persist-key="skills-good"></textarea></article>

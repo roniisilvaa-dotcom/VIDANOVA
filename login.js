@@ -51,9 +51,20 @@ async function loadAppConfig() {
     const res = await fetch("/api/config");
     if (!res.ok) return;
     const config = await res.json();
+
     if (paywallSubscribeBtn && config.checkoutUrl) {
       paywallSubscribeBtn.href = config.checkoutUrl;
     }
+
+    const fmt = (v) =>
+      v > 0
+        ? "R$ " + Number(v).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+        : "Ver valor";
+
+    const elMonthly = document.getElementById("paywall-price-monthly");
+    const elAnnual = document.getElementById("paywall-price-annual");
+    if (elMonthly) elMonthly.textContent = fmt(config.monthlyPrice);
+    if (elAnnual) elAnnual.textContent = fmt(config.annualPrice);
   } catch {}
 }
 
