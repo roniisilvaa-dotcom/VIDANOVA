@@ -1,5 +1,5 @@
-const CACHE_NAME = "vida-nova-v5";
-const CACHE_DYNAMIC = "vida-nova-dynamic-v5";
+const CACHE_NAME = "vida-nova-v6";
+const CACHE_DYNAMIC = "vida-nova-dynamic-v6";
 const APP_SHELL = [
   "./",
   "./index.html",
@@ -48,24 +48,44 @@ self.addEventListener("activate", (event) => {
 // Fetch event - Network first, then cache
 self.addEventListener("fetch", (event) => {
   const { request } = event;
-  
+
   // Skip non-GET requests
   if (request.method !== "GET") {
     return;
   }
 
   const url = new URL(request.url);
-  
+
+  // Remove _v param (adicionado pelo polling de versão) para não poluir o cache
+  if (url.searchParams.has("_v")) {
+    url.searchParams.delete("_v");
+    const cleanRequest = new Request(url.toString(), { headers: request.headers, mode: "same-origin", credentials: request.credentials });
+    event.respondWith(fetch(cleanRequest, { cache: "no-store" }).catch(() => caches.match(cleanRequest)));
+    return;
+  }
+
   // version.json is always fetched from network — never cached
   if (url.pathname.endsWith("/version.json")) {
-    event.respondWith(fetch(request).catch(() => new Response("{}", { status: 503 })));
+    event.respondWith(fetch(request, { cache: "no-store" }).catch(() => new Response("{}", { status: 503 })));
     return;
   }
 
   // Handle same-origin requests
   if (url.origin === location.origin) {
-    const isAppAsset =
+    // HTML nunca fica em cache — sempre busca da rede para garantir versão nova
+    const isHtml =
       url.pathname.endsWith(".html") ||
+      url.pathname === "/" ||
+      url.pathname === "";
+
+    if (isHtml) {
+      event.respondWith(
+        fetch(request, { cache: "no-store" }).catch(() => caches.match(request))
+      );
+      return;
+    }
+
+    const isAppAsset =
       url.pathname.endsWith(".css") ||
       url.pathname.endsWith(".js") ||
       url.pathname.endsWith(".webmanifest") ||
@@ -73,9 +93,9 @@ self.addEventListener("fetch", (event) => {
       url.pathname.endsWith(".png");
 
     if (isAppAsset) {
-      // Network first, fallback to cache for app assets
+      // Network first, atualiza cache, fallback offline
       event.respondWith(
-        fetch(request)
+        fetch(request, { cache: "no-cache" })
           .then((response) => {
             if (response.ok) {
               const responseClone = response.clone();

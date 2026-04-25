@@ -2167,8 +2167,20 @@ function startKeepAlive() {
   console.log(`Keep-alive ativo: pingando ${selfUrl}/api/health a cada 14 min`);
 }
 
+async function stampVersionFile() {
+  const versionPath = path.join(__dirname, "version.json");
+  const stamp = { version: "auto", buildTime: new Date().toISOString() };
+  try {
+    await fsp.writeFile(versionPath, JSON.stringify(stamp) + "\n", "utf8");
+    console.log("version.json atualizado:", stamp.buildTime);
+  } catch (e) {
+    console.error("Erro ao gravar version.json:", e.message);
+  }
+}
+
 async function startServer() {
   try {
+    await stampVersionFile();
     await initDb();
     await ensureAdminUser();
     app.listen(PORT, () => {

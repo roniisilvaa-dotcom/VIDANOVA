@@ -3555,7 +3555,7 @@ function setupBodyPhotos() {
 async function startVersionPolling() {
   const fetchVersion = async () => {
     try {
-      const res = await fetch("./version.json?_=" + Date.now());
+      const res = await fetch("./version.json?_=" + Date.now(), { cache: "no-store" });
       if (!res.ok) return null;
       const data = await res.json();
       return data.buildTime || data.version || null;
@@ -3566,15 +3566,32 @@ async function startVersionPolling() {
 
   _bootBuildTime = await fetchVersion();
 
+  let _reloadScheduled = false;
+
   const check = async () => {
+    if (_reloadScheduled) return;
     const latest = await fetchVersion();
     if (latest && _bootBuildTime && latest !== _bootBuildTime) {
+      _reloadScheduled = true;
       try { scheduleCloudSync(); } catch {}
-      setTimeout(() => window.location.reload(), 500);
+      // Limpa todos os caches para garantir que o reload busque arquivos novos
+      try {
+        if ("caches" in window) {
+          const keys = await window.caches.keys();
+          await Promise.all(keys.map((k) => window.caches.delete(k)));
+        }
+      } catch {}
+      // Força reload sem cache HTTP
+      setTimeout(() => {
+        const url = new URL(window.location.href);
+        url.searchParams.set("_v", latest);
+        window.location.replace(url.toString());
+      }, 400);
     }
   };
 
-  setInterval(check, 30000);
+  // Checa a cada 15 segundos
+  setInterval(check, 15000);
 
   document.addEventListener("visibilitychange", () => {
     if (document.visibilityState === "visible") check();

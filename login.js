@@ -421,7 +421,7 @@ redirectIfAuthenticated();
 (async function startLoginVersionPolling() {
   const fetchVersion = async () => {
     try {
-      const res = await fetch("./version.json?_=" + Date.now());
+      const res = await fetch("./version.json?_=" + Date.now(), { cache: "no-store" });
       if (!res.ok) return null;
       const data = await res.json();
       return data.buildTime || data.version || null;
@@ -433,12 +433,28 @@ redirectIfAuthenticated();
   const baseline = await fetchVersion();
   if (!baseline) return;
 
+  let _reloadScheduled = false;
+
   const check = async () => {
+    if (_reloadScheduled) return;
     const latest = await fetchVersion();
-    if (latest && latest !== baseline) window.location.reload();
+    if (latest && latest !== baseline) {
+      _reloadScheduled = true;
+      try {
+        if ("caches" in window) {
+          const keys = await window.caches.keys();
+          await Promise.all(keys.map((k) => window.caches.delete(k)));
+        }
+      } catch {}
+      setTimeout(() => {
+        const url = new URL(window.location.href);
+        url.searchParams.set("_v", latest);
+        window.location.replace(url.toString());
+      }, 400);
+    }
   };
 
-  setInterval(check, 30000);
+  setInterval(check, 15000);
   document.addEventListener("visibilitychange", () => {
     if (document.visibilityState === "visible") check();
   });
