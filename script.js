@@ -332,7 +332,7 @@ let draggedCard = null;
 let deferredInstallPrompt = null;
 let calendarCursor = new Date();
 let selectedDateKey = formatDateKey(new Date());
-let agendaView = localStorage.getItem("ela-em-ordem:agenda-view") || "week";
+let agendaView = window.innerWidth < 768 ? "day" : (localStorage.getItem("ela-em-ordem:agenda-view") || "week");
 let agendaStore = JSON.parse(localStorage.getItem("ela-em-ordem:agenda-events") || "{}");
 let calendarStore = JSON.parse(localStorage.getItem("vida-nova:calendar-store") || "null") || defaultCalendars.map((calendar) => ({ ...calendar }));
 let agendaSearchQuery = localStorage.getItem("vida-nova:agenda-search") || "";
@@ -3263,7 +3263,10 @@ function renderWeekView() {
         const top = (minutesFromStart / 15) * 20;
         const height = Math.max(20, (getEventDurationMinutes(eventItem) / 15) * 20);
         const baseColor = eventItem.color || getCalendarById(eventItem.calendarId).color || "#4285f4";
-        return `<button type="button" class="week-event-block" draggable="true" data-event-date="${dateKey}" data-event-id="${escapeHtml(eventItem.id)}" style="top:${top}px;height:${height}px;background:${toSoftColor(baseColor, 0.24)};border-color:${escapeHtml(baseColor)}">
+        const isMobileDay = agendaView === "day" && window.innerWidth < 768;
+        const bgStyle = isMobileDay ? baseColor : toSoftColor(baseColor, 0.24);
+        const colorStyle = isMobileDay ? "color:#fff" : "";
+        return `<button type="button" class="week-event-block${isMobileDay ? " mob-day-block" : ""}" draggable="true" data-event-date="${dateKey}" data-event-id="${escapeHtml(eventItem.id)}" style="top:${top}px;height:${height}px;background:${bgStyle};border-color:${escapeHtml(baseColor)};${colorStyle}">
           <strong>${escapeHtml(eventItem.title)}</strong>
           <small>${escapeHtml(formatTimeRange(eventItem.time, eventItem.endTime))}${eventItem.location ? ` • ${escapeHtml(eventItem.location)}` : ""}</small>
         </button>`;
@@ -3281,6 +3284,10 @@ function renderWeekView() {
       ${blocks}
     </div>`;
   }).join("");
+
+  // Update mobile week strip after rendering
+  if (typeof renderMobWeekStrip === "function") renderMobWeekStrip();
+  if (typeof updateMobDayLabel === "function") updateMobDayLabel();
 }
 
 function renderYearView() {
@@ -4441,9 +4448,10 @@ if (calendarPrev) {
       calendarCursor = new Date(current);
     } else {
       const current = new Date(`${selectedDateKey}T12:00:00`);
+      const mobDay = agendaView === "day" && window.innerWidth < 768;
       current.setDate(
         current.getDate() -
-          (agendaView === "day" ? 1 : agendaView === "custom" ? Math.max(2, Math.min(10, customAgendaDays)) : 7),
+          (mobDay ? 7 : agendaView === "day" ? 1 : agendaView === "custom" ? Math.max(2, Math.min(10, customAgendaDays)) : 7),
       );
       selectedDateKey = formatDateKey(current);
       calendarCursor = new Date(current);
@@ -4467,9 +4475,10 @@ if (calendarNext) {
       calendarCursor = new Date(current);
     } else {
       const current = new Date(`${selectedDateKey}T12:00:00`);
+      const mobDay = agendaView === "day" && window.innerWidth < 768;
       current.setDate(
         current.getDate() +
-          (agendaView === "day" ? 1 : agendaView === "custom" ? Math.max(2, Math.min(10, customAgendaDays)) : 7),
+          (mobDay ? 7 : agendaView === "day" ? 1 : agendaView === "custom" ? Math.max(2, Math.min(10, customAgendaDays)) : 7),
       );
       selectedDateKey = formatDateKey(current);
       calendarCursor = new Date(current);
@@ -6781,6 +6790,154 @@ window.DynTable.initAll();
   }
 
   renderManager();
+})();
+
+// ─── Mobile Agenda ─────────────────────────────────────────────────────────
+
+(function setupMobileAgenda() {
+  const mobStrip = document.getElementById("mob-week-strip");
+  const fabBtn = document.getElementById("agenda-fab-btn");
+  const drawer = document.getElementById("agenda-form-drawer");
+  const drawerClose = document.getElementById("agenda-drawer-close");
+  const weeklyTimesRow = document.getElementById("agenda-weekly-times-row");
+  const recurrenceInput = document.getElementById("agenda-recurrence-input");
+  const weeklyTimesBtns = document.querySelectorAll(".gcal-times-btn");
+
+  // Expose globally so renderWeekView can call them
+  window.renderMobWeekStrip = renderMobWeekStrip;
+  window.updateMobDayLabel = updateMobDayLabel;
+
+  // Render the 7-day week strip
+  function renderMobWeekStrip() {
+    if (!mobStrip) return;
+    const today = formatDateKey(new Date());
+    const weekStart = getWeekStart(selectedDateKey);
+    const dayNames = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"];
+    let html = "";
+    for (let i = 0; i < 7; i++) {
+      const d = new Date(weekStart);
+      d.setDate(weekStart.getDate() + i);
+      const key = formatDateKey(d);
+      const isSelected = key === selectedDateKey;
+      const isToday = key === today;
+      const hasEvents = (agendaStore[key]?.events?.length || 0) > 0;
+      html += `<button type="button"
+        class="mob-day-btn${isSelected ? " is-active" : ""}${isToday ? " is-today" : ""}"
+        data-mob-date="${key}">
+        <span class="mob-day-name">${dayNames[d.getDay()]}</span>
+        <strong class="mob-day-num">${d.getDate()}</strong>
+        ${hasEvents ? '<span class="mob-day-dot"></span>' : '<span class="mob-day-dot hidden"></span>'}
+      </button>`;
+    }
+    mobStrip.innerHTML = html;
+    // Scroll active day into view
+    const activeBtn = mobStrip.querySelector(".is-active");
+    if (activeBtn) activeBtn.scrollIntoView({ inline: "center", behavior: "smooth", block: "nearest" });
+
+    // Wire click
+    mobStrip.querySelectorAll("[data-mob-date]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        selectedDateKey = btn.dataset.mobDate;
+        // Sync date input in form
+        if (agendaDateInput) agendaDateInput.value = selectedDateKey;
+        renderMobWeekStrip();
+        renderWeekView();
+        renderCalendar();
+        renderAgendaEvents();
+        updateMobDayLabel();
+      });
+    });
+  }
+
+  function updateMobDayLabel() {
+    const label = document.getElementById("selected-date-label");
+    if (!label) return;
+    const d = new Date(selectedDateKey + "T12:00:00");
+    const dayNames = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"];
+    label.textContent = `${dayNames[d.getDay()]}. ${d.getDate()}`;
+  }
+
+  // FAB opens drawer
+  if (fabBtn && drawer) {
+    fabBtn.addEventListener("click", () => {
+      drawer.classList.remove("hidden");
+      document.body.style.overflow = "hidden";
+      if (agendaDateInput) agendaDateInput.value = selectedDateKey;
+      if (agendaTimeInput) {
+        const now = new Date();
+        const h = String(now.getHours()).padStart(2, "0");
+        const m = String(Math.ceil(now.getMinutes() / 15) * 15 % 60).padStart(2, "0");
+        const extra = now.getMinutes() > 45 ? 1 : 0;
+        agendaTimeInput.value = `${String(now.getHours() + extra).padStart(2, "0")}:${m}`;
+      }
+      // Focus title
+      setTimeout(() => agendaTitleInput?.focus(), 120);
+    });
+  }
+
+  // Drawer close
+  if (drawerClose && drawer) {
+    drawerClose.addEventListener("click", () => {
+      drawer.classList.add("hidden");
+      document.body.style.overflow = "";
+    });
+  }
+
+  // Close drawer after form submit
+  const originalForm = document.getElementById("agenda-form");
+  if (originalForm && drawer) {
+    originalForm.addEventListener("submit", () => {
+      setTimeout(() => {
+        drawer.classList.add("hidden");
+        document.body.style.overflow = "";
+        renderMobWeekStrip();
+        updateMobDayLabel();
+      }, 80);
+    });
+  }
+
+  // Weekly times per week UI
+  if (recurrenceInput && weeklyTimesRow) {
+    const showWeeklyTimes = (val) => {
+      const show = val === "weekly" || val === "weekdays";
+      weeklyTimesRow.classList.toggle("hidden", !show);
+    };
+    recurrenceInput.addEventListener("change", (e) => showWeeklyTimes(e.target.value));
+    showWeeklyTimes(recurrenceInput.value);
+  }
+
+  if (weeklyTimesBtns.length) {
+    weeklyTimesBtns.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        weeklyTimesBtns.forEach((b) => b.classList.remove("is-active"));
+        btn.classList.add("is-active");
+        // Store as data attribute for form submission to read
+        btn.closest(".gcal-weekly-times").dataset.timesPerWeek = btn.dataset.times;
+      });
+    });
+  }
+
+  // Init strip on load
+  function tryInit() {
+    if (document.querySelector("[data-tab-panel='planner-agenda']")) {
+      renderMobWeekStrip();
+      updateMobDayLabel();
+    }
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", tryInit);
+  } else {
+    tryInit();
+  }
+
+  // Also re-render strip when planner-agenda tab becomes visible
+  document.addEventListener("click", (e) => {
+    const tabBtn = e.target.closest("[data-tab-target]");
+    if (tabBtn && tabBtn.dataset.tabTarget === "planner-agenda") {
+      setTimeout(() => { renderMobWeekStrip(); updateMobDayLabel(); }, 50);
+    }
+  });
 })();
 
 bootApp().catch((error) => {

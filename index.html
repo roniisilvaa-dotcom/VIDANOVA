@@ -430,128 +430,60 @@
             </section>
 
             <section class="tab-panel planner-tab-panel" data-tab-panel="planner-agenda">
-              <section class="panel agenda-panel">
-                <div class="agenda-google-shell">
-                  <section class="calendar-card google-calendar-card">
-                    <div class="calendar-google-header">
-                      <div class="calendar-google-left">
-                        <button id="calendar-today" class="ghost-button" type="button">Hoje</button>
-                        <button id="calendar-prev" class="ghost-button icon-button" type="button" aria-label="Período anterior">&#8249;</button>
-                        <button id="calendar-next" class="ghost-button icon-button" type="button" aria-label="Próximo período">&#8250;</button>
-                        <strong id="calendar-month-label">Mes</strong>
-                      </div>
+              <section class="panel agenda-panel agenda-mobile-panel">
 
-                      <div class="calendar-google-center">
-                        <label class="agenda-search">
-                          <span class="sr-only">Buscar eventos</span>
-                          <input id="agenda-search-input" type="search" placeholder="Buscar na agenda" aria-label="Buscar eventos" />
-                        </label>
-                      </div>
-
-                      <div class="calendar-google-right">
-                        <div class="calendar-view-switcher google-views">
-                          <button id="calendar-day-view" class="ghost-button" type="button">Dia</button>
-                          <button id="calendar-week-view" class="ghost-button is-active" type="button">Semana</button>
-                          <button id="calendar-month-view" class="ghost-button" type="button">Mes</button>
-                          <button id="calendar-year-view" class="ghost-button" type="button">Ano</button>
-                          <button id="calendar-schedule-view" class="ghost-button" type="button">Agenda</button>
-                          <button id="calendar-custom-view" class="ghost-button" type="button">Personalizada</button>
-                        </div>
-                        <label class="custom-days-field" id="custom-days-field">
-                          Dias
-                          <input id="calendar-custom-days-input" type="number" min="2" max="10" value="4" />
-                        </label>
-                      </div>
-                    </div>
-
-                    <div class="calendar-experience google-calendar-experience">
-                      <div class="calendar-main-stage">
-                        <div id="calendar-month-shell">
-                          <div class="calendar-weekdays">
-                            <span>Dom</span>
-                            <span>Seg</span>
-                            <span>Ter</span>
-                            <span>Qua</span>
-                            <span>Qui</span>
-                            <span>Sex</span>
-                            <span>Sab</span>
-                          </div>
-                          <div id="calendar-grid" class="calendar-grid"></div>
-                        </div>
-
-                        <div id="week-view-shell" class="week-view-shell">
-                          <div class="week-view-header" id="week-view-header"></div>
-                          <div class="week-view-body">
-                            <div class="week-hours-column" id="week-hours-column"></div>
-                            <div class="week-columns" id="week-columns"></div>
-                          </div>
-                        </div>
-
-                        <div id="year-view-shell" class="year-view-shell hidden"></div>
-                        <div id="schedule-view-shell" class="schedule-view-shell hidden"></div>
-                      </div>
-                    </div>
-                  </section>
-                </div>
-                <div class="agenda-cards-grid">
-                  <article class="agenda-summary-card">
-                    <div class="panel-heading compact-heading">
-                      <div>
-                        <p class="eyebrow">Resumo principal</p>
-                        <h3>Detalhes do período</h3>
-                      </div>
-                      <span id="selected-date-label" class="tag">Selecione um dia</span>
-                    </div>
-                    <textarea
-                      id="agenda-summary-input"
-                      class="summary-input"
-                      placeholder="Resumo do dia, foco principal, observações e prioridades."
-                    ></textarea>
-                  </article>
-
-                  <article class="agenda-events-card">
-                    <div class="panel-heading agenda-subheading">
-                      <div>
-                        <p class="eyebrow">Agenda do dia</p>
-                        <h3>Compromissos completos</h3>
-                      </div>
-                    </div>
-                    <ul id="agenda-events-list" class="task-list"></ul>
-                  </article>
-
-                  <article class="agenda-summary-card">
-                    <div class="panel-heading compact-heading">
-                      <div>
-                        <p class="eyebrow">Planejamento semanal</p>
-                        <h3>Tarefas que ficam para a próxima semana</h3>
-                      </div>
-                    </div>
-                    <textarea class="summary-input" data-persist-key="agenda-next-week" placeholder="Liste tarefas pendentes e prioridades para a próxima semana."></textarea>
-                  </article>
+                <!-- Mobile header -->
+                <div class="agenda-mob-header">
+                  <button id="calendar-prev" class="agenda-mob-nav" type="button" aria-label="Semana anterior">&#8249;</button>
+                  <div class="agenda-mob-center">
+                    <strong id="calendar-month-label" class="agenda-mob-month">M&#234;s</strong>
+                    <span id="selected-date-label" class="agenda-mob-day-label"></span>
+                  </div>
+                  <button id="calendar-next" class="agenda-mob-nav" type="button" aria-label="Pr&#243;xima semana">&#8250;</button>
+                  <button id="calendar-today" class="agenda-mob-today-btn" type="button">Hoje</button>
                 </div>
 
-                <article class="agenda-entry-card">
-                  <div class="panel-heading agenda-subheading">
-                    <div>
-                      <p class="eyebrow">Cadastro de agenda</p>
-                      <h3>Novo compromisso</h3>
-                    </div>
+                <!-- 7-day week strip -->
+                <div class="agenda-week-strip-scroll">
+                  <div class="agenda-week-strip" id="mob-week-strip"></div>
+                </div>
+
+                <!-- Day timeline -->
+                <div id="week-view-shell" class="agenda-timeline-shell">
+                  <div id="week-view-header" style="display:none" aria-hidden="true"></div>
+                  <div class="week-view-body agenda-timeline-body">
+                    <div class="week-hours-column" id="week-hours-column"></div>
+                    <div class="week-columns" id="week-columns"></div>
+                  </div>
+                </div>
+
+                <!-- Day summary -->
+                <div class="agenda-day-notes">
+                  <textarea id="agenda-summary-input" class="agenda-day-notes-textarea" placeholder="Notas do dia, foco e prioridades..."></textarea>
+                </div>
+
+                <!-- FAB -->
+                <button class="agenda-fab" id="agenda-fab-btn" type="button" aria-label="Novo compromisso">+</button>
+
+                <!-- Form drawer -->
+                <div class="agenda-form-drawer hidden" id="agenda-form-drawer">
+                  <div class="agenda-form-drawer-header">
+                    <strong>Novo compromisso</strong>
+                    <button class="agenda-drawer-close" id="agenda-drawer-close" type="button" aria-label="Fechar">&#10005;</button>
                   </div>
 
                   <form id="agenda-form" class="gcal-form">
-                    <!-- Título -->
                     <div class="gcal-title-row">
-                      <input id="agenda-title-input" type="text" class="gcal-title-input" placeholder="Título do compromisso" aria-label="Título" />
+                      <input id="agenda-title-input" type="text" class="gcal-title-input" placeholder="T&#237;tulo do compromisso" aria-label="T&#237;tulo" />
                     </div>
 
-                    <!-- Data e hora -->
                     <div class="gcal-form-row">
-                      <span class="gcal-row-icon">📅</span>
+                      <span class="gcal-row-icon">&#128197;</span>
                       <div class="gcal-row-content gcal-datetime-wrap">
                         <input id="agenda-date-input" type="date" class="gcal-input" aria-label="Data" />
-                        <input id="agenda-time-input" type="time" class="gcal-input gcal-time" aria-label="Horário inicial" />
-                        <span class="gcal-dash">–</span>
-                        <input id="agenda-end-time-input" type="time" class="gcal-input gcal-time" aria-label="Horário final" />
+                        <input id="agenda-time-input" type="time" class="gcal-input gcal-time" aria-label="Hor&#225;rio inicial" />
+                        <span class="gcal-dash">&#8211;</span>
+                        <input id="agenda-end-time-input" type="time" class="gcal-input gcal-time" aria-label="Hor&#225;rio final" />
                         <label class="gcal-allday">
                           <input id="agenda-allday-input" type="checkbox" />
                           <span>Dia inteiro</span>
@@ -559,110 +491,102 @@
                       </div>
                     </div>
 
-                    <!-- Recorrência -->
                     <div class="gcal-form-row">
-                      <span class="gcal-row-icon">🔄</span>
+                      <span class="gcal-row-icon">&#128260;</span>
                       <div class="gcal-row-content">
-                        <select id="agenda-recurrence-input" class="gcal-select" aria-label="Recorrência">
-                          <option value="none">Não se repete</option>
+                        <select id="agenda-recurrence-input" class="gcal-select" aria-label="Recorr&#234;ncia">
+                          <option value="none">N&#227;o se repete</option>
                           <option value="daily">Todos os dias</option>
                           <option value="weekly">Semanal</option>
                           <option value="monthly">Mensal</option>
                           <option value="yearly">Anual</option>
-                          <option value="weekdays">Dias de semana (Seg a Sex)</option>
+                          <option value="weekdays">Dias de semana (Seg&#8211;Sex)</option>
                           <option value="custom">Personalizar...</option>
                         </select>
+                        <div class="gcal-weekly-times hidden" id="agenda-weekly-times-row">
+                          <span class="gcal-weekly-times-label">Vezes na semana:</span>
+                          <div class="gcal-weekly-times-btns">
+                            <button type="button" class="gcal-times-btn is-active" data-times="1">1&#215;</button>
+                            <button type="button" class="gcal-times-btn" data-times="2">2&#215;</button>
+                            <button type="button" class="gcal-times-btn" data-times="3">3&#215;</button>
+                            <button type="button" class="gcal-times-btn" data-times="4">4&#215;</button>
+                            <button type="button" class="gcal-times-btn" data-times="5">5&#215;</button>
+                          </div>
+                        </div>
                         <span id="recurrence-custom-label" class="gcal-custom-rec-label hidden"></span>
                       </div>
                     </div>
 
-                    <!-- Convidados -->
                     <div class="gcal-form-row">
-                      <span class="gcal-row-icon">👥</span>
+                      <span class="gcal-row-icon">&#128101;</span>
                       <div class="gcal-row-content">
                         <input id="agenda-guests-input" type="text" class="gcal-input" placeholder="Adicionar convidados" aria-label="Convidados" />
                       </div>
                     </div>
 
-                    <!-- Videoconferência -->
                     <div class="gcal-form-row">
-                      <span class="gcal-row-icon">📹</span>
-                      <div class="gcal-row-content">
-                        <button id="agenda-videocall-button" type="button" class="gcal-add-button">Adicionar videoconferência</button>
-                        <span id="agenda-videocall-link" class="gcal-videocall-link hidden"></span>
-                      </div>
-                    </div>
-
-                    <!-- Local -->
-                    <div class="gcal-form-row">
-                      <span class="gcal-row-icon">📍</span>
+                      <span class="gcal-row-icon">&#128205;</span>
                       <div class="gcal-row-content">
                         <input id="agenda-location-input" type="text" class="gcal-input" placeholder="Adicionar local" aria-label="Local" />
                       </div>
                     </div>
 
-                    <!-- Link / Descrição -->
                     <div class="gcal-form-row">
-                      <span class="gcal-row-icon">📝</span>
+                      <span class="gcal-row-icon">&#128221;</span>
                       <div class="gcal-row-content">
-                        <textarea id="agenda-description-input" class="gcal-textarea" rows="2" placeholder="Adicionar descrição ou link de referência"></textarea>
+                        <textarea id="agenda-description-input" class="gcal-textarea" rows="2" placeholder="Adicionar descri&#231;&#227;o ou link"></textarea>
                       </div>
                     </div>
 
-                    <!-- Cor -->
                     <div class="gcal-form-row">
-                      <span class="gcal-row-icon">🎨</span>
+                      <span class="gcal-row-icon">&#127912;</span>
                       <div class="gcal-row-content gcal-color-row">
                         <input id="agenda-color-input" type="hidden" value="#c55b84" aria-label="Cor" />
                         <div class="app-color-preset-grid" data-color-preset-grid="agenda-form"></div>
                       </div>
                     </div>
 
-                    <!-- Calendário -->
                     <div class="gcal-form-row">
-                      <span class="gcal-row-icon">🗂️</span>
+                      <span class="gcal-row-icon">&#128193;</span>
                       <div class="gcal-row-content">
-                        <select id="agenda-calendar-input" class="gcal-select" aria-label="Calendário"></select>
+                        <select id="agenda-calendar-input" class="gcal-select" aria-label="Calend&#225;rio"></select>
                         <select id="agenda-category-input" class="gcal-select" aria-label="Categoria">
                           <option value="Pessoal">Pessoal</option>
                           <option value="Trabalho">Trabalho</option>
                           <option value="Casa">Casa</option>
-                          <option value="Saúde">Saúde</option>
+                          <option value="Sa&#250;de">Sa&#250;de</option>
                           <option value="Espiritual">Espiritual</option>
                         </select>
                       </div>
                     </div>
 
-                    <!-- Alerta -->
                     <div class="gcal-form-row">
-                      <span class="gcal-row-icon">🔔</span>
+                      <span class="gcal-row-icon">&#128276;</span>
                       <div class="gcal-row-content">
                         <select id="agenda-reminder-input" class="gcal-select" aria-label="Alerta">
                           <option value="15">15 min antes</option>
                           <option value="5">5 min antes</option>
                           <option value="30">30 min antes</option>
                           <option value="60">1 hora antes</option>
-                          <option value="0">No horário</option>
+                          <option value="0">No hor&#225;rio</option>
                           <option value="-1">Sem alerta</option>
                         </select>
                       </div>
                     </div>
 
-                    <!-- Link (oculto, mantido por compatibilidade) -->
                     <input id="agenda-link-input" type="hidden" aria-label="Link" />
 
                     <div class="gcal-form-footer">
-                      <button id="agenda-cancel-edit" class="ghost-button hidden" type="button">Cancelar edição</button>
+                      <button id="agenda-cancel-edit" class="ghost-button hidden" type="button">Cancelar edi&#231;&#227;o</button>
                       <button id="agenda-submit-button" type="submit" class="primary-button">Salvar compromisso</button>
                     </div>
                   </form>
-                </article>
+                </div>
 
-                <!-- Modal de recorrência personalizada -->
-                <div id="recurrence-modal" class="recurrence-overlay hidden" role="dialog" aria-modal="true" aria-label="Recorrência personalizada">
+                <!-- Recurrence modal -->
+                <div id="recurrence-modal" class="recurrence-overlay hidden" role="dialog" aria-modal="true" aria-label="Recorr&#234;ncia personalizada">
                   <div class="recurrence-dialog">
-                    <h3 class="recurrence-dialog-title">Recorrência personalizada</h3>
-
+                    <h3 class="recurrence-dialog-title">Recorr&#234;ncia personalizada</h3>
                     <div class="recurrence-field-row">
                       <span class="recurrence-field-label">Repetir a cada</span>
                       <div class="recurrence-interval-wrap">
@@ -670,12 +594,11 @@
                         <select id="recurrence-unit" class="recurrence-unit-sel">
                           <option value="day">dia(s)</option>
                           <option value="week" selected>semana(s)</option>
-                          <option value="month">mês(es)</option>
+                          <option value="month">m&#234;s(es)</option>
                           <option value="year">ano(s)</option>
                         </select>
                       </div>
                     </div>
-
                     <div id="recurrence-weekdays-row" class="recurrence-field-row recurrence-days-row">
                       <span class="recurrence-field-label">Repetir em:</span>
                       <div class="recurrence-days-wrap">
@@ -688,22 +611,43 @@
                         <button type="button" data-day="6" class="rec-day-btn">S</button>
                       </div>
                     </div>
-
                     <div class="recurrence-field-row recurrence-end-row">
                       <span class="recurrence-field-label">Termina em:</span>
                       <div class="recurrence-end-opts">
                         <label class="recurrence-end-opt"><input type="radio" name="rec-end" value="never" checked /><span>Nunca</span></label>
                         <label class="recurrence-end-opt"><input type="radio" name="rec-end" value="on" /><span>Em</span><input id="recurrence-end-date" type="date" class="recurrence-date-inp" /></label>
-                        <label class="recurrence-end-opt"><input type="radio" name="rec-end" value="after" /><span>Após</span><input id="recurrence-end-count" type="number" min="1" value="13" class="recurrence-count-inp" /><span>ocorrências</span></label>
+                        <label class="recurrence-end-opt"><input type="radio" name="rec-end" value="after" /><span>Ap&#243;s</span><input id="recurrence-end-count" type="number" min="1" value="13" class="recurrence-count-inp" /><span>ocorr&#234;ncias</span></label>
                       </div>
                     </div>
-
                     <div class="recurrence-dialog-footer">
                       <button type="button" id="recurrence-cancel-btn" class="ghost-button">Cancelar</button>
                       <button type="button" id="recurrence-confirm-btn" class="primary-button">Concluir</button>
                     </div>
                   </div>
                 </div>
+
+                <!-- Hidden compat elements (IDs required by existing JS) -->
+                <div style="display:none" aria-hidden="true">
+                  <div id="calendar-month-shell">
+                    <div class="calendar-weekdays"><span>Dom</span><span>Seg</span><span>Ter</span><span>Qua</span><span>Qui</span><span>Sex</span><span>S&#225;b</span></div>
+                    <div id="calendar-grid" class="calendar-grid"></div>
+                  </div>
+                  <div id="year-view-shell" class="year-view-shell"></div>
+                  <div id="schedule-view-shell" class="schedule-view-shell"></div>
+                  <ul id="agenda-events-list"></ul>
+                  <button id="calendar-day-view" type="button"></button>
+                  <button id="calendar-week-view" type="button"></button>
+                  <button id="calendar-month-view" type="button"></button>
+                  <button id="calendar-year-view" type="button"></button>
+                  <button id="calendar-schedule-view" type="button"></button>
+                  <button id="calendar-custom-view" type="button"></button>
+                  <input id="calendar-custom-days-input" type="number" value="1" />
+                  <label id="custom-days-field"></label>
+                  <input id="agenda-search-input" type="search" />
+                  <button id="agenda-videocall-button" type="button"></button>
+                  <span id="agenda-videocall-link"></span>
+                </div>
+
               </section>
             </section>
 
