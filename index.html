@@ -930,33 +930,34 @@
 
               <!-- Tab 2: Controle de Compras Parceladas -->
               <section class="tab-panel" data-tab-panel="fin-parceladas">
-                <div class="fin-cc-visual">
-                  <div class="fin-cc-chip"></div>
-                  <div class="fin-cc-number">•••• •••• •••• <input class="fin-cc-num-input" data-persist-key="fin-cc-last4" placeholder="0000" maxlength="4" /></div>
-                  <div class="fin-cc-row">
-                    <div><span class="fin-cc-micro">Titular</span><input class="fin-cc-name" data-persist-key="fin-cc-name" placeholder="Nome da titular" /></div>
-                    <div><span class="fin-cc-micro">Limite</span><input class="fin-cc-limit" data-persist-key="fin-cc-limit" placeholder="R$ 0,00" /></div>
-                  </div>
+                <div class="fin-cc-manager">
+                  <div class="fin-cc-tabs" id="fin-cc-tabs"></div>
+                  <button class="primary-button fin-cc-add-main-btn" type="button" id="fin-cc-add-btn">+ Novo cartão</button>
                 </div>
-                <div class="fin-section-block">
-                  <div class="fin-table-scroll">
-                    <table class="fin-parceladas-table">
-                      <thead>
-                        <tr>
-                          <th>Descrição</th>
-                          <th>Loja</th>
-                          <th>Valor Total</th>
-                          <th>Parcelas</th>
-                          <th>Valor/Parcela</th>
-                          <th>Início</th>
-                          <th>Vencimento</th>
-                          <th>Status</th>
-                          <th></th>
-                        </tr>
-                      </thead>
-                      <tbody data-dyntable="fin-parceladas" data-dyntable-cols="8"></tbody>
-                    </table>
-                    <button class="fin-add-row-btn" type="button" data-dyntable-add="fin-parceladas">+ Adicionar compra parcelada</button>
+                <div id="fin-cc-area">
+                  <p class="fin-cc-empty" id="fin-cc-empty">Nenhum cartão cadastrado. Clique em "+ Novo cartão".</p>
+                </div>
+                <div class="fin-cc-modal hidden" id="fin-cc-modal">
+                  <div class="fin-cc-modal-box">
+                    <h4>Dados do Cartão</h4>
+                    <label>Nome / banco <input id="fin-cc-modal-name" placeholder="Ex.: Nubank, C6, Itaú" /></label>
+                    <label>Últimos 4 dígitos <input id="fin-cc-modal-last4" maxlength="4" placeholder="0000" /></label>
+                    <label>Limite <input id="fin-cc-modal-limit" placeholder="R$ 5.000,00" /></label>
+                    <label>Cor do cartão
+                      <select id="fin-cc-modal-color">
+                        <option value="#2c3e50">Cinza / Preto</option>
+                        <option value="#8e44ad">Roxo</option>
+                        <option value="#c0392b">Vermelho</option>
+                        <option value="#16a085">Verde</option>
+                        <option value="#2980b9">Azul</option>
+                        <option value="#d35400">Laranja</option>
+                        <option value="#c55b84">Rosa</option>
+                      </select>
+                    </label>
+                    <div class="fin-cc-modal-footer">
+                      <button class="ghost-button" type="button" id="fin-cc-modal-cancel">Cancelar</button>
+                      <button class="primary-button" type="button" id="fin-cc-modal-save">Salvar cartão</button>
+                    </div>
                   </div>
                 </div>
               </section>
@@ -1838,131 +1839,32 @@
                 <p class="eyebrow">Viagens</p>
                 <h3>Planejador de viagens</h3>
               </div>
+              <button class="primary-button" type="button" id="travel-new-trip-btn">✈️ Cadastrar viagem</button>
             </div>
 
-            <div class="travel-header">
-              <div class="travel-header-fields">
-                <label>Destino <input data-persist-key="travel-destino" placeholder="Ex.: Paris, Dubai, Gramado" /></label>
-                <label>Data de ida <input type="date" data-persist-key="travel-ida" /></label>
-                <label>Data de volta <input type="date" data-persist-key="travel-volta" /></label>
-                <label>Pessoas <input type="number" data-persist-key="travel-pessoas" placeholder="2" min="1" /></label>
-              </div>
-              <div class="travel-budget-total">
-                <span>Orçamento Total</span>
-                <strong id="travel-total-display">R$ 0,00</strong>
-              </div>
-            </div>
+            <div class="travel-trips-bar" id="travel-trips-bar"></div>
 
-            <div class="travel-categories-grid">
-
-              <div class="travel-cat-card">
-                <div class="travel-cat-header">
-                  <span class="travel-cat-icon">✈️</span>
-                  <h4>Passagem</h4>
-                  <strong class="travel-cat-total" id="travel-total-passagem">R$ 0,00</strong>
-                </div>
-                <div class="fin-table-scroll">
-                  <table class="travel-cat-table">
-                    <thead><tr><th>Descrição</th><th>Tipo</th><th>Data</th><th>Valor</th><th></th></tr></thead>
-                    <tbody data-dyntable="travel-passagem" data-dyntable-cols="4"></tbody>
-                  </table>
-                  <button class="fin-add-row-btn" type="button" data-dyntable-add="travel-passagem">+ Adicionar</button>
-                </div>
-              </div>
-
-              <div class="travel-cat-card">
-                <div class="travel-cat-header">
-                  <span class="travel-cat-icon">🏨</span>
-                  <h4>Hospedagem</h4>
-                  <strong class="travel-cat-total" id="travel-total-hospedagem">R$ 0,00</strong>
-                </div>
-                <div class="fin-table-scroll">
-                  <table class="travel-cat-table">
-                    <thead><tr><th>Hotel/Casa</th><th>Check-in</th><th>Check-out</th><th>Valor</th><th></th></tr></thead>
-                    <tbody data-dyntable="travel-hospedagem" data-dyntable-cols="4"></tbody>
-                  </table>
-                  <button class="fin-add-row-btn" type="button" data-dyntable-add="travel-hospedagem">+ Adicionar</button>
-                </div>
-              </div>
-
-              <div class="travel-cat-card">
-                <div class="travel-cat-header">
-                  <span class="travel-cat-icon">🍽️</span>
-                  <h4>Alimentação</h4>
-                  <strong class="travel-cat-total" id="travel-total-alimentacao">R$ 0,00</strong>
-                </div>
-                <div class="fin-table-scroll">
-                  <table class="travel-cat-table">
-                    <thead><tr><th>Restaurante / Refeição</th><th>Dia</th><th>Pessoas</th><th>Valor</th><th></th></tr></thead>
-                    <tbody data-dyntable="travel-alimentacao" data-dyntable-cols="4"></tbody>
-                  </table>
-                  <button class="fin-add-row-btn" type="button" data-dyntable-add="travel-alimentacao">+ Adicionar</button>
-                </div>
-              </div>
-
-              <div class="travel-cat-card">
-                <div class="travel-cat-header">
-                  <span class="travel-cat-icon">🚗</span>
-                  <h4>Transporte</h4>
-                  <strong class="travel-cat-total" id="travel-total-transporte">R$ 0,00</strong>
-                </div>
-                <div class="fin-table-scroll">
-                  <table class="travel-cat-table">
-                    <thead><tr><th>Descrição</th><th>Tipo</th><th>Data</th><th>Valor</th><th></th></tr></thead>
-                    <tbody data-dyntable="travel-transporte" data-dyntable-cols="4"></tbody>
-                  </table>
-                  <button class="fin-add-row-btn" type="button" data-dyntable-add="travel-transporte">+ Adicionar</button>
-                </div>
-              </div>
-
-              <div class="travel-cat-card">
-                <div class="travel-cat-header">
-                  <span class="travel-cat-icon">🎡</span>
-                  <h4>Passeios</h4>
-                  <strong class="travel-cat-total" id="travel-total-passeios">R$ 0,00</strong>
-                </div>
-                <div class="fin-table-scroll">
-                  <table class="travel-cat-table">
-                    <thead><tr><th>Passeio</th><th>Data</th><th>Pessoas</th><th>Valor</th><th></th></tr></thead>
-                    <tbody data-dyntable="travel-passeios" data-dyntable-cols="4"></tbody>
-                  </table>
-                  <button class="fin-add-row-btn" type="button" data-dyntable-add="travel-passeios">+ Adicionar</button>
-                </div>
-              </div>
-
-              <div class="travel-cat-card">
-                <div class="travel-cat-header">
-                  <span class="travel-cat-icon">🛍️</span>
-                  <h4>Compras</h4>
-                  <strong class="travel-cat-total" id="travel-total-compras">R$ 0,00</strong>
-                </div>
-                <div class="fin-table-scroll">
-                  <table class="travel-cat-table">
-                    <thead><tr><th>Item</th><th>Loja</th><th>Qtd</th><th>Valor</th><th></th></tr></thead>
-                    <tbody data-dyntable="travel-compras" data-dyntable-cols="4"></tbody>
-                  </table>
-                  <button class="fin-add-row-btn" type="button" data-dyntable-add="travel-compras">+ Adicionar</button>
-                </div>
-              </div>
-
-            </div><!-- /travel-categories-grid -->
-
-            <div class="fin-section-block">
-              <h4 class="fin-section-title">Links Importantes</h4>
-              <div class="fin-table-scroll">
-                <table class="travel-links-table">
-                  <thead><tr><th>Descrição</th><th>URL</th><th>Categoria</th><th></th></tr></thead>
-                  <tbody data-dyntable="travel-links" data-dyntable-cols="3"></tbody>
-                </table>
-                <button class="fin-add-row-btn" type="button" data-dyntable-add="travel-links">+ Adicionar link</button>
+            <div id="travel-content-area">
+              <div class="travel-empty-state" id="travel-empty-state">
+                <div class="travel-empty-icon">✈️</div>
+                <p>Nenhuma viagem cadastrada ainda.</p>
+                <p>Clique em <strong>✈️ Cadastrar viagem</strong> para começar a planejar!</p>
               </div>
             </div>
 
-            <div class="fin-section-block">
-              <h4 class="fin-section-title">Notas da viagem</h4>
-              <textarea class="fin-mensal-notes" data-persist-key="travel-notas" placeholder="Roteiro, documentos necessários, dicas, observações..."></textarea>
+            <div class="travel-modal hidden" id="travel-modal">
+              <div class="travel-modal-box">
+                <h4 id="travel-modal-title">Nova Viagem</h4>
+                <label>Destino <input id="travel-modal-destino" placeholder="Ex.: Paris, Dubai, Gramado" /></label>
+                <label>Data de ida <input type="date" id="travel-modal-ida" /></label>
+                <label>Data de volta <input type="date" id="travel-modal-volta" /></label>
+                <label>Número de pessoas <input type="number" id="travel-modal-pessoas" placeholder="2" min="1" /></label>
+                <div class="travel-modal-footer">
+                  <button class="ghost-button" type="button" id="travel-modal-cancel">Cancelar</button>
+                  <button class="primary-button" type="button" id="travel-modal-save">Salvar viagem</button>
+                </div>
+              </div>
             </div>
-
           </article>
         </section>
 

@@ -6792,3 +6792,178 @@ select {
   .fin-summary-cards { grid-template-columns: 1fr 1fr; }
   .fin-metas-grid { grid-template-columns: 1fr; }
 }
+
+/* =============================================
+   TABELAS — linhas e células mais visíveis
+   ============================================= */
+
+.fin-annual-table td,
+.fin-parceladas-table td,
+.fin-desejos-table td,
+.fin-mensal-table td,
+.travel-cat-table td,
+.travel-links-table td {
+  background: #fff;
+  height: 38px;
+  vertical-align: middle;
+  padding: 4px 8px;
+}
+.fin-annual-table tr:nth-child(even) td,
+.fin-parceladas-table tr:nth-child(even) td,
+.fin-desejos-table tr:nth-child(even) td,
+.fin-mensal-table tr:nth-child(even) td,
+.travel-cat-table tr:nth-child(even) td,
+.travel-links-table tr:nth-child(even) td { background: rgba(197,91,132,.05); }
+
+.fin-annual-table td input,
+.fin-parceladas-table td input,
+.fin-desejos-table td input,
+.fin-mensal-table td input,
+.travel-cat-table td input,
+.travel-links-table td input {
+  width: 100%;
+  min-width: 72px;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid rgba(0,0,0,.1);
+  padding: 3px 4px;
+  font-size: .84rem;
+  color: var(--ink);
+  border-radius: 0;
+}
+.fin-annual-table td input:focus,
+.fin-parceladas-table td input:focus,
+.fin-desejos-table td input:focus,
+.fin-mensal-table td input:focus,
+.travel-cat-table td input:focus,
+.travel-links-table td input:focus {
+  outline: none;
+  background: rgba(197,91,132,.12);
+  border-bottom-color: var(--rose);
+  border-radius: 4px 4px 0 0;
+}
+.dt-del-cell { width: 32px; text-align: center; padding: 0 !important; }
+
+/* =============================================
+   CARTÕES — tabs e ações
+   ============================================= */
+
+.fin-cc-manager {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+.fin-cc-tabs {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  flex: 1;
+}
+.fin-cc-add-main-btn { flex-shrink: 0; }
+
+.fin-cc-tab-btn {
+  padding: 7px 16px;
+  border-radius: 20px;
+  border: 1.5px solid var(--border);
+  background: #fff;
+  font-size: .82rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all .18s;
+  white-space: nowrap;
+}
+.fin-cc-tab-btn.is-active {
+  background: var(--rose);
+  color: #fff;
+  border-color: var(--rose);
+}
+.fin-cc-tab-edit {
+  background: transparent;
+  color: var(--ink);
+  border-style: dashed;
+  font-weight: 600;
+}
+
+.fin-cc-empty { color: var(--ink-muted, #999); font-size: .9rem; padding: 20px 0; }
+
+.fin-cc-card-btns {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+  position: relative;
+  z-index: 1;
+}
+.fin-cc-action-btn {
+  background: rgba(255,255,255,.2);
+  border: 1px solid rgba(255,255,255,.4);
+  color: #fff;
+  border-radius: 8px;
+  padding: 4px 12px;
+  font-size: .78rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+.fin-cc-del-action { background: rgba(231,76,60,.35); }
+.fin-cc-name-display, .fin-cc-limit-display { font-size: .9rem; font-weight: 700; }
+
+/* Credit card modal */
+.fin-cc-modal {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,.55);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 1100;
+}
+.fin-cc-modal.hidden { display: none; }
+.fin-cc-modal-box {
+  background: #fff; border-radius: 18px;
+  padding: 26px; width: min(420px, 93vw);
+  display: flex; flex-direction: column; gap: 14px;
+  box-shadow: 0 20px 60px rgba(0,0,0,.2);
+}
+.fin-cc-modal-box h4 { font-size: 1.1rem; font-weight: 800; color: var(--rose); margin: 0; }
+.fin-cc-modal-box label { display: flex; flex-direction: column; gap: 4px; font-size: .84rem; font-weight: 600; }
+.fin-cc-modal-box input,
+.fin-cc-modal-box select { padding: 9px 12px; border: 1.5px solid var(--border); border-radius: 9px; font-size: .9rem; }
+.fin-cc-modal-footer { display: flex; justify-content: flex-end; gap: 10px; margin-top: 4px; }
+
+/* =============================================
+   VIAGENS — múltiplas viagens
+   ============================================= */
+
+.travel-trips-bar {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+  align-items: center;
+}
+
+.travel-empty-state {
+  text-align: center;
+  padding: 48px 20px;
+  color: var(--ink-muted, #999);
+}
+.travel-empty-icon { font-size: 3rem; margin-bottom: 12px; }
+.travel-empty-state p { margin: 6px 0; font-size: .95rem; }
+.travel-empty-state strong { color: var(--rose); }
+
+/* Travel modal */
+.travel-modal {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,.55);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 1100;
+}
+.travel-modal.hidden { display: none; }
+.travel-modal-box {
+  background: #fff; border-radius: 18px;
+  padding: 26px; width: min(420px, 93vw);
+  display: flex; flex-direction: column; gap: 14px;
+  box-shadow: 0 20px 60px rgba(0,0,0,.2);
+}
+.travel-modal-box h4 { font-size: 1.1rem; font-weight: 800; color: var(--rose); margin: 0; }
+.travel-modal-box label { display: flex; flex-direction: column; gap: 4px; font-size: .84rem; font-weight: 600; }
+.travel-modal-box input { padding: 9px 12px; border: 1.5px solid var(--border); border-radius: 9px; font-size: .9rem; }
+.travel-modal-footer { display: flex; justify-content: flex-end; gap: 10px; margin-top: 4px; }

@@ -6381,14 +6381,14 @@ async function bootApp() {
 }
 
 // ── DynamicTable: tabelas infinitas com persistência ──────────────────────────
-(function setupDynamicTables() {
+window.DynTable = (function () {
   const PREFIX = "vida-nova:dt:";
 
   function saveTable(key, tbody) {
     const rows = [];
     tbody.querySelectorAll("tr").forEach((tr) => {
       const cells = [];
-      tr.querySelectorAll("input, select, textarea").forEach((inp) => cells.push(inp.value));
+      tr.querySelectorAll("input").forEach((inp) => cells.push(inp.value));
       rows.push(cells);
     });
     try { localStorage.setItem(PREFIX + key, JSON.stringify(rows)); } catch (_) {}
@@ -6401,11 +6401,13 @@ async function bootApp() {
       const inp = document.createElement("input");
       inp.type = "text";
       inp.value = values ? (values[i] || "") : "";
+      inp.placeholder = "—";
       inp.addEventListener("input", () => saveTable(key, tbody));
       td.appendChild(inp);
       tr.appendChild(td);
     }
     const tdDel = document.createElement("td");
+    tdDel.className = "dt-del-cell";
     const del = document.createElement("button");
     del.type = "button";
     del.className = "dyntable-del-btn";
@@ -6414,22 +6416,33 @@ async function bootApp() {
     tdDel.appendChild(del);
     tr.appendChild(tdDel);
     tbody.appendChild(tr);
+    return tr;
   }
 
-  document.querySelectorAll("[data-dyntable-add]").forEach((btn) => {
-    const key = btn.dataset.dyntableAdd;
-    const tbody = document.querySelector(`[data-dyntable="${key}"]`);
-    if (!tbody) return;
+  function init(key, tbody, addBtn) {
+    if (!tbody || !addBtn) return;
     const cols = parseInt(tbody.dataset.dyntableCols || "3", 10);
-    // Load
     try {
       const saved = JSON.parse(localStorage.getItem(PREFIX + key) || "null");
       if (Array.isArray(saved)) saved.forEach((row) => buildRow(key, tbody, cols, row));
     } catch (_) {}
-    // Add
-    btn.addEventListener("click", () => { buildRow(key, tbody, cols, null); saveTable(key, tbody); });
-  });
+    addBtn.addEventListener("click", () => { buildRow(key, tbody, cols, null); saveTable(key, tbody); });
+  }
+
+  function initAll() {
+    document.querySelectorAll("[data-dyntable-add]").forEach((btn) => {
+      const key = btn.dataset.dyntableAdd;
+      const tbody = document.querySelector(`[data-dyntable="${key}"]`);
+      if (!tbody) return;
+      init(key, tbody, btn);
+    });
+  }
+
+  return { init, initAll, buildRow, saveTable };
 })();
+
+// Bootstrap static dyntables (non-dynamic sections)
+window.DynTable.initAll();
 
 // ── Metas Financeiras ─────────────────────────────────────────────────────────
 (function setupFinMetas() {
@@ -6486,6 +6499,288 @@ async function bootApp() {
   });
 
   renderMetas();
+})();
+
+// ── Múltiplos Cartões de Crédito ──────────────────────────────────────────────
+(function setupFinCards() {
+  const SK = "vida-nova:fin-cards";
+  const tabsEl = document.querySelector("#fin-cc-tabs");
+  const areaEl = document.querySelector("#fin-cc-area");
+  const emptyEl = document.querySelector("#fin-cc-empty");
+  const modal = document.querySelector("#fin-cc-modal");
+  const addMainBtn = document.querySelector("#fin-cc-add-btn");
+  if (!tabsEl || !areaEl) return;
+
+  let cards = [];
+  let activeId = null;
+  try { cards = JSON.parse(localStorage.getItem(SK) || "[]"); } catch (_) {}
+  if (!Array.isArray(cards)) cards = [];
+
+  function save() { try { localStorage.setItem(SK, JSON.stringify(cards)); } catch (_) {} }
+
+  function cardVisualHtml(card) {
+    const bg = card.color || "#2c3e50";
+    return `<div class="fin-cc-visual" style="background:linear-gradient(135deg,${bg},${bg}cc)">
+      <div class="fin-cc-chip"></div>
+      <div class="fin-cc-number">•••• •••• •••• ${card.last4 || "••••"}</div>
+      <div class="fin-cc-row">
+        <div><span class="fin-cc-micro">Titular / Banco</span><span class="fin-cc-name-display">${card.name || "Cartão"}</span></div>
+        <div><span class="fin-cc-micro">Limite</span><span class="fin-cc-limit-display">${card.limit || "—"}</span></div>
+      </div>
+      <div class="fin-cc-card-btns">
+        <button class="fin-cc-action-btn" type="button" data-dup="${card.id}">Duplicar</button>
+        <button class="fin-cc-action-btn fin-cc-del-action" type="button" data-del="${card.id}">Excluir</button>
+      </div>
+    </div>`;
+  }
+
+  function renderActive() {
+    if (!cards.length) {
+      if (emptyEl) emptyEl.style.display = "";
+      tabsEl.innerHTML = "";
+      areaEl.innerHTML = "";
+      if (emptyEl) areaEl.appendChild(emptyEl);
+      return;
+    }
+    if (emptyEl) emptyEl.style.display = "none";
+    if (!cards.find((c) => c.id === activeId)) activeId = cards[0].id;
+
+    tabsEl.innerHTML = cards.map((c) =>
+      `<button class="fin-cc-tab-btn${c.id === activeId ? " is-active" : ""}" type="button" data-sel="${c.id}">${c.name || "Cartão"}</button>`
+    ).join("");
+
+    const card = cards.find((c) => c.id === activeId);
+    const key = `fin-parc-${card.id}`;
+    areaEl.innerHTML = cardVisualHtml(card) + `
+      <div class="fin-section-block">
+        <div class="fin-table-scroll">
+          <table class="fin-parceladas-table">
+            <thead><tr>
+              <th>Descrição</th><th>Loja</th><th>Valor Total</th><th>Parcelas</th>
+              <th>Valor/Parcela</th><th>Início</th><th>Vencimento</th><th>Status</th><th></th>
+            </tr></thead>
+            <tbody data-dyntable="${key}" data-dyntable-cols="8"></tbody>
+          </table>
+          <button class="fin-add-row-btn" type="button" data-dyntable-add="${key}">+ Adicionar compra parcelada</button>
+        </div>
+      </div>`;
+
+    window.DynTable.init(key,
+      areaEl.querySelector(`[data-dyntable="${key}"]`),
+      areaEl.querySelector(`[data-dyntable-add="${key}"]`)
+    );
+
+    tabsEl.querySelectorAll("[data-sel]").forEach((b) =>
+      b.addEventListener("click", () => { activeId = +b.dataset.sel; renderActive(); })
+    );
+    areaEl.querySelector("[data-dup]")?.addEventListener("click", (e) => {
+      const src = cards.find((c) => c.id === +e.currentTarget.dataset.dup);
+      if (!src) return;
+      cards.push({ ...src, id: Date.now(), name: src.name + " (cópia)" });
+      activeId = cards[cards.length - 1].id;
+      save(); renderActive();
+    });
+    areaEl.querySelector("[data-del]")?.addEventListener("click", (e) => {
+      if (!confirm("Excluir este cartão e todas as compras?")) return;
+      const delId = +e.currentTarget.dataset.del;
+      cards = cards.filter((c) => c.id !== delId);
+      activeId = cards[0]?.id || null;
+      save(); renderActive();
+    });
+  }
+
+  if (addMainBtn && modal) {
+    addMainBtn.addEventListener("click", () => modal.classList.remove("hidden"));
+    modal.querySelector("#fin-cc-modal-cancel")?.addEventListener("click", () => modal.classList.add("hidden"));
+    modal.querySelector("#fin-cc-modal-save")?.addEventListener("click", () => {
+      const name = modal.querySelector("#fin-cc-modal-name")?.value.trim() || "Cartão";
+      const last4 = modal.querySelector("#fin-cc-modal-last4")?.value.trim() || "";
+      const limit = modal.querySelector("#fin-cc-modal-limit")?.value.trim() || "";
+      const color = modal.querySelector("#fin-cc-modal-color")?.value || "#2c3e50";
+      cards.push({ id: Date.now(), name, last4, limit, color });
+      activeId = cards[cards.length - 1].id;
+      save(); renderActive();
+      modal.classList.add("hidden");
+      ["#fin-cc-modal-name", "#fin-cc-modal-last4", "#fin-cc-modal-limit"].forEach((sel) => {
+        const el = modal.querySelector(sel); if (el) el.value = "";
+      });
+    });
+  }
+
+  renderActive();
+})();
+
+// ── Planejador de múltiplas viagens ───────────────────────────────────────────
+(function setupTravelManager() {
+  const SK = "vida-nova:travels";
+  const tripsBarEl = document.querySelector("#travel-trips-bar");
+  const contentEl = document.querySelector("#travel-content-area");
+  const emptyEl = document.querySelector("#travel-empty-state");
+  const newTripBtn = document.querySelector("#travel-new-trip-btn");
+  const modal = document.querySelector("#travel-modal");
+  if (!tripsBarEl || !contentEl) return;
+
+  const CATS = [
+    { key: "passagem",    icon: "✈️",  label: "Passagem",    heads: ["Descrição","Tipo","Data","Valor"] },
+    { key: "hospedagem",  icon: "🏨",  label: "Hospedagem",  heads: ["Hotel/Casa","Check-in","Check-out","Valor"] },
+    { key: "alimentacao", icon: "🍽️",  label: "Alimentação", heads: ["Restaurante/Refeição","Dia","Pessoas","Valor"] },
+    { key: "transporte",  icon: "🚗",  label: "Transporte",  heads: ["Descrição","Tipo","Data","Valor"] },
+    { key: "passeios",    icon: "🎡",  label: "Passeios",    heads: ["Passeio","Data","Pessoas","Valor"] },
+    { key: "compras",     icon: "🛍️",  label: "Compras",     heads: ["Item","Loja","Qtd","Valor"] },
+  ];
+
+  let trips = [];
+  let activeId = null;
+  try { trips = JSON.parse(localStorage.getItem(SK) || "[]"); } catch (_) {}
+  if (!Array.isArray(trips)) trips = [];
+
+  function save() { try { localStorage.setItem(SK, JSON.stringify(trips)); } catch (_) {} }
+
+  function renderTrip(trip) {
+    const id = trip.id;
+    const catsHtml = CATS.map((cat) => {
+      const key = `tv-${cat.key}-${id}`;
+      const ths = cat.heads.map((h) => `<th>${h}</th>`).join("") + "<th></th>";
+      return `<div class="travel-cat-card">
+        <div class="travel-cat-header">
+          <span class="travel-cat-icon">${cat.icon}</span>
+          <h4>${cat.label}</h4>
+        </div>
+        <div class="fin-table-scroll">
+          <table class="travel-cat-table"><thead><tr>${ths}</tr></thead>
+            <tbody data-dyntable="${key}" data-dyntable-cols="4"></tbody>
+          </table>
+          <button class="fin-add-row-btn" type="button" data-dyntable-add="${key}">+ Adicionar</button>
+        </div>
+      </div>`;
+    }).join("");
+
+    contentEl.innerHTML = `
+      <div class="travel-header">
+        <div class="travel-header-fields">
+          <label>Destino <input class="tv-f" data-field="destino" data-tid="${id}" value="${trip.destino || ""}" placeholder="Destino" /></label>
+          <label>Data de ida <input type="date" class="tv-f" data-field="ida" data-tid="${id}" value="${trip.ida || ""}" /></label>
+          <label>Data de volta <input type="date" class="tv-f" data-field="volta" data-tid="${id}" value="${trip.volta || ""}" /></label>
+          <label>Pessoas <input type="number" class="tv-f" data-field="pessoas" data-tid="${id}" value="${trip.pessoas || ""}" placeholder="2" min="1" /></label>
+        </div>
+        <div class="travel-budget-total">
+          <span>Orçamento Total</span>
+          <strong id="tv-grand-${id}">R$ 0,00</strong>
+        </div>
+      </div>
+      <div class="travel-categories-grid">${catsHtml}</div>
+      <div class="fin-section-block">
+        <h4 class="fin-section-title">Links Importantes</h4>
+        <div class="fin-table-scroll">
+          <table class="travel-links-table"><thead><tr><th>Descrição</th><th>URL</th><th>Categoria</th><th></th></tr></thead>
+            <tbody data-dyntable="tv-links-${id}" data-dyntable-cols="3"></tbody>
+          </table>
+          <button class="fin-add-row-btn" type="button" data-dyntable-add="tv-links-${id}">+ Adicionar link</button>
+        </div>
+      </div>
+      <div class="fin-section-block">
+        <h4 class="fin-section-title">Notas da viagem</h4>
+        <textarea class="fin-mensal-notes tv-f" data-field="notas" data-tid="${id}" placeholder="Roteiro, documentos, dicas...">${trip.notas || ""}</textarea>
+      </div>
+      <div style="margin-top:12px;text-align:right">
+        <button class="ghost-button" type="button" data-trip-del="${id}" style="color:#e74c3c">Excluir esta viagem</button>
+      </div>`;
+
+    // Init all dyntables
+    CATS.forEach((cat) => {
+      const key = `tv-${cat.key}-${id}`;
+      window.DynTable.init(key,
+        contentEl.querySelector(`[data-dyntable="${key}"]`),
+        contentEl.querySelector(`[data-dyntable-add="${key}"]`)
+      );
+    });
+    window.DynTable.init(`tv-links-${id}`,
+      contentEl.querySelector(`[data-dyntable="tv-links-${id}"]`),
+      contentEl.querySelector(`[data-dyntable-add="tv-links-${id}"]`)
+    );
+
+    // Field autosave
+    contentEl.querySelectorAll(".tv-f").forEach((inp) => {
+      inp.addEventListener("input", () => {
+        const t = trips.find((x) => x.id === +inp.dataset.tid);
+        if (t) { t[inp.dataset.field] = inp.value; save(); }
+        if (inp.dataset.field === "destino") {
+          tripsBarEl.querySelectorAll(`[data-trip-sel="${id}"]`).forEach((b) => {
+            b.textContent = "✈️ " + (inp.value || "Viagem");
+          });
+        }
+      });
+    });
+
+    // Delete trip
+    contentEl.querySelector("[data-trip-del]")?.addEventListener("click", (e) => {
+      if (!confirm("Excluir esta viagem e todos os dados?")) return;
+      trips = trips.filter((t) => t.id !== +e.currentTarget.dataset.tripDel);
+      activeId = trips[0]?.id || null;
+      save(); renderManager();
+    });
+  }
+
+  function renderManager() {
+    if (!trips.length) {
+      tripsBarEl.innerHTML = "";
+      contentEl.innerHTML = "";
+      if (emptyEl) { emptyEl.style.display = ""; contentEl.appendChild(emptyEl); }
+      return;
+    }
+    if (emptyEl) emptyEl.style.display = "none";
+    if (!trips.find((t) => t.id === activeId)) activeId = trips[0].id;
+
+    tripsBarEl.innerHTML = trips.map((t) =>
+      `<button class="fin-cc-tab-btn${t.id === activeId ? " is-active" : ""}" type="button" data-trip-sel="${t.id}">✈️ ${t.destino || "Viagem"}</button>`
+    ).join("") + `<button class="fin-cc-tab-btn fin-cc-tab-edit" type="button" id="tv-edit-btn">✏️ Editar</button>`;
+
+    tripsBarEl.querySelectorAll("[data-trip-sel]").forEach((b) =>
+      b.addEventListener("click", () => { activeId = +b.dataset.tripSel; renderManager(); })
+    );
+    document.querySelector("#tv-edit-btn")?.addEventListener("click", () => {
+      const t = trips.find((x) => x.id === activeId);
+      if (!t) return;
+      modal.querySelector("#travel-modal-destino").value = t.destino || "";
+      modal.querySelector("#travel-modal-ida").value = t.ida || "";
+      modal.querySelector("#travel-modal-volta").value = t.volta || "";
+      modal.querySelector("#travel-modal-pessoas").value = t.pessoas || "";
+      modal.querySelector("#travel-modal-title").textContent = "Editar Viagem";
+      modal.dataset.editId = activeId;
+      modal.classList.remove("hidden");
+    });
+
+    renderTrip(trips.find((t) => t.id === activeId));
+  }
+
+  if (newTripBtn && modal) {
+    newTripBtn.addEventListener("click", () => {
+      ["#travel-modal-destino", "#travel-modal-ida", "#travel-modal-volta", "#travel-modal-pessoas"].forEach((s) => {
+        const el = modal.querySelector(s); if (el) el.value = "";
+      });
+      modal.querySelector("#travel-modal-title").textContent = "Nova Viagem";
+      delete modal.dataset.editId;
+      modal.classList.remove("hidden");
+    });
+    modal.querySelector("#travel-modal-cancel")?.addEventListener("click", () => modal.classList.add("hidden"));
+    modal.querySelector("#travel-modal-save")?.addEventListener("click", () => {
+      const destino  = modal.querySelector("#travel-modal-destino")?.value.trim() || "";
+      const ida      = modal.querySelector("#travel-modal-ida")?.value || "";
+      const volta    = modal.querySelector("#travel-modal-volta")?.value || "";
+      const pessoas  = modal.querySelector("#travel-modal-pessoas")?.value || "";
+      if (modal.dataset.editId) {
+        const t = trips.find((x) => x.id === +modal.dataset.editId);
+        if (t) { t.destino = destino; t.ida = ida; t.volta = volta; t.pessoas = pessoas; }
+      } else {
+        trips.push({ id: Date.now(), destino, ida, volta, pessoas, notas: "" });
+        activeId = trips[trips.length - 1].id;
+      }
+      save(); renderManager();
+      modal.classList.add("hidden");
+    });
+  }
+
+  renderManager();
 })();
 
 bootApp().catch((error) => {
