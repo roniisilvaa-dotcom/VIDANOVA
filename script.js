@@ -6195,11 +6195,18 @@ if (moduleModal) {
 
 if (calendarModalClose) {
   calendarModalClose.addEventListener("click", closeCalendarModal);
+  calendarModalClose.addEventListener("touchend", (e) => { e.preventDefault(); closeCalendarModal(); });
 }
 
 if (calendarModal) {
   calendarModal.addEventListener("click", (event) => {
     if (event.target.dataset.closeCalendar === "true") {
+      closeCalendarModal();
+    }
+  });
+  calendarModal.addEventListener("touchend", (event) => {
+    if (event.target.dataset.closeCalendar === "true") {
+      event.preventDefault();
       closeCalendarModal();
     }
   });
