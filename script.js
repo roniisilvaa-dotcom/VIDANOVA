@@ -40,6 +40,7 @@ const DEFAULT_DASHBOARD_COVERS = Object.freeze({
   corpo: "assets/covers/corpo.png",
   agenda: "assets/covers/agenda.png",
   financas: "assets/covers/financas.png",
+  "finanças": "assets/covers/financas.png",
   estudos: "assets/covers/estudos.png",
   imagem: "assets/covers/imagem.png",
   casa: "assets/covers/casa.png",
