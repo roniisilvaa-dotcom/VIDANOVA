@@ -3222,6 +3222,63 @@ function renderCalendar() {
   }
 }
 
+function renderMobDayList() {
+  const shell = document.getElementById("mob-day-list-shell");
+  if (!shell) return;
+
+  const events = getFilteredEventsForDate(selectedDateKey)
+    .slice()
+    .sort((a, b) => String(a.time || "").localeCompare(String(b.time || "")));
+
+  if (events.length === 0) {
+    shell.innerHTML = `<div class="mob-event-list">
+      <div class="mob-list-empty">
+        <span class="mob-list-empty-icon">📅</span>
+        <p>Sem compromissos neste dia</p>
+        <p>Toque no <strong>+</strong> para adicionar</p>
+      </div>
+    </div>`;
+  } else {
+    shell.innerHTML = `<div class="mob-event-list">
+      ${events.map((ev) => {
+        const color = ev.color || getCalendarById(ev.calendarId).color || "#4285f4";
+        const timeStart = ev.time ? ev.time.slice(0, 5) : "";
+        const timeEnd   = ev.endTime ? ev.endTime.slice(0, 5) : "";
+        return `<button type="button" class="mob-event-item"
+          data-event-id="${escapeHtml(ev.id)}"
+          data-event-date="${escapeHtml(selectedDateKey)}">
+          <div class="mob-event-time-col">
+            <span class="mob-time-start">${escapeHtml(timeStart)}</span>
+            ${timeEnd ? `<span class="mob-time-end">${escapeHtml(timeEnd)}</span>` : ""}
+          </div>
+          <div class="mob-event-card" style="background:${escapeHtml(color)}">
+            <strong>${escapeHtml(ev.title || "")}</strong>
+            ${ev.location ? `<small>📍 ${escapeHtml(ev.location)}</small>` : ""}
+          </div>
+        </button>`;
+      }).join("")}
+    </div>`;
+  }
+
+  // Clique no evento abre o form de edição
+  shell.querySelectorAll(".mob-event-item").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const evId   = btn.dataset.eventId;
+      const evDate = btn.dataset.eventDate;
+      const dayData = ensureAgendaDay(evDate);
+      const ev = dayData.events.find((e) => e.id === evId);
+      if (ev) {
+        startAgendaEdit(ev, evDate);
+        const drawer = document.getElementById("agenda-form-drawer");
+        if (drawer) drawer.classList.remove("hidden");
+      }
+    });
+  });
+
+  if (typeof renderMobWeekStrip === "function") renderMobWeekStrip();
+  if (typeof updateMobDayLabel === "function") updateMobDayLabel();
+}
+
 function renderWeekView() {
   if (!weekColumns || !weekHoursColumn || !weekViewHeader) {
     return;
@@ -3230,6 +3287,22 @@ function renderWeekView() {
   if (!["week", "day", "custom"].includes(agendaView)) {
     return;
   }
+
+  // No mobile, dia view usa lista simples (sem timeline absoluto)
+  if (window.innerWidth < 768 && agendaView === "day") {
+    const timelineShell = document.getElementById("week-view-shell");
+    const listShell     = document.getElementById("mob-day-list-shell");
+    if (timelineShell) timelineShell.classList.add("hidden");
+    if (listShell)     listShell.classList.remove("hidden");
+    renderMobDayList();
+    return;
+  }
+
+  // Para outros views: garante que timeline está visível e lista oculta
+  const listShellChk = document.getElementById("mob-day-list-shell");
+  if (listShellChk) listShellChk.classList.add("hidden");
+  const timelineShellChk = document.getElementById("week-view-shell");
+  if (timelineShellChk) timelineShellChk.classList.remove("hidden");
 
   // For day view, start from selectedDateKey directly so the correct day is shown
   const weekStart = agendaView === "day"
@@ -6954,10 +7027,14 @@ window.DynTable.initAll();
   const monthShell = document.getElementById("calendar-month-shell");
   const yearShell = document.getElementById("year-view-shell");
   const timelineShell = document.getElementById("week-view-shell");
+  const listShell = document.getElementById("mob-day-list-shell");
 
   function setAgendaView(view) {
     agendaView = view;
     localStorage.setItem("ela-em-ordem:agenda-view", view);
+
+    const isMob = window.innerWidth < 768;
+    const useMobList = isMob && view === "day";
 
     // Tag timeline shell for CSS scoping
     if (timelineShell) timelineShell.dataset.agendaView = view;
@@ -6968,10 +7045,12 @@ window.DynTable.initAll();
     // Show/hide week strip (only for day/week)
     if (weekStripWrap) weekStripWrap.classList.toggle("hidden", view === "month" || view === "year");
 
-    // Show/hide timeline vs month vs year
-    if (timelineShell) timelineShell.classList.toggle("hidden", view === "month" || view === "year");
-    if (monthShell) monthShell.classList.toggle("hidden", view !== "month");
-    if (yearShell) yearShell.classList.toggle("hidden", view !== "year");
+    // Show/hide timeline vs lista vs month vs year
+    const hideTimeline = view === "month" || view === "year" || useMobList;
+    if (timelineShell) timelineShell.classList.toggle("hidden", hideTimeline);
+    if (listShell)     listShell.classList.toggle("hidden", !useMobList);
+    if (monthShell)    monthShell.classList.toggle("hidden", view !== "month");
+    if (yearShell)     yearShell.classList.toggle("hidden", view !== "year");
 
     renderCalendar();
     renderWeekView();
@@ -6988,12 +7067,16 @@ window.DynTable.initAll();
   // Sync initial tab state on load
   function syncViewTabs() {
     const v = agendaView;
+    const isMob = window.innerWidth < 768;
+    const useMobList = isMob && v === "day";
     viewTabBtns.forEach((b) => b.classList.toggle("is-active", b.dataset.viewTab === v));
     if (timelineShell) timelineShell.dataset.agendaView = v;
     if (weekStripWrap) weekStripWrap.classList.toggle("hidden", v === "month" || v === "year");
-    if (timelineShell) timelineShell.classList.toggle("hidden", v === "month" || v === "year");
-    if (monthShell) monthShell.classList.toggle("hidden", v !== "month");
-    if (yearShell) yearShell.classList.toggle("hidden", v !== "year");
+    const hideTimeline = v === "month" || v === "year" || useMobList;
+    if (timelineShell) timelineShell.classList.toggle("hidden", hideTimeline);
+    if (listShell)     listShell.classList.toggle("hidden", !useMobList);
+    if (monthShell)    monthShell.classList.toggle("hidden", v !== "month");
+    if (yearShell)     yearShell.classList.toggle("hidden", v !== "year");
   }
 
   // Also re-render strip when planner-agenda tab becomes visible

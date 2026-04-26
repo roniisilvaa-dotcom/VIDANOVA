@@ -7775,3 +7775,114 @@ select {
   .mob-day-btn { min-width: 38px; padding: 5px 6px; }
 }
 
+/* ════════════════════════════════════════════
+   MOBILE DAY LIST VIEW
+   Substitui o timeline absoluto por lista simples
+   ════════════════════════════════════════════ */
+.mob-day-list-shell {
+  flex: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  background: #fff;
+  padding: 4px 0 80px;
+}
+
+.mob-day-list-shell.hidden { display: none !important; }
+
+.mob-event-list {
+  display: flex;
+  flex-direction: column;
+  padding: 0 16px;
+  gap: 0;
+}
+
+/* Cada linha: hora à esquerda + card à direita */
+.mob-event-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 6px 0;
+  width: 100%;
+  background: none;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.mob-event-time-col {
+  width: 48px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  padding-top: 10px;
+  gap: 2px;
+}
+
+.mob-time-start {
+  font-size: 11px;
+  color: #70757a;
+  font-weight: 500;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.mob-time-end {
+  font-size: 10px;
+  color: #aaa;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.mob-event-card {
+  flex: 1;
+  border-radius: 8px;
+  padding: 10px 14px;
+  min-height: 52px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 3px;
+  box-shadow: 0 1px 4px rgba(0,0,0,.14);
+}
+
+.mob-event-card strong {
+  font-size: 14px;
+  font-weight: 700;
+  color: #fff;
+  display: block;
+  line-height: 1.3;
+}
+
+.mob-event-card small {
+  font-size: 11px;
+  color: rgba(255,255,255,.88);
+  display: block;
+  line-height: 1.3;
+}
+
+/* Estado vazio */
+.mob-list-empty {
+  text-align: center;
+  padding: 48px 24px;
+  color: #9a7fa0;
+}
+
+.mob-list-empty-icon {
+  font-size: 2.4rem;
+  display: block;
+  margin-bottom: 12px;
+  opacity: .5;
+}
+
+.mob-list-empty p {
+  margin: 4px 0;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.mob-list-empty strong {
+  color: #c55b84;
+}
+
