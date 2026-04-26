@@ -8098,7 +8098,7 @@ select {
   min-height: 52px;
   border-radius: 8px;
   overflow: hidden;
-  background: color-mix(in srgb, var(--ev-color, #c55b84) 12%, #fff);
+  background: color-mix(in srgb, var(--ev-color, #c55b84) 25%, #fff);
   border: none;
   cursor: pointer;
   text-align: left;
@@ -8169,7 +8169,7 @@ select {
   min-height: 48px;
   border-radius: 8px;
   overflow: hidden;
-  background: color-mix(in srgb, var(--ev-color, #c55b84) 12%, #fff);
+  background: color-mix(in srgb, var(--ev-color, #c55b84) 25%, #fff);
 }
 .msched-tr-stripe {
   width: 5px;
