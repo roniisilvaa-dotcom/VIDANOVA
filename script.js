@@ -3297,67 +3297,65 @@ function renderMobDayList() {
 }
 
 // ════════════════════════════════════════════════════════════════
-//  MOBILE VIEWS — todos os tabs usam lista ordenada por hora
+//  MOBILE VIEWS — todos os tabs: lista ordenada por HORA
 //  Estilo Google Calendar. Sem timeline com position:absolute.
+//  O HORÁRIO é o eixo principal (coluna esquerda), não a data.
 // ════════════════════════════════════════════════════════════════
 
-// Gera o HTML de um bloco de evento para a lista mobile
-function _mobEventCardHtml(ev, dateKey) {
-  const color = ev.color || getCalendarById(ev.calendarId).color || "#c55b84";
-  const timeStr = formatTimeRange(ev.time, ev.endTime);
-  return `<button type="button" class="msched-event-card" data-event-id="${escapeHtml(ev.id)}" data-event-date="${escapeHtml(dateKey)}" style="--ev-color:${escapeHtml(color)}">
-    <div class="msched-event-stripe"></div>
-    <div class="msched-event-body">
-      <span class="msched-event-title">${escapeHtml(ev.title || "")}</span>
-      <span class="msched-event-meta">${escapeHtml(timeStr)}${ev.location ? ` · ${escapeHtml(ev.location)}` : ""}</span>
+// Gera uma linha de evento com HORA à esquerda (layout principal)
+function _mobTimeRowHtml(ev, dateKey) {
+  const color = ev.color || getCalendarById(ev.calendarId)?.color || "#c55b84";
+  const timeStr = ev.time ? ev.time.slice(0, 5) : "—";
+  const endStr  = ev.endTime ? `${ev.endTime.slice(0, 5)}` : "";
+  const sub = [endStr ? `até ${endStr}` : "", ev.location || ""].filter(Boolean).join(" · ");
+  return `<button type="button" class="msched-time-row" data-event-id="${escapeHtml(ev.id)}" data-event-date="${escapeHtml(dateKey)}">
+    <div class="msched-tr-time">${escapeHtml(timeStr)}</div>
+    <div class="msched-tr-card" style="--ev-color:${escapeHtml(color)}">
+      <div class="msched-tr-stripe"></div>
+      <div class="msched-tr-body">
+        <span class="msched-tr-title">${escapeHtml(ev.title || "(sem título)")}</span>
+        ${sub ? `<span class="msched-tr-sub">${escapeHtml(sub)}</span>` : ""}
+      </div>
     </div>
   </button>`;
 }
 
-// Gera HTML de um bloco de dia (header de data + eventos)
-function _mobDayBlockHtml(dateKey, events, todayKey) {
+// Separador de data entre grupos de dias
+function _mobDateSepHtml(dateKey, todayKey) {
   const date = new Date(`${dateKey}T12:00:00`);
   const isToday = dateKey === todayKey;
-  const isSelected = dateKey === selectedDateKey;
-  const dow = date.toLocaleDateString("pt-BR", { weekday: "short" }).replace(".", "").toUpperCase();
-  const dayNum = date.getDate();
-  const monthShort = date.toLocaleDateString("pt-BR", { month: "short" }).replace(".", "");
-  return `<div class="msched-day" data-date="${dateKey}">
-    <div class="msched-date-col">
-      <span class="msched-dow">${dow}</span>
-      <button type="button" class="msched-daynum${isToday ? " is-today" : ""}${isSelected ? " is-selected" : ""}" data-sched-date="${dateKey}">${dayNum}</button>
-      <span class="msched-month">${monthShort}</span>
-    </div>
-    <div class="msched-events-col">
-      ${events.map((ev) => _mobEventCardHtml(ev, dateKey)).join("")}
-    </div>
-  </div>`;
+  const tomorrowDate = new Date();
+  tomorrowDate.setDate(tomorrowDate.getDate() + 1);
+  const isTomorrow = dateKey === formatDateKey(tomorrowDate);
+  const prefix = isToday ? "Hoje" : isTomorrow ? "Amanhã" : "";
+  const fullLabel = date.toLocaleDateString("pt-BR", { weekday: "long", day: "numeric", month: "long" });
+  const label = prefix ? `${prefix} · ${fullLabel}` : fullLabel;
+  return `<div class="msched-date-sep${isToday ? " is-today" : ""}">${label}</div>`;
 }
 
 // Anexa handlers de clique nos cards e nos botões de data
 function _mobAttachHandlers(shell) {
-  shell.querySelectorAll(".msched-event-card").forEach((btn) => {
-    btn.addEventListener("click", () => {
-      const dayData = ensureAgendaDay(btn.dataset.eventDate);
-      const ev = dayData.events.find((e) => e.id === btn.dataset.eventId);
-      if (ev) {
-        startAgendaEdit(ev, btn.dataset.eventDate);
-        const drawer = document.getElementById("agenda-form-drawer");
-        if (drawer) drawer.classList.remove("hidden");
-      }
-    });
+  const openEvent = (btn) => {
+    const dayData = ensureAgendaDay(btn.dataset.eventDate);
+    const ev = dayData.events.find((e) => e.id === btn.dataset.eventId);
+    if (ev) {
+      startAgendaEdit(ev, btn.dataset.eventDate);
+      const drawer = document.getElementById("agenda-form-drawer");
+      if (drawer) drawer.classList.remove("hidden");
+    }
+  };
+  shell.querySelectorAll(".msched-time-row, .msched-event-card").forEach((btn) => {
+    btn.addEventListener("click", () => openEvent(btn));
   });
   shell.querySelectorAll("[data-sched-date]").forEach((btn) => {
     btn.addEventListener("click", () => {
       selectedDateKey = btn.dataset.schedDate;
       calendarCursor = new Date(`${selectedDateKey}T12:00:00`);
-      // Re-render com novo dia selecionado
       renderMobSchedule();
       renderMobWeekStrip?.();
       updateMobDayLabel?.();
     });
   });
-  // Month mini-calendar date picker
   shell.querySelectorAll("[data-mini-date]").forEach((btn) => {
     btn.addEventListener("click", () => {
       selectedDateKey = btn.dataset.miniDate;
@@ -3385,9 +3383,7 @@ function _mobMiniCalHtml(todayKey) {
     const isToday = dk === todayKey;
     const isSel = dk === selectedDateKey;
     const dots = evCount > 0 ? `<span class="mini-cal-dot"></span>` : "";
-    cells += `<button type="button" class="mini-cal-day${isToday ? " is-today" : ""}${isSel ? " is-sel" : ""}" data-mini-date="${dk}">
-      ${day}${dots}
-    </button>`;
+    cells += `<button type="button" class="mini-cal-day${isToday ? " is-today" : ""}${isSel ? " is-sel" : ""}" data-mini-date="${dk}">${day}${dots}</button>`;
   }
   const monthName = firstDay.toLocaleDateString("pt-BR", { month: "long", year: "numeric" });
   return `<div class="mob-mini-cal">
@@ -3404,26 +3400,26 @@ function renderMobSchedule() {
   const todayKey = formatDateKey(new Date());
   let html = "";
 
-  // ── DIA: lista de eventos do dia selecionado ordenados por hora ──
+  // ── DIA: hora à esquerda, eventos do dia selecionado ──
   if (agendaView === "day") {
     const events = getFilteredEventsForDate(selectedDateKey)
       .slice()
       .sort((a, b) => (a.time || "").localeCompare(b.time || ""));
+    html += _mobDateSepHtml(selectedDateKey, todayKey);
     if (events.length === 0) {
-      html = `<div class="msched-day-header">${_mobDayHeaderHtml(selectedDateKey, todayKey)}</div>
-        <div class="msched-empty"><p>Sem compromissos neste dia.</p><p>Toque no <strong>+</strong> para adicionar.</p></div>`;
+      html += `<div class="msched-empty"><p>Sem compromissos neste dia.</p><p>Toque no <strong>+</strong> para adicionar.</p></div>`;
     } else {
-      html = `<div class="msched-day-header">${_mobDayHeaderHtml(selectedDateKey, todayKey)}</div>
-        <div class="msched-day-events">${events.map((ev) => _mobEventCardHtml(ev, selectedDateKey)).join("")}</div>`;
+      html += events.map((ev) => _mobTimeRowHtml(ev, selectedDateKey)).join("");
     }
     shell.innerHTML = html;
     _mobAttachHandlers(shell);
     return;
   }
 
-  // ── SEMANA: lista dos eventos da semana, agrupados por dia ──
+  // ── SEMANA: separadores de data + hora à esquerda para cada evento ──
   if (agendaView === "week") {
     const weekStart = getWeekStart(selectedDateKey);
+    let hasAny = false;
     for (let i = 0; i < 7; i++) {
       const date = new Date(weekStart);
       date.setDate(weekStart.getDate() + i);
@@ -3431,27 +3427,29 @@ function renderMobSchedule() {
       const events = getFilteredEventsForDate(dateKey)
         .slice()
         .sort((a, b) => (a.time || "").localeCompare(b.time || ""));
-      html += _mobDayBlockHtml(dateKey, events.length ? events : [], todayKey);
+      if (events.length === 0) continue;
+      hasAny = true;
+      html += _mobDateSepHtml(dateKey, todayKey);
+      html += events.map((ev) => _mobTimeRowHtml(ev, dateKey)).join("");
     }
-    if (!html) html = `<div class="msched-empty"><p>Sem compromissos esta semana.</p></div>`;
+    if (!hasAny) html = `<div class="msched-empty"><p>Sem compromissos esta semana.</p></div>`;
     shell.innerHTML = html;
     _mobAttachHandlers(shell);
     return;
   }
 
-  // ── MÊS: mini calendário compacto + eventos do dia selecionado ──
+  // ── MÊS: mini calendário compacto + eventos do dia selecionado por hora ──
   if (agendaView === "month") {
     const events = getFilteredEventsForDate(selectedDateKey)
       .slice()
       .sort((a, b) => (a.time || "").localeCompare(b.time || ""));
-    const eventsHtml = events.length
-      ? events.map((ev) => _mobEventCardHtml(ev, selectedDateKey)).join("")
-      : `<div class="msched-empty"><p>Sem compromissos neste dia.</p></div>`;
-    html = `${_mobMiniCalHtml(todayKey)}
-      <div class="mob-month-day-events">
-        <div class="mob-month-day-header">${_mobDayHeaderHtml(selectedDateKey, todayKey)}</div>
-        <div class="msched-day-events">${eventsHtml}</div>
-      </div>`;
+    html = _mobMiniCalHtml(todayKey);
+    html += _mobDateSepHtml(selectedDateKey, todayKey);
+    if (events.length === 0) {
+      html += `<div class="msched-empty"><p>Sem compromissos neste dia.</p></div>`;
+    } else {
+      html += events.map((ev) => _mobTimeRowHtml(ev, selectedDateKey)).join("");
+    }
     shell.innerHTML = html;
     _mobAttachHandlers(shell);
     return;
@@ -3484,7 +3482,7 @@ function renderMobSchedule() {
     return;
   }
 
-  // ── LISTA/SCHEDULE: próximos 90 dias ──
+  // ── LISTA/SCHEDULE: próximos 90 dias, horário como eixo principal ──
   const startDate = new Date(`${todayKey}T00:00:00`);
   for (let i = 0; i < 90; i++) {
     const date = new Date(startDate);
@@ -3494,19 +3492,12 @@ function renderMobSchedule() {
       .slice()
       .sort((a, b) => (a.time || "").localeCompare(b.time || ""));
     if (events.length === 0) continue;
-    html += _mobDayBlockHtml(dateKey, events, todayKey);
+    html += _mobDateSepHtml(dateKey, todayKey);
+    html += events.map((ev) => _mobTimeRowHtml(ev, dateKey)).join("");
   }
   if (!html) html = `<div class="msched-empty"><p>Sem compromissos nos próximos 90 dias.</p><p>Toque no <strong>+</strong> para adicionar.</p></div>`;
   shell.innerHTML = html;
   _mobAttachHandlers(shell);
-}
-
-// Header de data para views de dia (DIA e MÊS)
-function _mobDayHeaderHtml(dateKey, todayKey) {
-  const date = new Date(`${dateKey}T12:00:00`);
-  const isToday = dateKey === todayKey;
-  const fullDate = date.toLocaleDateString("pt-BR", { weekday: "long", day: "numeric", month: "long" });
-  return `<span class="mob-day-hdr-label${isToday ? " is-today" : ""}">${fullDate}${isToday ? " — Hoje" : ""}</span>`;
 }
 
 function renderWeekView() {
@@ -3517,6 +3508,9 @@ function renderWeekView() {
   if (!["week", "day", "custom"].includes(agendaView)) {
     return;
   }
+
+  // No mobile, o mob-schedule-shell cuida de tudo — não mexa no week-view-shell
+  if (window.innerWidth < 768) return;
 
   // Garante que a timeline está visível
   const timelineShellChk = document.getElementById("week-view-shell");
@@ -7285,9 +7279,6 @@ window.DynTable.initAll();
       const mobSchedEl = document.getElementById("mob-schedule-shell");
       if (mobSchedEl) mobSchedEl.classList.add("hidden");
     }
-    if (monthShell)    monthShell.classList.toggle("hidden", view !== "month");
-    if (yearShell)     yearShell.classList.toggle("hidden", view !== "year");
-
     renderCalendar();
     renderWeekView();
     renderAgendaEvents();
