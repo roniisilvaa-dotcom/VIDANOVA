@@ -3138,15 +3138,23 @@ function renderCalendar() {
     const isMonthView = agendaView === "month";
     const isGridRangeView = ["week", "day", "custom"].includes(agendaView);
     if (isMob) {
-      // Mobile: esconde todos os shells, usa mob-schedule-shell
+      // Mobile: Dia/Semana → timeline; Lista/Mês/Ano → mob-schedule-shell
       calendarMonthShell.classList.add("hidden");
-      weekViewShell.classList.add("hidden");
       if (yearViewShell) yearViewShell.classList.add("hidden");
       if (scheduleViewShell) scheduleViewShell.classList.add("hidden");
       const mobSchedShell = document.getElementById("mob-schedule-shell");
-      if (mobSchedShell) {
-        mobSchedShell.classList.remove("hidden");
-        renderMobSchedule();
+      const stripWrap = document.getElementById("agenda-week-strip-wrap");
+      if (isGridRangeView) {
+        weekViewShell.classList.remove("hidden");
+        if (mobSchedShell) mobSchedShell.classList.add("hidden");
+        if (stripWrap) stripWrap.classList.remove("hidden");
+      } else {
+        weekViewShell.classList.add("hidden");
+        if (stripWrap) stripWrap.classList.add("hidden");
+        if (mobSchedShell) {
+          mobSchedShell.classList.remove("hidden");
+          renderMobSchedule();
+        }
       }
     } else {
       // Desktop: comportamento original
@@ -3509,10 +3517,7 @@ function renderWeekView() {
     return;
   }
 
-  // No mobile, o mob-schedule-shell cuida de tudo — não mexa no week-view-shell
-  if (window.innerWidth < 768) return;
-
-  // Garante que a timeline está visível
+  // Garante que a timeline está visível e a lista-mobile oculta
   const timelineShellChk = document.getElementById("week-view-shell");
   if (timelineShellChk) timelineShellChk.classList.remove("hidden");
   const listShellChk = document.getElementById("mob-day-list-shell");
@@ -4761,11 +4766,8 @@ if (calendarPrev) {
       calendarCursor = new Date(current);
     } else {
       const current = new Date(`${selectedDateKey}T12:00:00`);
-      const mobDay = agendaView === "day" && window.innerWidth < 768;
-      current.setDate(
-        current.getDate() -
-          (mobDay ? 7 : agendaView === "day" ? 1 : agendaView === "custom" ? Math.max(2, Math.min(10, customAgendaDays)) : 7),
-      );
+      const days = agendaView === "day" ? 1 : agendaView === "custom" ? Math.max(2, Math.min(10, customAgendaDays)) : 7;
+      current.setDate(current.getDate() - days);
       selectedDateKey = formatDateKey(current);
       calendarCursor = new Date(current);
     }
@@ -4788,11 +4790,8 @@ if (calendarNext) {
       calendarCursor = new Date(current);
     } else {
       const current = new Date(`${selectedDateKey}T12:00:00`);
-      const mobDay = agendaView === "day" && window.innerWidth < 768;
-      current.setDate(
-        current.getDate() +
-          (mobDay ? 7 : agendaView === "day" ? 1 : agendaView === "custom" ? Math.max(2, Math.min(10, customAgendaDays)) : 7),
-      );
+      const days = agendaView === "day" ? 1 : agendaView === "custom" ? Math.max(2, Math.min(10, customAgendaDays)) : 7;
+      current.setDate(current.getDate() + days);
       selectedDateKey = formatDateKey(current);
       calendarCursor = new Date(current);
     }
@@ -5534,7 +5533,7 @@ function setupTabs() {
       const buttons = shell.querySelectorAll("[data-tab-target]");
       const panels = shell.querySelectorAll("[data-tab-panel]");
       if (shell.dataset.tabGroup === "planner") {
-        currentPlannerTab = target;
+        setPlannerTab(target);
       }
       buttons.forEach((button) => {
         button.classList.toggle("is-active", button.dataset.tabTarget === target);
@@ -7255,20 +7254,25 @@ window.DynTable.initAll();
     // Update tab active states
     viewTabBtns.forEach((b) => b.classList.toggle("is-active", b.dataset.viewTab === view));
 
-    // Week strip: mostrar apenas para dia/semana no desktop
+    // Week strip: mostrar para dia/semana em todos os dispositivos
     const isTimeline = ["week", "day", "custom"].includes(view);
-    if (weekStripWrap) weekStripWrap.classList.toggle("hidden", !isTimeline || isMob);
+    if (weekStripWrap) weekStripWrap.classList.toggle("hidden", !isTimeline);
 
-    // No mobile: tudo vai para mob-schedule-shell. Ocultar os outros shells.
+    // Mobile: Dia/Semana → timeline; Lista/Mês/Ano → mob-schedule-shell
     if (isMob) {
-      if (timelineShell) timelineShell.classList.add("hidden");
       if (listShell) listShell.classList.add("hidden");
       if (monthShell) monthShell.classList.add("hidden");
       if (yearShell) yearShell.classList.add("hidden");
       const mobSchedEl = document.getElementById("mob-schedule-shell");
-      if (mobSchedEl) {
-        mobSchedEl.classList.remove("hidden");
-        renderMobSchedule();
+      if (isTimeline) {
+        if (timelineShell) timelineShell.classList.remove("hidden");
+        if (mobSchedEl) mobSchedEl.classList.add("hidden");
+      } else {
+        if (timelineShell) timelineShell.classList.add("hidden");
+        if (mobSchedEl) {
+          mobSchedEl.classList.remove("hidden");
+          renderMobSchedule();
+        }
       }
     } else {
       // Desktop: comportamento normal
@@ -7300,16 +7304,22 @@ window.DynTable.initAll();
     if (timelineShell) timelineShell.dataset.agendaView = v;
 
     if (isMob) {
-      // Mobile: tudo via mob-schedule-shell
-      if (weekStripWrap) weekStripWrap.classList.add("hidden");
-      if (timelineShell) timelineShell.classList.add("hidden");
-      if (listShell)     listShell.classList.add("hidden");
-      if (monthShell)    monthShell.classList.add("hidden");
-      if (yearShell)     yearShell.classList.add("hidden");
+      // Mobile: Dia/Semana → timeline; Lista/Mês/Ano → mob-schedule-shell
+      if (listShell)  listShell.classList.add("hidden");
+      if (monthShell) monthShell.classList.add("hidden");
+      if (yearShell)  yearShell.classList.add("hidden");
       const mobSchedEl = document.getElementById("mob-schedule-shell");
-      if (mobSchedEl) {
-        mobSchedEl.classList.remove("hidden");
-        renderMobSchedule();
+      if (isTimeline) {
+        if (weekStripWrap) weekStripWrap.classList.remove("hidden");
+        if (timelineShell) timelineShell.classList.remove("hidden");
+        if (mobSchedEl) mobSchedEl.classList.add("hidden");
+      } else {
+        if (weekStripWrap) weekStripWrap.classList.add("hidden");
+        if (timelineShell) timelineShell.classList.add("hidden");
+        if (mobSchedEl) {
+          mobSchedEl.classList.remove("hidden");
+          renderMobSchedule();
+        }
       }
     } else {
       // Desktop

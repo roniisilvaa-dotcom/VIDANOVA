@@ -7223,13 +7223,10 @@ select {
 }
 
 @media (max-width: 767px) {
-  /* No mobile, toda a agenda vai pelo mob-schedule-shell.
-     Os shells antigos ficam sempre ocultos. */
-  #week-view-shell,
+  /* No mobile, shells não usados ficam sempre ocultos. */
   #calendar-month-shell,
   #year-view-shell,
   #mob-day-list-shell,
-  .agenda-week-strip-scroll,
   .agenda-day-notes {
     display: none !important;
   }
@@ -7503,7 +7500,7 @@ select {
 .agenda-form-drawer {
   position: fixed;
   inset: 0;
-  z-index: 100;
+  z-index: 9999;
   display: flex;
   flex-direction: column;
   background: var(--surface, #fff);
