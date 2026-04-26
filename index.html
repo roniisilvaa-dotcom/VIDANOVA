@@ -492,123 +492,7 @@
                 <!-- FAB -->
                 <button class="agenda-fab" id="agenda-fab-btn" type="button" aria-label="Novo compromisso">+</button>
 
-                <!-- Form drawer -->
-                <div class="agenda-form-drawer hidden" id="agenda-form-drawer">
-                  <div class="agenda-form-drawer-header">
-                    <strong>Novo compromisso</strong>
-                    <button class="agenda-drawer-close" id="agenda-drawer-close" type="button" aria-label="Fechar">&#10005;</button>
-                  </div>
-
-                  <form id="agenda-form" class="gcal-form">
-                    <div class="gcal-title-row">
-                      <input id="agenda-title-input" type="text" class="gcal-title-input" placeholder="T&#237;tulo do compromisso" aria-label="T&#237;tulo" />
-                    </div>
-
-                    <div class="gcal-form-row">
-                      <span class="gcal-row-icon">&#128197;</span>
-                      <div class="gcal-row-content gcal-datetime-wrap">
-                        <input id="agenda-date-input" type="date" class="gcal-input" aria-label="Data" />
-                        <input id="agenda-time-input" type="time" class="gcal-input gcal-time" aria-label="Hor&#225;rio inicial" />
-                        <span class="gcal-dash">&#8211;</span>
-                        <input id="agenda-end-time-input" type="time" class="gcal-input gcal-time" aria-label="Hor&#225;rio final" />
-                        <label class="gcal-allday">
-                          <input id="agenda-allday-input" type="checkbox" />
-                          <span>Dia inteiro</span>
-                        </label>
-                      </div>
-                    </div>
-
-                    <div class="gcal-form-row">
-                      <span class="gcal-row-icon">&#128260;</span>
-                      <div class="gcal-row-content">
-                        <select id="agenda-recurrence-input" class="gcal-select" aria-label="Recorr&#234;ncia">
-                          <option value="none">N&#227;o se repete</option>
-                          <option value="daily">Todos os dias</option>
-                          <option value="weekly">Semanal</option>
-                          <option value="monthly">Mensal</option>
-                          <option value="yearly">Anual</option>
-                          <option value="weekdays">Dias de semana (Seg&#8211;Sex)</option>
-                          <option value="custom">Personalizar...</option>
-                        </select>
-                        <div class="gcal-weekly-times hidden" id="agenda-weekly-times-row">
-                          <span class="gcal-weekly-times-label">Vezes na semana:</span>
-                          <div class="gcal-weekly-times-btns">
-                            <button type="button" class="gcal-times-btn is-active" data-times="1">1&#215;</button>
-                            <button type="button" class="gcal-times-btn" data-times="2">2&#215;</button>
-                            <button type="button" class="gcal-times-btn" data-times="3">3&#215;</button>
-                            <button type="button" class="gcal-times-btn" data-times="4">4&#215;</button>
-                            <button type="button" class="gcal-times-btn" data-times="5">5&#215;</button>
-                          </div>
-                        </div>
-                        <span id="recurrence-custom-label" class="gcal-custom-rec-label hidden"></span>
-                      </div>
-                    </div>
-
-                    <div class="gcal-form-row">
-                      <span class="gcal-row-icon">&#128101;</span>
-                      <div class="gcal-row-content">
-                        <input id="agenda-guests-input" type="text" class="gcal-input" placeholder="Adicionar convidados" aria-label="Convidados" />
-                      </div>
-                    </div>
-
-                    <div class="gcal-form-row">
-                      <span class="gcal-row-icon">&#128205;</span>
-                      <div class="gcal-row-content">
-                        <input id="agenda-location-input" type="text" class="gcal-input" placeholder="Adicionar local" aria-label="Local" />
-                      </div>
-                    </div>
-
-                    <div class="gcal-form-row">
-                      <span class="gcal-row-icon">&#128221;</span>
-                      <div class="gcal-row-content">
-                        <textarea id="agenda-description-input" class="gcal-textarea" rows="2" placeholder="Adicionar descri&#231;&#227;o ou link"></textarea>
-                      </div>
-                    </div>
-
-                    <div class="gcal-form-row">
-                      <span class="gcal-row-icon">&#127912;</span>
-                      <div class="gcal-row-content gcal-color-row">
-                        <input id="agenda-color-input" type="hidden" value="#c55b84" aria-label="Cor" />
-                        <div class="app-color-preset-grid" data-color-preset-grid="agenda-form"></div>
-                      </div>
-                    </div>
-
-                    <div class="gcal-form-row">
-                      <span class="gcal-row-icon">&#128193;</span>
-                      <div class="gcal-row-content">
-                        <select id="agenda-calendar-input" class="gcal-select" aria-label="Calend&#225;rio"></select>
-                        <select id="agenda-category-input" class="gcal-select" aria-label="Categoria">
-                          <option value="Pessoal">Pessoal</option>
-                          <option value="Trabalho">Trabalho</option>
-                          <option value="Casa">Casa</option>
-                          <option value="Sa&#250;de">Sa&#250;de</option>
-                          <option value="Espiritual">Espiritual</option>
-                        </select>
-                      </div>
-                    </div>
-
-                    <div class="gcal-form-row">
-                      <span class="gcal-row-icon">&#128276;</span>
-                      <div class="gcal-row-content">
-                        <select id="agenda-reminder-input" class="gcal-select" aria-label="Alerta">
-                          <option value="15">15 min antes</option>
-                          <option value="5">5 min antes</option>
-                          <option value="30">30 min antes</option>
-                          <option value="60">1 hora antes</option>
-                          <option value="0">No hor&#225;rio</option>
-                          <option value="-1">Sem alerta</option>
-                        </select>
-                      </div>
-                    </div>
-
-                    <input id="agenda-link-input" type="hidden" aria-label="Link" />
-
-                    <div class="gcal-form-footer">
-                      <button id="agenda-cancel-edit" class="ghost-button hidden" type="button">Cancelar edi&#231;&#227;o</button>
-                      <button id="agenda-submit-button" type="submit" class="primary-button">Salvar compromisso</button>
-                    </div>
-                  </form>
-                </div>
+                <!-- Form drawer moved to body level (see bottom of file) -->
 
                 <!-- Recurrence modal -->
                 <div id="recurrence-modal" class="recurrence-overlay hidden" role="dialog" aria-modal="true" aria-label="Recorr&#234;ncia personalizada">
@@ -2567,6 +2451,124 @@
     </div>
 
     <script src="script.js"></script>
+
+    <!-- Form drawer: fora de todo container para position:fixed funcionar no iOS -->
+    <div class="agenda-form-drawer hidden" id="agenda-form-drawer">
+      <div class="agenda-form-drawer-header">
+        <strong>Novo compromisso</strong>
+        <button class="agenda-drawer-close" id="agenda-drawer-close" type="button" aria-label="Fechar">&#10005;</button>
+      </div>
+
+      <form id="agenda-form" class="gcal-form">
+        <div class="gcal-title-row">
+          <input id="agenda-title-input" type="text" class="gcal-title-input" placeholder="T&#237;tulo do compromisso" aria-label="T&#237;tulo" />
+        </div>
+
+        <div class="gcal-form-row">
+          <span class="gcal-row-icon">&#128197;</span>
+          <div class="gcal-row-content gcal-datetime-wrap">
+            <input id="agenda-date-input" type="date" class="gcal-input" aria-label="Data" />
+            <input id="agenda-time-input" type="time" class="gcal-input gcal-time" aria-label="Hor&#225;rio inicial" />
+            <span class="gcal-dash">&#8211;</span>
+            <input id="agenda-end-time-input" type="time" class="gcal-input gcal-time" aria-label="Hor&#225;rio final" />
+            <label class="gcal-allday">
+              <input id="agenda-allday-input" type="checkbox" />
+              <span>Dia inteiro</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="gcal-form-row">
+          <span class="gcal-row-icon">&#128260;</span>
+          <div class="gcal-row-content">
+            <select id="agenda-recurrence-input" class="gcal-select" aria-label="Recorr&#234;ncia">
+              <option value="none">N&#227;o se repete</option>
+              <option value="daily">Todos os dias</option>
+              <option value="weekly">Semanal</option>
+              <option value="monthly">Mensal</option>
+              <option value="yearly">Anual</option>
+              <option value="weekdays">Dias de semana (Seg&#8211;Sex)</option>
+              <option value="custom">Personalizar...</option>
+            </select>
+            <div class="gcal-weekly-times hidden" id="agenda-weekly-times-row">
+              <span class="gcal-weekly-times-label">Vezes na semana:</span>
+              <div class="gcal-weekly-times-btns">
+                <button type="button" class="gcal-times-btn is-active" data-times="1">1&#215;</button>
+                <button type="button" class="gcal-times-btn" data-times="2">2&#215;</button>
+                <button type="button" class="gcal-times-btn" data-times="3">3&#215;</button>
+                <button type="button" class="gcal-times-btn" data-times="4">4&#215;</button>
+                <button type="button" class="gcal-times-btn" data-times="5">5&#215;</button>
+              </div>
+            </div>
+            <span id="recurrence-custom-label" class="gcal-custom-rec-label hidden"></span>
+          </div>
+        </div>
+
+        <div class="gcal-form-row">
+          <span class="gcal-row-icon">&#128101;</span>
+          <div class="gcal-row-content">
+            <input id="agenda-guests-input" type="text" class="gcal-input" placeholder="Adicionar convidados" aria-label="Convidados" />
+          </div>
+        </div>
+
+        <div class="gcal-form-row">
+          <span class="gcal-row-icon">&#128205;</span>
+          <div class="gcal-row-content">
+            <input id="agenda-location-input" type="text" class="gcal-input" placeholder="Adicionar local" aria-label="Local" />
+          </div>
+        </div>
+
+        <div class="gcal-form-row">
+          <span class="gcal-row-icon">&#128221;</span>
+          <div class="gcal-row-content">
+            <textarea id="agenda-description-input" class="gcal-textarea" rows="2" placeholder="Adicionar descri&#231;&#227;o ou link"></textarea>
+          </div>
+        </div>
+
+        <div class="gcal-form-row">
+          <span class="gcal-row-icon">&#127912;</span>
+          <div class="gcal-row-content gcal-color-row">
+            <input id="agenda-color-input" type="hidden" value="#c55b84" aria-label="Cor" />
+            <div class="app-color-preset-grid" data-color-preset-grid="agenda-form"></div>
+          </div>
+        </div>
+
+        <div class="gcal-form-row">
+          <span class="gcal-row-icon">&#128193;</span>
+          <div class="gcal-row-content">
+            <select id="agenda-calendar-input" class="gcal-select" aria-label="Calend&#225;rio"></select>
+            <select id="agenda-category-input" class="gcal-select" aria-label="Categoria">
+              <option value="Pessoal">Pessoal</option>
+              <option value="Trabalho">Trabalho</option>
+              <option value="Casa">Casa</option>
+              <option value="Sa&#250;de">Sa&#250;de</option>
+              <option value="Espiritual">Espiritual</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="gcal-form-row">
+          <span class="gcal-row-icon">&#128276;</span>
+          <div class="gcal-row-content">
+            <select id="agenda-reminder-input" class="gcal-select" aria-label="Alerta">
+              <option value="15">15 min antes</option>
+              <option value="5">5 min antes</option>
+              <option value="30">30 min antes</option>
+              <option value="60">1 hora antes</option>
+              <option value="0">No hor&#225;rio</option>
+              <option value="-1">Sem alerta</option>
+            </select>
+          </div>
+        </div>
+
+        <input id="agenda-link-input" type="hidden" aria-label="Link" />
+
+        <div class="gcal-form-footer">
+          <button id="agenda-cancel-edit" class="ghost-button hidden" type="button">Cancelar edi&#231;&#227;o</button>
+          <button id="agenda-submit-button" type="submit" class="primary-button">Salvar compromisso</button>
+        </div>
+      </form>
+    </div>
 
 </body>
 </html>
