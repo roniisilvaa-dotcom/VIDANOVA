@@ -1886,6 +1886,35 @@ body.subscription-locked .subscription-gate {
   cursor: grabbing;
 }
 
+.week-event-block.is-resizing {
+  opacity: 0.88;
+  box-shadow: 0 4px 24px rgba(120, 60, 120, 0.22);
+}
+
+.event-resize-handle {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 10px;
+  cursor: ns-resize;
+  border-radius: 0 0 14px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  touch-action: none;
+}
+
+.event-resize-handle::after {
+  content: '';
+  display: block;
+  width: 22px;
+  height: 3px;
+  border-radius: 2px;
+  background: currentColor;
+  opacity: 0.35;
+}
+
 .week-event-block strong,
 .week-event-block small {
   display: block;

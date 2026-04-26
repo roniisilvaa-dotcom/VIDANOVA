@@ -1,5 +1,5 @@
-const CACHE_NAME = "vida-nova-v17";
-const CACHE_DYNAMIC = "vida-nova-dynamic-v16";
+const CACHE_NAME = "vida-nova-v18";
+const CACHE_DYNAMIC = "vida-nova-dynamic-v17";
 const APP_SHELL = [
   "./",
   "./index.html",

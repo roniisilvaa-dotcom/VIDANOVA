@@ -3595,9 +3595,11 @@ function renderWeekView() {
         const posStyle = totalCols > 1
           ? `left:calc(${leftPct}% + ${GAP}px);width:calc(${widthPct}% - ${GAP * 2}px);right:auto;`
           : `left:6px;right:6px;`;
+        const resizeHandle = isMobile ? "" : `<div class="event-resize-handle" aria-hidden="true"></div>`;
         return `<button type="button" class="week-event-block${isMobile ? " mob-day-block" : ""}"${isMobile ? "" : ' draggable="true"'} data-event-date="${dateKey}" data-event-id="${escapeHtml(eventItem.id)}" style="top:${top}px;height:${visHeight}px;${posStyle}background:${bgStyle};border-color:${escapeHtml(baseColor)};${colorStyle}">
           <strong>${escapeHtml(eventItem.title)}</strong>
           <small>${escapeHtml(formatTimeRange(eventItem.time, eventItem.endTime))}${eventItem.location ? ` • ${escapeHtml(eventItem.location)}` : ""}</small>
+          ${resizeHandle}
         </button>`;
       })
       .join("");
@@ -6441,6 +6443,62 @@ if (weekColumns) {
       .querySelectorAll(".week-day-column.is-drop-target")
       .forEach((column) => column.classList.remove("is-drop-target"));
     weekEventDragPayload = null;
+  });
+
+  // Resize handle — drag bottom edge to change event duration
+  weekColumns.addEventListener("mousedown", (event) => {
+    const handle = event.target.closest(".event-resize-handle");
+    if (!handle) return;
+    event.preventDefault();
+    event.stopPropagation();
+
+    const block = handle.closest(".week-event-block");
+    if (!block) return;
+
+    const eventId = block.dataset.eventId;
+    const dateKey = block.dataset.eventDate;
+    const PX_PER_SLOT = 14;
+    const startY = event.clientY;
+    const startHeight = block.offsetHeight;
+
+    block.classList.add("is-resizing");
+    document.body.style.cursor = "ns-resize";
+    document.body.style.userSelect = "none";
+
+    const onMove = (e) => {
+      const deltaY = e.clientY - startY;
+      const rawHeight = Math.max(PX_PER_SLOT * 2, startHeight + deltaY);
+      const snapped = Math.round(rawHeight / PX_PER_SLOT) * PX_PER_SLOT;
+      block.style.height = `${snapped}px`;
+    };
+
+    const onUp = (e) => {
+      window.removeEventListener("mousemove", onMove);
+      window.removeEventListener("mouseup", onUp);
+      block.classList.remove("is-resizing");
+      document.body.style.cursor = "";
+      document.body.style.userSelect = "";
+
+      const deltaY = e.clientY - startY;
+      const rawHeight = Math.max(PX_PER_SLOT * 2, startHeight + deltaY);
+      const snapped = Math.round(rawHeight / PX_PER_SLOT) * PX_PER_SLOT;
+      const durationMinutes = Math.round(snapped / PX_PER_SLOT) * 15;
+
+      const dayData = ensureAgendaDay(dateKey);
+      const eventItem = dayData.events.find((ev) => ev.id === eventId);
+      if (eventItem && eventItem.time) {
+        const [sh = 0, sm = 0] = eventItem.time.split(":").map(Number);
+        const endTotal = Math.min(24 * 60 - 15, sh * 60 + sm + durationMinutes);
+        const endH = Math.floor(endTotal / 60);
+        const endM = endTotal % 60;
+        eventItem.endTime = `${String(endH).padStart(2, "0")}:${String(endM).padStart(2, "0")}`;
+        saveAgendaStore();
+        renderWeekView();
+      }
+    };
+
+    window.addEventListener("mousemove", onMove);
+    window.addEventListener("mouseup", onUp);
   });
 }
 
