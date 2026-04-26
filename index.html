@@ -443,8 +443,9 @@
                   <button id="calendar-today" class="agenda-mob-today-btn" type="button">Hoje</button>
                 </div>
 
-                <!-- View tabs: Dia / Semana / M&#234;s / Ano -->
+                <!-- View tabs: Lista / Dia / Semana / M&#234;s / Ano -->
                 <div class="agenda-view-tabs" id="agenda-view-tabs">
+                  <button class="agenda-view-tab" data-view-tab="schedule" type="button">Lista</button>
                   <button class="agenda-view-tab is-active" data-view-tab="day" type="button">Dia</button>
                   <button class="agenda-view-tab" data-view-tab="week" type="button">Semana</button>
                   <button class="agenda-view-tab" data-view-tab="month" type="button">M&#234;s</button>
@@ -465,8 +466,11 @@
                   </div>
                 </div>
 
-                <!-- Mobile: lista de compromissos do dia (substitui timeline no mobile dia) -->
+                <!-- Mobile: lista de compromissos do dia (obsoleto, mantido por compat) -->
                 <div id="mob-day-list-shell" class="mob-day-list-shell hidden"></div>
+
+                <!-- Mobile: agenda/lista estilo Google Calendar -->
+                <div id="mob-schedule-shell" class="mob-schedule-shell hidden"></div>
 
                 <!-- Month grid (shown when Dia view is Month) -->
                 <div id="calendar-month-shell" class="agenda-month-shell hidden">

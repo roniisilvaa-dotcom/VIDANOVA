@@ -333,7 +333,7 @@ let draggedCard = null;
 let deferredInstallPrompt = null;
 let calendarCursor = new Date();
 let selectedDateKey = formatDateKey(new Date());
-let agendaView = window.innerWidth < 768 ? "day" : (localStorage.getItem("ela-em-ordem:agenda-view") || "week");
+let agendaView = window.innerWidth < 768 ? "schedule" : (localStorage.getItem("ela-em-ordem:agenda-view") || "week");
 let agendaStore = JSON.parse(localStorage.getItem("ela-em-ordem:agenda-events") || "{}");
 let calendarStore = JSON.parse(localStorage.getItem("vida-nova:calendar-store") || "null") || defaultCalendars.map((calendar) => ({ ...calendar }));
 let agendaSearchQuery = localStorage.getItem("vida-nova:agenda-search") || "";
@@ -1473,7 +1473,7 @@ function applyCloudState(state) {
   moduleStore = state.moduleStore && typeof state.moduleStore === "object" ? state.moduleStore : {};
   plannerBoardStore =
     state.plannerBoardStore && typeof state.plannerBoardStore === "object" ? state.plannerBoardStore : {};
-  agendaView = window.innerWidth < 768 ? "day" : (state.agendaView || "week");
+  agendaView = window.innerWidth < 768 ? "schedule" : (state.agendaView || "week");
   calendarStore = Array.isArray(state.calendarStore) && state.calendarStore.length
     ? state.calendarStore
     : defaultCalendars.map((calendar) => ({ ...calendar }));
@@ -3025,6 +3025,7 @@ function renderAgendaEvents() {
   renderWeekView();
   renderScheduleView();
   renderYearView();
+  if (window.innerWidth < 768) renderMobSchedule();
 }
 
 function renderMiniCalendar() {
@@ -3130,15 +3131,22 @@ function renderCalendar() {
   renderMiniCalendar();
 
   if (calendarMonthShell && weekViewShell && calendarMonthViewButton && calendarWeekViewButton) {
+    const isMob = window.innerWidth < 768;
     const isMonthView = agendaView === "month";
     const isGridRangeView = ["week", "day", "custom"].includes(agendaView);
+    const isMobSched = isMob && agendaView === "schedule";
     calendarMonthShell.classList.toggle("hidden", !isMonthView);
     weekViewShell.classList.toggle("hidden", !isGridRangeView);
     if (yearViewShell) {
       yearViewShell.classList.toggle("hidden", agendaView !== "year");
     }
     if (scheduleViewShell) {
-      scheduleViewShell.classList.toggle("hidden", agendaView !== "schedule");
+      scheduleViewShell.classList.toggle("hidden", isMob || agendaView !== "schedule");
+    }
+    const mobSchedShell = document.getElementById("mob-schedule-shell");
+    if (mobSchedShell) {
+      mobSchedShell.classList.toggle("hidden", !isMobSched);
+      if (isMobSched) renderMobSchedule();
     }
     calendarMonthViewButton.classList.toggle("is-active", isMonthView);
     calendarWeekViewButton.classList.toggle("is-active", agendaView === "week");
@@ -3279,6 +3287,82 @@ function renderMobDayList() {
   if (typeof updateMobDayLabel === "function") updateMobDayLabel();
 }
 
+// ── Google Calendar–style agenda/schedule list for mobile ──────────────────
+function renderMobSchedule() {
+  const shell = document.getElementById("mob-schedule-shell");
+  if (!shell) return;
+
+  const todayKey = formatDateKey(new Date());
+  const startDate = new Date(`${todayKey}T00:00:00`);
+  const DAYS = 90;
+  let html = "";
+
+  for (let i = 0; i < DAYS; i++) {
+    const date = new Date(startDate);
+    date.setDate(startDate.getDate() + i);
+    const dateKey = formatDateKey(date);
+    const events = getFilteredEventsForDate(dateKey)
+      .slice()
+      .sort((a, b) => (a.time || "").localeCompare(b.time || ""));
+
+    if (events.length === 0) continue; // skip empty days like Google Calendar
+
+    const isToday = dateKey === todayKey;
+    const isSelected = dateKey === selectedDateKey;
+    const dow = date.toLocaleDateString("pt-BR", { weekday: "short" }).replace(".", "").toUpperCase();
+    const dayNum = date.getDate();
+    const monthShort = date.toLocaleDateString("pt-BR", { month: "short" }).replace(".", "");
+
+    html += `<div class="msched-day" data-date="${dateKey}">
+      <div class="msched-date-col">
+        <span class="msched-dow">${dow}</span>
+        <button type="button" class="msched-daynum${isToday ? " is-today" : ""}${isSelected ? " is-selected" : ""}" data-sched-date="${dateKey}">${dayNum}</button>
+        <span class="msched-month">${monthShort}</span>
+      </div>
+      <div class="msched-events-col">
+        ${events.map((ev) => {
+          const color = ev.color || getCalendarById(ev.calendarId).color || "#c55b84";
+          const timeStr = formatTimeRange(ev.time, ev.endTime);
+          return `<button type="button" class="msched-event-card" data-event-id="${escapeHtml(ev.id)}" data-event-date="${escapeHtml(dateKey)}" style="--ev-color:${escapeHtml(color)}">
+            <div class="msched-event-stripe"></div>
+            <div class="msched-event-body">
+              <span class="msched-event-title">${escapeHtml(ev.title || "")}</span>
+              <span class="msched-event-meta">${escapeHtml(timeStr)}${ev.location ? ` · ${escapeHtml(ev.location)}` : ""}</span>
+            </div>
+          </button>`;
+        }).join("")}
+      </div>
+    </div>`;
+  }
+
+  if (!html) {
+    html = `<div class="msched-empty"><p>Sem compromissos nos próximos 90 dias.</p><p>Toque no <strong>+</strong> para adicionar.</p></div>`;
+  }
+
+  shell.innerHTML = html;
+
+  shell.querySelectorAll(".msched-event-card").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const dayData = ensureAgendaDay(btn.dataset.eventDate);
+      const ev = dayData.events.find((e) => e.id === btn.dataset.eventId);
+      if (ev) {
+        startAgendaEdit(ev, btn.dataset.eventDate);
+        const drawer = document.getElementById("agenda-form-drawer");
+        if (drawer) drawer.classList.remove("hidden");
+      }
+    });
+  });
+
+  shell.querySelectorAll("[data-sched-date]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      selectedDateKey = btn.dataset.schedDate;
+      calendarCursor = new Date(`${selectedDateKey}T12:00:00`);
+      renderMobWeekStrip?.();
+      updateMobDayLabel?.();
+    });
+  });
+}
+
 function renderWeekView() {
   if (!weekColumns || !weekHoursColumn || !weekViewHeader) {
     return;
@@ -3300,7 +3384,7 @@ function renderWeekView() {
     : getWeekStart(selectedDateKey);
   const daysToShow =
     agendaView === "day" ? 1 : agendaView === "custom" ? Math.max(2, Math.min(10, customAgendaDays)) : 7;
-  const hours = Array.from({ length: 17 }, (_, index) => 6 + index);
+  const hours = Array.from({ length: 24 }, (_, index) => index);
   weekHoursColumn.innerHTML = hours
     .map((hour) => `<div class="week-hour-label">${String(hour).padStart(2, "0")}:00</div>`)
     .join("");
@@ -3319,8 +3403,8 @@ function renderWeekView() {
 
   const todayKey = formatDateKey(new Date());
   const now = new Date();
-  const PX_PER_SLOT = 14; // 14px per 15 min = 56px per hour
-  const currentTop = ((now.getHours() * 60 + now.getMinutes() - 360) / 15) * PX_PER_SLOT;
+  const PX_PER_SLOT = 14; // 14px per 15 min = 56px per hour — 24h = 1344px total
+  const currentTop = ((now.getHours() * 60 + now.getMinutes()) / 15) * PX_PER_SLOT;
 
   weekColumns.innerHTML = Array.from({ length: daysToShow }, (_, dayIndex) => {
     const date = new Date(weekStart);
@@ -3330,9 +3414,9 @@ function renderWeekView() {
       .slice()
       .sort((a, b) => String(a.time || "").localeCompare(String(b.time || "")))
       .map((eventItem) => {
-        const [startHour = 6, startMinute = 0] = String(eventItem.time || "06:00").split(":").map(Number);
+        const [startHour = 0, startMinute = 0] = String(eventItem.time || "00:00").split(":").map(Number);
         const startTotal = startHour * 60 + startMinute;
-        const minutesFromStart = Math.max(0, startTotal - 360);
+        const minutesFromStart = startTotal; // 00:00 = topo da timeline
         const top = (minutesFromStart / 15) * PX_PER_SLOT;
         const height = Math.max(PX_PER_SLOT, (getEventDurationMinutes(eventItem) / 15) * PX_PER_SLOT);
         const baseColor = eventItem.color || getCalendarById(eventItem.calendarId).color || "#4285f4";
@@ -3368,8 +3452,8 @@ function renderWeekView() {
     requestAnimationFrame(() => {
       const PX_PER_SLOT_SCROLL = 14;
       const now = new Date();
-      const scrollHour = Math.max(7, now.getHours() - 1);
-      const scrollTop = ((scrollHour * 60 - 360) / 15) * PX_PER_SLOT_SCROLL;
+      const scrollHour = Math.max(6, now.getHours() - 1);
+      const scrollTop = (scrollHour * 60 / 15) * PX_PER_SLOT_SCROLL;
       tShell.scrollTop = Math.max(0, scrollTop);
     });
   }
@@ -7023,19 +7107,30 @@ window.DynTable.initAll();
     agendaView = view;
     localStorage.setItem("ela-em-ordem:agenda-view", view);
 
+    const isMob = window.innerWidth < 768;
+
     // Tag timeline shell for CSS scoping
     if (timelineShell) timelineShell.dataset.agendaView = view;
 
     // Update tab active states
     viewTabBtns.forEach((b) => b.classList.toggle("is-active", b.dataset.viewTab === view));
 
-    // Show/hide week strip (only for day/week)
-    if (weekStripWrap) weekStripWrap.classList.toggle("hidden", view === "month" || view === "year");
+    // Show/hide week strip
+    const isTimeline = ["week", "day", "custom"].includes(view);
+    if (weekStripWrap) weekStripWrap.classList.toggle("hidden", !isTimeline);
 
-    // Show/hide timeline vs month vs year (lista não usada no mobile)
-    const hideTimeline = view === "month" || view === "year";
+    // Show/hide shells
+    const hideTimeline = !isTimeline;
     if (timelineShell) timelineShell.classList.toggle("hidden", hideTimeline);
-    if (listShell)     listShell.classList.add("hidden");
+    if (listShell) listShell.classList.add("hidden");
+
+    // Mobile schedule shell
+    const mobSchedEl = document.getElementById("mob-schedule-shell");
+    if (mobSchedEl) {
+      const showSched = isMob && view === "schedule";
+      mobSchedEl.classList.toggle("hidden", !showSched);
+      if (showSched) renderMobSchedule();
+    }
     if (monthShell)    monthShell.classList.toggle("hidden", view !== "month");
     if (yearShell)     yearShell.classList.toggle("hidden", view !== "year");
 
@@ -7054,14 +7149,21 @@ window.DynTable.initAll();
   // Sync initial tab state on load
   function syncViewTabs() {
     const v = agendaView;
+    const isMob = window.innerWidth < 768;
+    const isTimeline = ["week", "day", "custom"].includes(v);
     viewTabBtns.forEach((b) => b.classList.toggle("is-active", b.dataset.viewTab === v));
     if (timelineShell) timelineShell.dataset.agendaView = v;
-    if (weekStripWrap) weekStripWrap.classList.toggle("hidden", v === "month" || v === "year");
-    const hideTimeline = v === "month" || v === "year";
-    if (timelineShell) timelineShell.classList.toggle("hidden", hideTimeline);
+    if (weekStripWrap) weekStripWrap.classList.toggle("hidden", !isTimeline);
+    if (timelineShell) timelineShell.classList.toggle("hidden", !isTimeline);
     if (listShell)     listShell.classList.add("hidden");
     if (monthShell)    monthShell.classList.toggle("hidden", v !== "month");
     if (yearShell)     yearShell.classList.toggle("hidden", v !== "year");
+    const mobSchedEl = document.getElementById("mob-schedule-shell");
+    if (mobSchedEl) {
+      const showSched = isMob && v === "schedule";
+      mobSchedEl.classList.toggle("hidden", !showSched);
+      if (showSched) renderMobSchedule();
+    }
   }
 
   // Also re-render strip when planner-agenda tab becomes visible
