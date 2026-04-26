@@ -3022,10 +3022,13 @@ function renderAgendaEvents() {
 
   renderNextAgendaCard();
   renderDashboardMirror();
-  renderWeekView();
-  renderScheduleView();
-  renderYearView();
-  if (window.innerWidth < 768) renderMobSchedule();
+  if (window.innerWidth < 768) {
+    renderMobSchedule();
+  } else {
+    renderWeekView();
+    renderScheduleView();
+    renderYearView();
+  }
 }
 
 function renderMiniCalendar() {
@@ -3134,19 +3137,25 @@ function renderCalendar() {
     const isMob = window.innerWidth < 768;
     const isMonthView = agendaView === "month";
     const isGridRangeView = ["week", "day", "custom"].includes(agendaView);
-    const isMobSched = isMob && agendaView === "schedule";
-    calendarMonthShell.classList.toggle("hidden", !isMonthView);
-    weekViewShell.classList.toggle("hidden", !isGridRangeView);
-    if (yearViewShell) {
-      yearViewShell.classList.toggle("hidden", agendaView !== "year");
-    }
-    if (scheduleViewShell) {
-      scheduleViewShell.classList.toggle("hidden", isMob || agendaView !== "schedule");
-    }
-    const mobSchedShell = document.getElementById("mob-schedule-shell");
-    if (mobSchedShell) {
-      mobSchedShell.classList.toggle("hidden", !isMobSched);
-      if (isMobSched) renderMobSchedule();
+    if (isMob) {
+      // Mobile: esconde todos os shells, usa mob-schedule-shell
+      calendarMonthShell.classList.add("hidden");
+      weekViewShell.classList.add("hidden");
+      if (yearViewShell) yearViewShell.classList.add("hidden");
+      if (scheduleViewShell) scheduleViewShell.classList.add("hidden");
+      const mobSchedShell = document.getElementById("mob-schedule-shell");
+      if (mobSchedShell) {
+        mobSchedShell.classList.remove("hidden");
+        renderMobSchedule();
+      }
+    } else {
+      // Desktop: comportamento original
+      calendarMonthShell.classList.toggle("hidden", !isMonthView);
+      weekViewShell.classList.toggle("hidden", !isGridRangeView);
+      if (yearViewShell) yearViewShell.classList.toggle("hidden", agendaView !== "year");
+      if (scheduleViewShell) scheduleViewShell.classList.toggle("hidden", agendaView !== "schedule");
+      const mobSchedShell = document.getElementById("mob-schedule-shell");
+      if (mobSchedShell) mobSchedShell.classList.add("hidden");
     }
     calendarMonthViewButton.classList.toggle("is-active", isMonthView);
     calendarWeekViewButton.classList.toggle("is-active", agendaView === "week");
@@ -3287,60 +3296,46 @@ function renderMobDayList() {
   if (typeof updateMobDayLabel === "function") updateMobDayLabel();
 }
 
-// ── Google Calendar–style agenda/schedule list for mobile ──────────────────
-function renderMobSchedule() {
-  const shell = document.getElementById("mob-schedule-shell");
-  if (!shell) return;
+// ════════════════════════════════════════════════════════════════
+//  MOBILE VIEWS — todos os tabs usam lista ordenada por hora
+//  Estilo Google Calendar. Sem timeline com position:absolute.
+// ════════════════════════════════════════════════════════════════
 
-  const todayKey = formatDateKey(new Date());
-  const startDate = new Date(`${todayKey}T00:00:00`);
-  const DAYS = 90;
-  let html = "";
+// Gera o HTML de um bloco de evento para a lista mobile
+function _mobEventCardHtml(ev, dateKey) {
+  const color = ev.color || getCalendarById(ev.calendarId).color || "#c55b84";
+  const timeStr = formatTimeRange(ev.time, ev.endTime);
+  return `<button type="button" class="msched-event-card" data-event-id="${escapeHtml(ev.id)}" data-event-date="${escapeHtml(dateKey)}" style="--ev-color:${escapeHtml(color)}">
+    <div class="msched-event-stripe"></div>
+    <div class="msched-event-body">
+      <span class="msched-event-title">${escapeHtml(ev.title || "")}</span>
+      <span class="msched-event-meta">${escapeHtml(timeStr)}${ev.location ? ` · ${escapeHtml(ev.location)}` : ""}</span>
+    </div>
+  </button>`;
+}
 
-  for (let i = 0; i < DAYS; i++) {
-    const date = new Date(startDate);
-    date.setDate(startDate.getDate() + i);
-    const dateKey = formatDateKey(date);
-    const events = getFilteredEventsForDate(dateKey)
-      .slice()
-      .sort((a, b) => (a.time || "").localeCompare(b.time || ""));
+// Gera HTML de um bloco de dia (header de data + eventos)
+function _mobDayBlockHtml(dateKey, events, todayKey) {
+  const date = new Date(`${dateKey}T12:00:00`);
+  const isToday = dateKey === todayKey;
+  const isSelected = dateKey === selectedDateKey;
+  const dow = date.toLocaleDateString("pt-BR", { weekday: "short" }).replace(".", "").toUpperCase();
+  const dayNum = date.getDate();
+  const monthShort = date.toLocaleDateString("pt-BR", { month: "short" }).replace(".", "");
+  return `<div class="msched-day" data-date="${dateKey}">
+    <div class="msched-date-col">
+      <span class="msched-dow">${dow}</span>
+      <button type="button" class="msched-daynum${isToday ? " is-today" : ""}${isSelected ? " is-selected" : ""}" data-sched-date="${dateKey}">${dayNum}</button>
+      <span class="msched-month">${monthShort}</span>
+    </div>
+    <div class="msched-events-col">
+      ${events.map((ev) => _mobEventCardHtml(ev, dateKey)).join("")}
+    </div>
+  </div>`;
+}
 
-    if (events.length === 0) continue; // skip empty days like Google Calendar
-
-    const isToday = dateKey === todayKey;
-    const isSelected = dateKey === selectedDateKey;
-    const dow = date.toLocaleDateString("pt-BR", { weekday: "short" }).replace(".", "").toUpperCase();
-    const dayNum = date.getDate();
-    const monthShort = date.toLocaleDateString("pt-BR", { month: "short" }).replace(".", "");
-
-    html += `<div class="msched-day" data-date="${dateKey}">
-      <div class="msched-date-col">
-        <span class="msched-dow">${dow}</span>
-        <button type="button" class="msched-daynum${isToday ? " is-today" : ""}${isSelected ? " is-selected" : ""}" data-sched-date="${dateKey}">${dayNum}</button>
-        <span class="msched-month">${monthShort}</span>
-      </div>
-      <div class="msched-events-col">
-        ${events.map((ev) => {
-          const color = ev.color || getCalendarById(ev.calendarId).color || "#c55b84";
-          const timeStr = formatTimeRange(ev.time, ev.endTime);
-          return `<button type="button" class="msched-event-card" data-event-id="${escapeHtml(ev.id)}" data-event-date="${escapeHtml(dateKey)}" style="--ev-color:${escapeHtml(color)}">
-            <div class="msched-event-stripe"></div>
-            <div class="msched-event-body">
-              <span class="msched-event-title">${escapeHtml(ev.title || "")}</span>
-              <span class="msched-event-meta">${escapeHtml(timeStr)}${ev.location ? ` · ${escapeHtml(ev.location)}` : ""}</span>
-            </div>
-          </button>`;
-        }).join("")}
-      </div>
-    </div>`;
-  }
-
-  if (!html) {
-    html = `<div class="msched-empty"><p>Sem compromissos nos próximos 90 dias.</p><p>Toque no <strong>+</strong> para adicionar.</p></div>`;
-  }
-
-  shell.innerHTML = html;
-
+// Anexa handlers de clique nos cards e nos botões de data
+function _mobAttachHandlers(shell) {
   shell.querySelectorAll(".msched-event-card").forEach((btn) => {
     btn.addEventListener("click", () => {
       const dayData = ensureAgendaDay(btn.dataset.eventDate);
@@ -3352,15 +3347,166 @@ function renderMobSchedule() {
       }
     });
   });
-
   shell.querySelectorAll("[data-sched-date]").forEach((btn) => {
     btn.addEventListener("click", () => {
       selectedDateKey = btn.dataset.schedDate;
       calendarCursor = new Date(`${selectedDateKey}T12:00:00`);
+      // Re-render com novo dia selecionado
+      renderMobSchedule();
       renderMobWeekStrip?.();
       updateMobDayLabel?.();
     });
   });
+  // Month mini-calendar date picker
+  shell.querySelectorAll("[data-mini-date]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      selectedDateKey = btn.dataset.miniDate;
+      calendarCursor = new Date(`${selectedDateKey}T12:00:00`);
+      renderMobSchedule();
+      renderMobWeekStrip?.();
+      updateMobDayLabel?.();
+    });
+  });
+}
+
+// ── Mini calendário para o topo do Mês (estilo Google Calendar) ──
+function _mobMiniCalHtml(todayKey) {
+  const year = calendarCursor.getFullYear();
+  const month = calendarCursor.getMonth();
+  const firstDay = new Date(year, month, 1);
+  const startOffset = firstDay.getDay();
+  const totalDays = new Date(year, month + 1, 0).getDate();
+  const weekdayLabels = ["D","S","T","Q","Q","S","S"];
+  let cells = weekdayLabels.map((d) => `<span class="mini-cal-dow">${d}</span>`).join("");
+  for (let i = 0; i < startOffset; i++) cells += `<span class="mini-cal-empty"></span>`;
+  for (let day = 1; day <= totalDays; day++) {
+    const dk = formatDateKey(new Date(year, month, day));
+    const evCount = getFilteredEventsForDate(dk).length;
+    const isToday = dk === todayKey;
+    const isSel = dk === selectedDateKey;
+    const dots = evCount > 0 ? `<span class="mini-cal-dot"></span>` : "";
+    cells += `<button type="button" class="mini-cal-day${isToday ? " is-today" : ""}${isSel ? " is-sel" : ""}" data-mini-date="${dk}">
+      ${day}${dots}
+    </button>`;
+  }
+  const monthName = firstDay.toLocaleDateString("pt-BR", { month: "long", year: "numeric" });
+  return `<div class="mob-mini-cal">
+    <div class="mob-mini-cal-title">${monthName}</div>
+    <div class="mob-mini-cal-grid">${cells}</div>
+  </div>`;
+}
+
+// ── Renderizador principal: adapta ao view atual ──
+function renderMobSchedule() {
+  const shell = document.getElementById("mob-schedule-shell");
+  if (!shell) return;
+
+  const todayKey = formatDateKey(new Date());
+  let html = "";
+
+  // ── DIA: lista de eventos do dia selecionado ordenados por hora ──
+  if (agendaView === "day") {
+    const events = getFilteredEventsForDate(selectedDateKey)
+      .slice()
+      .sort((a, b) => (a.time || "").localeCompare(b.time || ""));
+    if (events.length === 0) {
+      html = `<div class="msched-day-header">${_mobDayHeaderHtml(selectedDateKey, todayKey)}</div>
+        <div class="msched-empty"><p>Sem compromissos neste dia.</p><p>Toque no <strong>+</strong> para adicionar.</p></div>`;
+    } else {
+      html = `<div class="msched-day-header">${_mobDayHeaderHtml(selectedDateKey, todayKey)}</div>
+        <div class="msched-day-events">${events.map((ev) => _mobEventCardHtml(ev, selectedDateKey)).join("")}</div>`;
+    }
+    shell.innerHTML = html;
+    _mobAttachHandlers(shell);
+    return;
+  }
+
+  // ── SEMANA: lista dos eventos da semana, agrupados por dia ──
+  if (agendaView === "week") {
+    const weekStart = getWeekStart(selectedDateKey);
+    for (let i = 0; i < 7; i++) {
+      const date = new Date(weekStart);
+      date.setDate(weekStart.getDate() + i);
+      const dateKey = formatDateKey(date);
+      const events = getFilteredEventsForDate(dateKey)
+        .slice()
+        .sort((a, b) => (a.time || "").localeCompare(b.time || ""));
+      html += _mobDayBlockHtml(dateKey, events.length ? events : [], todayKey);
+    }
+    if (!html) html = `<div class="msched-empty"><p>Sem compromissos esta semana.</p></div>`;
+    shell.innerHTML = html;
+    _mobAttachHandlers(shell);
+    return;
+  }
+
+  // ── MÊS: mini calendário compacto + eventos do dia selecionado ──
+  if (agendaView === "month") {
+    const events = getFilteredEventsForDate(selectedDateKey)
+      .slice()
+      .sort((a, b) => (a.time || "").localeCompare(b.time || ""));
+    const eventsHtml = events.length
+      ? events.map((ev) => _mobEventCardHtml(ev, selectedDateKey)).join("")
+      : `<div class="msched-empty"><p>Sem compromissos neste dia.</p></div>`;
+    html = `${_mobMiniCalHtml(todayKey)}
+      <div class="mob-month-day-events">
+        <div class="mob-month-day-header">${_mobDayHeaderHtml(selectedDateKey, todayKey)}</div>
+        <div class="msched-day-events">${eventsHtml}</div>
+      </div>`;
+    shell.innerHTML = html;
+    _mobAttachHandlers(shell);
+    return;
+  }
+
+  // ── ANO: grade anual compacta ──
+  if (agendaView === "year") {
+    const year = calendarCursor.getFullYear();
+    const weekdayLabels = ["D","S","T","Q","Q","S","S"];
+    html = `<div class="mob-year-grid">`;
+    for (let m = 0; m < 12; m++) {
+      const firstDay = new Date(year, m, 1);
+      const startOffset = firstDay.getDay();
+      const totalDays = new Date(year, m + 1, 0).getDate();
+      const monthName = firstDay.toLocaleDateString("pt-BR", { month: "short" }).replace(".", "");
+      let cells = weekdayLabels.map((d) => `<span class="mob-yr-dow">${d}</span>`).join("");
+      for (let i = 0; i < startOffset; i++) cells += `<span class="mob-yr-empty"></span>`;
+      for (let day = 1; day <= totalDays; day++) {
+        const dk = formatDateKey(new Date(year, m, day));
+        const isToday = dk === todayKey;
+        const isSel = dk === selectedDateKey;
+        const hasEv = getFilteredEventsForDate(dk).length > 0;
+        cells += `<button type="button" class="mob-yr-day${isToday ? " is-today" : ""}${isSel ? " is-sel" : ""}${hasEv ? " has-ev" : ""}" data-mini-date="${dk}">${day}</button>`;
+      }
+      html += `<div class="mob-yr-month"><strong class="mob-yr-month-name">${monthName}</strong><div class="mob-yr-month-grid">${cells}</div></div>`;
+    }
+    html += `</div>`;
+    shell.innerHTML = html;
+    _mobAttachHandlers(shell);
+    return;
+  }
+
+  // ── LISTA/SCHEDULE: próximos 90 dias ──
+  const startDate = new Date(`${todayKey}T00:00:00`);
+  for (let i = 0; i < 90; i++) {
+    const date = new Date(startDate);
+    date.setDate(startDate.getDate() + i);
+    const dateKey = formatDateKey(date);
+    const events = getFilteredEventsForDate(dateKey)
+      .slice()
+      .sort((a, b) => (a.time || "").localeCompare(b.time || ""));
+    if (events.length === 0) continue;
+    html += _mobDayBlockHtml(dateKey, events, todayKey);
+  }
+  if (!html) html = `<div class="msched-empty"><p>Sem compromissos nos próximos 90 dias.</p><p>Toque no <strong>+</strong> para adicionar.</p></div>`;
+  shell.innerHTML = html;
+  _mobAttachHandlers(shell);
+}
+
+// Header de data para views de dia (DIA e MÊS)
+function _mobDayHeaderHtml(dateKey, todayKey) {
+  const date = new Date(`${dateKey}T12:00:00`);
+  const isToday = dateKey === todayKey;
+  const fullDate = date.toLocaleDateString("pt-BR", { weekday: "long", day: "numeric", month: "long" });
+  return `<span class="mob-day-hdr-label${isToday ? " is-today" : ""}">${fullDate}${isToday ? " — Hoje" : ""}</span>`;
 }
 
 function renderWeekView() {
@@ -7115,21 +7261,29 @@ window.DynTable.initAll();
     // Update tab active states
     viewTabBtns.forEach((b) => b.classList.toggle("is-active", b.dataset.viewTab === view));
 
-    // Show/hide week strip
+    // Week strip: mostrar apenas para dia/semana no desktop
     const isTimeline = ["week", "day", "custom"].includes(view);
-    if (weekStripWrap) weekStripWrap.classList.toggle("hidden", !isTimeline);
+    if (weekStripWrap) weekStripWrap.classList.toggle("hidden", !isTimeline || isMob);
 
-    // Show/hide shells
-    const hideTimeline = !isTimeline;
-    if (timelineShell) timelineShell.classList.toggle("hidden", hideTimeline);
-    if (listShell) listShell.classList.add("hidden");
-
-    // Mobile schedule shell
-    const mobSchedEl = document.getElementById("mob-schedule-shell");
-    if (mobSchedEl) {
-      const showSched = isMob && view === "schedule";
-      mobSchedEl.classList.toggle("hidden", !showSched);
-      if (showSched) renderMobSchedule();
+    // No mobile: tudo vai para mob-schedule-shell. Ocultar os outros shells.
+    if (isMob) {
+      if (timelineShell) timelineShell.classList.add("hidden");
+      if (listShell) listShell.classList.add("hidden");
+      if (monthShell) monthShell.classList.add("hidden");
+      if (yearShell) yearShell.classList.add("hidden");
+      const mobSchedEl = document.getElementById("mob-schedule-shell");
+      if (mobSchedEl) {
+        mobSchedEl.classList.remove("hidden");
+        renderMobSchedule();
+      }
+    } else {
+      // Desktop: comportamento normal
+      if (listShell) listShell.classList.add("hidden");
+      if (timelineShell) timelineShell.classList.toggle("hidden", !isTimeline);
+      if (monthShell) monthShell.classList.toggle("hidden", view !== "month");
+      if (yearShell) yearShell.classList.toggle("hidden", view !== "year");
+      const mobSchedEl = document.getElementById("mob-schedule-shell");
+      if (mobSchedEl) mobSchedEl.classList.add("hidden");
     }
     if (monthShell)    monthShell.classList.toggle("hidden", view !== "month");
     if (yearShell)     yearShell.classList.toggle("hidden", view !== "year");
@@ -7153,16 +7307,28 @@ window.DynTable.initAll();
     const isTimeline = ["week", "day", "custom"].includes(v);
     viewTabBtns.forEach((b) => b.classList.toggle("is-active", b.dataset.viewTab === v));
     if (timelineShell) timelineShell.dataset.agendaView = v;
-    if (weekStripWrap) weekStripWrap.classList.toggle("hidden", !isTimeline);
-    if (timelineShell) timelineShell.classList.toggle("hidden", !isTimeline);
-    if (listShell)     listShell.classList.add("hidden");
-    if (monthShell)    monthShell.classList.toggle("hidden", v !== "month");
-    if (yearShell)     yearShell.classList.toggle("hidden", v !== "year");
-    const mobSchedEl = document.getElementById("mob-schedule-shell");
-    if (mobSchedEl) {
-      const showSched = isMob && v === "schedule";
-      mobSchedEl.classList.toggle("hidden", !showSched);
-      if (showSched) renderMobSchedule();
+
+    if (isMob) {
+      // Mobile: tudo via mob-schedule-shell
+      if (weekStripWrap) weekStripWrap.classList.add("hidden");
+      if (timelineShell) timelineShell.classList.add("hidden");
+      if (listShell)     listShell.classList.add("hidden");
+      if (monthShell)    monthShell.classList.add("hidden");
+      if (yearShell)     yearShell.classList.add("hidden");
+      const mobSchedEl = document.getElementById("mob-schedule-shell");
+      if (mobSchedEl) {
+        mobSchedEl.classList.remove("hidden");
+        renderMobSchedule();
+      }
+    } else {
+      // Desktop
+      if (weekStripWrap) weekStripWrap.classList.toggle("hidden", !isTimeline);
+      if (timelineShell) timelineShell.classList.toggle("hidden", !isTimeline);
+      if (listShell)     listShell.classList.add("hidden");
+      if (monthShell)    monthShell.classList.toggle("hidden", v !== "month");
+      if (yearShell)     yearShell.classList.toggle("hidden", v !== "year");
+      const mobSchedEl = document.getElementById("mob-schedule-shell");
+      if (mobSchedEl) mobSchedEl.classList.add("hidden");
     }
   }
 

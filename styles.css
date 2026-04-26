@@ -7223,12 +7223,23 @@ select {
 }
 
 @media (max-width: 767px) {
+  /* No mobile, toda a agenda vai pelo mob-schedule-shell.
+     Os shells antigos ficam sempre ocultos. */
+  #week-view-shell,
+  #calendar-month-shell,
+  #year-view-shell,
+  #mob-day-list-shell,
+  .agenda-week-strip-scroll,
+  .agenda-day-notes {
+    display: none !important;
+  }
+
   .agenda-timeline-shell {
     flex: 1;
     min-height: 0;
-    overflow-y: scroll; /* scroll (não auto) é mais confiável no iOS */
+    overflow-y: scroll;
     -webkit-overflow-scrolling: touch;
-    touch-action: pan-y; /* garante que o scroll vertical funcione, não drag */
+    touch-action: pan-y;
     overscroll-behavior-y: contain;
   }
 
@@ -8129,9 +8140,106 @@ select {
 /* ── Estado vazio ── */
 .msched-empty {
   text-align: center;
-  padding: 60px 24px;
+  padding: 40px 24px;
   color: var(--muted, #9a7fa0);
 }
 .msched-empty p { margin: 6px 0; font-size: 14px; line-height: 1.5; }
 .msched-empty strong { color: var(--accent, #c55b84); }
+
+/* ── Header de dia (view DIA e dentro do MÊS) ── */
+.msched-day-header {
+  padding: 10px 16px 4px;
+  border-bottom: 1px solid rgba(0,0,0,.07);
+}
+.mob-day-hdr-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--muted, #70757a);
+  text-transform: capitalize;
+}
+.mob-day-hdr-label.is-today { color: var(--accent, #c55b84); }
+.msched-day-events { padding: 8px 12px 16px; display: flex; flex-direction: column; gap: 8px; }
+
+/* ── Mini calendário (dentro do MÊS) ── */
+.mob-mini-cal {
+  padding: 8px 12px 0;
+  background: var(--surface, #fff);
+  border-bottom: 1px solid rgba(0,0,0,.07);
+}
+.mob-mini-cal-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--fg, #3c1f3b);
+  text-align: center;
+  margin-bottom: 6px;
+  text-transform: capitalize;
+}
+.mob-mini-cal-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 1px 0;
+}
+.mini-cal-dow {
+  font-size: 9px;
+  font-weight: 600;
+  color: var(--muted, #70757a);
+  text-align: center;
+  padding: 2px 0;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+}
+.mini-cal-empty { aspect-ratio: 1; }
+.mini-cal-day {
+  aspect-ratio: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: transparent;
+  font-size: 12px;
+  color: var(--fg, #3c1f3b);
+  cursor: pointer;
+  border-radius: 50%;
+  position: relative;
+  gap: 1px;
+  -webkit-tap-highlight-color: transparent;
+}
+.mini-cal-day.is-today { background: var(--accent, #c55b84); color: #fff; font-weight: 700; }
+.mini-cal-day.is-sel:not(.is-today) { background: rgba(197,91,132,.15); color: var(--accent, #c55b84); font-weight: 700; }
+.mini-cal-dot { width: 4px; height: 4px; border-radius: 50%; background: var(--accent, #c55b84); }
+.mini-cal-day.is-today .mini-cal-dot { background: rgba(255,255,255,.8); }
+
+/* ── Eventos do dia selecionado dentro do MÊS ── */
+.mob-month-day-events { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; }
+.mob-month-day-header { padding: 10px 16px 4px; }
+
+/* ── ANO: grade compacta 2 colunas ── */
+.mob-year-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  padding: 12px;
+}
+.mob-yr-month { background: var(--surface, #fff); border-radius: 12px; padding: 8px; box-shadow: 0 1px 4px rgba(0,0,0,.06); }
+.mob-yr-month-name { display: block; font-size: 11px; font-weight: 700; color: var(--fg, #3c1f3b); text-align: center; margin-bottom: 4px; text-transform: capitalize; }
+.mob-yr-month-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 1px; }
+.mob-yr-dow { font-size: 7px; text-align: center; color: var(--muted, #aaa); }
+.mob-yr-empty { min-height: 16px; }
+.mob-yr-day {
+  min-height: 16px;
+  font-size: 8px;
+  border: none;
+  background: transparent;
+  text-align: center;
+  cursor: pointer;
+  border-radius: 50%;
+  color: var(--fg, #3c1f3b);
+  padding: 1px;
+  -webkit-tap-highlight-color: transparent;
+}
+.mob-yr-day.is-today { background: var(--accent, #c55b84); color: #fff; font-weight: 700; }
+.mob-yr-day.is-sel:not(.is-today) { background: rgba(197,91,132,.14); color: var(--accent, #c55b84); }
+.mob-yr-day.has-ev::after { content: ""; display: block; width: 3px; height: 3px; border-radius: 50%; background: var(--accent, #c55b84); margin: 0 auto; }
+.mob-yr-day.is-today.has-ev::after { background: rgba(255,255,255,.8); }
 
