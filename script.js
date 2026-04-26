@@ -1757,9 +1757,8 @@ function toSoftColor(hex, alpha = 0.24) {
 
 function getRoundedTimeFromOffset(offsetY) {
   const minutesFromStart = Math.max(0, Math.round(offsetY / 14) * 15);
-  const totalMinutes = 360 + minutesFromStart;
-  const hours = Math.floor(totalMinutes / 60);
-  const minutes = totalMinutes % 60;
+  const hours = Math.min(23, Math.floor(minutesFromStart / 60));
+  const minutes = minutesFromStart % 60;
   return `${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}`;
 }
 
@@ -3508,6 +3507,31 @@ function renderMobSchedule() {
   _mobAttachHandlers(shell);
 }
 
+function _layoutEventsForDay(events, PX_PER_SLOT) {
+  if (!events.length) return [];
+  const timed = events.map(ev => {
+    const [sh = 0, sm = 0] = String(ev.time || "00:00").split(":").map(Number);
+    const start = sh * 60 + sm;
+    const dur = Math.max(30, getEventDurationMinutes(ev));
+    return { ev, start, end: start + dur };
+  });
+  const cols = [];
+  const assigned = timed.map(item => {
+    let col = cols.findIndex(end => end <= item.start);
+    if (col === -1) { col = cols.length; cols.push(item.end); }
+    else cols[col] = item.end;
+    return { ...item, col };
+  });
+  return assigned.map(item => {
+    const concurrent = assigned.filter(o => o.start < item.end && o.end > item.start);
+    const totalCols = concurrent.reduce((max, o) => Math.max(max, o.col + 1), 1);
+    const top = (item.start / 15) * PX_PER_SLOT;
+    const dur = getEventDurationMinutes(item.ev);
+    const height = Math.max(PX_PER_SLOT, (dur / 15) * PX_PER_SLOT);
+    return { ev: item.ev, top, height, col: item.col, totalCols };
+  });
+}
+
 function renderWeekView() {
   if (!weekColumns || !weekHoursColumn || !weekViewHeader) {
     return;
@@ -3555,21 +3579,23 @@ function renderWeekView() {
     const date = new Date(weekStart);
     date.setDate(weekStart.getDate() + dayIndex);
     const dateKey = formatDateKey(date);
-    const blocks = getFilteredEventsForDate(dateKey)
+    const sorted = getFilteredEventsForDate(dateKey)
       .slice()
-      .sort((a, b) => String(a.time || "").localeCompare(String(b.time || "")))
-      .map((eventItem) => {
-        const [startHour = 0, startMinute = 0] = String(eventItem.time || "00:00").split(":").map(Number);
-        const startTotal = startHour * 60 + startMinute;
-        const minutesFromStart = startTotal; // 00:00 = topo da timeline
-        const top = (minutesFromStart / 15) * PX_PER_SLOT;
-        const height = Math.max(PX_PER_SLOT, (getEventDurationMinutes(eventItem) / 15) * PX_PER_SLOT);
-        const baseColor = eventItem.color || getCalendarById(eventItem.calendarId).color || "#4285f4";
-        const isMobile = window.innerWidth < 768;
-        const bgStyle = isMobile ? baseColor : toSoftColor(baseColor, 0.3);
+      .sort((a, b) => String(a.time || "").localeCompare(String(b.time || "")));
+    const isMobile = window.innerWidth < 768;
+    const blocks = _layoutEventsForDay(sorted, PX_PER_SLOT)
+      .map(({ ev: eventItem, top, height, col, totalCols }) => {
+        const baseColor = eventItem.color || getCalendarById(eventItem.calendarId)?.color || "#4285f4";
+        const bgStyle = isMobile ? baseColor : toSoftColor(baseColor, 0.55);
         const colorStyle = isMobile ? "color:#fff" : `color:${baseColor}`;
-        const visHeight = Math.max(44, height); // minimum 44px so text is always readable
-        return `<button type="button" class="week-event-block${isMobile ? " mob-day-block" : ""}"${isMobile ? "" : ' draggable="true"'} data-event-date="${dateKey}" data-event-id="${escapeHtml(eventItem.id)}" style="top:${top}px;height:${visHeight}px;background:${bgStyle};border-color:${escapeHtml(baseColor)};${colorStyle}">
+        const visHeight = Math.max(44, height);
+        const GAP = 4;
+        const leftPct = (col / totalCols) * 100;
+        const widthPct = (1 / totalCols) * 100;
+        const posStyle = totalCols > 1
+          ? `left:calc(${leftPct}% + ${GAP}px);width:calc(${widthPct}% - ${GAP * 2}px);right:auto;`
+          : `left:6px;right:6px;`;
+        return `<button type="button" class="week-event-block${isMobile ? " mob-day-block" : ""}"${isMobile ? "" : ' draggable="true"'} data-event-date="${dateKey}" data-event-id="${escapeHtml(eventItem.id)}" style="top:${top}px;height:${visHeight}px;${posStyle}background:${bgStyle};border-color:${escapeHtml(baseColor)};${colorStyle}">
           <strong>${escapeHtml(eventItem.title)}</strong>
           <small>${escapeHtml(formatTimeRange(eventItem.time, eventItem.endTime))}${eventItem.location ? ` • ${escapeHtml(eventItem.location)}` : ""}</small>
         </button>`;
@@ -7192,21 +7218,30 @@ window.DynTable.initAll();
     });
   }
 
-  // Drawer close
-  if (drawerClose && drawer) {
-    drawerClose.addEventListener("click", () => {
-      drawer.classList.add("hidden");
-      document.body.style.overflow = "";
-    });
+  // Drawer close — funciona com click, touch e Escape
+  function closeDrawer() {
+    if (!drawer) return;
+    drawer.classList.add("hidden");
+    document.body.style.overflow = "";
   }
+
+  if (drawerClose && drawer) {
+    drawerClose.addEventListener("click", closeDrawer);
+    drawerClose.addEventListener("touchend", (e) => { e.preventDefault(); closeDrawer(); });
+  }
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && drawer && !drawer.classList.contains("hidden")) {
+      closeDrawer();
+    }
+  });
 
   // Close drawer after form submit
   const originalForm = document.getElementById("agenda-form");
   if (originalForm && drawer) {
     originalForm.addEventListener("submit", () => {
       setTimeout(() => {
-        drawer.classList.add("hidden");
-        document.body.style.overflow = "";
+        closeDrawer();
         renderMobWeekStrip();
         updateMobDayLabel();
       }, 80);

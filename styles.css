@@ -7520,6 +7520,7 @@ select {
   align-items: center;
   justify-content: space-between;
   padding: 16px 18px 12px;
+  padding-top: max(16px, calc(16px + env(safe-area-inset-top)));
   border-bottom: 1px solid var(--line, rgba(0,0,0,.08));
   position: sticky;
   top: 0;
@@ -7532,16 +7533,19 @@ select {
   color: var(--berry, #c55b84);
 }
 .agenda-drawer-close {
-  width: 32px;
-  height: 32px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   border: none;
   background: rgba(0,0,0,.07);
   color: var(--ink, #3f2d3d);
-  font-size: 0.9rem;
+  font-size: 1rem;
   cursor: pointer;
   display: grid;
   place-items: center;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  flex-shrink: 0;
 }
 
 /* ── Weekly times per week ── */
@@ -7863,6 +7867,7 @@ select {
   /* ── Form drawer: account for safe area ── */
   .agenda-form-drawer {
     padding-bottom: env(safe-area-inset-bottom);
+    padding-top: env(safe-area-inset-top);
   }
 
   /* ── gcal form: better mobile layout ── */
