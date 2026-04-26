@@ -1473,7 +1473,7 @@ function applyCloudState(state) {
   moduleStore = state.moduleStore && typeof state.moduleStore === "object" ? state.moduleStore : {};
   plannerBoardStore =
     state.plannerBoardStore && typeof state.plannerBoardStore === "object" ? state.plannerBoardStore : {};
-  agendaView = state.agendaView || "week";
+  agendaView = window.innerWidth < 768 ? "day" : (state.agendaView || "week");
   calendarStore = Array.isArray(state.calendarStore) && state.calendarStore.length
     ? state.calendarStore
     : defaultCalendars.map((calendar) => ({ ...calendar }));
@@ -3288,8 +3288,8 @@ function renderWeekView() {
     return;
   }
 
-  // No mobile, dia view usa lista simples (sem timeline absoluto)
-  if (window.innerWidth < 768 && agendaView === "day") {
+  // No mobile, sempre usa lista simples (sem timeline absoluto)
+  if (window.innerWidth < 768) {
     const timelineShell = document.getElementById("week-view-shell");
     const listShell     = document.getElementById("mob-day-list-shell");
     if (timelineShell) timelineShell.classList.add("hidden");
@@ -7034,7 +7034,7 @@ window.DynTable.initAll();
     localStorage.setItem("ela-em-ordem:agenda-view", view);
 
     const isMob = window.innerWidth < 768;
-    const useMobList = isMob && view === "day";
+    const useMobList = isMob; // No mobile, SEMPRE usa lista
 
     // Tag timeline shell for CSS scoping
     if (timelineShell) timelineShell.dataset.agendaView = view;
@@ -7048,7 +7048,7 @@ window.DynTable.initAll();
     // Show/hide timeline vs lista vs month vs year
     const hideTimeline = view === "month" || view === "year" || useMobList;
     if (timelineShell) timelineShell.classList.toggle("hidden", hideTimeline);
-    if (listShell)     listShell.classList.toggle("hidden", !useMobList);
+    if (listShell)     listShell.classList.toggle("hidden", !useMobList || view === "month" || view === "year");
     if (monthShell)    monthShell.classList.toggle("hidden", view !== "month");
     if (yearShell)     yearShell.classList.toggle("hidden", view !== "year");
 
@@ -7068,13 +7068,13 @@ window.DynTable.initAll();
   function syncViewTabs() {
     const v = agendaView;
     const isMob = window.innerWidth < 768;
-    const useMobList = isMob && v === "day";
+    const useMobList = isMob; // No mobile, SEMPRE usa lista
     viewTabBtns.forEach((b) => b.classList.toggle("is-active", b.dataset.viewTab === v));
     if (timelineShell) timelineShell.dataset.agendaView = v;
     if (weekStripWrap) weekStripWrap.classList.toggle("hidden", v === "month" || v === "year");
     const hideTimeline = v === "month" || v === "year" || useMobList;
     if (timelineShell) timelineShell.classList.toggle("hidden", hideTimeline);
-    if (listShell)     listShell.classList.toggle("hidden", !useMobList);
+    if (listShell)     listShell.classList.toggle("hidden", !useMobList || v === "month" || v === "year");
     if (monthShell)    monthShell.classList.toggle("hidden", v !== "month");
     if (yearShell)     yearShell.classList.toggle("hidden", v !== "year");
   }

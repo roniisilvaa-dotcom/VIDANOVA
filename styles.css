@@ -7561,6 +7561,8 @@ select {
     max-height: 100svh !important;
     border-radius: 0 !important;
     overflow: hidden !important;
+    display: flex !important;
+    flex-direction: column !important;
   }
 
   /* Fallback se o usuário entrou direto na agenda sem setPlannerTab disparar */
@@ -7781,8 +7783,11 @@ select {
    ════════════════════════════════════════════ */
 .mob-day-list-shell {
   flex: 1;
+  min-height: 0;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
+  touch-action: pan-y;
+  overscroll-behavior-y: contain;
   background: #fff;
   padding: 4px 0 80px;
 }
