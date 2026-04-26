@@ -3288,21 +3288,11 @@ function renderWeekView() {
     return;
   }
 
-  // No mobile, sempre usa lista simples (sem timeline absoluto)
-  if (window.innerWidth < 768) {
-    const timelineShell = document.getElementById("week-view-shell");
-    const listShell     = document.getElementById("mob-day-list-shell");
-    if (timelineShell) timelineShell.classList.add("hidden");
-    if (listShell)     listShell.classList.remove("hidden");
-    renderMobDayList();
-    return;
-  }
-
-  // Para outros views: garante que timeline está visível e lista oculta
-  const listShellChk = document.getElementById("mob-day-list-shell");
-  if (listShellChk) listShellChk.classList.add("hidden");
+  // Garante que a timeline está visível
   const timelineShellChk = document.getElementById("week-view-shell");
   if (timelineShellChk) timelineShellChk.classList.remove("hidden");
+  const listShellChk = document.getElementById("mob-day-list-shell");
+  if (listShellChk) listShellChk.classList.add("hidden");
 
   // For day view, start from selectedDateKey directly so the correct day is shown
   const weekStart = agendaView === "day"
@@ -3350,7 +3340,7 @@ function renderWeekView() {
         const bgStyle = isMobile ? baseColor : toSoftColor(baseColor, 0.3);
         const colorStyle = isMobile ? "color:#fff" : `color:${baseColor}`;
         const visHeight = Math.max(44, height); // minimum 44px so text is always readable
-        return `<button type="button" class="week-event-block${isMobile ? " mob-day-block" : ""}" draggable="true" data-event-date="${dateKey}" data-event-id="${escapeHtml(eventItem.id)}" style="top:${top}px;height:${visHeight}px;background:${bgStyle};border-color:${escapeHtml(baseColor)};${colorStyle}">
+        return `<button type="button" class="week-event-block${isMobile ? " mob-day-block" : ""}"${isMobile ? "" : ' draggable="true"'} data-event-date="${dateKey}" data-event-id="${escapeHtml(eventItem.id)}" style="top:${top}px;height:${visHeight}px;background:${bgStyle};border-color:${escapeHtml(baseColor)};${colorStyle}">
           <strong>${escapeHtml(eventItem.title)}</strong>
           <small>${escapeHtml(formatTimeRange(eventItem.time, eventItem.endTime))}${eventItem.location ? ` • ${escapeHtml(eventItem.location)}` : ""}</small>
         </button>`;
@@ -7033,9 +7023,6 @@ window.DynTable.initAll();
     agendaView = view;
     localStorage.setItem("ela-em-ordem:agenda-view", view);
 
-    const isMob = window.innerWidth < 768;
-    const useMobList = isMob; // No mobile, SEMPRE usa lista
-
     // Tag timeline shell for CSS scoping
     if (timelineShell) timelineShell.dataset.agendaView = view;
 
@@ -7045,10 +7032,10 @@ window.DynTable.initAll();
     // Show/hide week strip (only for day/week)
     if (weekStripWrap) weekStripWrap.classList.toggle("hidden", view === "month" || view === "year");
 
-    // Show/hide timeline vs lista vs month vs year
-    const hideTimeline = view === "month" || view === "year" || useMobList;
+    // Show/hide timeline vs month vs year (lista não usada no mobile)
+    const hideTimeline = view === "month" || view === "year";
     if (timelineShell) timelineShell.classList.toggle("hidden", hideTimeline);
-    if (listShell)     listShell.classList.toggle("hidden", !useMobList || view === "month" || view === "year");
+    if (listShell)     listShell.classList.add("hidden");
     if (monthShell)    monthShell.classList.toggle("hidden", view !== "month");
     if (yearShell)     yearShell.classList.toggle("hidden", view !== "year");
 
@@ -7067,14 +7054,12 @@ window.DynTable.initAll();
   // Sync initial tab state on load
   function syncViewTabs() {
     const v = agendaView;
-    const isMob = window.innerWidth < 768;
-    const useMobList = isMob; // No mobile, SEMPRE usa lista
     viewTabBtns.forEach((b) => b.classList.toggle("is-active", b.dataset.viewTab === v));
     if (timelineShell) timelineShell.dataset.agendaView = v;
     if (weekStripWrap) weekStripWrap.classList.toggle("hidden", v === "month" || v === "year");
-    const hideTimeline = v === "month" || v === "year" || useMobList;
+    const hideTimeline = v === "month" || v === "year";
     if (timelineShell) timelineShell.classList.toggle("hidden", hideTimeline);
-    if (listShell)     listShell.classList.toggle("hidden", !useMobList || v === "month" || v === "year");
+    if (listShell)     listShell.classList.add("hidden");
     if (monthShell)    monthShell.classList.toggle("hidden", v !== "month");
     if (yearShell)     yearShell.classList.toggle("hidden", v !== "year");
   }

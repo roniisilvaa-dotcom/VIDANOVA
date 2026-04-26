@@ -7225,9 +7225,11 @@ select {
 @media (max-width: 767px) {
   .agenda-timeline-shell {
     flex: 1;
-    min-height: 200px;
-    overflow-y: auto;
+    min-height: 0;
+    overflow-y: scroll; /* scroll (não auto) é mais confiável no iOS */
     -webkit-overflow-scrolling: touch;
+    touch-action: pan-y; /* garante que o scroll vertical funcione, não drag */
+    overscroll-behavior-y: contain;
   }
 
   /* Timeline body: linhas de hora abrangem TODA A LARGURA (coluna de labels + coluna de eventos) */
@@ -7290,7 +7292,7 @@ select {
     border: none !important;
     background: transparent !important;
     min-height: 952px;
-    overflow: visible !important;
+    overflow: hidden;
   }
 
   /* Blocos de evento mobile — estilo Google Calendar: cor sólida, texto branco, retângulo quase sem arredondamento */
@@ -7309,6 +7311,9 @@ select {
     flex-direction: column;
     justify-content: flex-start;
     align-items: flex-start;
+    touch-action: manipulation; /* tap abre evento; scroll vertical passa para o container */
+    -webkit-user-drag: none;
+    user-select: none;
   }
   .week-event-block.mob-day-block strong {
     color: #fff !important;
