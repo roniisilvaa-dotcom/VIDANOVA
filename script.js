@@ -3963,6 +3963,17 @@ async function startVersionPolling() {
   window.addEventListener("focus", () => check());
 }
 
+function startClientKeepAlive() {
+  const ping = () => {
+    if (document.visibilityState === "hidden") return;
+    fetch("/api/health", { cache: "no-store" }).catch(() => {});
+  };
+  setInterval(ping, 10 * 60 * 1000);
+  document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState === "visible") ping();
+  });
+}
+
 async function forceAppUpdate() {
   if (settingsForceUpdate) {
     settingsForceUpdate.disabled = true;
@@ -6801,6 +6812,7 @@ async function bootApp() {
   setupProjectUploads();
   registerServiceWorker();
   startVersionPolling();
+  startClientKeepAlive();
   setupBodyPhotos();
   setupInstallPrompt();
   updateInstallUi();
