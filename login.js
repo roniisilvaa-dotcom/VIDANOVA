@@ -359,10 +359,22 @@ if (loginForm) {
       const hasSubscription = user?.subscription_status === "active";
 
       if (!isAdmin && !hasSubscription) {
+        getAuthStorage().removeItem(AUTH_TOKEN_KEY);
+        getAuthStorage().removeItem(AUTH_USER_KEY);
+        getAuthStorage().removeItem(LEGACY_SESSION_KEY);
+        clearLegacyAuthCache();
+
         const subscriptionUrl = user?.subscription_url || "";
-        let msg = "Sua assinatura está inativa.";
-        if (subscriptionUrl) {
-          msg += " Clique em Assinar agora para liberar o acesso.";
+        const subStatus = String(user?.subscription_status || "pending");
+        let msg;
+        if (subStatus === "pending") {
+          msg = isRegister
+            ? "Conta criada! Assine agora para liberar o acesso completo ao app."
+            : "Sua conta está aguardando ativação. Assine para liberar o acesso.";
+        } else if (subStatus === "late") {
+          msg = "Seu pagamento está em atraso. Regularize para reativar o acesso. Seus dados estão seguros.";
+        } else {
+          msg = "Sua assinatura está inativa. Seus dados continuam guardados — renove para voltar a usar o app.";
         }
         setFeedback(msg, "error");
         if (paywallSubscribeBtn && subscriptionUrl) {

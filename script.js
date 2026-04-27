@@ -775,6 +775,16 @@ function updateSubscriptionGate(session = currentSession) {
   }
 
   const status = String(session?.subscription_status || "pending");
+
+  const gateTitle = subscriptionGate?.querySelector("h3");
+  if (gateTitle) {
+    gateTitle.textContent =
+      status === "late"
+        ? "Pagamento em atraso"
+        : status === "inactive" || status === "expired"
+          ? "Assinatura encerrada"
+          : "Acesso ainda não liberado";
+  }
   if (subscriptionGateStatus) {
     subscriptionGateStatus.textContent =
       status === "late"
@@ -786,10 +796,10 @@ function updateSubscriptionGate(session = currentSession) {
   if (subscriptionGateCopy) {
     subscriptionGateCopy.textContent =
       status === "late"
-        ? "Sua assinatura esta em atraso. Atualize o pagamento para reativar todos os recursos do app."
+        ? "Seu pagamento está em atraso. Regularize para reativar todos os recursos. Seus dados estão guardados e seguros."
         : status === "inactive" || status === "expired"
-          ? "Sua assinatura esta inativa. Seus dados continuam guardados, mas o app fica bloqueado ate a renovacao."
-          : "Sua assinatura ainda nao foi ativada. Seus dados ficam salvos, mas o app so sera liberado quando o pagamento for confirmado.";
+          ? "Sua assinatura foi encerrada. Não se preocupe — todos os seus dados continuam salvos e protegidos. Renove quando quiser para retomar de onde parou."
+          : "Sua conta está aguardando a confirmação do pagamento. Assim que a Kiwify confirmar, seu acesso completo será liberado automaticamente.";
   }
 }
 
