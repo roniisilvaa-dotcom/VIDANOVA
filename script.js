@@ -6805,6 +6805,7 @@ async function bootApp() {
   setupInstallPrompt();
   updateInstallUi();
   setupPushNotificationToggle();
+  window._vnHideSplash?.();
 }
 
 // ── DynamicTable: tabelas infinitas com persistência ──────────────────────────

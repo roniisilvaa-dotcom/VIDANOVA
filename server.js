@@ -2171,7 +2171,7 @@ function startKeepAlive() {
     mod.get(`${selfUrl}/api/health`, (res) => {
       res.resume();
     }).on("error", () => {});
-  }, 14 * 60 * 1000);
+  }, 10 * 60 * 1000);
 
   console.log(`Keep-alive ativo: pingando ${selfUrl}/api/health a cada 14 min`);
 }
