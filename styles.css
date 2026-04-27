@@ -7014,6 +7014,11 @@ select {
   /* Mobile: altura fixa para que o timeline preencha com flex: 1 */
 }
 
+/* Botão de voltar: oculto no desktop, visível só no mobile via media query */
+.agenda-mob-back-btn {
+  display: none;
+}
+
 /* ── Header ── */
 .agenda-mob-header {
   display: flex;
@@ -7722,6 +7727,27 @@ select {
   /* ── Ocultar notas do dia no mobile — não está no modelo Google Calendar ── */
   .agenda-day-notes {
     display: none !important;
+  }
+
+  /* ── Botão de voltar: só no mobile ── */
+  .agenda-mob-back-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: none;
+    background: transparent;
+    font-size: 1.3rem;
+    color: var(--berry, #c55b84);
+    cursor: pointer;
+    flex-shrink: 0;
+    margin-right: 2px;
+    touch-action: manipulation;
+  }
+  .agenda-mob-back-btn:active {
+    background: rgba(197, 91, 132, .12);
   }
 
   /* ── Header mais compacto ── */

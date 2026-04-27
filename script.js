@@ -333,7 +333,7 @@ let draggedCard = null;
 let deferredInstallPrompt = null;
 let calendarCursor = new Date();
 let selectedDateKey = formatDateKey(new Date());
-let agendaView = window.innerWidth < 768 ? "schedule" : (localStorage.getItem("ela-em-ordem:agenda-view") || "week");
+let agendaView = window.innerWidth < 768 ? (localStorage.getItem("ela-em-ordem:agenda-view") || "day") : (localStorage.getItem("ela-em-ordem:agenda-view") || "week");
 let agendaStore = JSON.parse(localStorage.getItem("ela-em-ordem:agenda-events") || "{}");
 let calendarStore = JSON.parse(localStorage.getItem("vida-nova:calendar-store") || "null") || defaultCalendars.map((calendar) => ({ ...calendar }));
 let agendaSearchQuery = localStorage.getItem("vida-nova:agenda-search") || "";
@@ -1483,7 +1483,7 @@ function applyCloudState(state) {
   moduleStore = state.moduleStore && typeof state.moduleStore === "object" ? state.moduleStore : {};
   plannerBoardStore =
     state.plannerBoardStore && typeof state.plannerBoardStore === "object" ? state.plannerBoardStore : {};
-  agendaView = window.innerWidth < 768 ? "schedule" : (state.agendaView || "week");
+  agendaView = window.innerWidth < 768 ? (state.agendaView || "day") : (state.agendaView || "week");
   calendarStore = Array.isArray(state.calendarStore) && state.calendarStore.length
     ? state.calendarStore
     : defaultCalendars.map((calendar) => ({ ...calendar }));
@@ -7286,6 +7286,16 @@ window.DynTable.initAll();
     const d = new Date(selectedDateKey + "T12:00:00");
     const dayNames = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"];
     label.textContent = `${dayNames[d.getDay()]}. ${d.getDate()}`;
+  }
+
+  // Botão de voltar no header mobile — fecha a agenda e volta ao dashboard
+  const mobBackBtn = document.getElementById("agenda-mob-back");
+  if (mobBackBtn) {
+    mobBackBtn.addEventListener("click", () => {
+      document.body.classList.remove("agenda-tab-active");
+      document.body.style.overflow = "";
+      setActivePage("dashboard");
+    });
   }
 
   // FAB opens drawer
