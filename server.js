@@ -10,7 +10,7 @@ const https = require("https");
 const webPush = require("web-push");
 
 const app = express();
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 3000;
 const JWT_SECRET =
   process.env.JWT_SECRET || "sua_chave_secreta_super_segura_mudar_em_producao";
 const DATABASE_URL = process.env.DATABASE_URL;
