@@ -127,19 +127,38 @@
               <button id="admin-return-button" class="primary-button" type="button">Voltar para o admin</button>
             </div>
           </div>
-          <div class="topbar-profile">
-            <div class="topbar-avatar topbar-avatar-large" id="topbar-avatar" aria-hidden="true">VN</div>
-            <div class="topbar-profile-copy">
-              <button id="home-button" class="home-link-button" type="button">Vida Nova</button>
-              <h3 id="user-greeting">Bem-vinda</h3>
-            </div>
+          <div class="topbar-brand">
+            <span class="topbar-brand-mark" aria-hidden="true">
+              <svg viewBox="0 0 64 64">
+                <path d="M32 55V29" />
+                <path d="M32 29C18 24 13 13 16 6c10 1 18 9 16 23Z" />
+                <path d="M32 29C46 24 51 13 48 6c-10 1-18 9-16 23Z" />
+                <path d="M32 39C20 39 10 32 8 22c12-1 22 5 24 17Z" />
+                <path d="M32 39c12 0 22-7 24-17-12-1-22 5-24 17Z" />
+              </svg>
+            </span>
+            <button id="home-button" class="home-link-button" type="button">Vida Nova</button>
+          </div>
+          <div class="topbar-profile-copy">
+            <h3 id="user-greeting">Bem-vinda</h3>
           </div>
           <div class="topbar-actions">
             <span id="sync-status-pill" class="topbar-status-pill is-pending" title="Sincronização com Neon">Sincronizando</span>
-            <span id="topbar-plan" class="topbar-status-pill is-pending">Conta pendente</span>
-            <button id="settings-button" class="ghost-button icon-only-button settings-gear-button" type="button" aria-label="Abrir configurações" title="Configurações">
-              <span aria-hidden="true">⚙</span>
+            <button class="desktop-notification-button" type="button" aria-label="Notificações">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M15 17H9m9-1v-5a6 6 0 1 0-12 0v5l-2 2h16l-2-2Zm-4 4a2 2 0 0 1-4 0" />
+              </svg>
             </button>
+            <div class="topbar-account-card">
+              <div class="topbar-avatar topbar-avatar-large" id="topbar-avatar" aria-hidden="true">VN</div>
+              <div>
+                <strong id="topbar-account-name">Vida Nova</strong>
+                <span id="topbar-plan" class="topbar-status-pill is-pending">Conta pendente</span>
+              </div>
+              <button id="settings-button" class="ghost-button icon-only-button settings-gear-button" type="button" aria-label="Abrir configurações" title="Configurações">
+                <span aria-hidden="true">⌄</span>
+              </button>
+            </div>
             <button id="logout-button" class="ghost-button topbar-action-button" type="button">Sair</button>
           </div>
         </section>
@@ -208,9 +227,21 @@
         <section class="page-view is-active" data-page-view="dashboard" id="dashboard">
         <section class="mobile-home-hero" aria-label="Início">
           <div class="mobile-home-top">
-            <div class="mobile-home-logo" aria-hidden="true">♧</div>
+            <div class="mobile-home-logo" aria-hidden="true">
+              <svg viewBox="0 0 64 64">
+                <path d="M32 55V29" />
+                <path d="M32 29C18 24 13 13 16 6c10 1 18 9 16 23Z" />
+                <path d="M32 29C46 24 51 13 48 6c-10 1-18 9-16 23Z" />
+                <path d="M32 39C20 39 10 32 8 22c12-1 22 5 24 17Z" />
+                <path d="M32 39c12 0 22-7 24-17-12-1-22 5-24 17Z" />
+              </svg>
+            </div>
             <div class="mobile-home-top-actions">
-              <button class="mobile-notification-button" type="button" aria-label="Notificações">♧</button>
+              <button class="mobile-notification-button" type="button" aria-label="Notificações">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M15 17H9m9-1v-5a6 6 0 1 0-12 0v5l-2 2h16l-2-2Zm-4 4a2 2 0 0 1-4 0" />
+                </svg>
+              </button>
               <button class="mobile-profile-button" type="button" data-dashboard-open="configuracoes" aria-label="Perfil">
                 <span id="mobile-home-avatar">VN</span>
               </button>
@@ -221,7 +252,11 @@
             <strong id="mobile-home-name">Vida Nova</strong>
           </div>
           <article class="mobile-verse-card">
-            <span aria-hidden="true">♧</span>
+            <span aria-hidden="true">
+              <svg viewBox="0 0 24 24">
+                <path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v17H6.5A2.5 2.5 0 0 0 4 22V5.5Zm0 0A2.5 2.5 0 0 1 6.5 8H20" />
+              </svg>
+            </span>
             <div>
               <h2>Versículo do dia</h2>
               <p id="mobile-verse-text">Entrega o teu caminho ao Senhor; confia nele, e ele o fará.</p>
@@ -233,6 +268,10 @@
           <div class="mobile-modules-heading">
             <h2>Seus módulos</h2>
             <button type="button" data-mobile-show-all>Ver todos</button>
+          </div>
+          <div class="desktop-modules-heading">
+            <h2>Seus módulos</h2>
+            <button type="button" data-mobile-show-all>Ver todos os módulos <span aria-hidden="true">›</span></button>
           </div>
           <section class="workspace-card-grid">
             <button class="workspace-card workspace-card-planner is-featured" type="button" data-dashboard-open="planner" data-cover-key="planner">
@@ -390,6 +429,74 @@
             <span id="task-progress"></span>
             <textarea id="notes-input"></textarea>
           </div>
+
+          <section class="desktop-community-preview" aria-label="Comunidade Vida Nova">
+            <div class="desktop-community-heading">
+              <div class="desktop-community-title">
+                <span aria-hidden="true">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2m7-10a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm13 10v-2a4 4 0 0 0-3-3.87m-3-12a4 4 0 0 1 0 7.75" />
+                  </svg>
+                </span>
+                <div>
+                  <h2>Comunidade Vida Nova <small>💗</small></h2>
+                  <p>Compartilhe, inspire e cresça juntas</p>
+                </div>
+              </div>
+              <div class="desktop-community-actions">
+                <button class="primary-button" type="button" data-dashboard-open="comunidade">Acessar comunidade <span aria-hidden="true">›</span></button>
+                <button class="ghost-button desktop-community-arrow" type="button" aria-label="Anterior">‹</button>
+                <button class="ghost-button desktop-community-arrow" type="button" aria-label="Próximo">›</button>
+              </div>
+            </div>
+
+            <div class="desktop-community-grid">
+              <article class="desktop-social-card">
+                <header>
+                  <img src="assets/login-hero-woman.png" alt="" />
+                  <div>
+                    <strong>Juliana M.</strong>
+                    <small>há 2h</small>
+                  </div>
+                  <button type="button" aria-label="Mais opções">•••</button>
+                </header>
+                <p>Hoje consegui cumprir minha rotina matinal e me sinto tão bem! ✨</p>
+                <img class="desktop-social-photo" src="assets/covers/casa.png" alt="" />
+                <footer><span>💗 32</span><span>○ 8</span><span>⌯</span></footer>
+              </article>
+              <article class="desktop-social-card">
+                <header>
+                  <img src="assets/login-hero-woman.png" alt="" />
+                  <div>
+                    <strong>Beatriz L.</strong>
+                    <small>há 4h</small>
+                  </div>
+                  <button type="button" aria-label="Mais opções">•••</button>
+                </header>
+                <p>Organizando meus estudos para alcançar meus sonhos 💖</p>
+                <img class="desktop-social-photo" src="assets/covers/planner.png" alt="" />
+                <footer><span>💗 28</span><span>○ 6</span><span>⌯</span></footer>
+              </article>
+              <article class="desktop-social-card">
+                <header>
+                  <img src="assets/login-hero-woman.png" alt="" />
+                  <div>
+                    <strong>Fernanda A.</strong>
+                    <small>há 6h</small>
+                  </div>
+                  <button type="button" aria-label="Mais opções">•••</button>
+                </header>
+                <p>Pequenos passos todos os dias me levam para grandes conquistas 🌸</p>
+                <img class="desktop-social-photo" src="assets/covers/sonhos.png" alt="" />
+                <footer><span>💗 45</span><span>○ 12</span><span>⌯</span></footer>
+              </article>
+              <article class="desktop-create-post">
+                <button type="button" data-dashboard-open="comunidade" aria-label="Criar publicação">+</button>
+                <p>Compartilhe algo com<br />a comunidade 💕</p>
+                <button class="primary-button" type="button" data-dashboard-open="comunidade">Criar publicação</button>
+              </article>
+            </div>
+          </section>
         </section>
         </section>
 
@@ -2306,15 +2413,27 @@
 
     <nav class="mobile-bottom-nav" aria-label="Navegação principal mobile">
       <button type="button" data-page-link="comunidade">
-        <span aria-hidden="true">♧</span>
+        <span aria-hidden="true">
+          <svg viewBox="0 0 24 24">
+            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2m7-10a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm13 10v-2a4 4 0 0 0-3-3.87m-3-12a4 4 0 0 1 0 7.75" />
+          </svg>
+        </span>
         Comunidade
       </button>
       <button class="is-home" type="button" data-page-link="dashboard">
-        <span aria-hidden="true">⌂</span>
+        <span aria-hidden="true">
+          <svg viewBox="0 0 24 24">
+            <path d="m3 11 9-8 9 8v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1V11Z" />
+          </svg>
+        </span>
         INÍCIO
       </button>
       <button type="button" data-page-link="configuracoes">
-        <span aria-hidden="true">♙</span>
+        <span aria-hidden="true">
+          <svg viewBox="0 0 24 24">
+            <path d="M20 21a8 8 0 1 0-16 0m8-10a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm7 2 1.2 1.2M22 15l-1.7.5m-.6 3.2L18.5 17.5" />
+          </svg>
+        </span>
         Perfil
       </button>
     </nav>

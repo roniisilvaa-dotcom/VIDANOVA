@@ -176,6 +176,7 @@ const goHomeButtons = document.querySelectorAll("[data-go-home]");
 const topbarAvatar = document.querySelector("#topbar-avatar");
 const topbarEmail = document.querySelector("#topbar-email");
 const topbarPlan = document.querySelector("#topbar-plan");
+const topbarAccountName = document.querySelector("#topbar-account-name");
 const communityPostForm = document.querySelector("#community-post-form");
 const communityPostInput = document.querySelector("#community-post-input");
 const communityPostFeedback = document.querySelector("#community-post-feedback");
@@ -3892,12 +3893,15 @@ function hydrateSessionUI(session) {
   if (userGreeting) {
     userGreeting.textContent = `Bem-vinda, ${session.name}`;
   }
+  if (topbarAccountName) {
+    topbarAccountName.textContent = session.name || "Vida Nova";
+  }
   if (mobileHomeName) {
     mobileHomeName.textContent = String(session.name || "Vida Nova").toUpperCase();
   }
 
   renderAvatar(topbarAvatar, session.avatar_url, getSessionInitials(session));
-  renderAvatar(mobileHomeAvatar, session.avatar_url, getSessionInitials(session));
+  renderAvatar(mobileHomeAvatar, session.avatar_url || "assets/login-hero-woman.png", getSessionInitials(session));
   renderAvatar(settingsAvatarPreview, session.avatar_url, getSessionInitials(session));
 
   if (settingsProfileName) {
