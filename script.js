@@ -46,6 +46,7 @@ const DEFAULT_DASHBOARD_COVERS = Object.freeze({
   casa: "assets/covers/casa.png",
   viagens: "assets/covers/viagens.png",
   espiritual: "assets/covers/espiritual.png",
+  comunidade: "assets/covers/comunidade.png",
 });
 
 const APP_IDENTITY_COLOR_PRESETS = Object.freeze([
@@ -134,6 +135,10 @@ const subscriptionGateCopy = document.querySelector("#subscription-gate-copy");
 const subscriptionRenewButton = document.querySelector("#subscription-renew-button");
 const subscriptionOpenSettings = document.querySelector("#subscription-open-settings");
 const userGreeting = document.querySelector("#user-greeting");
+const mobileHomeName = document.querySelector("#mobile-home-name");
+const mobileHomeAvatar = document.querySelector("#mobile-home-avatar");
+const mobileVerseText = document.querySelector("#mobile-verse-text");
+const mobileVerseRef = document.querySelector("#mobile-verse-ref");
 const logoutButton = document.querySelector("#logout-button");
 const settingsButton = document.querySelector("#settings-button");
 const homeButton = document.querySelector("#home-button");
@@ -171,6 +176,10 @@ const goHomeButtons = document.querySelectorAll("[data-go-home]");
 const topbarAvatar = document.querySelector("#topbar-avatar");
 const topbarEmail = document.querySelector("#topbar-email");
 const topbarPlan = document.querySelector("#topbar-plan");
+const communityPostForm = document.querySelector("#community-post-form");
+const communityPostInput = document.querySelector("#community-post-input");
+const communityPostFeedback = document.querySelector("#community-post-feedback");
+const communityFeed = document.querySelector("#community-feed");
 const financeIncomeInput = document.querySelector("#finance-income-input");
 const financeExpenseInput = document.querySelector("#finance-expense-input");
 const financeGoalInput = document.querySelector("#finance-goal-input");
@@ -762,6 +771,91 @@ async function apiPost(url, payload) {
   }
 
   return data;
+}
+
+function renderCommunityFeed(posts = []) {
+  if (!communityFeed) {
+    return;
+  }
+
+  if (!posts.length) {
+    communityFeed.innerHTML = `
+      <article class="community-empty">
+        <strong>Seja a primeira a compartilhar hoje</strong>
+        <p>Conte uma vitória, uma oração, uma dica ou um pedido de apoio.</p>
+      </article>
+    `;
+    return;
+  }
+
+  communityFeed.innerHTML = posts
+    .map((post) => {
+      const initials = String(post.author_name || "VN")
+        .split(/\s+/)
+        .slice(0, 2)
+        .map((part) => part[0]?.toUpperCase() || "")
+        .join("") || "VN";
+      const createdAt = post.created_at ? new Date(post.created_at) : new Date();
+      const dateLabel = createdAt.toLocaleDateString("pt-BR", {
+        day: "2-digit",
+        month: "short",
+        hour: "2-digit",
+        minute: "2-digit",
+      });
+
+      return `
+        <article class="community-post-card">
+          <div class="community-post-avatar">${escapeHtml(initials)}</div>
+          <div class="community-post-body">
+            <div class="community-post-meta">
+              <strong>${escapeHtml(post.author_name || "Mulher Vida Nova")}</strong>
+              <span>${escapeHtml(dateLabel)}</span>
+            </div>
+            <p>${escapeHtml(post.content || "")}</p>
+          </div>
+        </article>
+      `;
+    })
+    .join("");
+}
+
+async function loadCommunityFeed() {
+  if (!communityFeed || !getAuthToken()) {
+    return;
+  }
+
+  communityFeed.innerHTML = `<article class="community-empty"><strong>Carregando comunidade...</strong></article>`;
+
+  try {
+    const response = await apiPost("/api/community/list", { token: getAuthToken() });
+    renderCommunityFeed(response.posts || []);
+  } catch (error) {
+    communityFeed.innerHTML = `
+      <article class="community-empty">
+        <strong>Não foi possível carregar a comunidade</strong>
+        <p>${escapeHtml(error.message)}</p>
+      </article>
+    `;
+  }
+}
+
+async function publishCommunityPost(content) {
+  if (!communityPostFeedback) {
+    return;
+  }
+
+  setFeedback(communityPostFeedback, "Publicando...");
+  try {
+    const response = await apiPost("/api/community/post", {
+      token: getAuthToken(),
+      content,
+    });
+    if (communityPostInput) communityPostInput.value = "";
+    setFeedback(communityPostFeedback, "Publicado na comunidade.", "success");
+    renderCommunityFeed(response.posts || []);
+  } catch (error) {
+    setFeedback(communityPostFeedback, error.message, "error");
+  }
 }
 
 function hasActiveSubscription(session = currentSession) {
@@ -1644,6 +1738,12 @@ function renderVerse() {
   if (headlineVerseReference) {
     headlineVerseReference.textContent = verse.reference;
   }
+  if (mobileVerseText) {
+    mobileVerseText.textContent = verse.text;
+  }
+  if (mobileVerseRef) {
+    mobileVerseRef.textContent = verse.reference;
+  }
 }
 
 function cycleVerse() {
@@ -1695,6 +1795,10 @@ function setActivePage(pageName, syncHash = true) {
 
   if (nextPage === "admin" && isAdminSession()) {
     loadAdminDashboard();
+  }
+
+  if (nextPage === "comunidade") {
+    loadCommunityFeed();
   }
 
   window.scrollTo({ top: 0, behavior: "smooth" });
@@ -3788,8 +3892,12 @@ function hydrateSessionUI(session) {
   if (userGreeting) {
     userGreeting.textContent = `Bem-vinda, ${session.name}`;
   }
+  if (mobileHomeName) {
+    mobileHomeName.textContent = String(session.name || "Vida Nova").toUpperCase();
+  }
 
   renderAvatar(topbarAvatar, session.avatar_url, getSessionInitials(session));
+  renderAvatar(mobileHomeAvatar, session.avatar_url, getSessionInitials(session));
   renderAvatar(settingsAvatarPreview, session.avatar_url, getSessionInitials(session));
 
   if (settingsProfileName) {
@@ -4585,6 +4693,14 @@ dashboardOpenButtons.forEach((button) => {
     }
   });
 });
+
+if (communityPostForm) {
+  communityPostForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+    const content = communityPostInput?.value.trim() || "";
+    publishCommunityPost(content);
+  });
+}
 
 document.addEventListener("click", (event) => {
   const dashboardTrigger = event.target.closest("[data-dashboard-open]");
@@ -7330,13 +7446,14 @@ window.DynTable.initAll();
     label.textContent = `${dayNames[d.getDay()]}. ${d.getDate()}`;
   }
 
-  // Botão de voltar no header mobile — fecha a agenda e volta ao dashboard
+  // Botão de voltar no header mobile — fecha a agenda e volta para as abas da My Planner.
   const mobBackBtn = document.getElementById("agenda-mob-back");
   if (mobBackBtn) {
     mobBackBtn.addEventListener("click", () => {
       document.body.classList.remove("agenda-tab-active");
       document.body.style.overflow = "";
-      setActivePage("dashboard");
+      setActivePage("planner");
+      setPlannerTab("planner-weekly");
     });
   }
 

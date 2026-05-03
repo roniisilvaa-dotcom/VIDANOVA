@@ -23,6 +23,15 @@ const KIWIFY_CHECKOUT_URL = process.env.KIWIFY_CHECKOUT_URL || "";
 const MONTHLY_SUBSCRIPTION_PRICE = Number(process.env.MONTHLY_SUBSCRIPTION_PRICE || 0);
 const ANNUAL_SUBSCRIPTION_PRICE = Number(process.env.ANNUAL_SUBSCRIPTION_PRICE || 0);
 const KIWIFY_CHECKOUT_URL_ANNUAL = process.env.KIWIFY_CHECKOUT_URL_ANNUAL || "";
+const PUBLIC_APP_URL = process.env.PUBLIC_APP_URL || process.env.RENDER_EXTERNAL_URL || "";
+const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID || "";
+const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET || "";
+const GOOGLE_REDIRECT_URI = process.env.GOOGLE_REDIRECT_URI || "";
+const APPLE_CLIENT_ID = process.env.APPLE_CLIENT_ID || "";
+const APPLE_TEAM_ID = process.env.APPLE_TEAM_ID || "";
+const APPLE_KEY_ID = process.env.APPLE_KEY_ID || "";
+const APPLE_PRIVATE_KEY = (process.env.APPLE_PRIVATE_KEY || "").replace(/\\n/g, "\n");
+const APPLE_REDIRECT_URI = process.env.APPLE_REDIRECT_URI || "";
 const DATA_FILE = path.join(__dirname, "vida-nova-fallback.json");
 
 const VAPID_PUBLIC_KEY = process.env.VAPID_PUBLIC_KEY || "BEXjy4tVUIHgrOsny2mSdzm9LQknr7RmsB749yLH84ULm4cr2pz3ZyL_xgb6bs9qdilkDw6rcpDgMvuHIgLVb7I";
@@ -50,6 +59,7 @@ const pool = isUsingDatabase
 
 app.use(cors());
 app.use(express.json({ limit: "2mb" }));
+app.use(express.urlencoded({ extended: false }));
 
 // version.json must never be cached so auto-update detection works
 app.get("/version.json", (req, res, next) => {
@@ -106,6 +116,148 @@ function normalizeEmail(email) {
   return String(email || "").trim().toLowerCase();
 }
 
+function getRequestBaseUrl(req) {
+  const protocol = req.headers["x-forwarded-proto"] || req.protocol || "http";
+  const host = req.headers["x-forwarded-host"] || req.headers.host;
+  return `${protocol}://${host}`;
+}
+
+function getPublicBaseUrl(req) {
+  return (PUBLIC_APP_URL || getRequestBaseUrl(req)).replace(/\/+$/, "");
+}
+
+function getSocialRedirectUri(req, provider) {
+  if (provider === "google" && GOOGLE_REDIRECT_URI) {
+    return GOOGLE_REDIRECT_URI;
+  }
+
+  if (provider === "apple" && APPLE_REDIRECT_URI) {
+    return APPLE_REDIRECT_URI;
+  }
+
+  return `${getPublicBaseUrl(req)}/api/auth/${provider}/callback`;
+}
+
+function createSocialState(provider) {
+  return jwt.sign(
+    {
+      provider,
+      purpose: "social-auth",
+    },
+    JWT_SECRET,
+    { expiresIn: "10m" },
+  );
+}
+
+function verifySocialState(token, provider) {
+  try {
+    const payload = jwt.verify(token, JWT_SECRET);
+    return payload?.purpose === "social-auth" && payload?.provider === provider;
+  } catch {
+    return false;
+  }
+}
+
+function buildLoginRedirect(req, params = {}) {
+  const url = new URL(`${getPublicBaseUrl(req)}/login.html`);
+  Object.entries(params).forEach(([key, value]) => {
+    if (value !== undefined && value !== null && value !== "") {
+      url.searchParams.set(key, String(value));
+    }
+  });
+  return url.toString();
+}
+
+function buildSocialSuccessRedirect(req, token, user) {
+  const url = new URL(`${getPublicBaseUrl(req)}/login.html`);
+  const fragment = new URLSearchParams({
+    social_token: token,
+    social_user: Buffer.from(JSON.stringify(buildPublicUser(user))).toString("base64url"),
+  });
+  url.hash = fragment.toString();
+  return url.toString();
+}
+
+function httpsJson(method, urlString, { headers = {}, body = null } = {}) {
+  return new Promise((resolve, reject) => {
+    const url = new URL(urlString);
+    const req = https.request(
+      {
+        method,
+        hostname: url.hostname,
+        path: `${url.pathname}${url.search}`,
+        headers,
+      },
+      (res) => {
+        let raw = "";
+        res.setEncoding("utf8");
+        res.on("data", (chunk) => {
+          raw += chunk;
+        });
+        res.on("end", () => {
+          let data = {};
+          try {
+            data = raw ? JSON.parse(raw) : {};
+          } catch {
+            data = { raw };
+          }
+          if (res.statusCode < 200 || res.statusCode >= 300) {
+            const error = new Error(data.error_description || data.error || "Falha na autenticação social");
+            error.status = res.statusCode;
+            error.data = data;
+            reject(error);
+            return;
+          }
+          resolve(data);
+        });
+      },
+    );
+
+    req.on("error", reject);
+    if (body) req.write(body);
+    req.end();
+  });
+}
+
+async function findOrCreateSocialUser({ name, email, avatarUrl = "", provider }) {
+  const normalizedEmail = normalizeEmail(email);
+  if (!normalizedEmail) {
+    const error = new Error("O provedor não retornou e-mail para autenticar.");
+    error.status = 400;
+    throw error;
+  }
+
+  const existing = await findUserByEmail(normalizedEmail);
+  if (existing) {
+    if (avatarUrl && !existing.avatar_url) {
+      await updateUserProfile(existing.id, { avatarUrl });
+      return getUserWithPasswordById(existing.id);
+    }
+    return existing;
+  }
+
+  const randomPassword = await bcrypt.hash(
+    `${provider}:${normalizedEmail}:${Date.now()}:${Math.random()}`,
+    10,
+  );
+
+  return createUser({
+    name: String(name || normalizedEmail.split("@")[0] || "Vida Nova").trim(),
+    email: normalizedEmail,
+    password: randomPassword,
+    avatarUrl,
+    subscriptionUrl: "",
+  });
+}
+
+function signAuthToken(user) {
+  return jwt.sign(
+    { id: user.id, email: user.email, name: user.name },
+    JWT_SECRET,
+    { expiresIn: "30d" },
+  );
+}
+
 function detectDeviceInfo(userAgent = "") {
   const ua = String(userAgent || "");
   const isTablet = /iPad|Tablet|PlayBook|Silk/i.test(ua);
@@ -159,10 +311,12 @@ function getDefaultStore() {
       user: 1,
       appData: 1,
       activity: 1,
+      communityPost: 1,
     },
     users: [],
     appData: [],
     activityLog: [],
+    communityPosts: [],
     pushSubscriptions: [],
   };
 }
@@ -328,6 +482,16 @@ async function initDb() {
   `);
 
   await query(`
+    CREATE TABLE IF NOT EXISTS community_posts (
+      id SERIAL PRIMARY KEY,
+      user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+      content TEXT NOT NULL,
+      created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+      updated_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
+    )
+  `);
+
+  await query(`
     CREATE INDEX IF NOT EXISTS idx_app_data_user_type
     ON app_data (user_id, data_type)
   `);
@@ -335,6 +499,11 @@ async function initDb() {
   await query(`
     CREATE INDEX IF NOT EXISTS idx_activity_log_user
     ON activity_log (user_id, created_at DESC)
+  `);
+
+  await query(`
+    CREATE INDEX IF NOT EXISTS idx_community_posts_created
+    ON community_posts (created_at DESC)
   `);
 
   await query(`
@@ -956,6 +1125,76 @@ async function listUserDataEntries(userId, dataType) {
       created_at: item.created_at,
       updated_at: item.updated_at,
     }));
+}
+
+async function listCommunityPosts(limit = 50) {
+  const normalizedLimit = Math.max(1, Math.min(Number(limit) || 50, 100));
+
+  if (isUsingDatabase) {
+    const result = await query(
+      `SELECT
+         community_posts.id,
+         community_posts.user_id,
+         community_posts.content,
+         community_posts.created_at,
+         users.name AS author_name,
+         users.avatar_url AS author_avatar_url
+       FROM community_posts
+       JOIN users ON users.id = community_posts.user_id
+       ORDER BY community_posts.created_at DESC
+       LIMIT $1`,
+      [normalizedLimit],
+    );
+    return result.rows;
+  }
+
+  const store = await readStore();
+  return [...(store.communityPosts || [])]
+    .sort((left, right) => new Date(right.created_at || 0).getTime() - new Date(left.created_at || 0).getTime())
+    .slice(0, normalizedLimit)
+    .map((post) => {
+      const user = store.users.find((entry) => Number(entry.id) === Number(post.user_id)) || {};
+      return {
+        ...post,
+        author_name: user.name || "Mulher Vida Nova",
+        author_avatar_url: user.avatar_url || "",
+      };
+    });
+}
+
+async function createCommunityPost(user, content) {
+  const cleanedContent = String(content || "").trim().slice(0, 600);
+  if (!cleanedContent) {
+    const error = new Error("Escreva uma mensagem para publicar.");
+    error.status = 400;
+    throw error;
+  }
+
+  if (isUsingDatabase) {
+    await query(
+      `INSERT INTO community_posts (user_id, content)
+       VALUES ($1, $2)`,
+      [user.id, cleanedContent],
+    );
+    return;
+  }
+
+  const store = await readStore();
+  if (!Array.isArray(store.communityPosts)) {
+    store.communityPosts = [];
+  }
+  if (!store.counters.communityPost) {
+    store.counters.communityPost = 1;
+  }
+
+  store.communityPosts.push({
+    id: store.counters.communityPost++,
+    user_id: user.id,
+    content: cleanedContent,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+  });
+  await writeStore(store);
 }
 
 async function updateUserProfile(
@@ -1670,6 +1909,183 @@ app.post("/api/auth/login", async (req, res) => {
   }
 });
 
+app.get("/api/auth/google/start", (req, res) => {
+  if (!GOOGLE_CLIENT_ID || !GOOGLE_CLIENT_SECRET) {
+    return res.redirect(
+      buildLoginRedirect(req, {
+        social_error: "Login com Google ainda precisa das credenciais GOOGLE_CLIENT_ID e GOOGLE_CLIENT_SECRET no servidor.",
+      }),
+    );
+  }
+
+  const params = new URLSearchParams({
+    client_id: GOOGLE_CLIENT_ID,
+    redirect_uri: getSocialRedirectUri(req, "google"),
+    response_type: "code",
+    scope: "openid email profile",
+    access_type: "online",
+    prompt: "select_account",
+    state: createSocialState("google"),
+  });
+
+  res.redirect(`https://accounts.google.com/o/oauth2/v2/auth?${params.toString()}`);
+});
+
+app.get("/api/auth/google/callback", async (req, res) => {
+  try {
+    const { code, state, error } = req.query;
+    if (error) {
+      return res.redirect(buildLoginRedirect(req, { social_error: `Google: ${error}` }));
+    }
+
+    if (!code || !verifySocialState(state, "google")) {
+      return res.redirect(buildLoginRedirect(req, { social_error: "Retorno do Google inválido. Tente novamente." }));
+    }
+
+    const body = new URLSearchParams({
+      code: String(code),
+      client_id: GOOGLE_CLIENT_ID,
+      client_secret: GOOGLE_CLIENT_SECRET,
+      redirect_uri: getSocialRedirectUri(req, "google"),
+      grant_type: "authorization_code",
+    }).toString();
+
+    const tokenData = await httpsJson("POST", "https://oauth2.googleapis.com/token", {
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+        "Content-Length": Buffer.byteLength(body),
+      },
+      body,
+    });
+
+    const profile = await httpsJson(
+      "GET",
+      `https://oauth2.googleapis.com/tokeninfo?id_token=${encodeURIComponent(tokenData.id_token)}`,
+    );
+
+    if (profile.aud !== GOOGLE_CLIENT_ID) {
+      return res.redirect(buildLoginRedirect(req, { social_error: "Credencial do Google não pertence a este app." }));
+    }
+
+    const user = await findOrCreateSocialUser({
+      provider: "google",
+      name: profile.name,
+      email: profile.email,
+      avatarUrl: profile.picture,
+    });
+
+    await updateUserLastSeenDevice(user.id, req.headers["user-agent"] || "");
+    await logActivity(user.id, "user_login_google", `Login com Google às ${new Date().toISOString()}`);
+    const refreshedUser = await getUserWithPasswordById(user.id);
+    const publicUser = buildPublicUser(refreshedUser || user);
+    const token = signAuthToken(publicUser);
+
+    res.redirect(buildSocialSuccessRedirect(req, token, publicUser));
+  } catch (err) {
+    console.error("Erro no login Google:", err);
+    res.redirect(buildLoginRedirect(req, { social_error: "Não foi possível concluir o login com Google." }));
+  }
+});
+
+function createAppleClientSecret() {
+  return jwt.sign(
+    {
+      iss: APPLE_TEAM_ID,
+      iat: Math.floor(Date.now() / 1000),
+      exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 30,
+      aud: "https://appleid.apple.com",
+      sub: APPLE_CLIENT_ID,
+    },
+    APPLE_PRIVATE_KEY,
+    {
+      algorithm: "ES256",
+      keyid: APPLE_KEY_ID,
+    },
+  );
+}
+
+app.get("/api/auth/apple/start", (req, res) => {
+  if (!APPLE_CLIENT_ID || !APPLE_TEAM_ID || !APPLE_KEY_ID || !APPLE_PRIVATE_KEY) {
+    return res.redirect(
+      buildLoginRedirect(req, {
+        social_error: "Login com Apple precisa das credenciais APPLE_CLIENT_ID, APPLE_TEAM_ID, APPLE_KEY_ID e APPLE_PRIVATE_KEY.",
+      }),
+    );
+  }
+
+  const params = new URLSearchParams({
+    client_id: APPLE_CLIENT_ID,
+    redirect_uri: getSocialRedirectUri(req, "apple"),
+    response_type: "code",
+    response_mode: "form_post",
+    scope: "name email",
+    state: createSocialState("apple"),
+  });
+
+  res.redirect(`https://appleid.apple.com/auth/authorize?${params.toString()}`);
+});
+
+app.post("/api/auth/apple/callback", async (req, res) => {
+  try {
+    const { code, state, user: appleUserRaw, error } = req.body;
+    if (error) {
+      return res.redirect(buildLoginRedirect(req, { social_error: `Apple: ${error}` }));
+    }
+
+    if (!code || !verifySocialState(state, "apple")) {
+      return res.redirect(buildLoginRedirect(req, { social_error: "Retorno da Apple inválido. Tente novamente." }));
+    }
+
+    const body = new URLSearchParams({
+      code: String(code),
+      client_id: APPLE_CLIENT_ID,
+      client_secret: createAppleClientSecret(),
+      redirect_uri: getSocialRedirectUri(req, "apple"),
+      grant_type: "authorization_code",
+    }).toString();
+
+    const tokenData = await httpsJson("POST", "https://appleid.apple.com/auth/token", {
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+        "Content-Length": Buffer.byteLength(body),
+      },
+      body,
+    });
+
+    const idPayload = jwt.decode(tokenData.id_token) || {};
+    if (idPayload.aud !== APPLE_CLIENT_ID || idPayload.iss !== "https://appleid.apple.com") {
+      return res.redirect(buildLoginRedirect(req, { social_error: "Credencial da Apple não pertence a este app." }));
+    }
+
+    let appleProfile = {};
+    try {
+      appleProfile = appleUserRaw ? JSON.parse(appleUserRaw) : {};
+    } catch {}
+
+    const fullName = [appleProfile?.name?.firstName, appleProfile?.name?.lastName]
+      .filter(Boolean)
+      .join(" ");
+
+    const user = await findOrCreateSocialUser({
+      provider: "apple",
+      name: fullName || idPayload.email,
+      email: idPayload.email,
+      avatarUrl: "",
+    });
+
+    await updateUserLastSeenDevice(user.id, req.headers["user-agent"] || "");
+    await logActivity(user.id, "user_login_apple", `Login com Apple às ${new Date().toISOString()}`);
+    const refreshedUser = await getUserWithPasswordById(user.id);
+    const publicUser = buildPublicUser(refreshedUser || user);
+    const token = signAuthToken(publicUser);
+
+    res.redirect(buildSocialSuccessRedirect(req, token, publicUser));
+  } catch (err) {
+    console.error("Erro no login Apple:", err);
+    res.redirect(buildLoginRedirect(req, { social_error: "Não foi possível concluir o login com Apple." }));
+  }
+});
+
 app.post("/api/auth/verify", async (req, res) => {
   try {
     const { token } = req.body;
@@ -1732,6 +2148,48 @@ app.post("/api/data/get", async (req, res) => {
     res.json({
       success: true,
       data,
+      storageMode: isUsingDatabase ? "neon" : "fallback",
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(error.status || 401).json({
+      error: error.message || "Não autorizado",
+      user: error.user || null,
+    });
+  }
+});
+
+app.post("/api/community/list", async (req, res) => {
+  try {
+    const { token, limit } = req.body;
+    await requireAuthorizedUser(token, { requireActiveSubscription: true });
+    const posts = await listCommunityPosts(limit || 50);
+
+    res.json({
+      success: true,
+      posts,
+      storageMode: isUsingDatabase ? "neon" : "fallback",
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(error.status || 401).json({
+      error: error.message || "Não autorizado",
+      user: error.user || null,
+    });
+  }
+});
+
+app.post("/api/community/post", async (req, res) => {
+  try {
+    const { token, content } = req.body;
+    const { user } = await requireAuthorizedUser(token, { requireActiveSubscription: true });
+    await createCommunityPost(user, content);
+    await logActivity(user.id, "community_post_created", "Publicou na comunidade");
+    const posts = await listCommunityPosts(50);
+
+    res.json({
+      success: true,
+      posts,
       storageMode: isUsingDatabase ? "neon" : "fallback",
     });
   } catch (error) {

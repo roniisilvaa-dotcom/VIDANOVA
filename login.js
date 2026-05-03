@@ -162,6 +162,53 @@ function getApiUrl(path) {
   return path;
 }
 
+function consumeSocialLoginResult() {
+  const query = new URLSearchParams(window.location.search);
+  const hash = new URLSearchParams(window.location.hash.replace(/^#/, ""));
+  const socialError = query.get("social_error") || hash.get("social_error");
+
+  if (socialError) {
+    setFeedback(socialError, "error");
+    if (window.history?.replaceState) {
+      window.history.replaceState({}, document.title, window.location.pathname);
+    }
+    return true;
+  }
+
+  const token = hash.get("social_token");
+  const encodedUser = hash.get("social_user");
+  if (!token || !encodedUser) {
+    return false;
+  }
+
+  try {
+    const normalizedUser = encodedUser.replace(/-/g, "+").replace(/_/g, "/");
+    const paddedUser = normalizedUser.padEnd(Math.ceil(normalizedUser.length / 4) * 4, "=");
+    const user = JSON.parse(atob(paddedUser));
+    saveSession(token, user);
+
+    if (!user?.is_admin && user?.subscription_status !== "active") {
+      getAuthStorage().removeItem(AUTH_TOKEN_KEY);
+      getAuthStorage().removeItem(AUTH_USER_KEY);
+      getAuthStorage().removeItem(LEGACY_SESSION_KEY);
+      clearLegacyAuthCache();
+      setFeedback("Login confirmado. Assine agora para liberar o acesso completo.", "error");
+      showPaywall();
+    } else {
+      setFeedback("Acesso liberado. Redirecionando...", "success");
+      window.location.href = getPostLoginTarget(user);
+    }
+  } catch {
+    setFeedback("Não foi possível concluir o login social. Tente novamente.", "error");
+  } finally {
+    if (window.history?.replaceState) {
+      window.history.replaceState({}, document.title, window.location.pathname);
+    }
+  }
+
+  return true;
+}
+
 function getInstallContext() {
   const ua = navigator.userAgent || "";
   const isIos = /iPhone|iPad|iPod/i.test(ua);
@@ -337,10 +384,9 @@ if (togglePasswordButton && loginPassword) {
 }
 
 function handleSocialLogin(provider) {
-  setFeedback(
-    `Entrada com ${provider} ainda nao esta configurada. Use e-mail e senha ou toque em Assinar agora.`,
-    "error",
-  );
+  const providerSlug = provider.toLowerCase();
+  setFeedback(`Abrindo login com ${provider}...`);
+  window.location.href = getApiUrl(`/api/auth/${providerSlug}/start`);
 }
 
 if (googleLoginButton) {
@@ -477,7 +523,9 @@ setMode("login");
 updateLoginInstallUi();
 showLoginSection();
 loadAppConfig();
-redirectIfAuthenticated();
+if (!consumeSocialLoginResult()) {
+  redirectIfAuthenticated();
+}
 
 // Auto-update: reload login page when a new version is deployed
 (async function startLoginVersionPolling() {

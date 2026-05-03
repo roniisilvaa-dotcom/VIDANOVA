@@ -95,6 +95,7 @@
           <a href="#corpo" data-page-link="corpo">Autocuidado</a>
           <a href="#viagens" data-page-link="viagens">Viagens</a>
           <a href="#espiritual" data-page-link="espiritual">Espiritual</a>
+          <a href="#comunidade" data-page-link="comunidade">Comunidade</a>
           <a href="#admin" data-page-link="admin" id="sidebar-admin-link" class="hidden">Admin</a>
           <a href="#configuracoes" data-page-link="configuracoes">Configurações</a>
         </nav>
@@ -205,7 +206,34 @@
 
         <div class="page-stack">
         <section class="page-view is-active" data-page-view="dashboard" id="dashboard">
+        <section class="mobile-home-hero" aria-label="Início">
+          <div class="mobile-home-top">
+            <div class="mobile-home-logo" aria-hidden="true">♧</div>
+            <div class="mobile-home-top-actions">
+              <button class="mobile-notification-button" type="button" aria-label="Notificações">♧</button>
+              <button class="mobile-profile-button" type="button" data-dashboard-open="configuracoes" aria-label="Perfil">
+                <span id="mobile-home-avatar">VN</span>
+              </button>
+            </div>
+          </div>
+          <div class="mobile-home-greeting">
+            <span>Bem-vinda,</span>
+            <strong id="mobile-home-name">Vida Nova</strong>
+          </div>
+          <article class="mobile-verse-card">
+            <span aria-hidden="true">♧</span>
+            <div>
+              <h2>Versículo do dia</h2>
+              <p id="mobile-verse-text">Entrega o teu caminho ao Senhor; confia nele, e ele o fará.</p>
+              <strong id="mobile-verse-ref">Salmos 37:5</strong>
+            </div>
+          </article>
+        </section>
         <section class="workspace-home">
+          <div class="mobile-modules-heading">
+            <h2>Seus módulos</h2>
+            <button type="button" data-mobile-show-all>Ver todos</button>
+          </div>
           <section class="workspace-card-grid">
             <button class="workspace-card workspace-card-planner is-featured" type="button" data-dashboard-open="planner" data-cover-key="planner">
               <div class="workspace-card-cover">
@@ -217,8 +245,8 @@
                 </div>
                 <span class="workspace-card-badge">Meu planner</span>
               </div>
-              <strong>My Planner</strong>
-              <small>Abra e edite sua planner pessoal</small>
+              <strong>Meu Planner</strong>
+              <small>Organize seu dia</small>
             </button>
 
             <button class="workspace-card workspace-card-body" type="button" data-dashboard-open="corpo" data-cover-key="corpo">
@@ -230,8 +258,8 @@
                   </label>
                 </div>
               </div>
-              <strong>Saúde | Beleza | Bem-estar</strong>
-              <small>Autocuidado e rituais</small>
+              <strong>Saúde</strong>
+              <small>Autocuidado</small>
             </button>
 
             <button class="workspace-card workspace-card-finance" type="button" data-dashboard-open="finanças" data-cover-key="finanças">
@@ -243,8 +271,8 @@
                   </label>
                 </div>
               </div>
-              <strong>Finanças | Controle</strong>
-              <small id="finance-caption">Sem movimentacao registrada</small>
+              <strong>Finanças</strong>
+              <small id="finance-caption">Controle financeiro</small>
             </button>
 
             <button class="workspace-card workspace-card-study" type="button" data-dashboard-open="estudos" data-cover-key="estudos">
@@ -256,8 +284,8 @@
                   </label>
                 </div>
               </div>
-              <strong>Estudos | Projetos</strong>
-              <small>Livros, cursos e projetos</small>
+              <strong>Estudos</strong>
+              <small>Cursos e projetos</small>
             </button>
 
             <button class="workspace-card workspace-card-image" type="button" data-dashboard-open="imagem" data-cover-key="imagem">
@@ -269,8 +297,8 @@
                   </label>
                 </div>
               </div>
-              <strong>Imagem | Estilo</strong>
-              <small>Guarda-roupa e composicao visual</small>
+              <strong>Autocuidado</strong>
+              <small>Você em primeiro lugar</small>
             </button>
 
             <button class="workspace-card workspace-card-home" type="button" data-dashboard-open="casa" data-cover-key="casa">
@@ -282,21 +310,34 @@
                   </label>
                 </div>
               </div>
-              <strong>Alimentacao | Mercado | Lar</strong>
-              <small>Casa, refeicoes e reparos</small>
+              <strong>Casa</strong>
+              <small>Meu lar, meu refúgio</small>
             </button>
 
-            <button class="workspace-card workspace-card-travel" type="button" data-dashboard-open="viagens" data-cover-key="viagens">
+            <button class="workspace-card workspace-card-dreams" type="button" data-dashboard-open="planner" data-planner-open="planner-dreams" data-cover-key="sonhos">
               <div class="workspace-card-cover">
                 <div class="workspace-card-tools">
                   <label class="workspace-cover-upload">
-                    <input type="file" accept="image/*" data-cover-upload="viagens" />
+                    <input type="file" accept="image/*" data-cover-upload="sonhos" />
                     Trocar capa
                   </label>
                 </div>
               </div>
-              <strong>Viagens</strong>
-              <small>Planejamento, documentos e roteiro</small>
+              <strong>Sonhos</strong>
+              <small>Planos e objetivos</small>
+            </button>
+
+            <button class="workspace-card workspace-card-travel" type="button" data-dashboard-open="estudos" data-cover-key="estudos">
+              <div class="workspace-card-cover">
+                <div class="workspace-card-tools">
+                  <label class="workspace-cover-upload">
+                    <input type="file" accept="image/*" data-cover-upload="estudos" />
+                    Trocar capa
+                  </label>
+                </div>
+              </div>
+              <strong>Projetos</strong>
+              <small>Ideias em ação</small>
             </button>
 
             <button class="workspace-card workspace-card-spiritual" type="button" data-dashboard-open="espiritual" data-cover-key="espiritual">
@@ -310,6 +351,19 @@
               </div>
               <strong>Espiritual</strong>
               <small>Metas com Deus e vida devocional</small>
+            </button>
+
+            <button class="workspace-card workspace-card-community" type="button" data-dashboard-open="comunidade" data-cover-key="comunidade">
+              <div class="workspace-card-cover">
+                <div class="workspace-card-tools">
+                  <label class="workspace-cover-upload">
+                    <input type="file" accept="image/*" data-cover-upload="comunidade" />
+                    Trocar capa
+                  </label>
+                </div>
+              </div>
+              <strong>Comunidade</strong>
+              <small>Conecte-se com mulheres</small>
             </button>
 
             <button id="admin-dashboard-card" class="workspace-card workspace-card-finance hidden" type="button" data-dashboard-open="admin" aria-hidden="true">
@@ -1759,6 +1813,30 @@
           </article>
         </section>
 
+        <section class="page-view" data-page-view="comunidade" id="comunidade">
+          <div class="page-return-bar">
+            <button class="ghost-button page-return-button" type="button" data-go-home>← Voltar</button>
+          </div>
+          <section class="panel community-page-shell">
+            <div class="panel-heading community-heading">
+              <div>
+                <p class="eyebrow">Comunidade</p>
+                <h3>Mulheres conectadas</h3>
+              </div>
+              <span class="tag">Ao vivo na sua conta</span>
+            </div>
+            <p class="community-intro">Compartilhe uma vitória, peça apoio ou converse com outras mulheres do Vida Nova.</p>
+            <form id="community-post-form" class="community-post-form">
+              <textarea id="community-post-input" maxlength="600" placeholder="Escreva algo para a comunidade..."></textarea>
+              <div class="community-form-actions">
+                <small id="community-post-feedback">As publicações ficam sincronizadas entre web, celular e app instalado.</small>
+                <button class="primary-button" type="submit">Publicar</button>
+              </div>
+            </form>
+            <section id="community-feed" class="community-feed" aria-live="polite"></section>
+          </section>
+        </section>
+
         <section class="page-view" data-page-view="configuracoes" id="configuracoes">
           <div class="page-return-bar">
             <button class="ghost-button page-return-button" type="button" data-go-home>← Voltar</button>
@@ -2225,6 +2303,21 @@
         </div>
       </main>
     </div>
+
+    <nav class="mobile-bottom-nav" aria-label="Navegação principal mobile">
+      <button type="button" data-page-link="comunidade">
+        <span aria-hidden="true">♧</span>
+        Comunidade
+      </button>
+      <button class="is-home" type="button" data-page-link="dashboard">
+        <span aria-hidden="true">⌂</span>
+        INÍCIO
+      </button>
+      <button type="button" data-page-link="configuracoes">
+        <span aria-hidden="true">♙</span>
+        Perfil
+      </button>
+    </nav>
 
     <div id="editor-modal" class="editor-modal hidden" aria-hidden="true">
       <div class="editor-backdrop" data-close-editor="true"></div>
