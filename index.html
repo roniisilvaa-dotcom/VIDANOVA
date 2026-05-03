@@ -77,39 +77,41 @@
     <div class="app-shell">
       <aside class="sidebar">
         <div class="brand">
-          <div class="brand-mark">VN</div>
+          <div class="brand-mark">
+            <svg viewBox="0 0 64 64" aria-hidden="true">
+              <path d="M32 55V29" />
+              <path d="M32 29C18 24 13 13 16 6c10 1 18 9 16 23Z" />
+              <path d="M32 29C46 24 51 13 48 6c-10 1-18 9-16 23Z" />
+              <path d="M32 39C20 39 10 32 8 22c12-1 22 5 24 17Z" />
+              <path d="M32 39c12 0 22-7 24-17-12-1-22 5-24 17Z" />
+            </svg>
+          </div>
           <div>
-            <p class="eyebrow">Planner Premium</p>
             <h1>Vida Nova</h1>
           </div>
         </div>
 
         <nav class="sidebar-nav">
-          <a href="#dashboard" data-page-link="dashboard">Dashboard</a>
-          <a href="#planner" data-page-link="planner" data-planner-open="planner-agenda">Agenda</a>
-          <a href="#planner" data-page-link="planner" data-planner-open="planner-dreams">Sonhos e Metas</a>
-          <a href="#estudos" data-page-link="estudos">Estudos e Projetos</a>
-          <a href="#finanças" data-page-link="finanças">Finanças</a>
-          <a href="#imagem" data-page-link="imagem">Imagem</a>
-          <a href="#casa" data-page-link="casa">Alimentação e Lar</a>
-          <a href="#corpo" data-page-link="corpo">Autocuidado</a>
-          <a href="#viagens" data-page-link="viagens">Viagens</a>
-          <a href="#espiritual" data-page-link="espiritual">Espiritual</a>
-          <a href="#comunidade" data-page-link="comunidade">Comunidade</a>
+          <a href="#dashboard" data-page-link="dashboard">
+            <span class="sidebar-nav-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="m3 11 9-8 9 8v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1V11Z"/></svg>
+            </span>
+            Início
+          </a>
+          <a href="#comunidade" data-page-link="comunidade">
+            <span class="sidebar-nav-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2m7-10a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm13 10v-2a4 4 0 0 0-3-3.87m-3-12a4 4 0 0 1 0 7.75"/></svg>
+            </span>
+            Comunidade
+          </a>
+          <a href="#configuracoes" data-page-link="configuracoes">
+            <span class="sidebar-nav-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>
+            </span>
+            Perfil
+          </a>
           <a href="#admin" data-page-link="admin" id="sidebar-admin-link" class="hidden">Admin</a>
-          <a href="#configuracoes" data-page-link="configuracoes">Configurações</a>
         </nav>
-
-        <section class="membership-card">
-          <p class="eyebrow">Visao do dia</p>
-          <h2>Prioridade principal</h2>
-          <p>Se cuidar sem abandonar a rotina, a casa e as metas.</p>
-          <div class="pill-row">
-            <span class="pill">Agenda</span>
-            <span class="pill">Rotina</span>
-            <span class="pill">Paz</span>
-          </div>
-        </section>
 
       </aside>
 
@@ -258,7 +260,10 @@
               </svg>
             </span>
             <div>
-              <h2>Versículo do dia</h2>
+              <div class="mobile-verse-header">
+                <h2>Versículo do dia</h2>
+                <button class="mobile-verse-action-btn" id="mobile-change-verse-btn" type="button">Traçar versículo</button>
+              </div>
               <p id="mobile-verse-text">Entrega o teu caminho ao Senhor; confia nele, e ele o fará.</p>
               <strong id="mobile-verse-ref">Salmos 37:5</strong>
             </div>
@@ -327,19 +332,6 @@
               <small>Cursos e projetos</small>
             </button>
 
-            <button class="workspace-card workspace-card-image" type="button" data-dashboard-open="imagem" data-cover-key="imagem">
-              <div class="workspace-card-cover">
-                <div class="workspace-card-tools">
-                  <label class="workspace-cover-upload">
-                    <input type="file" accept="image/*" data-cover-upload="imagem" />
-                    Trocar capa
-                  </label>
-                </div>
-              </div>
-              <strong>Autocuidado</strong>
-              <small>Você em primeiro lugar</small>
-            </button>
-
             <button class="workspace-card workspace-card-home" type="button" data-dashboard-open="casa" data-cover-key="casa">
               <div class="workspace-card-cover">
                 <div class="workspace-card-tools">
@@ -364,6 +356,19 @@
               </div>
               <strong>Sonhos</strong>
               <small>Planos e objetivos</small>
+            </button>
+
+            <button class="workspace-card workspace-card-image" type="button" data-dashboard-open="imagem" data-cover-key="imagem">
+              <div class="workspace-card-cover">
+                <div class="workspace-card-tools">
+                  <label class="workspace-cover-upload">
+                    <input type="file" accept="image/*" data-cover-upload="imagem" />
+                    Trocar capa
+                  </label>
+                </div>
+              </div>
+              <strong>Autocuidado</strong>
+              <small>Você em primeiro lugar</small>
             </button>
 
             <button class="workspace-card workspace-card-travel" type="button" data-dashboard-open="estudos" data-cover-key="estudos">
@@ -411,6 +416,28 @@
               <small>Controle de usuarias, acesso e assinatura</small>
             </button>
           </section>
+
+          <!-- Mobile community card -->
+          <section class="mobile-community-card" aria-label="Comunidade Vida Nova">
+            <div class="mobile-community-card-header">
+              <div>
+                <h3>Comunidade Vida Nova 💗</h3>
+                <p>Compartilhe, inspire e cresça juntas</p>
+              </div>
+            </div>
+            <div class="mobile-community-footer">
+              <div class="mobile-community-avatars">
+                <img class="mobile-community-avatar" src="assets/login-hero-woman.png" alt="" />
+                <img class="mobile-community-avatar" src="assets/login-hero-woman.png" alt="" />
+                <img class="mobile-community-avatar" src="assets/login-hero-woman.png" alt="" />
+                <img class="mobile-community-avatar" src="assets/login-hero-woman.png" alt="" />
+                <span class="mobile-community-count">Mais de 1.210 mulheres fazendo parte</span>
+              </div>
+              <button class="mobile-community-btn" type="button" data-page-link="comunidade">Acessar ›</button>
+            </div>
+          </section>
+
+          <p class="mobile-motivational">Pequenos passos todos os dias te levam a grandes conquistas.</p>
 
           <div class="workspace-hidden-metrics" aria-hidden="true">
             <strong id="focus-count">0 tarefas</strong>

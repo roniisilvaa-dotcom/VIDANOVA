@@ -13727,3 +13727,321 @@ select {
     justify-self: end !important;
   }
 }
+
+
+/* ═══════════════════════════════════════════
+   REDESIGN VISUAL — MODELO WEB & MOBILE
+   Corresponde exatamente aos modelos PNG
+═══════════════════════════════════════════ */
+
+/* ── Fotos reais como fundo dos cards de módulo ── */
+.workspace-card-planner .workspace-card-cover {
+  background: url('assets/covers/planner.png') center / cover no-repeat !important;
+}
+.workspace-card-body .workspace-card-cover {
+  background: url('assets/covers/corpo.png') center / cover no-repeat !important;
+}
+.workspace-card-finance .workspace-card-cover {
+  background: url('assets/covers/financas.png') center / cover no-repeat !important;
+}
+.workspace-card-study .workspace-card-cover {
+  background: url('assets/covers/estudos.png') center / cover no-repeat !important;
+}
+.workspace-card-home .workspace-card-cover {
+  background: url('assets/covers/casa.png') center / cover no-repeat !important;
+}
+.workspace-card-dreams .workspace-card-cover {
+  background: url('assets/covers/sonhos.png') center / cover no-repeat !important;
+}
+.workspace-card-image .workspace-card-cover {
+  background: url('assets/covers/imagem.png') center / cover no-repeat !important;
+}
+.workspace-card-travel .workspace-card-cover {
+  background: url('assets/covers/viagens.png') center / cover no-repeat !important;
+}
+.workspace-card-spiritual .workspace-card-cover {
+  background: url('assets/covers/espiritual.png') center / cover no-repeat !important;
+}
+
+/* ── Brand mark: círculo rosa com SVG flor ── */
+.brand-mark {
+  background: radial-gradient(circle at 35% 25%, #fff 0 28%, #fbe2ed 58%, #f7ccdd 100%) !important;
+  color: #d13f82;
+  display: grid;
+  place-items: center;
+  border-radius: 50% !important;
+}
+.brand-mark svg {
+  width: 58%;
+  height: 58%;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.brand h1 {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #e13d87;
+  font-family: inherit;
+  margin: 0;
+}
+.brand .eyebrow { display: none; }
+
+/* ── Sidebar nav: ícones inline ── */
+.sidebar-nav a {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.sidebar-nav-icon {
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+}
+.sidebar-nav-icon svg {
+  width: 100%;
+  height: 100%;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* ── Card de versículo mobile: header com botão ── */
+.mobile-verse-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.mobile-verse-header h2 {
+  margin: 0 !important;
+}
+.mobile-verse-action-btn {
+  border: 0;
+  background: transparent;
+  color: #9097b1;
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* ── Itálico e aspas no versículo mobile ── */
+@media (max-width: 767px) {
+  .mobile-verse-card h2 { margin: 0 !important; }
+
+  .mobile-verse-card p {
+    font-style: italic;
+  }
+  .mobile-verse-card p::before { content: "\201C"; }
+  .mobile-verse-card p::after  { content: "\201D"; }
+
+  /* ── Card de Comunidade (mobile) ── */
+  .mobile-community-card {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-top: 20px;
+    padding: 20px;
+    border: 1px solid rgba(197, 91, 132, 0.14);
+    border-radius: 22px;
+    background: rgba(255, 255, 255, 0.96);
+    box-shadow: 0 14px 30px rgba(91, 57, 78, 0.08);
+  }
+
+  .mobile-community-card-header h3 {
+    margin: 0 0 4px;
+    color: #090a2f;
+    font-size: 1.05rem;
+    font-weight: 800;
+  }
+
+  .mobile-community-card-header p {
+    margin: 0;
+    color: #687088;
+    font-size: 0.86rem;
+  }
+
+  .mobile-community-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .mobile-community-avatars {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .mobile-community-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 2px solid #fff;
+    object-fit: cover;
+    margin-left: -10px;
+    box-shadow: 0 2px 6px rgba(91, 57, 78, 0.12);
+  }
+  .mobile-community-avatar:first-child { margin-left: 0; }
+
+  .mobile-community-count {
+    margin-left: 8px;
+    color: #687088;
+    font-size: 0.82rem;
+    line-height: 1.3;
+  }
+
+  .mobile-community-btn {
+    flex-shrink: 0;
+    padding: 10px 22px;
+    border-radius: 999px;
+    background: linear-gradient(135deg, #ef77a6, #c92f78);
+    color: #fff;
+    font-weight: 700;
+    border: none;
+    cursor: pointer;
+    font-size: 0.9rem;
+    box-shadow: 0 8px 18px rgba(201, 47, 120, 0.22);
+  }
+
+  /* ── Frase motivacional (mobile) ── */
+  .mobile-motivational {
+    display: block;
+    margin: 22px 0 0;
+    padding-bottom: 4px;
+    text-align: center;
+    color: #9097b1;
+    font-size: 0.92rem;
+    font-style: italic;
+    line-height: 1.7;
+  }
+}
+
+/* ── Ocultar community card e motivacional no desktop ── */
+@media (min-width: 768px) {
+  .mobile-community-card,
+  .mobile-motivational {
+    display: none !important;
+  }
+}
+
+/* ══════════════════════════════════════════════
+   SIDEBAR DESKTOP — igual ao Modelo Web
+══════════════════════════════════════════════ */
+@media (min-width: 768px) {
+  .app-shell {
+    display: grid !important;
+    grid-template-columns: 230px 1fr;
+    min-height: 100vh;
+    align-items: start;
+  }
+
+  .sidebar {
+    display: flex !important;
+    flex-direction: column;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+    padding: 32px 20px 24px;
+    border-right: 1px solid rgba(197, 91, 132, 0.1);
+    background: #fff;
+    box-shadow: none;
+    z-index: 100;
+  }
+
+  /* Brand sidebar */
+  .sidebar .brand {
+    gap: 12px;
+    margin-bottom: 36px;
+  }
+  .sidebar .brand-mark {
+    width: 46px;
+    height: 46px;
+  }
+
+  /* Sidebar nav simplificada */
+  .sidebar .sidebar-nav {
+    gap: 4px;
+    margin-bottom: 0;
+  }
+  .sidebar .sidebar-nav a {
+    padding: 11px 14px;
+    border-radius: 14px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: #5f687d;
+    border: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+  }
+  .sidebar .sidebar-nav a:hover {
+    background: #fdf0f6 !important;
+    color: #c92f78;
+  }
+  .sidebar .sidebar-nav a.is-active {
+    background: linear-gradient(135deg, #ef77a6, #c92f78) !important;
+    color: #fff !important;
+    box-shadow: 0 8px 20px rgba(201, 47, 120, 0.22) !important;
+  }
+  .sidebar .sidebar-nav a.is-active .sidebar-nav-icon svg {
+    stroke: #fff;
+  }
+
+  /* Admin link invisível (só exibe se tiver classe visible) */
+  .sidebar .sidebar-nav a#sidebar-admin-link {
+    display: none;
+  }
+  .sidebar .sidebar-nav a#sidebar-admin-link:not(.hidden) {
+    display: flex;
+  }
+
+  /* Ocultar membership-card */
+  .sidebar .membership-card {
+    display: none !important;
+  }
+
+  /* Ajuste da topbar com sidebar */
+  .topbar-brand {
+    display: none !important;
+  }
+  .topbar-profile-copy {
+    min-width: 0;
+  }
+
+  /* Padding do main-content com sidebar */
+  .main-content {
+    padding: 0 48px 40px;
+  }
+  .app-topbar {
+    margin: 0 -48px 18px;
+    padding: 18px 48px;
+  }
+}
+
+/* ── Em telas maiores: sidebar fixa e cards de módulo ── */
+@media (min-width: 1024px) {
+  .app-shell {
+    grid-template-columns: 240px 1fr !important;
+  }
+  .main-content {
+    padding: 0 56px 40px;
+  }
+  .app-topbar {
+    margin: 0 -56px 18px;
+    padding: 18px 56px;
+  }
+}

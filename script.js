@@ -1756,6 +1756,11 @@ if (changeVerseButton) {
   changeVerseButton.addEventListener("click", cycleVerse);
 }
 
+const mobileChangeVerseBtn = document.querySelector("#mobile-change-verse-btn");
+if (mobileChangeVerseBtn) {
+  mobileChangeVerseBtn.addEventListener("click", cycleVerse);
+}
+
 function setActivePage(pageName, syncHash = true) {
   const availablePages = Array.from(pageViews).map((view) => view.dataset.pageView);
   const normalizedPage = pageName === "agenda" || pageName === "sonhos" ? "planner" : pageName;
