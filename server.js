@@ -81,6 +81,21 @@ app.get("/health", (req, res) => {
   res.json({ status: "ok", version: getVersion(), timestamp: new Date().toISOString() });
 });
 
+// Endpoint to quickly verify database connectivity (Neon) from any client
+app.get("/api/status", async (req, res) => {
+  try {
+    if (isUsingDatabase) {
+      // Simple heartbeat against the database
+      await query("SELECT 1");
+      res.json({ ok: true, database: "neon", timestamp: new Date().toISOString() });
+    } else {
+      res.json({ ok: true, database: "fallback", timestamp: new Date().toISOString() });
+    }
+  } catch (err) {
+    res.status(500).json({ ok: false, error: err?.message || "DB heartbeat failed" });
+  }
+});
+
 app.use(express.static(path.join(__dirname)));
 
 function shouldUseSsl(connectionString) {
