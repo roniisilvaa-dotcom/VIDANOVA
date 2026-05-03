@@ -472,70 +472,6 @@
       /* ── Hidden elements (JS uses them) ── */
       .js-hidden { display: none !important; }
 
-      /* ── Paywall ── */
-      .paywall-block {
-        position: fixed;
-        inset: 0;
-        z-index: 900;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        gap: 20px;
-        padding: 32px 24px;
-        background: linear-gradient(135deg, #fff0f6, #fff);
-        text-align: center;
-      }
-
-      .paywall-block h2 {
-        font-family: Georgia, serif;
-        font-size: 1.5rem;
-        color: #151934;
-        margin-bottom: 8px;
-      }
-
-      .paywall-block p {
-        color: #687088;
-        font-size: 0.95rem;
-        line-height: 1.5;
-        margin-bottom: 16px;
-      }
-
-      .paywall-block .btn-row {
-        display: flex;
-        flex-direction: column;
-        gap: 12px;
-        width: 100%;
-        max-width: 360px;
-      }
-
-      .btn-primary {
-        padding: 16px;
-        border: 0;
-        border-radius: 999px;
-        background: linear-gradient(135deg, #e8589a, #c92f78);
-        color: #fff;
-        font: inherit;
-        font-size: 1rem;
-        font-weight: 700;
-        cursor: pointer;
-        text-decoration: none;
-        display: block;
-        text-align: center;
-        box-shadow: 0 10px 24px rgba(201, 47, 120, 0.28);
-      }
-
-      .btn-secondary {
-        padding: 14px;
-        border: 1.5px solid #eee;
-        border-radius: 999px;
-        background: #fff;
-        color: #687088;
-        font: inherit;
-        font-size: 0.95rem;
-        cursor: pointer;
-      }
-
       /* ══════════════════════════════════════════
          DESKTOP (≥ 768px) — Modelo Web
       ══════════════════════════════════════════ */
@@ -873,7 +809,7 @@
                     <span>Entrar agora</span>
                     <span class="login-submit-arrow">→</span>
                   </button>
-                  <button id="back-to-paywall" class="js-hidden" type="button">Ver assinatura</button>
+                  <button id="back-to-paywall" class="js-hidden" type="button" style="display:none!important;visibility:hidden"></button>
                 </div>
                 <button id="demo-access" class="js-hidden" type="button">Demo</button>
 
@@ -936,18 +872,11 @@
 
     </div><!-- /login-page -->
 
-    <!-- Paywall -->
-    <section id="paywall-block" class="paywall-block">
-      <div>
-        <p style="font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;color:#9097b1;margin-bottom:8px">Assinatura</p>
-        <h2>Libere seu acesso completo</h2>
-        <p class="auth-copy">Para entrar no app, sua conta precisa estar com a assinatura ativa.</p>
-      </div>
-      <div class="btn-row auth-actions">
-        <a id="paywall-subscribe-btn" href="https://vidanova-1.onrender.com" target="_blank" rel="noopener noreferrer" class="btn-primary">Assinar agora</a>
-        <button id="show-login-form" class="btn-secondary" type="button">Já tenho conta</button>
-      </div>
-    </section>
+    <!-- Paywall removido: elementos ocultos para compatibilidade com login.js -->
+    <div id="paywall-block" style="display:none!important" aria-hidden="true">
+      <a id="paywall-subscribe-btn" href="#"></a>
+      <button id="show-login-form" type="button"></button>
+    </div>
 
     <script src="login.js"></script>
   </body>

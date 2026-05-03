@@ -35,9 +35,7 @@ let deferredInstallPrompt = null;
 let _paywallVisible = true;
 
 function showPaywall() {
-  _paywallVisible = true;
-  if (paywallBlock) paywallBlock.style.display = "";
-  paywallBlock?.scrollIntoView({ behavior: "smooth", block: "center" });
+  _paywallVisible = false;
 }
 
 function showLoginSection() {
