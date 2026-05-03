@@ -22,6 +22,8 @@ const backToPaywallButton = document.querySelector("#back-to-paywall");
 const paywallSubscribeBtn = document.querySelector("#paywall-subscribe-btn");
 const createAccountButton = document.querySelector("[data-create-account]");
 const togglePasswordButton = document.querySelector("#toggle-password");
+const googleLoginButton = document.querySelector("#google-login-button");
+const appleLoginButton = document.querySelector("#apple-login-button");
 
 const AUTH_TOKEN_KEY = "vida-nova:auth-token";
 const AUTH_USER_KEY = "vida-nova:auth-user";
@@ -35,14 +37,12 @@ let _paywallVisible = true;
 function showPaywall() {
   _paywallVisible = true;
   if (paywallBlock) paywallBlock.style.display = "";
-  if (loginBlock) loginBlock.style.display = "none";
-  if (loginForm) loginForm.style.display = "none";
-  if (loginNote) loginNote.style.display = "none";
+  paywallBlock?.scrollIntoView({ behavior: "smooth", block: "center" });
 }
 
 function showLoginSection() {
   _paywallVisible = false;
-  if (paywallBlock) paywallBlock.style.display = "none";
+  if (paywallBlock) paywallBlock.style.display = "";
   if (loginBlock) loginBlock.style.display = "";
   if (loginForm) loginForm.style.display = "";
   if (loginNote) loginNote.style.display = "";
@@ -51,7 +51,7 @@ function showLoginSection() {
 async function loadAppConfig() {
   try {
     const res = await fetch("/api/config");
-    if (!res.ok) return;
+    if (!res.ok) throw new Error("Config indisponivel");
     const config = await res.json();
 
     if (paywallSubscribeBtn && config.checkoutUrl) {
@@ -60,6 +60,10 @@ async function loadAppConfig() {
 
 
   } catch {}
+
+  if (paywallSubscribeBtn && (!paywallSubscribeBtn.href || paywallSubscribeBtn.getAttribute("href") === "#")) {
+    paywallSubscribeBtn.href = getPublishedAppUrl();
+  }
 }
 
 function getAuthStorage() {
@@ -317,6 +321,21 @@ if (togglePasswordButton && loginPassword) {
     togglePasswordButton.textContent = showPassword ? "●" : "◌";
     togglePasswordButton.setAttribute("aria-label", showPassword ? "Ocultar senha" : "Mostrar senha");
   });
+}
+
+function handleSocialLogin(provider) {
+  setFeedback(
+    `Entrada com ${provider} ainda nao esta configurada. Use e-mail e senha ou toque em Assinar agora.`,
+    "error",
+  );
+}
+
+if (googleLoginButton) {
+  googleLoginButton.addEventListener("click", () => handleSocialLogin("Google"));
+}
+
+if (appleLoginButton) {
+  appleLoginButton.addEventListener("click", () => handleSocialLogin("Apple"));
 }
 
 if (loginForm) {

@@ -58,19 +58,12 @@
           <p>Um espaço criado para cuidar de você por completo: da sua rotina, da sua casa, das suas finanças e da sua espiritualidade.</p>
           <strong>Organize, planeje e transforme sua vida — um dia de cada vez.</strong>
         </div>
+        <div class="auth-hero-art" aria-hidden="true">
+          <img src="assets/login-hero-woman.png" alt="" />
+        </div>
       </section>
 
       <section class="auth-form-card">
-        <div id="paywall-block" class="paywall-block">
-          <p class="eyebrow">Acesso exclusivo</p>
-          <h2>Assinatura necessária</h2>
-          <p class="auth-copy">Sua conta precisa de uma assinatura ativa para entrar no app.</p>
-          <div class="auth-actions">
-            <a id="paywall-subscribe-btn" href="#" target="_blank" rel="noopener noreferrer" class="primary-button paywall-subscribe-btn">Assinar agora</a>
-            <button id="show-login-form" class="secondary-button" type="button">Entrar com sua conta</button>
-          </div>
-        </div>
-
         <div id="login-block">
           <div class="auth-card-heading">
             <span class="auth-card-icon" aria-hidden="true">●</span>
@@ -134,14 +127,26 @@
 
           <div class="auth-social-divider"><span>ou continue com</span></div>
           <div class="auth-social-row" aria-label="Opções sociais indisponíveis">
-            <button class="auth-social-button" type="button"><span class="google-mark">G</span>Google</button>
-            <button class="auth-social-button" type="button"><span class="apple-mark">●</span>Apple</button>
+            <button id="google-login-button" class="auth-social-button" type="button"><span class="google-mark">G</span>Google</button>
+            <button id="apple-login-button" class="auth-social-button" type="button"><span class="apple-mark">●</span>Apple</button>
           </div>
         </form>
 
         <p class="auth-note" id="login-note">
           O acesso depende de conta real com assinatura ativa.
         </p>
+
+        <div id="paywall-block" class="paywall-block auth-subscription-card">
+          <div>
+            <p class="eyebrow">Assinatura</p>
+            <h2>Libere seu acesso completo</h2>
+            <p class="auth-copy">Para entrar no app, sua conta precisa estar com a assinatura ativa.</p>
+          </div>
+          <div class="auth-actions">
+            <a id="paywall-subscribe-btn" href="https://vidanova-1.onrender.com" target="_blank" rel="noopener noreferrer" class="primary-button paywall-subscribe-btn">Assinar agora</a>
+            <button id="show-login-form" class="secondary-button" type="button">Já tenho conta</button>
+          </div>
+        </div>
       </section>
 
       <section class="auth-create-card">
