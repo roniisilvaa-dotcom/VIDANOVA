@@ -14045,3 +14045,202 @@ select {
     padding: 18px 56px;
   }
 }
+
+/* ══════════════════════════════════════════════
+   MINIMALISTA — fino, clean, delicado, sem negrito
+   Modelo: MODELO MOBILE NOVA.png
+══════════════════════════════════════════════ */
+@media (max-width: 767px) {
+
+  /* ── Logo: menor, só borda, sem fundo ── */
+  .mobile-home-logo {
+    width: 44px !important;
+    height: 44px !important;
+    background: transparent !important;
+    border: 1.5px solid #e13d87 !important;
+    box-shadow: none !important;
+  }
+
+  /* ── Greeting: leve, regular, sem peso ── */
+  .mobile-home-greeting {
+    gap: 2px !important;
+  }
+  .mobile-home-greeting span {
+    font-size: 0.9rem !important;
+    font-weight: 400 !important;
+    color: #9097b1 !important;
+  }
+  .mobile-home-greeting strong {
+    font-size: 1.25rem !important;
+    font-weight: 500 !important;
+    letter-spacing: 0 !important;
+    line-height: 1.25 !important;
+    color: #151934 !important;
+  }
+
+  /* ── Botões de ação (sino + avatar): menores ── */
+  .mobile-notification-button {
+    width: 32px !important;
+    height: 32px !important;
+  }
+  .mobile-notification-button::after {
+    width: 8px !important;
+    height: 8px !important;
+    right: 3px !important;
+    top: 3px !important;
+  }
+  .mobile-profile-button,
+  .mobile-profile-button span {
+    width: 40px !important;
+    height: 40px !important;
+    font-weight: 400 !important;
+  }
+  .mobile-home-top-actions {
+    gap: 10px !important;
+  }
+
+  /* ── Verse card: ampliado e delicado ── */
+  .mobile-verse-card {
+    padding: 20px 18px !important;
+    gap: 14px !important;
+    border-radius: 22px !important;
+  }
+  .mobile-verse-card > span {
+    width: 40px !important;
+    height: 40px !important;
+    padding: 10px !important;
+    background: transparent !important;
+    border: 1px solid rgba(209, 63, 130, 0.22) !important;
+    border-radius: 50% !important;
+  }
+  /* "VERSÍCULO DO DIA" — label tinyuppercase */
+  .mobile-verse-card h2 {
+    font-size: 0.68rem !important;
+    font-weight: 500 !important;
+    letter-spacing: 0.14em !important;
+    text-transform: uppercase !important;
+    color: #9097b1 !important;
+    margin-bottom: 10px !important;
+  }
+  /* Citação: maior, itálico, regular */
+  .mobile-verse-card p {
+    font-size: 1.12rem !important;
+    font-weight: 400 !important;
+    font-style: italic !important;
+    color: #333d52 !important;
+    line-height: 1.65 !important;
+    margin-bottom: 14px !important;
+  }
+  /* Referência em rosa */
+  .mobile-verse-card strong {
+    font-size: 0.8rem !important;
+    font-weight: 500 !important;
+    color: #d13f82 !important;
+    letter-spacing: 0.06em !important;
+  }
+
+  /* ── Botão "Traçar versículo" ── */
+  .mobile-verse-action-btn {
+    font-size: 0.75rem !important;
+    font-weight: 400 !important;
+    color: #d13f82 !important;
+    border: 1px solid rgba(209, 63, 130, 0.28) !important;
+    border-radius: 20px !important;
+    padding: 4px 12px !important;
+  }
+
+  /* ── "Seus módulos" cabeçalho ── */
+  .mobile-modules-heading h2 {
+    font-size: 1.05rem !important;
+    font-weight: 500 !important;
+    color: #151934 !important;
+  }
+  .mobile-modules-heading button {
+    font-size: 0.85rem !important;
+    font-weight: 400 !important;
+    color: #d13f82 !important;
+  }
+
+  /* ── Cards de módulo: título e subtítulo sem negrito ── */
+  body:not(.agenda-tab-active) .workspace-card strong {
+    font-size: 0.88rem !important;
+    font-weight: 500 !important;
+    color: #151934 !important;
+    padding: 10px 36px 2px 12px !important;
+  }
+  body:not(.agenda-tab-active) .workspace-card small {
+    font-size: 0.75rem !important;
+    font-weight: 400 !important;
+    color: #9097b1 !important;
+    padding: 0 36px 10px 12px !important;
+    min-height: 28px !important;
+  }
+  /* Seta do card: menor e mais discreta */
+  body:not(.agenda-tab-active) .workspace-card::after {
+    width: 26px !important;
+    height: 26px !important;
+    font-size: 1.2rem !important;
+    font-weight: 400 !important;
+    background: transparent !important;
+    color: #d13f82 !important;
+    right: 10px !important;
+    bottom: 10px !important;
+  }
+
+  /* ── Comunidade card: sem negrito ── */
+  .mobile-community-card-header h3 {
+    font-size: 0.95rem !important;
+    font-weight: 500 !important;
+  }
+  .mobile-community-card-header p {
+    font-size: 0.82rem !important;
+    font-weight: 400 !important;
+  }
+  .mobile-community-btn {
+    font-size: 0.82rem !important;
+    font-weight: 500 !important;
+    padding: 8px 18px !important;
+  }
+  .mobile-community-count {
+    font-size: 0.78rem !important;
+    font-weight: 400 !important;
+  }
+
+  /* ── Frase motivacional ── */
+  .mobile-motivational {
+    font-size: 0.88rem !important;
+    font-weight: 400 !important;
+    color: #9097b1 !important;
+    margin-top: 16px !important;
+  }
+
+  /* ── Bottom nav: flat, igual ao modelo — sem bolha central ── */
+  .mobile-bottom-nav {
+    grid-template-columns: 1fr 1fr 1fr !important;
+    padding: 8px 16px calc(8px + env(safe-area-inset-bottom)) !important;
+  }
+  .mobile-bottom-nav .is-home {
+    transform: none !important;
+    width: auto !important;
+    height: auto !important;
+    background: transparent !important;
+    color: #d13f82 !important;
+    box-shadow: none !important;
+    font-weight: 400 !important;
+    border-radius: 0 !important;
+    justify-self: auto !important;
+    place-content: unset !important;
+  }
+  .mobile-bottom-nav .is-home span {
+    width: 28px !important;
+    height: 28px !important;
+  }
+  .mobile-bottom-nav button {
+    font-size: 0.7rem !important;
+    font-weight: 400 !important;
+  }
+  .mobile-bottom-nav span {
+    width: 28px !important;
+    height: 28px !important;
+  }
+}
