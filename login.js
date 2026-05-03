@@ -20,6 +20,8 @@ const loginNote = document.querySelector("#login-note");
 const showLoginFormButton = document.querySelector("#show-login-form");
 const backToPaywallButton = document.querySelector("#back-to-paywall");
 const paywallSubscribeBtn = document.querySelector("#paywall-subscribe-btn");
+const createAccountButton = document.querySelector("[data-create-account]");
+const togglePasswordButton = document.querySelector("#toggle-password");
 
 const AUTH_TOKEN_KEY = "vida-nova:auth-token";
 const AUTH_USER_KEY = "vida-nova:auth-user";
@@ -100,7 +102,7 @@ function setMode(mode) {
   authMode = mode;
 
   const isRegister = mode === "register";
-  authTitle.textContent = isRegister ? "Criar conta" : "Entrar no app";
+  authTitle.textContent = isRegister ? "Criar conta" : "Entre na sua conta";
   authSubmit.textContent = isRegister ? "Criar conta" : "Entrar agora";
   nameField.classList.toggle("hidden-field", !isRegister);
   confirmPasswordField.classList.toggle("hidden-field", !isRegister);
@@ -108,11 +110,7 @@ function setMode(mode) {
   loginConfirmPassword.required = isRegister;
   modeLoginButton.classList.toggle("is-active", !isRegister);
   modeRegisterButton.classList.toggle("is-active", isRegister);
-  setFeedback(
-    isRegister
-      ? "Crie uma conta para liberar o armazenamento separado por usuaria."
-      : "Entre com seu e-mail e senha para acessar seus dados.",
-  );
+  setFeedback("");
 }
 
 function saveSession(token, user) {
@@ -304,6 +302,23 @@ if (modeRegisterButton) {
   modeRegisterButton.addEventListener("click", () => setMode("register"));
 }
 
+if (createAccountButton) {
+  createAccountButton.addEventListener("click", () => {
+    showLoginSection();
+    setMode("register");
+    loginName?.focus();
+  });
+}
+
+if (togglePasswordButton && loginPassword) {
+  togglePasswordButton.addEventListener("click", () => {
+    const showPassword = loginPassword.type === "password";
+    loginPassword.type = showPassword ? "text" : "password";
+    togglePasswordButton.textContent = showPassword ? "●" : "◌";
+    togglePasswordButton.setAttribute("aria-label", showPassword ? "Ocultar senha" : "Mostrar senha");
+  });
+}
+
 if (loginForm) {
   loginForm.addEventListener("submit", async (event) => {
     event.preventDefault();
@@ -428,7 +443,7 @@ clearLegacyAuthCache();
 refreshInstallLinks();
 setMode("login");
 updateLoginInstallUi();
-showPaywall();
+showLoginSection();
 loadAppConfig();
 redirectIfAuthenticated();
 

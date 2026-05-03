@@ -52,41 +52,32 @@
       });
     </script>
     <main class="auth-shell">
-      <section class="auth-panel">
-        <p class="eyebrow">Planner web com acesso no celular</p>
-        <h1>Vida Nova</h1>
-        <p class="auth-copy">
-          Uma entrada pensada para a mulher acessar pelo celular, instalar na
-          tela inicial e voltar todos os dias para cuidar da vida, da casa, da
-          rotina e da espiritualidade.
-        </p>
-        <ul class="auth-list">
-          <li>Agenda, rotina e prioridades do dia</li>
-          <li>Finanças, imagem, casa e autocuidado</li>
-          <li>Vida espiritual com versículo diário</li>
-          <li>Experiencia mobile com instalação na tela inicial</li>
-        </ul>
+      <section class="auth-hero" aria-label="Boas-vindas">
+        <div class="auth-hero-copy">
+          <h1><span>Bem-vinda ao</span>Vida Nova</h1>
+          <p>Um espaço criado para cuidar de você por completo: da sua rotina, da sua casa, das suas finanças e da sua espiritualidade.</p>
+          <strong>Organize, planeje e transforme sua vida — um dia de cada vez.</strong>
+        </div>
       </section>
 
       <section class="auth-form-card">
-
-        <!-- Bloco de assinatura — visível para quem ainda não tem conta -->
         <div id="paywall-block" class="paywall-block">
-          <p class="eyebrow">Acesso exclusivo para assinantes</p>
-          <h2>Comece seu Vida Nova</h2>
-          <p class="auth-copy">Para usar o app você precisa ter uma assinatura ativa. Clique em assinar e libere o acesso completo.</p>
-
+          <p class="eyebrow">Acesso exclusivo</p>
+          <h2>Assinatura necessária</h2>
+          <p class="auth-copy">Sua conta precisa de uma assinatura ativa para entrar no app.</p>
           <div class="auth-actions">
             <a id="paywall-subscribe-btn" href="#" target="_blank" rel="noopener noreferrer" class="primary-button paywall-subscribe-btn">Assinar agora</a>
+            <button id="show-login-form" class="secondary-button" type="button">Entrar com sua conta</button>
           </div>
-          <p class="auth-note">Já tem assinatura? <button id="show-login-form" class="link-button" type="button">Entrar com sua conta</button></p>
         </div>
 
-        <!-- Formulário de login — oculto por padrão, exibido ao clicar em "Entrar" -->
-        <div id="login-block" class="hidden-field" style="display:none">
-          <div>
-            <p class="eyebrow">Acesso da assinante</p>
-            <h2 id="auth-title">Entrar no app</h2>
+        <div id="login-block">
+          <div class="auth-card-heading">
+            <span class="auth-card-icon" aria-hidden="true">●</span>
+            <div>
+              <h2 id="auth-title">Entre na sua conta</h2>
+              <p>Acesse sua jornada personalizada</p>
+            </div>
           </div>
 
           <div class="auth-mode-switch" role="tablist" aria-label="Modo de autenticação">
@@ -95,74 +86,84 @@
           </div>
         </div>
 
-        <form id="login-form" class="auth-form" style="display:none">
+        <form id="login-form" class="auth-form">
           <label id="name-field" class="auth-field hidden-field">
-            Nome
-            <input id="login-name" type="text" placeholder="Seu nome completo" />
+            <span class="field-label">Nome</span>
+            <span class="auth-input-wrap auth-input-name">
+              <input id="login-name" type="text" placeholder="Seu nome completo" />
+            </span>
           </label>
 
           <label>
-            E-mail ou login
-            <input id="login-email" type="text" placeholder="voce@email.com ou Admin" required />
+            <span class="field-label">E-mail ou login</span>
+            <span class="auth-input-wrap auth-input-email">
+              <input id="login-email" type="text" placeholder="Seu e-mail" required />
+            </span>
           </label>
 
           <label>
-            Senha
-            <input id="login-password" type="password" placeholder="Digite sua senha" required minlength="6" />
+            <span class="field-label">Senha</span>
+            <span class="auth-input-wrap auth-input-password">
+              <input id="login-password" type="password" placeholder="Sua senha" required minlength="6" />
+              <button id="toggle-password" class="password-toggle" type="button" aria-label="Mostrar senha">◌</button>
+            </span>
           </label>
 
           <label id="confirm-password-field" class="auth-field hidden-field">
-            Confirmar senha
-            <input id="login-confirm-password" type="password" placeholder="Repita sua senha" minlength="6" />
+            <span class="field-label">Confirmar senha</span>
+            <span class="auth-input-wrap auth-input-password">
+              <input id="login-confirm-password" type="password" placeholder="Repita sua senha" minlength="6" />
+            </span>
           </label>
+
+          <div class="auth-form-options">
+            <label class="remember-access">
+              <input type="checkbox" checked />
+              <span>Lembrar meu acesso</span>
+            </label>
+            <button class="link-button forgot-password" type="button">Esqueci minha senha</button>
+          </div>
 
           <p id="auth-feedback" class="auth-feedback" role="status" aria-live="polite"></p>
 
           <div class="auth-actions">
-            <button id="auth-submit" class="primary-button" type="submit">Entrar agora</button>
-            <button id="back-to-paywall" class="secondary-button" type="button">Voltar</button>
+            <button id="auth-submit" class="primary-button" type="submit">Entrar</button>
+            <button id="back-to-paywall" class="secondary-button" type="button">Ver assinatura</button>
           </div>
           <button id="demo-access" class="secondary-button" type="button" style="display:none">Sem acesso demo</button>
+
+          <div class="auth-social-divider"><span>ou continue com</span></div>
+          <div class="auth-social-row" aria-label="Opções sociais indisponíveis">
+            <button class="auth-social-button" type="button"><span class="google-mark">G</span>Google</button>
+            <button class="auth-social-button" type="button"><span class="apple-mark">●</span>Apple</button>
+          </div>
         </form>
 
-        <p class="auth-note" id="login-note" style="display:none">
+        <p class="auth-note" id="login-note">
           O acesso depende de conta real com assinatura ativa.
-          O login fica salvo neste dispositivo.
         </p>
+      </section>
 
-        <section class="auth-install-box">
-          <div>
-            <p class="eyebrow">Instalar app</p>
-            <h3>Baixar e abrir sem entrar primeiro</h3>
-            <p class="auth-copy">
-              A cliente pode abrir a versão publicada e instalar o app direto no
-              iPhone, Android, Mac ou Windows. Depois ela entra com a conta e os
-              dados continuam sincronizados com o Neon. Quando houver nova publicação,
-              o app deve avisar sobre a atualização e tentar carregar a versão mais recente.
-            </p>
-          </div>
+      <section class="auth-create-card">
+        <span class="auth-create-icon" aria-hidden="true">✦</span>
+        <div>
+          <h2>Ainda não tem conta?</h2>
+          <p>Comece agora sua transformação!</p>
+        </div>
+        <button class="secondary-button auth-create-button" type="button" data-create-account>Criar conta</button>
+      </section>
 
-          <div class="install-actions">
-            <a
-              id="login-live-link"
-              class="primary-button"
-              href="https://vidanova-1.onrender.com"
-              target="_blank"
-              rel="noreferrer"
-            >
-              Abrir app no navegador
-            </a>
-            <button id="login-install-button" class="secondary-button" type="button">
-              Instalar app
-            </button>
-          </div>
+      <section class="auth-trust-row" aria-label="Benefícios">
+        <div><span>♡</span><p>Feito para mulheres</p></div>
+        <div><span>♢</span><p>Seus dados protegidos</p></div>
+        <div><span>☁</span><p>Acesso em todos os devices</p></div>
+        <div><span>♧</span><p>Conteúdo que transforma</p></div>
+      </section>
 
-          <p id="login-install-status" class="auth-note">
-            No iPhone/iPad, abra no Safari. Se abrir por Chrome, Instagram,
-            WhatsApp ou outro app, a opção “Adicionar à Tela de Início” pode não aparecer.
-            No Android, Mac e Windows, use Chrome ou Edge para instalar.
-          </p>
-        </section>
+      <section class="auth-install-box" aria-hidden="true">
+        <a id="login-live-link" href="https://vidanova-1.onrender.com" target="_blank" rel="noreferrer">Abrir app no navegador</a>
+        <button id="login-install-button" class="secondary-button" type="button">Instalar app</button>
+        <p id="login-install-status" class="auth-note"></p>
       </section>
     </main>
 
