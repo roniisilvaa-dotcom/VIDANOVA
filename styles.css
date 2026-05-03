@@ -546,6 +546,49 @@ body.subscription-locked .subscription-gate {
   display: none !important;
 }
 
+/* Mobile drawer styles */
+.mobile-drawer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: min(78vw, 320px);
+  background: #fff;
+  box-shadow: 2px 0 12px rgba(0,0,0,.15);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  z-index: 9999;
+  transform: translateX(-100%);
+  transition: transform .25s ease;
+}
+.mobile-drawer.open {
+  transform: translateX(0);
+}
+.mobile-drawer-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.4);
+  z-index: 9998;
+  display: none;
+}
+.mobile-drawer-overlay.open {
+  display: block;
+}
+.mobile-drawer a {
+  padding: 12px 8px;
+  color: var(--ink);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(0,0,0,.05);
+}
+.mobile-toggle {
+  display: none;
+}
+@media (max-width: 720px) {
+  .mobile-toggle { display: inline-flex; }
+}
+
 .settings-status-pills {
   margin: 0 0 18px;
 }
@@ -3749,6 +3792,37 @@ select {
   }
 }
 
+/* Additional mobile optimization for grid layouts */
+@media (max-width: 1024px) {
+  .workspace-card-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .workspace-overview-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .workspace-card-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .app-topbar {
+    padding: 12px;
+  }
+  .panel {
+    padding: 16px;
+  }
+  .verse-banner-copy strong {
+    font-size: 1.25rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .workspace-card-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 /* Topbar compacto fora do dashboard — mobile */
 @media (max-width: 720px) {
   body.page-not-dashboard .app-topbar {
@@ -3784,6 +3858,10 @@ select {
     max-width: none;
   }
   .verse-banner { margin-bottom: 12px; }
+  /* Ensure hero title uses full width on small screens */ 
+  .hero h2 {
+    max-width: 100%;
+  }
 }
 
 @media (max-width: 720px) {
@@ -7771,6 +7849,36 @@ select {
   /* ── Agenda header: smaller on very small screens ── */
   .agenda-mob-month { font-size: 0.95rem; }
 
+  /* ── Sync bar: compacto no mobile, não ocupa espaço do calendário ── */
+  .agenda-sync-bar {
+    flex-shrink: 0;
+    padding: 3px 12px;
+    min-height: 0;
+    height: 28px;
+    font-size: 0.7rem;
+  }
+  .agenda-sync-label { font-size: 0.7rem; }
+  .agenda-sync-btn { padding: 3px 8px; font-size: 0.65rem; }
+
+  /* Oculta a barra de sync quando agenda está em tela cheia */
+  body.agenda-tab-active .agenda-sync-bar { display: none !important; }
+
+  /* ── Timeline shell: forçar bloco para que overflow-y funcione ── */
+  #week-view-shell.agenda-timeline-shell {
+    display: block !important;
+    overflow-y: scroll !important;
+    -webkit-overflow-scrolling: touch !important;
+    overscroll-behavior-y: contain !important;
+    touch-action: pan-y !important;
+    flex: 1 !important;
+    min-height: 0 !important;
+  }
+
+  /* ── Mob-schedule-shell: flex child correto ── */
+  .mob-schedule-shell:not(.hidden) {
+    display: block !important;
+  }
+
   /* ── Tables: scroll horizontally, don't break layout ── */
   .dyntable-wrap,
   [data-dyntable],
@@ -8379,3 +8487,61 @@ select {
 .mob-yr-day.has-ev::after { content: ""; display: block; width: 3px; height: 3px; border-radius: 50%; background: var(--accent, #c55b84); margin: 0 auto; }
 .mob-yr-day.is-today.has-ev::after { background: rgba(255,255,255,.8); }
 
+/* ── Agenda Firebase Sync Bar ── */
+.agenda-sync-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 7px 16px;
+  background: linear-gradient(90deg, rgba(197,91,132,.05) 0%, rgba(66,133,244,.04) 100%);
+  border-bottom: 1.5px solid rgba(197,91,132,.10);
+  min-height: 38px;
+}
+.agenda-sync-left {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  min-width: 0;
+}
+.agenda-sync-icon {
+  font-size: 0.95rem;
+  flex-shrink: 0;
+  transition: transform .3s;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.agenda-sync-label {
+  font-size: 0.75rem;
+  color: var(--muted, #9a7fa0);
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.agenda-sync-btn {
+  flex-shrink: 0;
+  padding: 5px 12px;
+  border-radius: 20px;
+  border: 1.5px solid rgba(197,91,132,.35);
+  background: transparent;
+  color: var(--berry, #c55b84);
+  font-size: 0.72rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background .15s, color .15s, border-color .15s;
+  white-space: nowrap;
+}
+.agenda-sync-btn:hover {
+  background: var(--berry, #c55b84);
+  color: #fff;
+  border-color: var(--berry, #c55b84);
+}
+.agenda-sync-btn.is-connected {
+  border-color: rgba(24,128,56,.4);
+  color: #188038;
+}
+.agenda-sync-btn.is-connected:hover {
+  background: #188038;
+  color: #fff;
+  border-color: #188038;
+}

@@ -33,7 +33,7 @@
     
     <!-- Security Headers -->
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; manifest-src 'self';" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://accounts.google.com; img-src 'self' data: blob: https://*.googleusercontent.com; font-src 'self'; manifest-src 'self'; connect-src 'self' https://firestore.googleapis.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://www.googleapis.com; frame-src https://accounts.google.com;" />
     
     <!-- Preload critical resources -->
     <link rel="preload" href="script.js" as="script" />
@@ -109,6 +109,22 @@
             <span class="pill">Paz</span>
           </div>
         </section>
+
+        <!-- Mobile navigation drawer (hidden by default) -->
+        <nav id="mobile-drawer" class="mobile-drawer" aria-label="Menu móvel" style="transform: translateX(-100%);">
+          <button id="mobile-drawer-close" class="ghost-button" type="button" aria-label="Fechar">Fechar</button>
+          <a href="#dashboard" data-page-link="dashboard">Dashboard</a>
+          <a href="#planner" data-page-link="planner">Agenda</a>
+          <a href="#estudos" data-page-link="estudos">Estudos</a>
+          <a href="#financas" data-page-link="financas">Finanças</a>
+          <a href="#imagem" data-page-link="imagem">Imagem</a>
+          <a href="#casa" data-page-link="casa">Casa</a>
+          <a href="#corpo" data-page-link="corpo">Corpo</a>
+          <a href="#viagens" data-page-link="viagens">Viagens</a>
+          <a href="#espiritual" data-page-link="espiritual">Espiritual</a>
+          <a href="#configuracoes" data-page-link="configuracoes">Configurações</a>
+        </nav>
+        <div id="mobile-drawer-overlay" class="mobile-drawer-overlay" style="display:none;"></div>
       </aside>
 
       <main class="main-content">
@@ -132,6 +148,7 @@
               <h3 id="user-greeting">Bem-vinda</h3>
             </div>
           </div>
+          <button id="mobile-nav-toggle" class="ghost-button mobile-toggle" type="button" aria-label="Abrir menu móvel" title="Menu" style="display:none;">☰</button>
           <div class="topbar-actions">
             <span id="topbar-plan" class="topbar-status-pill is-pending">Conta pendente</span>
             <button id="settings-button" class="ghost-button icon-only-button settings-gear-button" type="button" aria-label="Abrir configurações" title="Configurações">
@@ -2582,6 +2599,7 @@
     </div>
 
     <script src="script.js"></script>
+    <script type="module" src="agenda-firebase.js"></script>
 
 </body>
 </html>

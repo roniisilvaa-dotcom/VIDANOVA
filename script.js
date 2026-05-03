@@ -344,6 +344,13 @@ if (Object.keys(agendaStore).length === 0) {
   agendaStore = { ...initialAgendaEvents };
 }
 
+// Expõe agendaStore para o módulo de sync Firebase (agenda-firebase.js)
+Object.defineProperty(window, '_vnAgendaStore', {
+  get() { return agendaStore; },
+  set(v) { agendaStore = v; },
+  configurable: true,
+});
+
 let activeFinanceFilter = localStorage.getItem("ela-em-ordem:finance-filter") || "all";
 let financeStore = JSON.parse(localStorage.getItem("ela-em-ordem:finance") || "{}");
 let calculatorExpression = "0";
@@ -2841,6 +2848,7 @@ function saveAgendaStore() {
   localStorage.setItem("ela-em-ordem:agenda-events", JSON.stringify(agendaStore));
   scheduleAllAgendaNotifications();
   scheduleCloudSync();
+  if (window.agendaFirebase) window.agendaFirebase.onEventsSaved(agendaStore);
 }
 
 function findAgendaEventById(dateKey, eventId) {
@@ -5568,6 +5576,14 @@ function setPlannerTab(target) {
   // No mobile: agenda ocupa tela cheia (bloqueia scroll da página)
   if (window.innerWidth < 768) {
     document.body.classList.toggle("agenda-tab-active", target === "planner-agenda");
+    if (target === "planner-agenda") {
+      // Renderiza o strip e o timeline ao abrir a agenda
+      requestAnimationFrame(() => {
+        renderWeekView();
+        if (typeof window.renderMobWeekStrip === "function") window.renderMobWeekStrip();
+        if (typeof window.updateMobDayLabel === "function") window.updateMobDayLabel();
+      });
+    }
   }
 }
 
@@ -6798,6 +6814,7 @@ async function bootApp() {
   renderVerse();
   renderTasks();
   renderCalendar();
+  renderWeekView();
   renderAgendaEvents();
   resetAgendaForm();
   scheduleAllAgendaNotifications();
@@ -7502,4 +7519,43 @@ bootApp().catch((error) => {
   console.error("Erro ao iniciar o app:", error);
   clearAuthSession();
   window.location.href = "./login.html";
+});
+// Lightweight mobile navigation handler (drawer)
+document.addEventListener('DOMContentLoaded', () => {
+  const toggle = document.getElementById('mobile-nav-toggle');
+  const drawer = document.getElementById('mobile-drawer');
+  const overlay = document.getElementById('mobile-drawer-overlay');
+  const closeBtn = document.getElementById('mobile-drawer-close');
+
+  if (toggle && drawer && overlay && closeBtn) {
+    // Show toggle on load if on small screens
+    const ensureVisible = () => {
+      const mq = window.matchMedia('(max-width: 720px)');
+      if (mq.matches) toggle.style.display = 'inline-flex';
+      else toggle.style.display = 'none';
+    };
+    ensureVisible();
+    window.addEventListener('resize', ensureVisible);
+
+    const openDrawer = () => {
+      drawer.classList.add('open');
+      overlay.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    };
+    const closeDrawer = () => {
+      drawer.classList.remove('open');
+      overlay.classList.remove('open');
+      document.body.style.overflow = '';
+    };
+    toggle.addEventListener('click', openDrawer);
+    overlay.addEventListener('click', closeDrawer);
+    closeBtn.addEventListener('click', closeDrawer);
+    // Wire links to navigation
+    const drawerLinks = drawer.querySelectorAll('a[data-page-link]');
+    drawerLinks.forEach((a) => {
+      a.addEventListener('click', () => {
+        closeDrawer();
+      });
+    });
+  }
 });
