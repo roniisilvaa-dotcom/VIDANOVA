@@ -326,6 +326,15 @@ const CLOUD_STATE_TYPE = "app_state";
 const CLOUD_STATE_KEY = "main";
 const FALLBACK_PUBLIC_APP_URL = "https://vidanova-1.onrender.com";
 
+// Cloud sync retry state for robust Neon synchronization
+let cloudSyncRetry = { attempt: 0, timer: null };
+function updateSyncStatus(text, cls = "is-pending") {
+  const el = document.getElementById("sync-status-pill");
+  if (!el) return;
+  el.textContent = text || el.textContent;
+  el.className = "topbar-status-pill" + (cls ? ` ${cls}` : "");
+}
+
 let tasks = [...initialTasks];
 let verseIndex = new Date().getDate() % verses.length;
 let activeCard = null;
@@ -1545,15 +1554,31 @@ function scheduleCloudSync() {
   }
 
   window.clearTimeout(syncTimeoutId);
+  // Clear any scheduled retry to avoid overlapping attempts
+  if (cloudSyncRetry.timer) {
+    clearTimeout(cloudSyncRetry.timer);
+    cloudSyncRetry.timer = null;
+  }
+
   syncTimeoutId = window.setTimeout(() => {
     syncInFlight = apiPost("/api/data/save", {
       token: getAuthToken(),
       dataType: CLOUD_STATE_TYPE,
       dataKey: CLOUD_STATE_KEY,
       dataValue: collectCloudState(),
-    }).catch((error) => {
-      console.error("Erro ao sincronizar dados:", error);
-    });
+    })
+      .then(() => {
+        cloudSyncRetry.attempt = 0;
+        cloudSyncRetry.timer = null;
+        updateSyncStatus("Sincronizado", "is-active");
+      })
+      .catch((error) => {
+        console.error("Erro ao sincronizar dados:", error);
+        cloudSyncRetry.attempt = (cloudSyncRetry.attempt || 0) + 1;
+        const delay = Math.min(1000 * Math.pow(2, cloudSyncRetry.attempt), 5 * 60 * 1000);
+        cloudSyncRetry.timer = setTimeout(scheduleCloudSync, delay);
+        updateSyncStatus(`Falha na sincronização. Re-tentando em ${Math.ceil(delay / 1000)}s`, "is-inactive");
+      });
   }, 250);
 }
 

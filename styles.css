@@ -24,6 +24,54 @@
   --bottom-columns: 1.1fr 1fr;
 }
 
+/* Very small devices: force stacking for all major blocks to avoid clipping */
+@media (max-width: 600px) {
+  .panel,
+  .workspace-card,
+  .agenda-panel,
+  .calendar-card,
+  .finance-card,
+  .study-books-card,
+  .dream-board,
+  .home-table,
+  .project-card,
+  .admin-panel-shell,
+  .admin-shell-content {
+    width: 100%;
+    grid-template-columns: 1fr !important;
+  }
+  .workspace-card-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .calendar-grid {
+    grid-template-columns: repeat(4, 1fr) !important;
+  }
+  .agenda-layout {
+    grid-template-columns: 1fr !important;
+  }
+  .panel { padding: 12px; }
+  .verse-banner-copy strong { font-size: 1.2rem; }
+}
+
+/* Mobile-wide agenda and blocks consistency (mobile-first refinements) */
+@media (max-width: 1024px) {
+  .dashboard-grid { grid-template-columns: 1fr 1fr; }
+  .workspace-card-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .agenda-layout { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 768px) {
+  .dashboard-grid { grid-template-columns: 1fr; }
+  .workspace-card-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .agenda-layout { grid-template-columns: 1fr; }
+}
+@media (max-width: 720px) {
+  .agenda-layout { grid-template-columns: 1fr; }
+  .calendar-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .workspace-card-grid { grid-template-columns: 1fr; }
+  .agenda-left-rail { display: none; }
+  #mob-schedule-shell, #mob-day-list-shell, #calendar-month-shell, #year-view-shell, #week-view-shell { display: block; width: 100%; }
+}
+
 * {
   box-sizing: border-box;
 }
@@ -3815,6 +3863,15 @@ select {
   .verse-banner-copy strong {
     font-size: 1.25rem;
   }
+  /* Mobile baseline for all major blocks */
+  .panel, .workspace-card, .agenda-panel, .calendar-card, .finance-card, .study-books-card, .dream-board, .home-table, .project-card {
+    width: 100%;
+    min-width: 0;
+  }
+  .workspace-card-grid { grid-template-columns: 1fr; }
+  .calendar-grid { grid-template-columns: repeat(4, 1fr); }
+  .agenda-view-tabs { overflow-x: auto; white-space: nowrap; }
+  #mob-schedule-shell, #mob-day-list-shell, #calendar-month-shell, #year-view-shell, #week-view-shell { display: block; width: 100%; }
 }
 
 @media (max-width: 480px) {
@@ -8544,4 +8601,22 @@ select {
   background: #188038;
   color: #fff;
   border-color: #188038;
+}
+/* Mobile agenda reflow improvements (additional fix) */ 
+@media (max-width: 720px) {
+  #mob-schedule-shell, #mob-day-list-shell, #calendar-month-shell, #year-view-shell, #week-view-shell {
+    display: block !important;
+    width: 100% !important;
+  }
+  .agenda-left-rail {
+    display: none !important;
+  }
+  #mob-week-strip {
+    display: flex;
+    overflow-x: auto;
+    gap: 6px;
+  }
+  .week-view-body, .week-columns {
+    width: 100%;
+  }
 }
