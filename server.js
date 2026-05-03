@@ -58,6 +58,29 @@ app.get("/version.json", (req, res, next) => {
   next();
 });
 
+// Health check endpoint for quick status and version visibility
+function readVersionFile() {
+  try {
+    const versionPath = path.join(__dirname, "version.json");
+    if (fs.existsSync(versionPath)) {
+      const raw = fs.readFileSync(versionPath, "utf8");
+      const parsed = JSON.parse(raw);
+      return parsed?.version ?? "unknown";
+    }
+  } catch (e) {
+    // fallthrough to unknown
+  }
+  return "unknown";
+}
+
+function getVersion() {
+  return readVersionFile();
+}
+
+app.get("/health", (req, res) => {
+  res.json({ status: "ok", version: getVersion(), timestamp: new Date().toISOString() });
+});
+
 app.use(express.static(path.join(__dirname)));
 
 function shouldUseSsl(connectionString) {
