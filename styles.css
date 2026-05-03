@@ -44,13 +44,18 @@
     grid-template-columns: 1fr !important;
   }
   .calendar-grid {
-    grid-template-columns: repeat(4, 1fr) !important;
+    grid-template-columns: 1fr !important;
   }
   .agenda-layout {
     grid-template-columns: 1fr !important;
   }
   .panel { padding: 12px; }
-  .verse-banner-copy strong { font-size: 1.2rem; }
+  .verse-banner-copy strong { font-size: 1.15rem; }
+  /* Ensure shells are visible and take full width on mobile */
+  #mob-schedule-shell, #mob-day-list-shell, #calendar-month-shell, #year-view-shell, #week-view-shell {
+    display: block !important;
+    width: 100% !important;
+  }
 }
 
 /* Mobile-wide agenda and blocks consistency (mobile-first refinements) */
