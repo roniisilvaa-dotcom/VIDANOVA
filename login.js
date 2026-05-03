@@ -107,12 +107,14 @@ function setMode(mode) {
 
   const isRegister = mode === "register";
   document.body.classList.toggle("auth-register-mode", isRegister);
-  authTitle.textContent = isRegister ? "Criar conta" : "Entre na sua conta";
-  authSubmit.textContent = isRegister ? "Criar conta" : "Entrar agora";
-  nameField.classList.toggle("hidden-field", !isRegister);
-  confirmPasswordField.classList.toggle("hidden-field", !isRegister);
-  loginName.required = isRegister;
-  loginConfirmPassword.required = isRegister;
+  authTitle.textContent = isRegister ? "Criar minha conta" : "Bem-vinda de volta!";
+  authSubmit.textContent = isRegister ? "Criar minha conta" : "Entrar agora";
+  nameField.classList.add("hidden-field");
+  confirmPasswordField.classList.add("hidden-field");
+  loginName.required = false;
+  loginConfirmPassword.required = false;
+  loginName.value = "";
+  loginConfirmPassword.value = "";
   modeLoginButton.classList.toggle("is-active", !isRegister);
   modeRegisterButton.classList.toggle("is-active", isRegister);
   setFeedback("");
@@ -370,7 +372,7 @@ if (createAccountButton) {
   createAccountButton.addEventListener("click", () => {
     showLoginSection();
     setMode("register");
-    loginName?.focus();
+    loginEmail?.focus();
   });
 }
 
@@ -410,32 +412,18 @@ if (loginForm) {
       return;
     }
 
-    if (isRegister) {
-      const name = loginName.value.trim();
-      const confirmPassword = loginConfirmPassword.value;
-
-      if (!name) {
-        setFeedback("Informe seu nome para criar a conta.", "error");
-        return;
-      }
-
-      if (password !== confirmPassword) {
-        setFeedback("As senhas nao coincidem.", "error");
-        return;
-      }
-    }
-
     authSubmit.disabled = true;
     demoAccess.disabled = true;
     setFeedback(isRegister ? "Criando sua conta..." : "Entrando na sua conta...");
 
     try {
+      const derivedName = email.split("@")[0]?.replace(/[._-]+/g, " ").trim() || "Vida Nova";
       const payload = isRegister
         ? {
-            name: loginName.value.trim(),
+            name: derivedName,
             email,
             password,
-            confirmPassword: loginConfirmPassword.value,
+            confirmPassword: password,
           }
         : {
             email,
