@@ -33,7 +33,7 @@
     <link rel="manifest" href="manifest.webmanifest?v=nv3" />
     <link rel="icon" href="icon.svg?v=nv3" type="image/svg+xml" />
     <link rel="icon" href="icon-192.png?v=nv3" sizes="192x192" type="image/png" />
-    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="styles.css?v=login-final-20260503" />
   </head>
   <body class="auth-body">
     <div id="vn-splash" style="position:fixed;inset:0;z-index:9999;background:linear-gradient(135deg,#c55b84,#e8829a);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;transition:opacity .5s ease">
@@ -87,14 +87,14 @@
             </span>
           </label>
 
-          <label>
+          <label class="auth-login-email-field">
             <span class="field-label">E-mail ou login</span>
             <span class="auth-input-wrap auth-input-email">
               <input id="login-email" type="text" placeholder="Seu e-mail" required />
             </span>
           </label>
 
-          <label>
+          <label class="auth-login-password-field">
             <span class="field-label">Senha</span>
             <span class="auth-input-wrap auth-input-password">
               <input id="login-password" type="password" placeholder="Sua senha" required minlength="6" />
@@ -136,17 +136,6 @@
           O acesso depende de conta real com assinatura ativa.
         </p>
 
-        <div id="paywall-block" class="paywall-block auth-subscription-card">
-          <div>
-            <p class="eyebrow">Assinatura</p>
-            <h2>Libere seu acesso completo</h2>
-            <p class="auth-copy">Para entrar no app, sua conta precisa estar com a assinatura ativa.</p>
-          </div>
-          <div class="auth-actions">
-            <a id="paywall-subscribe-btn" href="https://vidanova-1.onrender.com" target="_blank" rel="noopener noreferrer" class="primary-button paywall-subscribe-btn">Assinar agora</a>
-            <button id="show-login-form" class="secondary-button" type="button">Já tenho conta</button>
-          </div>
-        </div>
       </section>
 
       <section class="auth-create-card">
@@ -171,6 +160,18 @@
         <p id="login-install-status" class="auth-note"></p>
       </section>
     </main>
+
+    <section id="paywall-block" class="paywall-block auth-subscription-card">
+      <div>
+        <p class="eyebrow">Assinatura</p>
+        <h2>Libere seu acesso completo</h2>
+        <p class="auth-copy">Para entrar no app, sua conta precisa estar com a assinatura ativa.</p>
+      </div>
+      <div class="auth-actions">
+        <a id="paywall-subscribe-btn" href="https://vidanova-1.onrender.com" target="_blank" rel="noopener noreferrer" class="primary-button paywall-subscribe-btn">Assinar agora</a>
+        <button id="show-login-form" class="secondary-button" type="button">Já tenho conta</button>
+      </div>
+    </section>
 
     <script src="login.js"></script>
   </body>

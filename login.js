@@ -50,7 +50,7 @@ function showLoginSection() {
 
 async function loadAppConfig() {
   try {
-    const res = await fetch("/api/config");
+    const res = await fetch(getApiUrl("/api/config"));
     if (!res.ok) throw new Error("Config indisponivel");
     const config = await res.json();
 
@@ -106,6 +106,7 @@ function setMode(mode) {
   authMode = mode;
 
   const isRegister = mode === "register";
+  document.body.classList.toggle("auth-register-mode", isRegister);
   authTitle.textContent = isRegister ? "Criar conta" : "Entre na sua conta";
   authSubmit.textContent = isRegister ? "Criar conta" : "Entrar agora";
   nameField.classList.toggle("hidden-field", !isRegister);
@@ -147,6 +148,18 @@ function getPublishedAppUrl() {
   }
 
   return FALLBACK_PUBLIC_APP_URL;
+}
+
+function getApiUrl(path) {
+  if (/^https?:\/\//i.test(path)) {
+    return path;
+  }
+
+  if (window.location.protocol === "file:") {
+    return `${FALLBACK_PUBLIC_APP_URL}${path}`;
+  }
+
+  return path;
 }
 
 function getInstallContext() {
@@ -242,7 +255,7 @@ async function triggerLoginInstallFlow() {
 }
 
 async function postJson(url, payload) {
-  const response = await fetch(url, {
+  const response = await fetch(getApiUrl(url), {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
