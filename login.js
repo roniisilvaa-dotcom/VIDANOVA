@@ -20,7 +20,7 @@ const loginNote = document.querySelector("#login-note");
 const showLoginFormButton = document.querySelector("#show-login-form");
 const backToPaywallButton = document.querySelector("#back-to-paywall");
 const paywallSubscribeBtn = document.querySelector("#paywall-subscribe-btn");
-const createAccountButton = document.querySelector("[data-create-account]");
+const createAccountButtons = document.querySelectorAll("[data-create-account]");
 const togglePasswordButton = document.querySelector("#toggle-password");
 const googleLoginButton = document.querySelector("#google-login-button");
 const appleLoginButton = document.querySelector("#apple-login-button");
@@ -366,12 +366,12 @@ if (modeRegisterButton) {
   modeRegisterButton.addEventListener("click", () => setMode("register"));
 }
 
-if (createAccountButton) {
-  createAccountButton.addEventListener("click", () => {
+if (createAccountButtons.length) {
+  createAccountButtons.forEach((createAccountButton) => createAccountButton.addEventListener("click", () => {
     showLoginSection();
     setMode("register");
     loginEmail?.focus();
-  });
+  }));
 }
 
 if (togglePasswordButton && loginPassword) {

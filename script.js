@@ -824,12 +824,16 @@ function renderCommunityFeed(posts = []) {
            </div>`
         : "";
 
+      const avatarHtml = post.author_avatar_url
+        ? `<img src="${escapeHtml(post.author_avatar_url)}" alt="" />`
+        : escapeHtml(initials);
+
       return `
         <article class="community-post-card" data-post-id="${post.id}">
 
           <!-- Cabeçalho do post -->
           <div class="community-post-header">
-            <div class="community-post-avatar">${escapeHtml(initials)}</div>
+            <div class="community-post-avatar${post.author_avatar_url ? " has-image" : ""}">${avatarHtml}</div>
             <div class="community-post-author">
               <strong>${escapeHtml(post.author_name || "Mulher Vida Nova")}</strong>
               <span>${timeAgo(post.created_at)}</span>
@@ -837,11 +841,11 @@ function renderCommunityFeed(posts = []) {
             ${moreBtn}
           </div>
 
-          <!-- Conteúdo (texto + foto) -->
+          <!-- Conteúdo -->
           <div class="community-post-content" data-post-id="${post.id}">
             ${post.content ? `<p class="community-post-text">${escapeHtml(post.content)}</p>` : ""}
-            ${photoHtml}
           </div>
+          ${photoHtml}
 
           <!-- Formulário de edição (oculto) -->
           <div class="community-edit-form" id="edit-form-${post.id}" hidden>
@@ -881,7 +885,7 @@ function renderCommunityFeed(posts = []) {
           <div class="community-comments-section" id="comments-${post.id}" hidden>
             <div class="community-comments-list"></div>
             <div class="community-inline-comment">
-              <div class="community-comment-self-avatar">${escapeHtml(String(currentSession?.name || "V").split(/\s+/).slice(0,2).map(p=>p[0]?.toUpperCase()||"").join("") || "V")}</div>
+              <div class="community-comment-self-avatar${currentSession?.avatar_url ? " has-image" : ""}">${currentSession?.avatar_url ? `<img src="${escapeHtml(currentSession.avatar_url)}" alt="" />` : escapeHtml(String(currentSession?.name || "V").split(/\s+/).slice(0,2).map(p=>p[0]?.toUpperCase()||"").join("") || "V")}</div>
               <form class="community-comment-form" data-post-id="${post.id}">
                 <input type="text" placeholder="Adicione um comentário…" maxlength="300" required />
                 <button type="submit">Enviar</button>
@@ -1088,7 +1092,7 @@ function renderComments(listEl, comments) {
       .map((p) => p[0]?.toUpperCase() || "").join("") || "VN";
     return `
       <div class="community-comment-item">
-        <div class="community-comment-avatar">${escapeHtml(initials)}</div>
+        <div class="community-comment-avatar${c.author_avatar_url ? " has-image" : ""}">${c.author_avatar_url ? `<img src="${escapeHtml(c.author_avatar_url)}" alt="" />` : escapeHtml(initials)}</div>
         <div class="community-comment-body">
           <strong>${escapeHtml(c.author_name || "Mulher Vida Nova")}</strong>
           <span>${timeAgo(c.created_at)}</span>
@@ -2185,7 +2189,7 @@ function setActivePage(pageName, syncHash = true) {
   if (nextPage === "comunidade") {
     const composerAvatar = document.getElementById("community-composer-avatar");
     if (composerAvatar && currentSession) {
-      composerAvatar.textContent = getSessionInitials(currentSession);
+      renderAvatar(composerAvatar, currentSession.avatar_url, getSessionInitials(currentSession));
     }
     loadCommunityFeed();
     setupCommunityPhotoInput();
