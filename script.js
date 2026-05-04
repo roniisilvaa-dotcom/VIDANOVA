@@ -809,59 +809,79 @@ function renderCommunityFeed(posts = []) {
 
       const isOwn = currentSession && Number(post.user_id) === Number(currentSession.id);
       const photoHtml = post.image_data
-        ? `<img class="community-post-photo" src="${post.image_data}" alt="Foto do post" loading="lazy" />`
+        ? `<div class="community-post-photo-wrap"><img class="community-post-photo" src="${post.image_data}" alt="Foto do post" loading="lazy" /></div>`
         : "";
-      const editBtn = isOwn
-        ? `<button class="community-edit-btn" data-post-id="${post.id}" type="button" title="Editar">
-             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5Z"/></svg>
+      const moreBtn = isOwn
+        ? `<button class="community-edit-btn" data-post-id="${post.id}" type="button" title="Editar publicação">
+             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg>
            </button>`
         : "";
 
       return `
         <article class="community-post-card" data-post-id="${post.id}">
-          <div class="community-post-avatar">${escapeHtml(initials)}</div>
-          <div class="community-post-body">
-            <div class="community-post-meta">
+
+          <!-- Cabeçalho do post -->
+          <div class="community-post-header">
+            <div class="community-post-avatar">${escapeHtml(initials)}</div>
+            <div class="community-post-author">
               <strong>${escapeHtml(post.author_name || "Mulher Vida Nova")}</strong>
               <span>${timeAgo(post.created_at)}</span>
-              ${editBtn}
             </div>
-            <div class="community-post-content" data-post-id="${post.id}">
-              ${photoHtml}
-              <p>${escapeHtml(post.content || "")}</p>
+            ${moreBtn}
+          </div>
+
+          <!-- Conteúdo (texto + foto) -->
+          <div class="community-post-content" data-post-id="${post.id}">
+            ${post.content ? `<p class="community-post-text">${escapeHtml(post.content)}</p>` : ""}
+            ${photoHtml}
+          </div>
+
+          <!-- Formulário de edição (oculto) -->
+          <div class="community-edit-form" id="edit-form-${post.id}" hidden>
+            <div class="community-edit-photo-preview" id="edit-photo-preview-${post.id}">
+              ${post.image_data ? `<img src="${post.image_data}" alt="" /><button type="button" class="community-photo-remove community-edit-photo-remove" data-post-id="${post.id}">×</button>` : ""}
             </div>
-            <div class="community-edit-form" id="edit-form-${post.id}" hidden>
-              <div class="community-edit-photo-preview" id="edit-photo-preview-${post.id}">
-                ${post.image_data ? `<img src="${post.image_data}" alt="" /><button type="button" class="community-photo-remove community-edit-photo-remove" data-post-id="${post.id}">×</button>` : ""}
-              </div>
-              <textarea class="community-edit-textarea" data-post-id="${post.id}" maxlength="600">${escapeHtml(post.content || "")}</textarea>
-              <div class="community-edit-actions">
-                <label class="community-photo-label community-edit-photo-label" title="Trocar foto">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
-                  <input type="file" class="community-edit-photo-input" data-post-id="${post.id}" accept="image/*" style="display:none" />
-                </label>
-                <button class="community-edit-cancel" data-post-id="${post.id}" type="button">Cancelar</button>
-                <button class="community-edit-save" data-post-id="${post.id}" type="button">Salvar</button>
-              </div>
+            <textarea class="community-edit-textarea" data-post-id="${post.id}" maxlength="600">${escapeHtml(post.content || "")}</textarea>
+            <div class="community-edit-actions">
+              <label class="community-composer-media-btn community-edit-photo-label" title="Trocar foto">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
+                <input type="file" class="community-edit-photo-input" data-post-id="${post.id}" accept="image/*" style="display:none" />
+              </label>
+              <button class="community-edit-cancel" data-post-id="${post.id}" type="button">Cancelar</button>
+              <button class="community-edit-save" data-post-id="${post.id}" type="button">Salvar</button>
             </div>
-            <div class="community-post-actions">
-              <button class="community-like-btn ${liked ? "is-liked" : ""}" data-post-id="${post.id}" type="button" aria-label="Curtir">
-                <svg viewBox="0 0 24 24"><path d="M20.8 5.6a5.1 5.1 0 0 0-7.2 0L12 7.2l-1.6-1.6a5.1 5.1 0 1 0-7.2 7.2L12 21l8.8-8.2a5.1 5.1 0 0 0 0-7.2Z"/></svg>
-                <span class="community-like-count">${likesCount > 0 ? likesCount : ""}</span>
-              </button>
-              <button class="community-comment-btn" data-post-id="${post.id}" type="button" aria-label="Comentar">
-                <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-                <span class="community-comment-count">${commentsCount > 0 ? commentsCount : ""}</span>
-              </button>
-            </div>
-            <div class="community-comments-section" id="comments-${post.id}" hidden>
-              <div class="community-comments-list"></div>
+          </div>
+
+          <!-- Contadores -->
+          <div class="community-post-counts">
+            ${likesCount > 0 ? `<span>${likesCount} ${likesCount === 1 ? "curtida" : "curtidas"}</span>` : ""}
+            ${commentsCount > 0 ? `<button class="community-view-comments-btn" data-post-id="${post.id}">${commentsCount} ${commentsCount === 1 ? "comentário" : "comentários"}</button>` : ""}
+          </div>
+
+          <!-- Barra de ações -->
+          <div class="community-post-actions">
+            <button class="community-like-btn ${liked ? "is-liked" : ""}" data-post-id="${post.id}" type="button" aria-label="Curtir">
+              <svg viewBox="0 0 24 24"><path d="M20.8 5.6a5.1 5.1 0 0 0-7.2 0L12 7.2l-1.6-1.6a5.1 5.1 0 1 0-7.2 7.2L12 21l8.8-8.2a5.1 5.1 0 0 0 0-7.2Z"/></svg>
+              Curtir
+            </button>
+            <button class="community-comment-trigger" data-post-id="${post.id}" type="button">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+              Comentar
+            </button>
+          </div>
+
+          <!-- Seção de comentários -->
+          <div class="community-comments-section" id="comments-${post.id}" hidden>
+            <div class="community-comments-list"></div>
+            <div class="community-inline-comment">
+              <div class="community-comment-self-avatar">${escapeHtml(String(currentSession?.name || "V").split(/\s+/).slice(0,2).map(p=>p[0]?.toUpperCase()||"").join("") || "V")}</div>
               <form class="community-comment-form" data-post-id="${post.id}">
-                <input type="text" placeholder="Escreva um comentário…" maxlength="300" required />
+                <input type="text" placeholder="Adicione um comentário…" maxlength="300" required />
                 <button type="submit">Enviar</button>
               </form>
             </div>
           </div>
+
         </article>
       `;
     })
@@ -870,7 +890,7 @@ function renderCommunityFeed(posts = []) {
   communityFeed.querySelectorAll(".community-like-btn").forEach((btn) => {
     btn.addEventListener("click", () => toggleLike(btn.dataset.postId, btn));
   });
-  communityFeed.querySelectorAll(".community-comment-btn").forEach((btn) => {
+  communityFeed.querySelectorAll(".community-comment-trigger, .community-view-comments-btn").forEach((btn) => {
     btn.addEventListener("click", () => toggleComments(btn.dataset.postId));
   });
   communityFeed.querySelectorAll(".community-comment-form").forEach((form) => {
@@ -2078,6 +2098,10 @@ function setActivePage(pageName, syncHash = true) {
   }
 
   if (nextPage === "comunidade") {
+    const composerAvatar = document.getElementById("community-composer-avatar");
+    if (composerAvatar && currentSession) {
+      composerAvatar.textContent = getSessionInitials(currentSession);
+    }
     loadCommunityFeed();
     setupCommunityPhotoInput();
   }
