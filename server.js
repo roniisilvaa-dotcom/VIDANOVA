@@ -1383,6 +1383,56 @@ async function editCommunityPost(userId, postId, content, imageData) {
   await writeStore(store);
 }
 
+async function deleteCommunityPost(user, postId) {
+  const normalizedPostId = Number(postId);
+  const isAdmin = getUserRole(user.email, user.role) === "admin";
+
+  if (!normalizedPostId) {
+    const err = new Error("Publicação inválida.");
+    err.status = 400;
+    throw err;
+  }
+
+  if (isUsingDatabase) {
+    const params = isAdmin
+      ? [normalizedPostId]
+      : [normalizedPostId, user.id];
+    const sql = isAdmin
+      ? "DELETE FROM community_posts WHERE id = $1 RETURNING id"
+      : "DELETE FROM community_posts WHERE id = $1 AND user_id = $2 RETURNING id";
+    const result = await query(sql, params);
+    if (!result.rows.length) {
+      const err = new Error("Publicação não encontrada ou sem permissão.");
+      err.status = 403;
+      throw err;
+    }
+    return;
+  }
+
+  const store = await readStore();
+  if (!Array.isArray(store.communityPosts)) store.communityPosts = [];
+  const idx = store.communityPosts.findIndex((post) => {
+    const samePost = Number(post.id) === normalizedPostId;
+    const canDelete = isAdmin || Number(post.user_id) === Number(user.id);
+    return samePost && canDelete;
+  });
+
+  if (idx === -1) {
+    const err = new Error("Publicação não encontrada ou sem permissão.");
+    err.status = 403;
+    throw err;
+  }
+
+  store.communityPosts.splice(idx, 1);
+  store.communityLikes = (store.communityLikes || []).filter(
+    (like) => Number(like.post_id) !== normalizedPostId,
+  );
+  store.communityComments = (store.communityComments || []).filter(
+    (comment) => Number(comment.post_id) !== normalizedPostId,
+  );
+  await writeStore(store);
+}
+
 async function updateUserProfile(
   userId,
   { name, email, password, avatarUrl, subscriptionUrl },
@@ -2404,19 +2454,8 @@ app.post("/api/community/delete", async (req, res) => {
   try {
     const { token, post_id } = req.body;
     const { user } = await requireAuthorizedUser(token, { requireActiveSubscription: true });
-    if (useDatabase) {
-      const result = await pool.query(
-        "DELETE FROM community_posts WHERE id = $1 AND user_id = $2 RETURNING id",
-        [post_id, user.id]
-      );
-      if (result.rowCount === 0) throw Object.assign(new Error("Post não encontrado ou sem permissão"), { status: 403 });
-    } else {
-      const store = await getStore();
-      const idx = store.communityPosts.findIndex((p) => p.id === post_id && p.user_id === user.id);
-      if (idx === -1) throw Object.assign(new Error("Post não encontrado ou sem permissão"), { status: 403 });
-      store.communityPosts.splice(idx, 1);
-      await saveStore(store);
-    }
+    await deleteCommunityPost(user, post_id);
+    await logActivity(user.id, "community_post_deleted", "Excluiu uma publicação da comunidade");
     const posts = await listCommunityPosts(50, user.id);
     res.json({ success: true, posts });
   } catch (error) {

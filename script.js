@@ -1,24 +1,78 @@
 const verses = [
   {
-    text: "Entrega o teu caminho ao Senhor; confia nele, e ele o fara.",
+    text: "Entrega o teu caminho ao Senhor; confia nele, e ele o fará.",
     reference: "Salmos 37:5",
   },
   {
-    text: "A mulher sabia edifica a sua casa, mas a tola a derruba com as proprias maos.",
-    reference: "Proverbios 14:1",
+    text: "A mulher sábia edifica a sua casa, mas a tola a derruba com as próprias mãos.",
+    reference: "Provérbios 14:1",
   },
   {
     text: "Tudo posso naquele que me fortalece.",
     reference: "Filipenses 4:13",
   },
   {
-    text: "Lancando sobre ele toda a vossa ansiedade, porque ele tem cuidado de vos.",
+    text: "Lançando sobre ele toda a vossa ansiedade, porque ele tem cuidado de vós.",
     reference: "1 Pedro 5:7",
   },
   {
-    text: "Ensina-nos a contar os nossos dias, para que alcancemos coracao sabio.",
+    text: "Ensina-nos a contar os nossos dias, para que alcancemos coração sábio.",
     reference: "Salmos 90:12",
   },
+  { text: "O Senhor é o meu pastor; nada me faltará.", reference: "Salmos 23:1" },
+  { text: "Aquietai-vos e sabei que eu sou Deus.", reference: "Salmos 46:10" },
+  { text: "O choro pode durar uma noite, mas a alegria vem pela manhã.", reference: "Salmos 30:5" },
+  { text: "Cria em mim, ó Deus, um coração puro.", reference: "Salmos 51:10" },
+  { text: "Lâmpada para os meus pés é a tua palavra e luz para o meu caminho.", reference: "Salmos 119:105" },
+  { text: "Este é o dia que fez o Senhor; regozijemo-nos e alegremo-nos nele.", reference: "Salmos 118:24" },
+  { text: "O Senhor te guardará de todo mal; guardará a tua alma.", reference: "Salmos 121:7" },
+  { text: "Deleita-te também no Senhor, e ele te concederá o que deseja o teu coração.", reference: "Salmos 37:4" },
+  { text: "Perto está o Senhor dos que têm o coração quebrantado.", reference: "Salmos 34:18" },
+  { text: "Provai e vede que o Senhor é bom.", reference: "Salmos 34:8" },
+  { text: "Confia no Senhor de todo o teu coração.", reference: "Provérbios 3:5" },
+  { text: "Reconhece-o em todos os teus caminhos, e ele endireitará as tuas veredas.", reference: "Provérbios 3:6" },
+  { text: "Sobre tudo o que se deve guardar, guarda o teu coração.", reference: "Provérbios 4:23" },
+  { text: "A resposta branda desvia o furor.", reference: "Provérbios 15:1" },
+  { text: "O coração alegre serve de bom remédio.", reference: "Provérbios 17:22" },
+  { text: "Há amigo mais chegado do que um irmão.", reference: "Provérbios 18:24" },
+  { text: "Os que esperam no Senhor renovarão as suas forças.", reference: "Isaías 40:31" },
+  { text: "Não temas, porque eu sou contigo.", reference: "Isaías 41:10" },
+  { text: "Quando passares pelas águas, estarei contigo.", reference: "Isaías 43:2" },
+  { text: "Eu faço coisa nova; agora sairá à luz.", reference: "Isaías 43:19" },
+  { text: "Tu conservarás em paz aquele cuja mente está firme em ti.", reference: "Isaías 26:3" },
+  { text: "Porque eu bem sei os pensamentos que penso de vós, diz o Senhor.", reference: "Jeremias 29:11" },
+  { text: "Clama a mim, e responder-te-ei.", reference: "Jeremias 33:3" },
+  { text: "As misericórdias do Senhor são a causa de não sermos consumidos.", reference: "Lamentações 3:22" },
+  { text: "Grande é a tua fidelidade.", reference: "Lamentações 3:23" },
+  { text: "Buscai primeiro o reino de Deus e a sua justiça.", reference: "Mateus 6:33" },
+  { text: "Vinde a mim todos os que estais cansados e oprimidos, e eu vos aliviarei.", reference: "Mateus 11:28" },
+  { text: "Porque para Deus nada é impossível.", reference: "Lucas 1:37" },
+  { text: "Eu sou a videira; vós, as varas.", reference: "João 15:5" },
+  { text: "Conhecereis a verdade, e a verdade vos libertará.", reference: "João 8:32" },
+  { text: "A minha paz vos dou.", reference: "João 14:27" },
+  { text: "Se Deus é por nós, quem será contra nós?", reference: "Romanos 8:31" },
+  { text: "Todas as coisas contribuem juntamente para o bem daqueles que amam a Deus.", reference: "Romanos 8:28" },
+  { text: "Não te deixes vencer do mal, mas vence o mal com o bem.", reference: "Romanos 12:21" },
+  { text: "O amor é paciente, o amor é bondoso.", reference: "1 Coríntios 13:4" },
+  { text: "Andamos por fé, e não por vista.", reference: "2 Coríntios 5:7" },
+  { text: "A minha graça te basta.", reference: "2 Coríntios 12:9" },
+  { text: "Não nos cansemos de fazer o bem.", reference: "Gálatas 6:9" },
+  { text: "Sede uns para com os outros benignos e misericordiosos.", reference: "Efésios 4:32" },
+  { text: "Revesti-vos de toda a armadura de Deus.", reference: "Efésios 6:11" },
+  { text: "Aquele que começou a boa obra a aperfeiçoará.", reference: "Filipenses 1:6" },
+  { text: "Não estejais inquietos por coisa alguma.", reference: "Filipenses 4:6" },
+  { text: "A paz de Deus guardará os vossos corações.", reference: "Filipenses 4:7" },
+  { text: "Tudo quanto fizerdes, fazei-o de todo o coração.", reference: "Colossenses 3:23" },
+  { text: "Em tudo dai graças.", reference: "1 Tessalonicenses 5:18" },
+  { text: "Deus não nos deu espírito de temor, mas de fortaleza, amor e moderação.", reference: "2 Timóteo 1:7" },
+  { text: "Cheguemos com confiança ao trono da graça.", reference: "Hebreus 4:16" },
+  { text: "A fé é o firme fundamento das coisas que se esperam.", reference: "Hebreus 11:1" },
+  { text: "Toda boa dádiva vem do alto.", reference: "Tiago 1:17" },
+  { text: "Sujeitai-vos, pois, a Deus; resisti ao diabo, e ele fugirá de vós.", reference: "Tiago 4:7" },
+  { text: "Humilhai-vos perante o Senhor, e ele vos exaltará.", reference: "Tiago 4:10" },
+  { text: "Sede sóbrios e vigiai.", reference: "1 Pedro 5:8" },
+  { text: "O perfeito amor lança fora o medo.", reference: "1 João 4:18" },
+  { text: "Maior é o que está em vós do que o que está no mundo.", reference: "1 João 4:4" },
 ];
 
 const initialTasks = [];
@@ -346,7 +400,10 @@ function updateSyncStatus(text, cls = "is-pending") {
 }
 
 let tasks = [...initialTasks];
-let verseIndex = new Date().getDate() % verses.length;
+const nowForVerse = new Date();
+const startOfYearForVerse = new Date(nowForVerse.getFullYear(), 0, 0);
+let verseIndex =
+  Math.floor((nowForVerse - startOfYearForVerse) / 86400000) % verses.length;
 let activeCard = null;
 let draggedCard = null;
 let deferredInstallPrompt = null;
@@ -808,18 +865,19 @@ function renderCommunityFeed(posts = []) {
       const commentsCount = Number(post.comments_count) || 0;
 
       const isOwn = currentSession && Number(post.user_id) === Number(currentSession.id);
+      const canManage = isOwn || isAdminSession();
       const photoFormat = post.image_format === "story" ? "story" : "square";
       const photoHtml = post.image_data
         ? `<div class="community-post-photo-wrap community-post-photo-${photoFormat}"><img class="community-post-photo" src="${post.image_data}" alt="Foto do post" loading="lazy" /></div>`
         : "";
-      const moreBtn = isOwn
+      const moreBtn = canManage
         ? `<div class="community-post-more-wrap">
              <button class="community-edit-btn" data-post-id="${post.id}" type="button" aria-label="Mais opções">
                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg>
              </button>
              <div class="community-post-dropdown" id="dropdown-${post.id}" hidden>
-               <button class="community-dropdown-item" data-action="edit" data-post-id="${post.id}">Editar publicação</button>
-               <button class="community-dropdown-item community-dropdown-delete" data-action="delete" data-post-id="${post.id}">Excluir publicação</button>
+               ${isOwn ? `<button class="community-dropdown-item" data-action="edit" data-post-id="${post.id}">Editar publicação</button>` : ""}
+               <button class="community-dropdown-item community-dropdown-delete" data-action="delete" data-post-id="${post.id}">${isOwn ? "Excluir publicação" : "Excluir como admin"}</button>
              </div>
            </div>`
         : "";
