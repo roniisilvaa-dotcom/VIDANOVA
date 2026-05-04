@@ -1235,12 +1235,28 @@ function setupCommunityPhotoInput() {
 
   if (!photoInput) return;
 
+  function applyPreviewFormat(fmt) {
+    if (!previewImg) return;
+    if (fmt === "story") {
+      previewImg.style.aspectRatio = "9 / 16";
+      previewImg.style.width = "56%";
+      previewImg.style.margin = "0 auto";
+      previewImg.style.display = "block";
+    } else {
+      previewImg.style.aspectRatio = "1 / 1";
+      previewImg.style.width = "100%";
+      previewImg.style.margin = "";
+      previewImg.style.display = "block";
+    }
+  }
+
   photoInput.addEventListener("change", async () => {
     const file = photoInput.files[0];
     if (!file) return;
     try {
       _communityPhotoData = await compressImage(file);
       previewImg.src = _communityPhotoData;
+      applyPreviewFormat(_communityPhotoFormat);
       preview.hidden = false;
       const formatToggle = document.getElementById("community-format-toggle");
       if (formatToggle) formatToggle.hidden = false;
@@ -1266,10 +1282,7 @@ function setupCommunityPhotoInput() {
       _communityPhotoFormat = btn.dataset.format;
       document.querySelectorAll(".community-format-btn").forEach((b) => b.classList.remove("is-active"));
       btn.classList.add("is-active");
-      if (previewImg) {
-        previewImg.style.aspectRatio = _communityPhotoFormat === "story" ? "9/16" : "1/1";
-        previewImg.style.objectFit = "cover";
-      }
+      applyPreviewFormat(_communityPhotoFormat);
     });
   });
 }

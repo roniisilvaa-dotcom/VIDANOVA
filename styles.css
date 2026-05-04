@@ -11650,18 +11650,19 @@ select {
   color: var(--berry);
 }
 
-/* Prévia da foto no composer */
+/* Prévia da foto no compositor */
 .community-photo-preview {
   position: relative;
   border-radius: 12px;
   overflow: hidden;
-  margin-left: 50px;
+  margin: 10px 0 0;
 }
 .community-photo-preview img {
   width: 100%;
-  max-height: 240px;
+  max-height: none;
   object-fit: cover;
   display: block;
+  aspect-ratio: 1 / 1;
 }
 .community-photo-remove {
   position: absolute;
@@ -14865,30 +14866,7 @@ select {
   display: block;
 }
 
-/* ── Community: foto vai de borda a borda no card ─────────── */
-.community-post-content {
-  padding: 0 16px !important;
-}
-.community-post-photo-wrap {
-  margin-left: -0px !important;
-  margin-right: -0px !important;
-  border-radius: 0 !important;
-}
-
-/* ── Community: preview da foto no compositor ────────────── */
-.community-photo-preview {
-  margin-left: 0 !important;
-  border-radius: 12px;
-  overflow: hidden;
-}
-.community-photo-preview img {
-  width: 100%;
-  display: block;
-  object-fit: cover;
-  border-radius: 12px;
-}
-
-/* ── Community: responsividade geral ─────────────────────── */
+/* ── Community: foto de borda a borda + responsividade ──────── */
 .community-shell {
   width: 100% !important;
   max-width: 600px !important;
@@ -14898,19 +14876,25 @@ select {
 [data-page-view="comunidade"].page-view.is-active {
   overflow-x: hidden;
 }
+/* Apenas texto tem padding; foto fica fora do wrapper de conteúdo */
+.community-post-content {
+  padding: 4px 16px 0 !important;
+}
+.community-post-text { margin-bottom: 8px !important; }
+.community-post-photo-wrap { border-radius: 0 !important; }
+
 @media (max-width: 767px) {
-  .community-post-card {
-    border-radius: 12px !important;
-  }
-  .community-composer {
-    border-radius: 12px !important;
-  }
-  .community-comment-form {
-    flex-wrap: nowrap;
-  }
-  .community-comment-form input {
-    min-width: 0;
-  }
+  .community-post-card { border-radius: 14px !important; }
+  .community-composer  { border-radius: 14px !important; }
+  /* Garante que o feed nunca vaze para fora da tela */
+  .community-feed { overflow-x: hidden; }
+  /* Barra de comentário funciona em telas pequenas */
+  .community-comment-form { flex-wrap: nowrap; gap: 6px; }
+  .community-comment-form input  { min-width: 0; font-size: 0.82rem !important; }
+  .community-comment-form button { padding: 7px 10px !important; font-size: 0.8rem !important; }
+  /* Inline comment sem avatar no mobile para economizar espaço */
+  .community-inline-comment { grid-template-columns: 24px 1fr; gap: 6px; }
+  .community-comment-self-avatar { width: 24px !important; height: 24px !important; font-size: 0.58rem !important; }
 }
 
 /* Mobile sem menu superior: a barra principal fica apenas na web. */
