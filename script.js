@@ -813,9 +813,15 @@ function renderCommunityFeed(posts = []) {
         ? `<div class="community-post-photo-wrap community-post-photo-${photoFormat}"><img class="community-post-photo" src="${post.image_data}" alt="Foto do post" loading="lazy" /></div>`
         : "";
       const moreBtn = isOwn
-        ? `<button class="community-edit-btn" data-post-id="${post.id}" type="button" title="Editar publicação">
-             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg>
-           </button>`
+        ? `<div class="community-post-more-wrap">
+             <button class="community-edit-btn" data-post-id="${post.id}" type="button" aria-label="Mais opções">
+               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg>
+             </button>
+             <div class="community-post-dropdown" id="dropdown-${post.id}" hidden>
+               <button class="community-dropdown-item" data-action="edit" data-post-id="${post.id}">Editar publicação</button>
+               <button class="community-dropdown-item community-dropdown-delete" data-action="delete" data-post-id="${post.id}">Excluir publicação</button>
+             </div>
+           </div>`
         : "";
 
       return `
@@ -902,7 +908,24 @@ function renderCommunityFeed(posts = []) {
     });
   });
   communityFeed.querySelectorAll(".community-edit-btn").forEach((btn) => {
-    btn.addEventListener("click", () => enterEditMode(btn.dataset.postId));
+    btn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const dropdown = document.getElementById(`dropdown-${btn.dataset.postId}`);
+      if (!dropdown) return;
+      const isHidden = dropdown.hidden;
+      document.querySelectorAll(".community-post-dropdown").forEach((d) => { d.hidden = true; });
+      dropdown.hidden = !isHidden;
+    });
+  });
+  communityFeed.querySelectorAll(".community-dropdown-item").forEach((item) => {
+    item.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const postId = item.dataset.postId;
+      const dropdown = document.getElementById(`dropdown-${postId}`);
+      if (dropdown) dropdown.hidden = true;
+      if (item.dataset.action === "edit") enterEditMode(postId);
+      else if (item.dataset.action === "delete") deletePost(postId);
+    });
   });
   communityFeed.querySelectorAll(".community-edit-cancel").forEach((btn) => {
     btn.addEventListener("click", () => cancelEditMode(btn.dataset.postId));
@@ -976,6 +999,16 @@ async function saveEdit(postId) {
   } catch (err) {
     alert(err.message || "Erro ao salvar.");
     if (saveBtn) saveBtn.disabled = false;
+  }
+}
+
+async function deletePost(postId) {
+  if (!confirm("Excluir esta publicação?")) return;
+  try {
+    const res = await apiPost("/api/community/delete", { token: getAuthToken(), post_id: Number(postId) });
+    renderCommunityFeed(res.posts || []);
+  } catch (err) {
+    alert(err.message || "Erro ao excluir.");
   }
 }
 
@@ -2156,6 +2189,14 @@ function setActivePage(pageName, syncHash = true) {
     }
     loadCommunityFeed();
     setupCommunityPhotoInput();
+    if (!document._communityDropdownListenerSet) {
+      document._communityDropdownListenerSet = true;
+      document.addEventListener("click", (e) => {
+        if (!e.target.closest(".community-post-more-wrap")) {
+          document.querySelectorAll(".community-post-dropdown").forEach((d) => { d.hidden = true; });
+        }
+      });
+    }
   }
 
   window.scrollTo({ top: 0, behavior: "smooth" });

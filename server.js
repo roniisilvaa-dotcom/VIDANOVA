@@ -2400,6 +2400,31 @@ app.post("/api/community/edit", async (req, res) => {
   }
 });
 
+app.post("/api/community/delete", async (req, res) => {
+  try {
+    const { token, post_id } = req.body;
+    const { user } = await requireAuthorizedUser(token, { requireActiveSubscription: true });
+    if (useDatabase) {
+      const result = await pool.query(
+        "DELETE FROM community_posts WHERE id = $1 AND user_id = $2 RETURNING id",
+        [post_id, user.id]
+      );
+      if (result.rowCount === 0) throw Object.assign(new Error("Post não encontrado ou sem permissão"), { status: 403 });
+    } else {
+      const store = await getStore();
+      const idx = store.communityPosts.findIndex((p) => p.id === post_id && p.user_id === user.id);
+      if (idx === -1) throw Object.assign(new Error("Post não encontrado ou sem permissão"), { status: 403 });
+      store.communityPosts.splice(idx, 1);
+      await saveStore(store);
+    }
+    const posts = await listCommunityPosts(50, user.id);
+    res.json({ success: true, posts });
+  } catch (error) {
+    console.error(error);
+    res.status(error.status || 400).json({ error: error.message || "Erro ao excluir" });
+  }
+});
+
 app.post("/api/community/like", async (req, res) => {
   try {
     const { token, post_id } = req.body;
