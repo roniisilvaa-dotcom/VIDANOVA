@@ -774,10 +774,19 @@ async function apiPost(url, payload) {
   return data;
 }
 
+function timeAgo(dateStr) {
+  const diff = Date.now() - new Date(dateStr || Date.now()).getTime();
+  const mins = Math.floor(diff / 60000);
+  if (mins < 1) return "agora";
+  if (mins < 60) return `há ${mins}min`;
+  const hrs = Math.floor(mins / 60);
+  if (hrs < 24) return `há ${hrs}h`;
+  const days = Math.floor(hrs / 24);
+  return `há ${days}d`;
+}
+
 function renderCommunityFeed(posts = []) {
-  if (!communityFeed) {
-    return;
-  }
+  if (!communityFeed) return;
 
   if (!posts.length) {
     communityFeed.innerHTML = `
@@ -792,32 +801,138 @@ function renderCommunityFeed(posts = []) {
   communityFeed.innerHTML = posts
     .map((post) => {
       const initials = String(post.author_name || "VN")
-        .split(/\s+/)
-        .slice(0, 2)
-        .map((part) => part[0]?.toUpperCase() || "")
-        .join("") || "VN";
-      const createdAt = post.created_at ? new Date(post.created_at) : new Date();
-      const dateLabel = createdAt.toLocaleDateString("pt-BR", {
-        day: "2-digit",
-        month: "short",
-        hour: "2-digit",
-        minute: "2-digit",
-      });
+        .split(/\s+/).slice(0, 2)
+        .map((p) => p[0]?.toUpperCase() || "").join("") || "VN";
+      const liked = Boolean(post.liked_by_me);
+      const likesCount = Number(post.likes_count) || 0;
+      const commentsCount = Number(post.comments_count) || 0;
 
       return `
-        <article class="community-post-card">
+        <article class="community-post-card" data-post-id="${post.id}">
           <div class="community-post-avatar">${escapeHtml(initials)}</div>
           <div class="community-post-body">
             <div class="community-post-meta">
               <strong>${escapeHtml(post.author_name || "Mulher Vida Nova")}</strong>
-              <span>${escapeHtml(dateLabel)}</span>
+              <span>${timeAgo(post.created_at)}</span>
             </div>
             <p>${escapeHtml(post.content || "")}</p>
+            <div class="community-post-actions">
+              <button class="community-like-btn ${liked ? "is-liked" : ""}" data-post-id="${post.id}" type="button" aria-label="Curtir">
+                <svg viewBox="0 0 24 24"><path d="M20.8 5.6a5.1 5.1 0 0 0-7.2 0L12 7.2l-1.6-1.6a5.1 5.1 0 1 0-7.2 7.2L12 21l8.8-8.2a5.1 5.1 0 0 0 0-7.2Z"/></svg>
+                <span class="community-like-count">${likesCount > 0 ? likesCount : ""}</span>
+              </button>
+              <button class="community-comment-btn" data-post-id="${post.id}" type="button" aria-label="Comentar">
+                <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                <span class="community-comment-count">${commentsCount > 0 ? commentsCount : ""}</span>
+              </button>
+            </div>
+            <div class="community-comments-section" id="comments-${post.id}" hidden>
+              <div class="community-comments-list"></div>
+              <form class="community-comment-form" data-post-id="${post.id}">
+                <input type="text" placeholder="Escreva um comentário…" maxlength="300" required />
+                <button type="submit">Enviar</button>
+              </form>
+            </div>
           </div>
         </article>
       `;
     })
     .join("");
+
+  communityFeed.querySelectorAll(".community-like-btn").forEach((btn) => {
+    btn.addEventListener("click", () => toggleLike(btn.dataset.postId, btn));
+  });
+  communityFeed.querySelectorAll(".community-comment-btn").forEach((btn) => {
+    btn.addEventListener("click", () => toggleComments(btn.dataset.postId));
+  });
+  communityFeed.querySelectorAll(".community-comment-form").forEach((form) => {
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const input = form.querySelector("input");
+      submitComment(form.dataset.postId, input.value, input);
+    });
+  });
+}
+
+async function toggleLike(postId, btn) {
+  if (!getAuthToken()) return;
+  const wasLiked = btn.classList.contains("is-liked");
+  const countEl = btn.querySelector(".community-like-count");
+  const current = parseInt(countEl.textContent) || 0;
+  btn.classList.toggle("is-liked");
+  countEl.textContent = wasLiked ? (current - 1 > 0 ? current - 1 : "") : (current + 1);
+  try {
+    await apiPost("/api/community/like", { token: getAuthToken(), post_id: Number(postId) });
+  } catch {
+    btn.classList.toggle("is-liked");
+    countEl.textContent = wasLiked ? current : (current - 1 > 0 ? current - 1 : "");
+  }
+}
+
+async function toggleComments(postId) {
+  const section = document.getElementById(`comments-${postId}`);
+  if (!section) return;
+  const isHidden = section.hidden;
+  section.hidden = !isHidden;
+  if (isHidden) {
+    await loadComments(postId);
+  }
+}
+
+async function loadComments(postId) {
+  const section = document.getElementById(`comments-${postId}`);
+  if (!section) return;
+  const list = section.querySelector(".community-comments-list");
+  list.innerHTML = `<p class="community-comments-loading">Carregando…</p>`;
+  try {
+    const res = await apiPost("/api/community/comments", { token: getAuthToken(), post_id: Number(postId) });
+    renderComments(list, res.comments || []);
+  } catch {
+    list.innerHTML = "";
+  }
+}
+
+function renderComments(listEl, comments) {
+  if (!comments.length) {
+    listEl.innerHTML = `<p class="community-comments-empty">Seja a primeira a comentar.</p>`;
+    return;
+  }
+  listEl.innerHTML = comments.map((c) => {
+    const initials = String(c.author_name || "VN").split(/\s+/).slice(0, 2)
+      .map((p) => p[0]?.toUpperCase() || "").join("") || "VN";
+    return `
+      <div class="community-comment-item">
+        <div class="community-comment-avatar">${escapeHtml(initials)}</div>
+        <div class="community-comment-body">
+          <strong>${escapeHtml(c.author_name || "Mulher Vida Nova")}</strong>
+          <span>${timeAgo(c.created_at)}</span>
+          <p>${escapeHtml(c.content || "")}</p>
+        </div>
+      </div>
+    `;
+  }).join("");
+}
+
+async function submitComment(postId, text, inputEl) {
+  const content = (text || "").trim();
+  if (!content || !getAuthToken()) return;
+  inputEl.disabled = true;
+  try {
+    const res = await apiPost("/api/community/comment", { token: getAuthToken(), post_id: Number(postId), content });
+    const section = document.getElementById(`comments-${postId}`);
+    if (section) renderComments(section.querySelector(".community-comments-list"), res.comments || []);
+    inputEl.value = "";
+    const countEl = communityFeed?.querySelector(`.community-comment-btn[data-post-id="${postId}"] .community-comment-count`);
+    if (countEl) {
+      const n = (parseInt(countEl.textContent) || 0) + 1;
+      countEl.textContent = n;
+    }
+  } catch (err) {
+    console.error(err);
+  } finally {
+    inputEl.disabled = false;
+    inputEl.focus();
+  }
 }
 
 async function loadCommunityFeed() {

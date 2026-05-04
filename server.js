@@ -312,11 +312,14 @@ function getDefaultStore() {
       appData: 1,
       activity: 1,
       communityPost: 1,
+      communityComment: 1,
     },
     users: [],
     appData: [],
     activityLog: [],
     communityPosts: [],
+    communityLikes: [],
+    communityComments: [],
     pushSubscriptions: [],
   };
 }
@@ -504,6 +507,30 @@ async function initDb() {
   await query(`
     CREATE INDEX IF NOT EXISTS idx_community_posts_created
     ON community_posts (created_at DESC)
+  `);
+
+  await query(`
+    CREATE TABLE IF NOT EXISTS community_likes (
+      post_id INTEGER NOT NULL REFERENCES community_posts(id) ON DELETE CASCADE,
+      user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+      created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+      PRIMARY KEY (post_id, user_id)
+    )
+  `);
+
+  await query(`
+    CREATE TABLE IF NOT EXISTS community_comments (
+      id SERIAL PRIMARY KEY,
+      post_id INTEGER NOT NULL REFERENCES community_posts(id) ON DELETE CASCADE,
+      user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+      content TEXT NOT NULL,
+      created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
+    )
+  `);
+
+  await query(`
+    CREATE INDEX IF NOT EXISTS idx_community_comments_post
+    ON community_comments (post_id, created_at ASC)
   `);
 
   await query(`
@@ -1127,7 +1154,7 @@ async function listUserDataEntries(userId, dataType) {
     }));
 }
 
-async function listCommunityPosts(limit = 50) {
+async function listCommunityPosts(limit = 50, requestingUserId = null) {
   const normalizedLimit = Math.max(1, Math.min(Number(limit) || 50, 100));
 
   if (isUsingDatabase) {
@@ -1138,27 +1165,128 @@ async function listCommunityPosts(limit = 50) {
          community_posts.content,
          community_posts.created_at,
          users.name AS author_name,
-         users.avatar_url AS author_avatar_url
+         users.avatar_url AS author_avatar_url,
+         COUNT(DISTINCT community_likes.user_id)::int AS likes_count,
+         COUNT(DISTINCT community_comments.id)::int AS comments_count,
+         BOOL_OR(community_likes.user_id = $2) AS liked_by_me
        FROM community_posts
        JOIN users ON users.id = community_posts.user_id
+       LEFT JOIN community_likes ON community_likes.post_id = community_posts.id
+       LEFT JOIN community_comments ON community_comments.post_id = community_posts.id
+       GROUP BY community_posts.id, users.name, users.avatar_url
        ORDER BY community_posts.created_at DESC
        LIMIT $1`,
-      [normalizedLimit],
+      [normalizedLimit, requestingUserId || 0],
     );
     return result.rows;
   }
 
   const store = await readStore();
+  const likes = store.communityLikes || [];
+  const comments = store.communityComments || [];
   return [...(store.communityPosts || [])]
     .sort((left, right) => new Date(right.created_at || 0).getTime() - new Date(left.created_at || 0).getTime())
     .slice(0, normalizedLimit)
     .map((post) => {
       const user = store.users.find((entry) => Number(entry.id) === Number(post.user_id)) || {};
+      const postLikes = likes.filter((l) => Number(l.post_id) === Number(post.id));
+      const postComments = comments.filter((c) => Number(c.post_id) === Number(post.id));
       return {
         ...post,
         author_name: user.name || "Mulher Vida Nova",
         author_avatar_url: user.avatar_url || "",
+        likes_count: postLikes.length,
+        comments_count: postComments.length,
+        liked_by_me: requestingUserId ? postLikes.some((l) => Number(l.user_id) === Number(requestingUserId)) : false,
       };
+    });
+}
+
+async function toggleCommunityLike(userId, postId) {
+  if (isUsingDatabase) {
+    const existing = await query(
+      `SELECT 1 FROM community_likes WHERE post_id = $1 AND user_id = $2`,
+      [postId, userId],
+    );
+    if (existing.rows.length) {
+      await query(`DELETE FROM community_likes WHERE post_id = $1 AND user_id = $2`, [postId, userId]);
+      return false;
+    } else {
+      await query(`INSERT INTO community_likes (post_id, user_id) VALUES ($1, $2) ON CONFLICT DO NOTHING`, [postId, userId]);
+      return true;
+    }
+  }
+
+  const store = await readStore();
+  if (!Array.isArray(store.communityLikes)) store.communityLikes = [];
+  const idx = store.communityLikes.findIndex(
+    (l) => Number(l.post_id) === Number(postId) && Number(l.user_id) === Number(userId),
+  );
+  if (idx >= 0) {
+    store.communityLikes.splice(idx, 1);
+    await writeStore(store);
+    return false;
+  } else {
+    store.communityLikes.push({ post_id: Number(postId), user_id: Number(userId) });
+    await writeStore(store);
+    return true;
+  }
+}
+
+async function addCommunityComment(userId, postId, content) {
+  const cleanedContent = String(content || "").trim().slice(0, 300);
+  if (!cleanedContent) {
+    const error = new Error("Escreva um comentário.");
+    error.status = 400;
+    throw error;
+  }
+
+  if (isUsingDatabase) {
+    const result = await query(
+      `INSERT INTO community_comments (post_id, user_id, content)
+       VALUES ($1, $2, $3)
+       RETURNING id, content, created_at`,
+      [postId, userId, cleanedContent],
+    );
+    return result.rows[0];
+  }
+
+  const store = await readStore();
+  if (!Array.isArray(store.communityComments)) store.communityComments = [];
+  if (!store.counters.communityComment) store.counters.communityComment = 1;
+  const comment = {
+    id: store.counters.communityComment++,
+    post_id: Number(postId),
+    user_id: Number(userId),
+    content: cleanedContent,
+    created_at: new Date().toISOString(),
+  };
+  store.communityComments.push(comment);
+  await writeStore(store);
+  return comment;
+}
+
+async function listCommunityComments(postId) {
+  if (isUsingDatabase) {
+    const result = await query(
+      `SELECT community_comments.id, community_comments.content, community_comments.created_at,
+              users.name AS author_name, users.avatar_url AS author_avatar_url
+       FROM community_comments
+       JOIN users ON users.id = community_comments.user_id
+       WHERE community_comments.post_id = $1
+       ORDER BY community_comments.created_at ASC`,
+      [postId],
+    );
+    return result.rows;
+  }
+
+  const store = await readStore();
+  return (store.communityComments || [])
+    .filter((c) => Number(c.post_id) === Number(postId))
+    .sort((a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime())
+    .map((c) => {
+      const user = store.users.find((u) => Number(u.id) === Number(c.user_id)) || {};
+      return { ...c, author_name: user.name || "Mulher Vida Nova", author_avatar_url: user.avatar_url || "" };
     });
 }
 
@@ -2162,8 +2290,8 @@ app.post("/api/data/get", async (req, res) => {
 app.post("/api/community/list", async (req, res) => {
   try {
     const { token, limit } = req.body;
-    await requireAuthorizedUser(token, { requireActiveSubscription: true });
-    const posts = await listCommunityPosts(limit || 50);
+    const { user } = await requireAuthorizedUser(token, { requireActiveSubscription: true });
+    const posts = await listCommunityPosts(limit || 50, user.id);
 
     res.json({
       success: true,
@@ -2185,7 +2313,7 @@ app.post("/api/community/post", async (req, res) => {
     const { user } = await requireAuthorizedUser(token, { requireActiveSubscription: true });
     await createCommunityPost(user, content);
     await logActivity(user.id, "community_post_created", "Publicou na comunidade");
-    const posts = await listCommunityPosts(50);
+    const posts = await listCommunityPosts(50, user.id);
 
     res.json({
       success: true,
@@ -2198,6 +2326,44 @@ app.post("/api/community/post", async (req, res) => {
       error: error.message || "Não autorizado",
       user: error.user || null,
     });
+  }
+});
+
+app.post("/api/community/like", async (req, res) => {
+  try {
+    const { token, post_id } = req.body;
+    const { user } = await requireAuthorizedUser(token, { requireActiveSubscription: true });
+    const liked = await toggleCommunityLike(user.id, post_id);
+    res.json({ success: true, liked });
+  } catch (error) {
+    console.error(error);
+    res.status(error.status || 401).json({ error: error.message || "Erro ao curtir" });
+  }
+});
+
+app.post("/api/community/comment", async (req, res) => {
+  try {
+    const { token, post_id, content } = req.body;
+    const { user } = await requireAuthorizedUser(token, { requireActiveSubscription: true });
+    const comment = await addCommunityComment(user.id, post_id, content);
+    await logActivity(user.id, "community_comment_created", "Comentou na comunidade");
+    const comments = await listCommunityComments(post_id);
+    res.json({ success: true, comment, comments });
+  } catch (error) {
+    console.error(error);
+    res.status(error.status || 400).json({ error: error.message || "Erro ao comentar" });
+  }
+});
+
+app.post("/api/community/comments", async (req, res) => {
+  try {
+    const { token, post_id } = req.body;
+    await requireAuthorizedUser(token, { requireActiveSubscription: true });
+    const comments = await listCommunityComments(post_id);
+    res.json({ success: true, comments });
+  } catch (error) {
+    console.error(error);
+    res.status(error.status || 401).json({ error: error.message || "Erro ao carregar comentários" });
   }
 });
 
