@@ -5740,11 +5740,12 @@ select {
 }
 
 .home-market-item {
-  display: grid;
-  grid-template-columns: 18px 0 1fr;
+  display: flex;
   align-items: center;
   gap: 10px;
   color: var(--ink);
+  cursor: pointer;
+  padding: 3px 0;
 }
 
 .home-market-item input {
@@ -5756,6 +5757,7 @@ select {
 .home-market-item span {
   width: 18px;
   height: 18px;
+  flex-shrink: 0;
   border-radius: 6px;
   border: 1px solid rgba(160, 93, 184, 0.4);
   background: rgba(255, 255, 255, 0.96);
@@ -12064,8 +12066,8 @@ select {
   }
 
   .mobile-home-hero {
-    gap: 22px;
-    margin-bottom: 28px;
+    gap: 16px;
+    margin-bottom: 24px;
   }
 
   .mobile-home-top {
@@ -12160,22 +12162,29 @@ select {
   }
 
   .mobile-home-greeting {
-    display: grid;
-    gap: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    flex: 1;
+    min-width: 0;
+    padding: 0 10px;
   }
 
   .mobile-home-greeting span {
-    color: #6d7284;
-    font-size: clamp(1.28rem, 5.9vw, 1.78rem);
-    font-weight: 650;
+    color: #9097b1;
+    font-size: 0.82rem;
+    font-weight: 400;
   }
 
   .mobile-home-greeting strong {
-    color: #07092e;
-    font-size: clamp(2.15rem, 9vw, 3.3rem);
-    line-height: 1.04;
+    color: #151934;
+    font-size: 1.1rem;
+    line-height: 1.2;
     letter-spacing: 0;
-    font-weight: 850;
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .mobile-home-greeting strong::after {
@@ -12254,8 +12263,24 @@ select {
   }
 
   body:not(.agenda-tab-active) .workspace-card-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-    gap: 14px !important;
+    grid-template-columns: repeat(6, minmax(0, 1fr)) !important;
+    gap: 10px !important;
+  }
+
+  /* Cards 1-6: 3 por linha (span 2 em grid de 6) */
+  body:not(.agenda-tab-active) .workspace-card-planner,
+  body:not(.agenda-tab-active) .workspace-card-body,
+  body:not(.agenda-tab-active) .workspace-card-finance,
+  body:not(.agenda-tab-active) .workspace-card-study,
+  body:not(.agenda-tab-active) .workspace-card-home,
+  body:not(.agenda-tab-active) .workspace-card-dreams {
+    grid-column: span 2 !important;
+  }
+
+  /* Cards 7-8: 2 por linha (span 3 em grid de 6) */
+  body:not(.agenda-tab-active) .workspace-card-image,
+  body:not(.agenda-tab-active) .workspace-card-travel {
+    grid-column: span 3 !important;
   }
 
   body:not(.agenda-tab-active) .workspace-card {
@@ -12622,24 +12647,17 @@ select {
     content: "";
     display: grid;
     place-items: center;
-    width: 82px;
-    height: 82px;
-    margin-right: 30px;
+    width: 70px;
+    height: 70px;
+    min-width: 70px;
+    margin-right: 24px;
     border-radius: 50%;
     background: #fae0ec;
+    align-self: center;
   }
 
   .verse-banner::after {
-    content: "";
-    position: absolute;
-    right: 190px;
-    top: 25px;
-    width: 86px;
-    height: 96px;
-    opacity: 0.48;
-    background: #e13d87;
-    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cg fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M32 58V12'/%3E%3Cpath d='M32 24C21 18 18 9 21 4c8 1 14 7 11 20Z'/%3E%3Cpath d='M32 24C43 18 46 9 43 4c-8 1-14 7-11 20Z'/%3E%3Cpath d='M32 39C20 38 10 31 8 20c12 0 22 7 24 19Z'/%3E%3Cpath d='M32 39c12-1 22-8 24-19-12 0-22 7-24 19Z'/%3E%3C/g%3E%3C/svg%3E") center / contain no-repeat;
-    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cg fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M32 58V12'/%3E%3Cpath d='M32 24C21 18 18 9 21 4c8 1 14 7 11 20Z'/%3E%3Cpath d='M32 24C43 18 46 9 43 4c-8 1-14 7-11 20Z'/%3E%3Cpath d='M32 39C20 38 10 31 8 20c12 0 22 7 24 19Z'/%3E%3Cpath d='M32 39c12-1 22-8 24-19-12 0-22 7-24 19Z'/%3E%3C/g%3E%3C/svg%3E") center / contain no-repeat;
+    display: none;
   }
 
   .verse-banner .panel-heading {
@@ -14522,23 +14540,6 @@ select {
     box-shadow: none !important;
   }
 
-  /* ── Greeting: leve, regular, sem peso ── */
-  .mobile-home-greeting {
-    gap: 2px !important;
-  }
-  .mobile-home-greeting span {
-    font-size: 0.9rem !important;
-    font-weight: 400 !important;
-    color: #9097b1 !important;
-  }
-  .mobile-home-greeting strong {
-    font-size: 1.25rem !important;
-    font-weight: 500 !important;
-    letter-spacing: 0 !important;
-    line-height: 1.25 !important;
-    color: #151934 !important;
-  }
-
   /* ── Botões de ação (sino + avatar): menores ── */
   .mobile-notification-button {
     width: 32px !important;
@@ -14667,12 +14668,12 @@ select {
     font-weight: 400 !important;
   }
 
-  /* ── Frase motivacional ── */
+  /* ── Frase motivacional (dentro da .mobile-message-section) ── */
   .mobile-motivational {
     font-size: 0.88rem !important;
     font-weight: 400 !important;
     color: #9097b1 !important;
-    margin-top: 16px !important;
+    margin-top: 0 !important;
   }
 
   /* ── Bottom nav: flat, igual ao modelo — sem bolha central ── */
@@ -14830,21 +14831,49 @@ select {
 @media (max-width: 767px) {
   .home-community-banner {
     flex-direction: column;
-    align-items: flex-start;
-    padding: 20px;
-    gap: 16px;
-    margin-top: 20px;
+    align-items: stretch;
+    padding: 16px;
+    gap: 12px;
+    margin-top: 16px;
     border-radius: 16px;
   }
-  .home-community-center {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 8px;
+  /* Linha 1: ícone + texto + avatares */
+  .home-community-left {
+    gap: 12px;
   }
-  .home-community-members-text { max-width: none; }
-  .home-community-right { width: 100%; justify-content: space-between; }
+  .home-community-icon {
+    width: 42px;
+    height: 42px;
+  }
+  .home-community-icon svg {
+    width: 20px;
+    height: 20px;
+  }
+  .home-community-text h2 {
+    font-size: 0.95rem;
+  }
+  .home-community-text p {
+    font-size: 0.8rem;
+  }
+  .home-community-center {
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+    margin-left: auto;
+  }
+  .home-community-members-text { display: none; }
+  .home-community-right {
+    width: 100%;
+    justify-content: flex-end;
+    gap: 10px;
+  }
   .home-community-deco { display: none; }
-  .home-community-cta { flex: 1; justify-content: center; }
+  .home-community-cta {
+    width: 100%;
+    justify-content: center;
+    padding: 11px 20px;
+    font-size: 0.88rem;
+  }
 }
 
 /* ── Community: avatares com foto de perfil ──────────────── */
@@ -14911,7 +14940,7 @@ select {
 /* Ajustes finais pedidos: ícones nítidos, versículo com ícone e comunidade limpa. */
 .verse-banner::before {
   background:
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cg fill='none' stroke='%23d13f82' stroke-width='1.9' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 5.5A2.5 2.5 0 0 1 6.5 3H20v17H6.5A2.5 2.5 0 0 0 4 22V5.5Z'/%3E%3Cpath d='M4 5.5A2.5 2.5 0 0 1 6.5 8H20'/%3E%3C/g%3E%3C/svg%3E") center / 38px 38px no-repeat,
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cg fill='none' stroke='%23d13f82' stroke-width='1.3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 5.5A2.5 2.5 0 0 1 6.5 3H20v17H6.5A2.5 2.5 0 0 0 4 22V5.5Z'/%3E%3Cpath d='M4 5.5A2.5 2.5 0 0 1 6.5 8H20'/%3E%3C/g%3E%3C/svg%3E") center / 34px 34px no-repeat,
     #fae0ec !important;
 }
 
@@ -15297,5 +15326,59 @@ body:not(.agenda-tab-active) .workspace-card-cover::after {
 
   [data-page-view="casa"] .reforma-photo {
     height: 118px;
+  }
+}
+
+/* ══ Mobile home: "Mensagem para hoje" ════════════════════ */
+@media (max-width: 767px) {
+  .mobile-message-section {
+    margin-top: 18px;
+    padding: 16px 18px;
+    background: linear-gradient(135deg, rgba(255,240,248,0.9), rgba(255,248,252,0.7));
+    border: 1px solid rgba(209,63,130,0.1);
+    border-radius: 18px;
+  }
+
+  .mobile-message-label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.72rem;
+    font-weight: 500;
+    color: #d13f82;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .mobile-message-heart {
+    width: 16px;
+    height: 16px;
+    margin-left: auto;
+    flex-shrink: 0;
+  }
+
+  .mobile-message-section .mobile-motivational {
+    font-size: 0.95rem !important;
+    font-weight: 500 !important;
+    color: #2d2040 !important;
+    line-height: 1.55 !important;
+    font-style: italic;
+    margin: 0 !important;
+  }
+
+  /* ── Header top bar: logo | greeting | actions numa linha ── */
+  .mobile-home-top {
+    align-items: center;
+    gap: 0;
+  }
+
+  /* ── Grid módulos: 3 + 2 layout ── */
+  body:not(.agenda-tab-active) .workspace-card-grid {
+    gap: 10px !important;
+  }
+
+  body:not(.agenda-tab-active) .workspace-card-cover {
+    aspect-ratio: 4 / 3 !important;
   }
 }
