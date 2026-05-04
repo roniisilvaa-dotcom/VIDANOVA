@@ -538,6 +538,10 @@ async function initDb() {
   `);
 
   await query(`
+    ALTER TABLE community_posts ADD COLUMN IF NOT EXISTS image_format TEXT DEFAULT 'square'
+  `);
+
+  await query(`
     CREATE TABLE IF NOT EXISTS push_subscriptions (
       id SERIAL PRIMARY KEY,
       endpoint TEXT UNIQUE NOT NULL,
@@ -1168,6 +1172,7 @@ async function listCommunityPosts(limit = 50, requestingUserId = null) {
          community_posts.user_id,
          community_posts.content,
          community_posts.image_data,
+         community_posts.image_format,
          community_posts.created_at,
          users.name AS author_name,
          users.avatar_url AS author_avatar_url,
@@ -1309,7 +1314,7 @@ function validateImageData(imageData) {
   return str;
 }
 
-async function createCommunityPost(user, content, imageData = null) {
+async function createCommunityPost(user, content, imageData = null, imageFormat = "square") {
   const cleanedContent = String(content || "").trim().slice(0, 600);
   if (!cleanedContent && !imageData) {
     const error = new Error("Escreva uma mensagem ou adicione uma foto.");
@@ -1317,12 +1322,13 @@ async function createCommunityPost(user, content, imageData = null) {
     throw error;
   }
   const safeImage = validateImageData(imageData);
+  const safeFormat = imageFormat === "story" ? "story" : "square";
 
   if (isUsingDatabase) {
     await query(
-      `INSERT INTO community_posts (user_id, content, image_data)
-       VALUES ($1, $2, $3)`,
-      [user.id, cleanedContent, safeImage],
+      `INSERT INTO community_posts (user_id, content, image_data, image_format)
+       VALUES ($1, $2, $3, $4)`,
+      [user.id, cleanedContent, safeImage, safeFormat],
     );
     return;
   }
@@ -1336,6 +1342,7 @@ async function createCommunityPost(user, content, imageData = null) {
     user_id: user.id,
     content: cleanedContent,
     image_data: safeImage,
+    image_format: safeFormat,
     created_at: new Date().toISOString(),
     updated_at: new Date().toISOString(),
   });
@@ -2360,9 +2367,9 @@ app.post("/api/community/list", async (req, res) => {
 
 app.post("/api/community/post", async (req, res) => {
   try {
-    const { token, content, image_data } = req.body;
+    const { token, content, image_data, image_format } = req.body;
     const { user } = await requireAuthorizedUser(token, { requireActiveSubscription: true });
-    await createCommunityPost(user, content, image_data);
+    await createCommunityPost(user, content, image_data, image_format);
     await logActivity(user.id, "community_post_created", "Publicou na comunidade");
     const posts = await listCommunityPosts(50, user.id);
 

@@ -11626,6 +11626,30 @@ select {
 }
 .community-publish-btn:hover { opacity: 0.88; }
 
+/* Seletor de formato */
+.community-format-toggle {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+.community-format-btn {
+  border: 1.5px solid rgba(197,91,132,0.2);
+  background: transparent;
+  border-radius: 6px;
+  padding: 4px 6px;
+  cursor: pointer;
+  color: #9097b1;
+  display: grid;
+  place-items: center;
+  transition: all 0.15s;
+}
+.community-format-btn svg { width: 14px; height: 14px; }
+.community-format-btn.is-active {
+  border-color: var(--berry);
+  background: rgba(197,91,132,0.08);
+  color: var(--berry);
+}
+
 /* Prévia da foto no composer */
 .community-photo-preview {
   position: relative;
@@ -11744,12 +11768,20 @@ select {
   white-space: pre-wrap;
   word-break: break-word;
 }
-.community-post-photo-wrap { margin: 0 -0px; }
+.community-post-photo-wrap { margin: 0; overflow: hidden; }
 .community-post-photo {
   width: 100%;
-  max-height: 420px;
   object-fit: cover;
   display: block;
+}
+.community-post-photo-square .community-post-photo {
+  aspect-ratio: 1 / 1;
+  max-height: none;
+}
+.community-post-photo-story .community-post-photo {
+  aspect-ratio: 9 / 16;
+  max-height: 600px;
+  width: 100%;
 }
 
 /* Contadores */

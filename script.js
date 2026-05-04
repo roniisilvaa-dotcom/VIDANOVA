@@ -808,8 +808,9 @@ function renderCommunityFeed(posts = []) {
       const commentsCount = Number(post.comments_count) || 0;
 
       const isOwn = currentSession && Number(post.user_id) === Number(currentSession.id);
+      const photoFormat = post.image_format === "story" ? "story" : "square";
       const photoHtml = post.image_data
-        ? `<div class="community-post-photo-wrap"><img class="community-post-photo" src="${post.image_data}" alt="Foto do post" loading="lazy" /></div>`
+        ? `<div class="community-post-photo-wrap community-post-photo-${photoFormat}"><img class="community-post-photo" src="${post.image_data}" alt="Foto do post" loading="lazy" /></div>`
         : "";
       const moreBtn = isOwn
         ? `<button class="community-edit-btn" data-post-id="${post.id}" type="button" title="Editar publicação">
@@ -854,7 +855,7 @@ function renderCommunityFeed(posts = []) {
 
           <!-- Contadores -->
           <div class="community-post-counts">
-            ${likesCount > 0 ? `<span>${likesCount} ${likesCount === 1 ? "curtida" : "curtidas"}</span>` : ""}
+            ${likesCount > 0 ? `<span class="community-likes-span" data-count="${likesCount}">${likesCount} ${likesCount === 1 ? "curtida" : "curtidas"}</span>` : ""}
             ${commentsCount > 0 ? `<button class="community-view-comments-btn" data-post-id="${post.id}">${commentsCount} ${commentsCount === 1 ? "comentário" : "comentários"}</button>` : ""}
           </div>
 
@@ -981,15 +982,43 @@ async function saveEdit(postId) {
 async function toggleLike(postId, btn) {
   if (!getAuthToken()) return;
   const wasLiked = btn.classList.contains("is-liked");
-  const countEl = btn.querySelector(".community-like-count");
-  const current = parseInt(countEl.textContent) || 0;
+
+  const card = communityFeed?.querySelector(`.community-post-card[data-post-id="${postId}"]`);
+  const countsEl = card?.querySelector(".community-post-counts");
+  let likesSpan = countsEl?.querySelector(".community-likes-span");
+
+  const current = parseInt(likesSpan?.dataset.count || "0") || 0;
+  const newCount = wasLiked ? current - 1 : current + 1;
+
   btn.classList.toggle("is-liked");
-  countEl.textContent = wasLiked ? (current - 1 > 0 ? current - 1 : "") : (current + 1);
+
+  if (countsEl) {
+    if (newCount > 0) {
+      if (!likesSpan) {
+        likesSpan = document.createElement("span");
+        likesSpan.className = "community-likes-span";
+        countsEl.prepend(likesSpan);
+      }
+      likesSpan.dataset.count = newCount;
+      likesSpan.textContent = `${newCount} ${newCount === 1 ? "curtida" : "curtidas"}`;
+    } else if (likesSpan) {
+      likesSpan.remove();
+    }
+  }
+
   try {
     await apiPost("/api/community/like", { token: getAuthToken(), post_id: Number(postId) });
   } catch {
     btn.classList.toggle("is-liked");
-    countEl.textContent = wasLiked ? current : (current - 1 > 0 ? current - 1 : "");
+    if (countsEl) {
+      const rollback = wasLiked ? current : current - 1;
+      let span = countsEl.querySelector(".community-likes-span");
+      if (rollback > 0) {
+        if (!span) { span = document.createElement("span"); span.className = "community-likes-span"; countsEl.prepend(span); }
+        span.dataset.count = rollback;
+        span.textContent = `${rollback} ${rollback === 1 ? "curtida" : "curtidas"}`;
+      } else if (span) { span.remove(); }
+    }
   }
 }
 
@@ -1080,6 +1109,7 @@ async function loadCommunityFeed() {
 }
 
 let _communityPhotoData = null;
+let _communityPhotoFormat = "square";
 
 function compressImage(file, maxPx = 1080, quality = 0.78) {
   return new Promise((resolve, reject) => {
@@ -1117,6 +1147,8 @@ function setupCommunityPhotoInput() {
       _communityPhotoData = await compressImage(file);
       previewImg.src = _communityPhotoData;
       preview.hidden = false;
+      const formatToggle = document.getElementById("community-format-toggle");
+      if (formatToggle) formatToggle.hidden = false;
     } catch {
       setFeedback(communityPostFeedback, "Não foi possível carregar a foto.", "error");
     }
@@ -1126,10 +1158,25 @@ function setupCommunityPhotoInput() {
   if (removeBtn) {
     removeBtn.addEventListener("click", () => {
       _communityPhotoData = null;
+      _communityPhotoFormat = "square";
       previewImg.src = "";
       preview.hidden = true;
+      const formatToggle = document.getElementById("community-format-toggle");
+      if (formatToggle) formatToggle.hidden = true;
     });
   }
+
+  document.querySelectorAll(".community-format-btn").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      _communityPhotoFormat = btn.dataset.format;
+      document.querySelectorAll(".community-format-btn").forEach((b) => b.classList.remove("is-active"));
+      btn.classList.add("is-active");
+      if (previewImg) {
+        previewImg.style.aspectRatio = _communityPhotoFormat === "story" ? "9/16" : "1/1";
+        previewImg.style.objectFit = "cover";
+      }
+    });
+  });
 }
 
 async function publishCommunityPost(content) {
@@ -1141,11 +1188,16 @@ async function publishCommunityPost(content) {
       token: getAuthToken(),
       content,
       image_data: _communityPhotoData || null,
+      image_format: _communityPhotoFormat,
     });
     if (communityPostInput) communityPostInput.value = "";
     _communityPhotoData = null;
+    _communityPhotoFormat = "square";
     const preview = document.querySelector("#community-photo-preview");
-    if (preview) preview.hidden = true;
+    if (preview) { preview.hidden = true; const img = preview.querySelector("img"); if (img) img.src = ""; }
+    const formatToggle = document.getElementById("community-format-toggle");
+    if (formatToggle) formatToggle.hidden = true;
+    document.querySelectorAll(".community-format-btn").forEach((b) => { b.classList.toggle("is-active", b.dataset.format === "square"); });
     setFeedback(communityPostFeedback, "Publicado!", "success");
     renderCommunityFeed(response.posts || []);
   } catch (error) {
