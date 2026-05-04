@@ -1962,8 +1962,16 @@
             <p class="community-intro">Compartilhe uma vitória, peça apoio ou converse com outras mulheres do Vida Nova.</p>
             <form id="community-post-form" class="community-post-form">
               <textarea id="community-post-input" maxlength="600" placeholder="Escreva algo para a comunidade..."></textarea>
+              <div id="community-photo-preview" class="community-photo-preview" hidden>
+                <img id="community-photo-preview-img" src="" alt="Prévia da foto" />
+                <button type="button" id="community-photo-remove" class="community-photo-remove" aria-label="Remover foto">×</button>
+              </div>
               <div class="community-form-actions">
-                <small id="community-post-feedback">As publicações ficam sincronizadas entre web, celular e app instalado.</small>
+                <label class="community-photo-label" title="Adicionar foto">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
+                  <input type="file" id="community-photo-input" accept="image/*" style="display:none" />
+                </label>
+                <small id="community-post-feedback">Compartilhe com a comunidade.</small>
                 <button class="primary-button" type="submit">Publicar</button>
               </div>
             </form>

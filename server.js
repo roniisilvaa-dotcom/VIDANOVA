@@ -534,6 +534,10 @@ async function initDb() {
   `);
 
   await query(`
+    ALTER TABLE community_posts ADD COLUMN IF NOT EXISTS image_data TEXT
+  `);
+
+  await query(`
     CREATE TABLE IF NOT EXISTS push_subscriptions (
       id SERIAL PRIMARY KEY,
       endpoint TEXT UNIQUE NOT NULL,
@@ -1163,6 +1167,7 @@ async function listCommunityPosts(limit = 50, requestingUserId = null) {
          community_posts.id,
          community_posts.user_id,
          community_posts.content,
+         community_posts.image_data,
          community_posts.created_at,
          users.name AS author_name,
          users.avatar_url AS author_avatar_url,
@@ -1290,38 +1295,84 @@ async function listCommunityComments(postId) {
     });
 }
 
-async function createCommunityPost(user, content) {
+const MAX_IMAGE_BYTES = 1.5 * 1024 * 1024;
+
+function validateImageData(imageData) {
+  if (!imageData) return null;
+  const str = String(imageData);
+  if (!str.startsWith("data:image/")) return null;
+  if (Buffer.byteLength(str, "utf8") > MAX_IMAGE_BYTES) {
+    const err = new Error("Imagem muito grande. Use uma foto menor.");
+    err.status = 400;
+    throw err;
+  }
+  return str;
+}
+
+async function createCommunityPost(user, content, imageData = null) {
   const cleanedContent = String(content || "").trim().slice(0, 600);
-  if (!cleanedContent) {
-    const error = new Error("Escreva uma mensagem para publicar.");
+  if (!cleanedContent && !imageData) {
+    const error = new Error("Escreva uma mensagem ou adicione uma foto.");
     error.status = 400;
     throw error;
   }
+  const safeImage = validateImageData(imageData);
 
   if (isUsingDatabase) {
     await query(
-      `INSERT INTO community_posts (user_id, content)
-       VALUES ($1, $2)`,
-      [user.id, cleanedContent],
+      `INSERT INTO community_posts (user_id, content, image_data)
+       VALUES ($1, $2, $3)`,
+      [user.id, cleanedContent, safeImage],
     );
     return;
   }
 
   const store = await readStore();
-  if (!Array.isArray(store.communityPosts)) {
-    store.communityPosts = [];
-  }
-  if (!store.counters.communityPost) {
-    store.counters.communityPost = 1;
-  }
+  if (!Array.isArray(store.communityPosts)) store.communityPosts = [];
+  if (!store.counters.communityPost) store.counters.communityPost = 1;
 
   store.communityPosts.push({
     id: store.counters.communityPost++,
     user_id: user.id,
     content: cleanedContent,
+    image_data: safeImage,
     created_at: new Date().toISOString(),
     updated_at: new Date().toISOString(),
   });
+  await writeStore(store);
+}
+
+async function editCommunityPost(userId, postId, content, imageData) {
+  const cleanedContent = String(content || "").trim().slice(0, 600);
+  const safeImage = validateImageData(imageData);
+
+  if (isUsingDatabase) {
+    const result = await query(
+      `UPDATE community_posts SET content = $1, image_data = $2, updated_at = NOW()
+       WHERE id = $3 AND user_id = $4
+       RETURNING id`,
+      [cleanedContent, safeImage, postId, userId],
+    );
+    if (!result.rows.length) {
+      const err = new Error("Publicação não encontrada ou sem permissão.");
+      err.status = 403;
+      throw err;
+    }
+    return;
+  }
+
+  const store = await readStore();
+  const post = (store.communityPosts || []).find(
+    (p) => Number(p.id) === Number(postId) && Number(p.user_id) === Number(userId),
+  );
+  if (!post) {
+    const err = new Error("Publicação não encontrada ou sem permissão.");
+    err.status = 403;
+    throw err;
+  }
+  post.content = cleanedContent;
+  post.image_data = safeImage;
+  post.updated_at = new Date().toISOString();
   await writeStore(store);
 }
 
@@ -2309,9 +2360,9 @@ app.post("/api/community/list", async (req, res) => {
 
 app.post("/api/community/post", async (req, res) => {
   try {
-    const { token, content } = req.body;
+    const { token, content, image_data } = req.body;
     const { user } = await requireAuthorizedUser(token, { requireActiveSubscription: true });
-    await createCommunityPost(user, content);
+    await createCommunityPost(user, content, image_data);
     await logActivity(user.id, "community_post_created", "Publicou na comunidade");
     const posts = await listCommunityPosts(50, user.id);
 
@@ -2326,6 +2377,19 @@ app.post("/api/community/post", async (req, res) => {
       error: error.message || "Não autorizado",
       user: error.user || null,
     });
+  }
+});
+
+app.post("/api/community/edit", async (req, res) => {
+  try {
+    const { token, post_id, content, image_data } = req.body;
+    const { user } = await requireAuthorizedUser(token, { requireActiveSubscription: true });
+    await editCommunityPost(user.id, post_id, content, image_data);
+    const posts = await listCommunityPosts(50, user.id);
+    res.json({ success: true, posts });
+  } catch (error) {
+    console.error(error);
+    res.status(error.status || 400).json({ error: error.message || "Erro ao editar" });
   }
 });
 

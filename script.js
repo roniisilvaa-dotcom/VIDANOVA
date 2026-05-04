@@ -807,6 +807,16 @@ function renderCommunityFeed(posts = []) {
       const likesCount = Number(post.likes_count) || 0;
       const commentsCount = Number(post.comments_count) || 0;
 
+      const isOwn = currentSession && Number(post.user_id) === Number(currentSession.id);
+      const photoHtml = post.image_data
+        ? `<img class="community-post-photo" src="${post.image_data}" alt="Foto do post" loading="lazy" />`
+        : "";
+      const editBtn = isOwn
+        ? `<button class="community-edit-btn" data-post-id="${post.id}" type="button" title="Editar">
+             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5Z"/></svg>
+           </button>`
+        : "";
+
       return `
         <article class="community-post-card" data-post-id="${post.id}">
           <div class="community-post-avatar">${escapeHtml(initials)}</div>
@@ -814,8 +824,26 @@ function renderCommunityFeed(posts = []) {
             <div class="community-post-meta">
               <strong>${escapeHtml(post.author_name || "Mulher Vida Nova")}</strong>
               <span>${timeAgo(post.created_at)}</span>
+              ${editBtn}
             </div>
-            <p>${escapeHtml(post.content || "")}</p>
+            <div class="community-post-content" data-post-id="${post.id}">
+              ${photoHtml}
+              <p>${escapeHtml(post.content || "")}</p>
+            </div>
+            <div class="community-edit-form" id="edit-form-${post.id}" hidden>
+              <div class="community-edit-photo-preview" id="edit-photo-preview-${post.id}">
+                ${post.image_data ? `<img src="${post.image_data}" alt="" /><button type="button" class="community-photo-remove community-edit-photo-remove" data-post-id="${post.id}">×</button>` : ""}
+              </div>
+              <textarea class="community-edit-textarea" data-post-id="${post.id}" maxlength="600">${escapeHtml(post.content || "")}</textarea>
+              <div class="community-edit-actions">
+                <label class="community-photo-label community-edit-photo-label" title="Trocar foto">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
+                  <input type="file" class="community-edit-photo-input" data-post-id="${post.id}" accept="image/*" style="display:none" />
+                </label>
+                <button class="community-edit-cancel" data-post-id="${post.id}" type="button">Cancelar</button>
+                <button class="community-edit-save" data-post-id="${post.id}" type="button">Salvar</button>
+              </div>
+            </div>
             <div class="community-post-actions">
               <button class="community-like-btn ${liked ? "is-liked" : ""}" data-post-id="${post.id}" type="button" aria-label="Curtir">
                 <svg viewBox="0 0 24 24"><path d="M20.8 5.6a5.1 5.1 0 0 0-7.2 0L12 7.2l-1.6-1.6a5.1 5.1 0 1 0-7.2 7.2L12 21l8.8-8.2a5.1 5.1 0 0 0 0-7.2Z"/></svg>
@@ -852,6 +880,82 @@ function renderCommunityFeed(posts = []) {
       submitComment(form.dataset.postId, input.value, input);
     });
   });
+  communityFeed.querySelectorAll(".community-edit-btn").forEach((btn) => {
+    btn.addEventListener("click", () => enterEditMode(btn.dataset.postId));
+  });
+  communityFeed.querySelectorAll(".community-edit-cancel").forEach((btn) => {
+    btn.addEventListener("click", () => cancelEditMode(btn.dataset.postId));
+  });
+  communityFeed.querySelectorAll(".community-edit-save").forEach((btn) => {
+    btn.addEventListener("click", () => saveEdit(btn.dataset.postId));
+  });
+  communityFeed.querySelectorAll(".community-edit-photo-input").forEach((input) => {
+    input.addEventListener("change", async () => {
+      const file = input.files[0];
+      if (!file) return;
+      const postId = input.dataset.postId;
+      const previewWrap = document.getElementById(`edit-photo-preview-${postId}`);
+      const data = await compressImage(file);
+      input._editPhotoData = data;
+      if (previewWrap) {
+        previewWrap.innerHTML = `<img src="${data}" alt="" /><button type="button" class="community-photo-remove community-edit-photo-remove" data-post-id="${postId}">×</button>`;
+        previewWrap.querySelector(".community-edit-photo-remove")?.addEventListener("click", () => {
+          input._editPhotoData = "__remove__";
+          previewWrap.innerHTML = "";
+        });
+      }
+      input.value = "";
+    });
+  });
+  communityFeed.querySelectorAll(".community-edit-photo-remove").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const postId = btn.dataset.postId;
+      const input = communityFeed.querySelector(`.community-edit-photo-input[data-post-id="${postId}"]`);
+      if (input) input._editPhotoData = "__remove__";
+      const previewWrap = document.getElementById(`edit-photo-preview-${postId}`);
+      if (previewWrap) previewWrap.innerHTML = "";
+    });
+  });
+}
+
+function enterEditMode(postId) {
+  const content = document.querySelector(`.community-post-content[data-post-id="${postId}"]`);
+  const form = document.getElementById(`edit-form-${postId}`);
+  if (content) content.hidden = true;
+  if (form) {
+    form.hidden = false;
+    form.querySelector("textarea")?.focus();
+  }
+}
+
+function cancelEditMode(postId) {
+  const content = document.querySelector(`.community-post-content[data-post-id="${postId}"]`);
+  const form = document.getElementById(`edit-form-${postId}`);
+  if (content) content.hidden = false;
+  if (form) form.hidden = true;
+}
+
+async function saveEdit(postId) {
+  const textarea = communityFeed?.querySelector(`.community-edit-textarea[data-post-id="${postId}"]`);
+  const photoInput = communityFeed?.querySelector(`.community-edit-photo-input[data-post-id="${postId}"]`);
+  const saveBtn = communityFeed?.querySelector(`.community-edit-save[data-post-id="${postId}"]`);
+  const content = textarea?.value.trim() || "";
+  let imageData = photoInput?._editPhotoData;
+  if (imageData === "__remove__") imageData = null;
+
+  if (saveBtn) saveBtn.disabled = true;
+  try {
+    const res = await apiPost("/api/community/edit", {
+      token: getAuthToken(),
+      post_id: Number(postId),
+      content,
+      image_data: imageData !== undefined ? imageData : undefined,
+    });
+    renderCommunityFeed(res.posts || []);
+  } catch (err) {
+    alert(err.message || "Erro ao salvar.");
+    if (saveBtn) saveBtn.disabled = false;
+  }
 }
 
 async function toggleLike(postId, btn) {
@@ -955,19 +1059,74 @@ async function loadCommunityFeed() {
   }
 }
 
-async function publishCommunityPost(content) {
-  if (!communityPostFeedback) {
-    return;
+let _communityPhotoData = null;
+
+function compressImage(file, maxPx = 1080, quality = 0.78) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const img = new Image();
+      img.onload = () => {
+        const scale = Math.min(1, maxPx / Math.max(img.width, img.height));
+        const canvas = document.createElement("canvas");
+        canvas.width = Math.round(img.width * scale);
+        canvas.height = Math.round(img.height * scale);
+        canvas.getContext("2d").drawImage(img, 0, 0, canvas.width, canvas.height);
+        resolve(canvas.toDataURL("image/jpeg", quality));
+      };
+      img.onerror = reject;
+      img.src = e.target.result;
+    };
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
+function setupCommunityPhotoInput() {
+  const photoInput = document.querySelector("#community-photo-input");
+  const preview = document.querySelector("#community-photo-preview");
+  const previewImg = document.querySelector("#community-photo-preview-img");
+  const removeBtn = document.querySelector("#community-photo-remove");
+
+  if (!photoInput) return;
+
+  photoInput.addEventListener("change", async () => {
+    const file = photoInput.files[0];
+    if (!file) return;
+    try {
+      _communityPhotoData = await compressImage(file);
+      previewImg.src = _communityPhotoData;
+      preview.hidden = false;
+    } catch {
+      setFeedback(communityPostFeedback, "Não foi possível carregar a foto.", "error");
+    }
+    photoInput.value = "";
+  });
+
+  if (removeBtn) {
+    removeBtn.addEventListener("click", () => {
+      _communityPhotoData = null;
+      previewImg.src = "";
+      preview.hidden = true;
+    });
   }
+}
+
+async function publishCommunityPost(content) {
+  if (!communityPostFeedback) return;
 
   setFeedback(communityPostFeedback, "Publicando...");
   try {
     const response = await apiPost("/api/community/post", {
       token: getAuthToken(),
       content,
+      image_data: _communityPhotoData || null,
     });
     if (communityPostInput) communityPostInput.value = "";
-    setFeedback(communityPostFeedback, "Publicado na comunidade.", "success");
+    _communityPhotoData = null;
+    const preview = document.querySelector("#community-photo-preview");
+    if (preview) preview.hidden = true;
+    setFeedback(communityPostFeedback, "Publicado!", "success");
     renderCommunityFeed(response.posts || []);
   } catch (error) {
     setFeedback(communityPostFeedback, error.message, "error");
@@ -1920,6 +2079,7 @@ function setActivePage(pageName, syncHash = true) {
 
   if (nextPage === "comunidade") {
     loadCommunityFeed();
+    setupCommunityPhotoInput();
   }
 
   window.scrollTo({ top: 0, behavior: "smooth" });

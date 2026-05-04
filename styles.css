@@ -11598,6 +11598,151 @@ select {
   line-height: 1.55;
 }
 
+/* ── Botão ícone câmera no formulário ── */
+.community-photo-label {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  color: var(--berry);
+  cursor: pointer;
+  border-radius: 50%;
+  transition: background 0.15s;
+  flex-shrink: 0;
+}
+.community-photo-label:hover { background: rgba(197, 91, 132, 0.1); }
+.community-photo-label svg { width: 20px; height: 20px; }
+
+/* ── Prévia da foto antes de publicar ── */
+.community-photo-preview {
+  position: relative;
+  margin: 4px 0;
+  border-radius: 14px;
+  overflow: hidden;
+}
+.community-photo-preview img {
+  width: 100%;
+  max-height: 260px;
+  object-fit: cover;
+  display: block;
+  border-radius: 14px;
+}
+.community-photo-remove {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.55);
+  color: #fff;
+  border: 0;
+  font-size: 1.1rem;
+  line-height: 1;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+}
+
+/* ── Foto dentro do post ── */
+.community-post-photo {
+  width: 100%;
+  max-height: 340px;
+  object-fit: cover;
+  border-radius: 14px;
+  margin-top: 10px;
+  margin-bottom: 4px;
+  display: block;
+}
+
+/* ── Botão editar ── */
+.community-post-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  color: var(--muted);
+  font-size: 0.88rem;
+  flex-wrap: wrap;
+}
+.community-edit-btn {
+  margin-left: auto;
+  border: 0;
+  background: transparent;
+  color: #b0b8cc;
+  cursor: pointer;
+  padding: 2px 4px;
+  border-radius: 6px;
+  display: grid;
+  place-items: center;
+  transition: color 0.15s;
+  flex-shrink: 0;
+}
+.community-edit-btn:hover { color: var(--berry); }
+.community-edit-btn svg { width: 15px; height: 15px; }
+
+/* ── Formulário de edição inline ── */
+.community-edit-form {
+  margin-top: 10px;
+  display: grid;
+  gap: 8px;
+}
+.community-edit-photo-preview {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+}
+.community-edit-photo-preview img {
+  width: 100%;
+  max-height: 220px;
+  object-fit: cover;
+  display: block;
+  border-radius: 12px;
+}
+.community-edit-textarea {
+  width: 100%;
+  min-height: 80px;
+  resize: vertical;
+  border: 1.5px solid rgba(197, 91, 132, 0.22);
+  border-radius: 12px;
+  padding: 12px;
+  font: inherit;
+  font-size: 0.92rem;
+  color: var(--ink);
+  background: rgba(255,255,255,0.9);
+  outline: none;
+}
+.community-edit-textarea:focus { border-color: var(--berry); }
+.community-edit-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  justify-content: flex-end;
+}
+.community-edit-photo-label { margin-right: auto; }
+.community-edit-cancel {
+  border: 1.5px solid #e0e0e0;
+  background: transparent;
+  border-radius: 20px;
+  padding: 6px 16px;
+  font: inherit;
+  font-size: 0.85rem;
+  color: #9097b1;
+  cursor: pointer;
+}
+.community-edit-save {
+  border: 0;
+  border-radius: 20px;
+  padding: 6px 18px;
+  background: var(--berry);
+  color: #fff;
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+.community-edit-save:disabled { opacity: 0.5; cursor: default; }
+
 /* ── Barra de ações: curtir + comentar ── */
 .community-post-actions {
   display: flex;
