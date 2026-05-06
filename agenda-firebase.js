@@ -383,9 +383,4 @@ window.agendaFirebase = {
   getUser: () => currentUser,
 };
 
-// Inicializa UI quando o DOM estiver pronto
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', buildUI);
-} else {
-  buildUI();
-}
+// UI de sync Google removida a pedido — dados continuam sincronizando em background

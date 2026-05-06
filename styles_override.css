@@ -281,3 +281,122 @@
   }
   .workspace-card-cover { height: 90px !important; }
 }
+
+/* ── Agenda: layout desktop ──────────────────────────────── */
+@media (min-width: 768px) {
+  /* Remove barra de sync Google */
+  .agenda-sync-bar { display: none !important; }
+
+  /* Painel principal: altura mínima confortável */
+  .agenda-mobile-panel {
+    min-height: 680px !important;
+    border-radius: 16px !important;
+  }
+
+  /* Header: mais espaçoso */
+  .agenda-mob-header {
+    padding: 18px 28px 14px !important;
+    gap: 12px !important;
+  }
+
+  .agenda-mob-back-btn { display: none !important; }
+
+  .agenda-mob-month {
+    font-size: 1.15rem !important;
+    font-weight: 700 !important;
+    color: var(--navy, #2C2D5B) !important;
+  }
+
+  .agenda-mob-nav {
+    width: 38px !important;
+    height: 38px !important;
+    font-size: 1.5rem !important;
+  }
+
+  .agenda-mob-today-btn {
+    padding: 8px 20px !important;
+    font-size: 0.85rem !important;
+    font-weight: 600 !important;
+    border-radius: 20px !important;
+  }
+
+  /* Tabs de visualização: maiores e com melhor espaçamento */
+  .agenda-view-tabs {
+    padding: 10px 24px !important;
+    gap: 8px !important;
+    flex-wrap: nowrap !important;
+  }
+
+  .agenda-view-tab {
+    flex: unset !important;
+    padding: 8px 22px !important;
+    font-size: 0.85rem !important;
+    font-weight: 600 !important;
+    border-radius: 20px !important;
+    min-width: 80px !important;
+  }
+
+  /* Strip de dias: mais espaçoso */
+  .agenda-week-strip-scroll {
+    padding: 10px 24px !important;
+  }
+
+  .mob-day-btn {
+    padding: 8px 14px 10px !important;
+    min-width: 56px !important;
+    border-radius: 16px !important;
+  }
+
+  .mob-day-name {
+    font-size: 0.7rem !important;
+    letter-spacing: 0.08em !important;
+  }
+
+  .mob-day-num {
+    font-size: 1.35rem !important;
+    width: 38px !important;
+    height: 38px !important;
+  }
+
+  /* Timeline ocupa toda a altura restante */
+  .agenda-timeline-shell {
+    flex: 1 !important;
+    min-height: 420px !important;
+  }
+
+  /* Notas do dia: mais espaçosas */
+  .agenda-day-notes {
+    padding: 16px 28px !important;
+  }
+
+  .agenda-day-notes-textarea {
+    min-height: 80px !important;
+    font-size: 0.9rem !important;
+    border-radius: 12px !important;
+  }
+
+  /* FAB: posição ajustada no desktop */
+  .agenda-fab {
+    width: 52px !important;
+    height: 52px !important;
+    font-size: 1.8rem !important;
+    bottom: 24px !important;
+    right: 24px !important;
+  }
+
+  /* Grade mensal: células maiores */
+  .calendar-grid .calendar-cell {
+    min-height: 80px !important;
+  }
+
+  /* Formulário de evento: mais espaço */
+  .gcal-form {
+    padding: 24px 28px !important;
+    gap: 16px !important;
+  }
+
+  .gcal-title-input {
+    font-size: 1.1rem !important;
+    padding: 10px 0 !important;
+  }
+}
