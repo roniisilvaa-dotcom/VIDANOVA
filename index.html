@@ -1900,19 +1900,55 @@
           <div class="page-return-bar">
             <button class="ghost-button page-return-button" type="button" data-go-home>← Voltar</button>
           </div>
-          <div class="community-shell">
-            <!-- Header fixo da comunidade -->
-            <div class="community-header">
-              <h2 class="community-header-title">Comunidade</h2>
-              <span class="community-header-dot"></span>
-              <span class="community-header-live">ao vivo</span>
+          <div class="vn-page vn-community">
+
+            <!-- ── Hero ─────────────────────────────────────── -->
+            <section class="vn-comm-hero">
+              <div class="vn-comm-hero__inner">
+                <div>
+                  <p class="vn-eyebrow">Comunidade Vida Nova</p>
+                  <h1 class="vn-comm-hero__title">
+                    <span>Juntas somos <em>mais fortes</em></span>
+                    <span class="vn-comm-hero__heart" aria-hidden="true">
+                      <svg viewBox="0 0 24 24" width="28" height="28" fill="var(--vn-pink)" stroke="var(--vn-pink)" stroke-width="1.5" stroke-linecap="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                    </span>
+                  </h1>
+                  <p class="vn-comm-hero__sub">1.247 mulheres compartilhando fé, conquistas e jornadas reais.</p>
+                  <div class="vn-comm-hero__stats">
+                    <div><strong>1.247</strong><span>Membros</span></div>
+                    <div><strong>482</strong><span>Posts hoje</span></div>
+                    <div><strong>6</strong><span>Grupos</span></div>
+                  </div>
+                </div>
+                <div class="vn-comm-hero__decor" aria-hidden="true">
+                  <div class="vn-pile-stack">
+                    <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&q=80" alt="" class="vn-avatar vn-avatar--md" style="left:0" />
+                    <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=200&q=80" alt="" class="vn-avatar vn-avatar--md" style="left:22px" />
+                    <img src="https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=200&q=80" alt="" class="vn-avatar vn-avatar--md" style="left:44px" />
+                    <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=200&q=80" alt="" class="vn-avatar vn-avatar--md" style="left:66px" />
+                    <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=200&q=80" alt="" class="vn-avatar vn-avatar--md" style="left:88px" />
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <!-- ── Toolbar ───────────────────────────────────── -->
+            <div class="vn-comm-toolbar">
+              <label class="vn-search">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="var(--vn-ink-3)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+                <input type="search" id="community-search-input" placeholder="Buscar posts..." aria-label="Buscar" />
+              </label>
+              <button class="vn-btn vn-btn--primary vn-comm-toolbar__post" type="button" id="community-new-post-btn">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+                <span>Novo post</span>
+              </button>
             </div>
 
-            <!-- Box de nova publicação -->
-            <div class="community-composer">
-              <div class="community-composer-top">
-                <div class="community-composer-avatar" id="community-composer-avatar">V</div>
-                <form id="community-post-form" class="community-post-form">
+            <!-- ── Composer (hidden by default) ─────────────── -->
+            <div class="vn-composer-wrap" id="vn-composer-wrap" hidden>
+              <div class="vn-card" style="display:flex;gap:14px;align-items:flex-start;padding:18px 20px;">
+                <div class="vn-composer-avatar community-composer-avatar" id="community-composer-avatar">V</div>
+                <form id="community-post-form" class="community-post-form vn-composer-form">
                   <textarea id="community-post-input" maxlength="600" placeholder="Compartilhe algo com a comunidade…"></textarea>
                   <div id="community-photo-preview" class="community-photo-preview" hidden>
                     <img id="community-photo-preview-img" src="" alt="Prévia" />
@@ -1938,8 +1974,129 @@
               </div>
             </div>
 
-            <!-- Feed -->
-            <section id="community-feed" class="community-feed" aria-live="polite"></section>
+            <!-- ── Filter pills ──────────────────────────────── -->
+            <div class="vn-pills" role="tablist" aria-label="Filtrar feed" id="vn-filter-pills">
+              <button class="vn-pill is-active" data-filter="all" role="tab" aria-selected="true">Tudo</button>
+              <button class="vn-pill" data-filter="oracao" role="tab" aria-selected="false">Oração</button>
+              <button class="vn-pill" data-filter="vitorias" role="tab" aria-selected="false">Vitórias</button>
+              <button class="vn-pill" data-filter="duvidas" role="tab" aria-selected="false">Dúvidas</button>
+              <button class="vn-pill" data-filter="recentes" role="tab" aria-selected="false">Recentes</button>
+            </div>
+
+            <!-- ── Two-column grid ───────────────────────────── -->
+            <div class="vn-comm-grid">
+
+              <!-- Feed -->
+              <div class="vn-feed">
+                <section id="community-feed" class="community-feed" aria-live="polite"></section>
+              </div>
+
+              <!-- Sidebar -->
+              <aside class="vn-comm-side" aria-label="Recursos da comunidade">
+
+                <!-- Grupos -->
+                <div class="vn-card vn-side-card">
+                  <div class="vn-side-card__head">
+                    <h3>Grupos para você</h3>
+                  </div>
+                  <ul class="vn-groups">
+                    <li>
+                      <button class="vn-group" type="button">
+                        <span class="vn-group__icon" style="background:#F4B6CD"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#7C2649" stroke-width="1.8" stroke-linecap="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></span>
+                        <span class="vn-group__body"><span class="vn-group__name">Círculo de Oração</span><span class="vn-group__meta">348 membros · Compartilhe pedidos</span></span>
+                        <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="var(--vn-ink-3)" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+                      </button>
+                    </li>
+                    <li>
+                      <button class="vn-group" type="button">
+                        <span class="vn-group__icon" style="background:#FBCFE0"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#7C2649" stroke-width="1.8" stroke-linecap="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></span>
+                        <span class="vn-group__body"><span class="vn-group__name">Mães em Jornada</span><span class="vn-group__meta">412 membros · Maternidade e fé</span></span>
+                        <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="var(--vn-ink-3)" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+                      </button>
+                    </li>
+                    <li>
+                      <button class="vn-group" type="button">
+                        <span class="vn-group__icon" style="background:#F8D5C2"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#7C2649" stroke-width="1.8" stroke-linecap="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></span>
+                        <span class="vn-group__body"><span class="vn-group__name">Mulheres & Finanças</span><span class="vn-group__meta">287 membros · Liberdade financeira</span></span>
+                        <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="var(--vn-ink-3)" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+                      </button>
+                    </li>
+                    <li>
+                      <button class="vn-group" type="button">
+                        <span class="vn-group__icon" style="background:#F9CFD8"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#7C2649" stroke-width="1.8" stroke-linecap="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></span>
+                        <span class="vn-group__body"><span class="vn-group__name">Vida Saudável</span><span class="vn-group__meta">521 membros · Hábitos e nutrição</span></span>
+                        <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="var(--vn-ink-3)" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+                      </button>
+                    </li>
+                  </ul>
+                </div>
+
+                <!-- Próximos encontros -->
+                <div class="vn-card vn-side-card">
+                  <div class="vn-side-card__head">
+                    <h3>Próximos encontros</h3>
+                  </div>
+                  <ul class="vn-events">
+                    <li class="vn-event">
+                      <div class="vn-event__date" style="background:#FBCFE0"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#7C2649" stroke-width="1.8"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></div>
+                      <div class="vn-event__body">
+                        <p class="vn-event__title">Live: Mulher virtuosa</p>
+                        <p class="vn-event__meta">Pra. Joana Ribeiro · Hoje · 20h</p>
+                        <p class="vn-event__attend">142 confirmadas</p>
+                      </div>
+                      <button class="vn-btn vn-btn--soft" type="button">Entrar</button>
+                    </li>
+                    <li class="vn-event">
+                      <div class="vn-event__date" style="background:#F8D5C2"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#7C2649" stroke-width="1.8"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></div>
+                      <div class="vn-event__body">
+                        <p class="vn-event__title">Workshop: 90 dias</p>
+                        <p class="vn-event__meta">Camila Rocha · Sáb · 10h</p>
+                        <p class="vn-event__attend">89 confirmadas</p>
+                      </div>
+                      <button class="vn-btn vn-btn--soft" type="button">Entrar</button>
+                    </li>
+                    <li class="vn-event">
+                      <div class="vn-event__date" style="background:#F4B6CD"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#7C2649" stroke-width="1.8"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></div>
+                      <div class="vn-event__body">
+                        <p class="vn-event__title">Roda de oração</p>
+                        <p class="vn-event__meta">Comunidade · Dom · 19h30</p>
+                        <p class="vn-event__attend">234 confirmadas</p>
+                      </div>
+                      <button class="vn-btn vn-btn--soft" type="button">Entrar</button>
+                    </li>
+                  </ul>
+                </div>
+
+                <!-- Inspirações da semana -->
+                <div class="vn-card vn-side-card">
+                  <div class="vn-side-card__head">
+                    <h3>Inspirações da semana</h3>
+                  </div>
+                  <ul class="vn-top">
+                    <li class="vn-top__row">
+                      <span class="vn-top__rank">1</span>
+                      <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=200&q=80" alt="" class="vn-avatar vn-avatar--sm" />
+                      <div><p>Júlia Castro</p><p class="vn-top__meta">47 posts inspiradores</p></div>
+                      <button class="vn-btn vn-btn--soft" type="button" style="font-size:12px;padding:6px 10px;">Seguir</button>
+                    </li>
+                    <li class="vn-top__row">
+                      <span class="vn-top__rank">2</span>
+                      <img src="https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=200&q=80" alt="" class="vn-avatar vn-avatar--sm" />
+                      <div><p>Mariana Lopes</p><p class="vn-top__meta">38 posts inspiradores</p></div>
+                      <button class="vn-btn vn-btn--soft" type="button" style="font-size:12px;padding:6px 10px;">Seguir</button>
+                    </li>
+                    <li class="vn-top__row">
+                      <span class="vn-top__rank">3</span>
+                      <img src="https://images.unsplash.com/photo-1554151228-14d9def656e4?w=200&q=80" alt="" class="vn-avatar vn-avatar--sm" />
+                      <div><p>Renata Souza</p><p class="vn-top__meta">31 posts inspiradores</p></div>
+                      <button class="vn-btn vn-btn--soft" type="button" style="font-size:12px;padding:6px 10px;">Seguir</button>
+                    </li>
+                  </ul>
+                </div>
+
+              </aside>
+            </div>
+
           </div>
         </section>
 
