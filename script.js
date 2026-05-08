@@ -245,6 +245,15 @@ const financeGoalDisplay = document.querySelector("#finance-goal-display");
 const financeStatusDisplay = document.querySelector("#finance-status-display");
 const financeBalanceHero = document.querySelector("#finance-balance-hero");
 const financeCaption = document.querySelector("#finance-caption");
+
+// Preenche a data de hoje no card Dia a Dia | Agenda
+(function() {
+  const el = document.getElementById("agenda-card-date");
+  if (!el) return;
+  const now = new Date();
+  const months = ["janeiro","fevereiro","março","abril","maio","junho","julho","agosto","setembro","outubro","novembro","dezembro"];
+  el.textContent = `${now.getDate()} de ${months[now.getMonth()]} de ${now.getFullYear()}`;
+})();
 const financePanelBalance = document.querySelector("#finance-panel-balance");
 const financePanelCaption = document.querySelector("#finance-panel-caption");
 const calculatorDisplay = document.querySelector("#calculator-display");
