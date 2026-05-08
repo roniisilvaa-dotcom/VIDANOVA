@@ -2,6 +2,7 @@
   "version": 2,
   "buildCommand": "npm run build",
   "installCommand": "npm ci --omit=dev",
+  "outputDirectory": ".",
   "functions": {
     "api/server.js": {
       "maxDuration": 30,
