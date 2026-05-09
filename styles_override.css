@@ -422,6 +422,7 @@
   display: block;
   width: 100%;
   min-height: calc(100vh - 160px);
+  overflow: hidden;
   border: 0;
   border-radius: 26px;
   background: #fdf7f9;
@@ -432,5 +433,279 @@
   .cycle-module-frame {
     min-height: calc(100vh - 110px);
     border-radius: 18px;
+  }
+}
+
+/* Identidade da tela inicial conforme tela_inicial_com_capas.html */
+body {
+  background:
+    radial-gradient(circle at top left, rgba(177, 207, 255, 0.38), transparent 28%),
+    radial-gradient(circle at top right, rgba(255, 210, 221, 0.38), transparent 24%),
+    linear-gradient(180deg, #faf7fb 0%, #f4eff6 100%) !important;
+}
+
+.app-shell,
+.main-content {
+  background: transparent !important;
+}
+
+body:not(.agenda-tab-active) .workspace-home,
+body:not(.agenda-tab-active) #dashboard {
+  background: transparent !important;
+}
+
+body:not(.agenda-tab-active) .verse-banner {
+  border: 1px solid rgba(255, 255, 255, 0.76) !important;
+  background:
+    radial-gradient(circle at 84% 62%, rgba(255, 255, 255, 0.16), transparent 20%),
+    linear-gradient(135deg, #8bb8ff 0%, #caa4ff 48%, #ffc3d8 100%) !important;
+  box-shadow: 0 24px 50px rgba(162, 130, 212, 0.24) !important;
+}
+
+body:not(.agenda-tab-active) .verse-banner .eyebrow,
+body:not(.agenda-tab-active) .verse-banner-copy strong,
+body:not(.agenda-tab-active) .verse-banner-copy small {
+  color: #fff !important;
+}
+
+body:not(.agenda-tab-active) .verse-banner-copy strong {
+  font-family: 'Cormorant Garamond', Georgia, serif !important;
+  font-weight: 600 !important;
+}
+
+body:not(.agenda-tab-active) .desktop-modules-heading h2,
+body:not(.agenda-tab-active) .mobile-modules-heading h2 {
+  color: #231f28 !important;
+}
+
+body:not(.agenda-tab-active) .desktop-modules-heading button,
+body:not(.agenda-tab-active) .mobile-modules-heading button {
+  color: #8d68f4 !important;
+  font-weight: 650 !important;
+}
+
+body:not(.agenda-tab-active) .workspace-card {
+  background: rgba(255, 255, 255, 0.82) !important;
+  border: 1px solid rgba(255, 255, 255, 0.8) !important;
+  box-shadow: 0 18px 44px rgba(120, 93, 154, 0.08) !important;
+}
+
+body:not(.agenda-tab-active) .workspace-card:hover {
+  box-shadow: 0 22px 54px rgba(120, 93, 154, 0.14) !important;
+}
+
+body:not(.agenda-tab-active) .workspace-card::after {
+  background: linear-gradient(135deg, rgba(157, 122, 245, 0.12), rgba(255, 191, 211, 0.18)) !important;
+  color: #8d68f4 !important;
+}
+
+body:not(.agenda-tab-active) .home-community-banner {
+  background: rgba(255, 255, 255, 0.72) !important;
+  border: 1px solid rgba(255, 255, 255, 0.78) !important;
+  box-shadow: 0 18px 44px rgba(120, 93, 154, 0.08) !important;
+}
+
+body:not(.agenda-tab-active) .home-community-cta {
+  background: linear-gradient(135deg, #8d68f4, #f07ba3) !important;
+}
+
+/* Remove paletas de cores dos modulos, agenda e configuracoes */
+.block-color-toolbar,
+.block-color-swatch-grid,
+.app-color-preset-grid,
+.app-color-swatch,
+.accent-preset-grid,
+.accent-preset,
+.accent-color-field,
+[data-cover-color-palette],
+[data-color-preset-grid],
+[data-page-color-toolbar] {
+  display: none !important;
+}
+
+/* Configuracoes com aspecto de app e campos tocaveis */
+[data-page-view="configuracoes"] {
+  pointer-events: auto !important;
+}
+
+[data-page-view="configuracoes"] .settings-panel {
+  position: relative;
+  z-index: 1;
+  border: 1px solid rgba(255, 255, 255, 0.8) !important;
+  border-radius: 30px !important;
+  background: rgba(255, 255, 255, 0.74) !important;
+  box-shadow: 0 18px 44px rgba(120, 93, 154, 0.08) !important;
+}
+
+[data-page-view="configuracoes"] .settings-grid {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
+}
+
+[data-page-view="configuracoes"] .settings-card {
+  position: relative;
+  z-index: 2;
+  border: 1px solid rgba(232, 216, 226, 0.86) !important;
+  border-radius: 22px !important;
+  background: rgba(255, 255, 255, 0.9) !important;
+  box-shadow: 0 14px 34px rgba(120, 93, 154, 0.07) !important;
+}
+
+[data-page-view="configuracoes"] .settings-form,
+[data-page-view="configuracoes"] .settings-form *,
+[data-page-view="configuracoes"] button,
+[data-page-view="configuracoes"] input {
+  pointer-events: auto !important;
+}
+
+[data-page-view="configuracoes"] .settings-form input,
+[data-page-view="configuracoes"] .settings-form textarea,
+[data-page-view="configuracoes"] .settings-form select {
+  min-height: 48px;
+  border-radius: 14px !important;
+  background: #fff !important;
+}
+
+@media (max-width: 767px) {
+  [data-page-view="configuracoes"] .page-return-bar {
+    padding: 0 4px 10px;
+  }
+
+  [data-page-view="configuracoes"] .settings-panel {
+    padding: 0 !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+  }
+
+  [data-page-view="configuracoes"] .settings-panel > .panel-heading {
+    margin: 0 0 12px;
+    padding: 24px 20px 22px;
+    border-radius: 24px;
+    background: linear-gradient(135deg, #8bb8ff 0%, #caa4ff 48%, #ffc3d8 100%);
+    color: #fff;
+    box-shadow: 0 18px 34px rgba(162, 130, 212, 0.18);
+  }
+
+  [data-page-view="configuracoes"] .settings-panel > .panel-heading .eyebrow,
+  [data-page-view="configuracoes"] .settings-panel > .panel-heading h3,
+  [data-page-view="configuracoes"] .settings-panel > .panel-heading .tag {
+    color: #fff !important;
+  }
+
+  [data-page-view="configuracoes"] .settings-grid {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+  }
+
+  [data-page-view="configuracoes"] .settings-card {
+    padding: 16px !important;
+    border-radius: 18px !important;
+    box-shadow: 0 10px 22px rgba(120, 93, 154, 0.06) !important;
+  }
+
+  [data-page-view="configuracoes"] .settings-card .panel-heading {
+    margin-bottom: 12px;
+  }
+
+  [data-page-view="configuracoes"] .profile-hero {
+    align-items: center;
+  }
+
+  [data-page-view="configuracoes"] .settings-inline-actions {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 9px !important;
+  }
+
+  [data-page-view="configuracoes"] .settings-inline-actions .primary-button {
+    width: 100%;
+    min-height: 46px;
+  }
+
+  .cycle-page-view {
+    padding-bottom: calc(78px + env(safe-area-inset-bottom));
+  }
+
+  .cycle-module-frame {
+    width: calc(100% + 2px);
+    margin-left: -1px;
+    min-height: calc(100vh - 130px);
+  }
+
+  .page-view,
+  .page-view.is-active,
+  .main-content {
+    max-width: 100% !important;
+    overflow-x: hidden !important;
+  }
+
+  .page-view:not([data-page-view="dashboard"]) .panel,
+  .page-view:not([data-page-view="dashboard"]) .module-card,
+  .page-view:not([data-page-view="dashboard"]) .calendar-card,
+  .page-view:not([data-page-view="dashboard"]) .agenda-summary-card,
+  .page-view:not([data-page-view="dashboard"]) .agenda-events-card,
+  .page-view:not([data-page-view="dashboard"]) .detail-card,
+  .page-view:not([data-page-view="dashboard"]) .project-card,
+  .page-view:not([data-page-view="dashboard"]) .planner-spotlight-card,
+  .page-view:not([data-page-view="dashboard"]) .planner-week-card,
+  .page-view:not([data-page-view="dashboard"]) .planner-summary-band,
+  .finance-card,
+  .study-books-card,
+  .dream-board,
+  .home-table {
+    max-width: 100% !important;
+  }
+
+  .page-view:not([data-page-view="dashboard"]) :is(
+    .dashboard-grid,
+    .module-grid,
+    .agenda-layout,
+    .agenda-form,
+    .finance-form-grid,
+    .finance-detail-grid,
+    .structured-card-grid,
+    .settings-grid,
+    .subscription-summary,
+    .project-grid,
+    .project-gallery,
+    .planner-summary-band,
+    .planner-week-grid,
+    .study-grid,
+    .home-market-grid,
+    .reforma-grid
+  ) {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+
+  .page-view:not([data-page-view="dashboard"]) :is(
+    .tab-buttons-scroll,
+    .planner-tab-ribbon,
+    .casa-tab-ribbon,
+    .fin-tabs,
+    .screen-tabs
+  ) {
+    max-width: 100%;
+    overflow-x: auto !important;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .page-view:not([data-page-view="dashboard"]) :is(
+    .tab-buttons-scroll,
+    .planner-tab-ribbon,
+    .casa-tab-ribbon,
+    .fin-tabs,
+    .screen-tabs
+  )::-webkit-scrollbar {
+    display: none;
+  }
+
+  .page-view:not([data-page-view="dashboard"]) input,
+  .page-view:not([data-page-view="dashboard"]) select,
+  .page-view:not([data-page-view="dashboard"]) textarea,
+  .page-view:not([data-page-view="dashboard"]) button {
+    max-width: 100%;
   }
 }

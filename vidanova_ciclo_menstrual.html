@@ -1,8 +1,33 @@
-
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap');
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:'DM Sans',sans-serif;background:#fdf7f9;padding:24px 20px 48px;}
+.ti{font-style:normal;line-height:1;display:inline-flex;align-items:center;justify-content:center;}
+.ti::before{content:"✦";}
+.ti-moon::before{content:"☾";}
+.ti-calendar::before,.ti-calendar-event::before,.ti-calendar-check::before{content:"□";}
+.ti-activity::before{content:"◌";}
+.ti-pencil::before{content:"✎";}
+.ti-brain::before{content:"◈";}
+.ti-history::before{content:"↺";}
+.ti-drop::before{content:"◖";}
+.ti-target::before{content:"◎";}
+.ti-chevron-left::before{content:"‹";}
+.ti-chevron-right::before{content:"›";}
+.ti-plant::before{content:"♧";}
+.ti-sun::before{content:"☼";}
+.ti-mood-smile::before{content:"♡";}
+.ti-bolt::before{content:"⌁";}
+.ti-mood-angry::before{content:"!"}
+.ti-mood-sad::before{content:":("}
+.ti-pizza::before{content:"◒";}
+.ti-headache::before{content:"+";}
+.ti-ripple::before{content:"≈";}
 
 .module-hero{background:#c9395f;border-radius:18px;padding:22px 28px;margin-bottom:20px;display:flex;align-items:center;gap:18px;position:relative;overflow:hidden;}
 .hero-deco{position:absolute;right:24px;top:-10px;font-family:'Cormorant Garamond',serif;font-size:110px;color:rgba(255,255,255,.06);pointer-events:none;}
@@ -167,7 +192,52 @@ body{font-family:'DM Sans',sans-serif;background:#fdf7f9;padding:24px 20px 48px;
 .tpm-dot{width:20px;height:20px;border-radius:50%;border:0.5px solid #f0dce6;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:9px;color:#b09aa8;background:#fff;transition:all .15s;}
 .tpm-dot:hover{border-color:#c9395f;}
 .tpm-dot.active{background:#c9395f;color:#fff;border-color:#c9395f;}
+
+@media (max-width: 760px) {
+body{padding:14px 12px 28px;overflow-x:hidden;}
+.module-hero{padding:18px 16px;border-radius:18px;gap:12px;margin-bottom:14px;}
+.hero-icon{width:40px;height:40px;min-width:40px;border-radius:12px;}
+.hero-title{font-size:19px;line-height:1.08;}
+.hero-deco{font-size:78px;right:14px;}
+.tabs-row{display:flex;flex-wrap:nowrap;gap:8px;overflow-x:auto;margin:0 -12px 18px;padding:0 12px 4px;scrollbar-width:none;-webkit-overflow-scrolling:touch;}
+.tabs-row::-webkit-scrollbar{display:none;}
+.tab{flex:0 0 auto;padding:8px 13px;font-size:11px;}
+.sec-title{font-size:19px;margin-bottom:12px;}
+.fase-atual{grid-template-columns:1fr;padding:16px;border-radius:16px;gap:13px;margin-bottom:18px;}
+.fa-value{font-size:19px;}
+.cycle-summary,.fases-grid,.registro-grid,.config-grid,.tpm-grid{grid-template-columns:1fr;gap:12px;}
+.cycle-stat,.reg-card,.config-card,.tpm-card{border-radius:16px;}
+.cs-icon{width:36px;height:36px;}
+.cal-card{border-radius:16px;overflow:hidden;margin-bottom:18px;}
+.cal-header{display:grid;gap:12px;padding:14px 12px;}
+.cal-nav{justify-content:space-between;}
+.cal-month-title{font-size:18px;text-align:center;}
+.cal-legend{display:grid;grid-template-columns:1fr 1fr;gap:8px 10px;}
+.cal-days-header{padding:8px 8px 4px;}
+.cal-grid{gap:2px;padding:0 8px 12px;}
+.cal-cell{min-height:42px;border-radius:9px;padding:4px 1px;}
+.cal-num{font-size:12px;}
+.cal-phase-label{font-size:7px;max-width:100%;overflow:hidden;text-overflow:ellipsis;}
+.fase-card{border-radius:16px;}
+.fase-body{padding:12px;}
+.reg-card{padding:14px;}
+.reg-chips-select,.fs-chips{gap:6px;}
+.rchip,.fs-chip{font-size:10px;line-height:1.25;}
+.hist-header{display:grid;gap:10px;padding:13px 14px;}
+.historico-card{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+.hist-table{min-width:720px;}
+.tpm-card{padding:14px;}
+.tpm-item{padding:10px;}
+}
+
+@media (min-width: 761px) and (max-width: 1100px) {
+.cycle-summary,.fases-grid{grid-template-columns:repeat(2,1fr);}
+.registro-grid{grid-template-columns:1fr;}
+.tpm-grid,.config-grid{grid-template-columns:repeat(2,1fr);}
+}
 </style>
+</head>
+<body>
 
 <div>
 
@@ -641,3 +711,5 @@ function setScale(el){
   });
 }
 </script>
+</body>
+</html>

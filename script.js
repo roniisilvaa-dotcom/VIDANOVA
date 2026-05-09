@@ -378,6 +378,7 @@ const draggableCards = document.querySelectorAll(".draggable-card");
 const dashboardCoverInputs = document.querySelectorAll("[data-cover-upload]");
 const workspaceCards = document.querySelectorAll(".workspace-card[data-cover-key]");
 const agendaColorPresetGrids = document.querySelectorAll("[data-color-preset-grid]");
+const cycleModuleFrame = document.querySelector(".cycle-module-frame");
 const isTouchDevice =
   window.matchMedia("(pointer: coarse)").matches ||
   "ontouchstart" in window ||
@@ -675,21 +676,8 @@ function renderDashboardCardTools() {
 
 function renderAgendaColorPalettes() {
   agendaColorPresetGrids.forEach((grid) => {
-    const scope = grid.dataset.colorPresetGrid || "";
-    const input = scope === "agenda-modal" ? calendarModalColor : agendaColorInput;
-    const selectedColor = input?.value || APP_IDENTITY_COLOR_PRESETS[0];
-
-    grid.innerHTML = APP_IDENTITY_COLOR_PRESETS.map((color, index) => `
-      <button
-        class="app-color-swatch${selectedColor === color ? " is-active" : ""}"
-        type="button"
-        data-app-color-scope="${escapeHtml(scope)}"
-        data-app-color-value="${escapeHtml(color)}"
-        aria-label="Cor ${index + 1}"
-        title="Cor ${index + 1}"
-        style="--swatch-color: ${escapeHtml(color)};"
-      ></button>
-    `).join("");
+    grid.innerHTML = "";
+    grid.hidden = true;
   });
 }
 
@@ -736,67 +724,41 @@ function getColorablePageViews() {
 }
 
 function renderPageColorToolbars() {
-  const colorMap = getPageColorMap();
-
   getColorablePageViews().forEach((view) => {
     const pageName = view.dataset.pageView || "";
     if (!pageName) {
       return;
     }
-
-    let toolbar = view.querySelector(`[data-page-color-toolbar="${pageName}"]`);
-    if (!toolbar) {
-      toolbar = document.createElement("section");
-      toolbar.className = "block-color-toolbar";
-      toolbar.dataset.pageColorToolbar = pageName;
-      toolbar.innerHTML = `
-        <div class="block-color-toolbar-copy">
-          <p class="eyebrow">Cor do bloco</p>
-          <strong>Escolha a cor desta area</strong>
-        </div>
-        <div class="block-color-swatch-grid"></div>
-      `;
-
-      const returnBar = view.querySelector(".page-return-bar");
-      if (returnBar) {
-        returnBar.insertAdjacentElement("afterend", toolbar);
-      } else {
-        view.prepend(toolbar);
-      }
-    }
-
-    const grid = toolbar.querySelector(".block-color-swatch-grid");
-    if (!grid) {
-      return;
-    }
-
-    const selectedColor = colorMap[pageName] || APP_IDENTITY_COLOR_PRESETS[0];
-    grid.innerHTML = APP_IDENTITY_COLOR_PRESETS.map((color, index) => `
-      <button
-        class="block-color-swatch${selectedColor === color ? " is-active" : ""}"
-        type="button"
-        data-page-color-key="${escapeHtml(pageName)}"
-        data-page-color-value="${escapeHtml(color)}"
-        aria-label="Cor ${index + 1}"
-        title="Cor ${index + 1}"
-        style="--swatch-color: ${escapeHtml(color)};"
-      ></button>
-    `).join("");
+    view.querySelector(`[data-page-color-toolbar="${pageName}"]`)?.remove();
   });
 }
 
 function applyPageColors() {
-  const colorMap = getPageColorMap();
-
   getColorablePageViews().forEach((view) => {
-    const pageName = view.dataset.pageView || "";
-    const color = colorMap[pageName] || APP_IDENTITY_COLOR_PRESETS[0];
-    view.style.setProperty("--block-soft", mixColor(color, 0.86));
-    view.style.setProperty("--block-fade", mixColor(color, 0.93));
-    view.style.setProperty("--block-line", mixColor(color, 0.42));
+    view.style.removeProperty("--block-soft");
+    view.style.removeProperty("--block-fade");
+    view.style.removeProperty("--block-line");
   });
 
   renderPageColorToolbars();
+}
+
+function resizeCycleModuleFrame() {
+  if (!cycleModuleFrame) {
+    return;
+  }
+
+  try {
+    const frameDocument = cycleModuleFrame.contentDocument || cycleModuleFrame.contentWindow?.document;
+    const height = Math.max(
+      frameDocument?.body?.scrollHeight || 0,
+      frameDocument?.documentElement?.scrollHeight || 0,
+      window.innerHeight - 120,
+    );
+    cycleModuleFrame.style.height = `${height + 8}px`;
+  } catch {
+    cycleModuleFrame.style.height = "3600px";
+  }
 }
 
 function setFeedback(element, message, type = "") {
@@ -2273,6 +2235,10 @@ function setActivePage(pageName, syncHash = true) {
         }
       });
     }
+  }
+
+  if (nextPage === "ciclo") {
+    resizeCycleModuleFrame();
   }
 
   window.scrollTo({ top: 0, behavior: "smooth" });
@@ -6744,6 +6710,11 @@ dashboardCoverInputs.forEach((input) => {
 renderDashboardCovers();
 renderAgendaColorPalettes();
 applyPageColors();
+
+if (cycleModuleFrame) {
+  cycleModuleFrame.addEventListener("load", resizeCycleModuleFrame);
+  window.addEventListener("resize", resizeCycleModuleFrame);
+}
 
 document.addEventListener("click", (event) => {
   const colorSwatch = event.target.closest("[data-app-color-scope][data-app-color-value]");
