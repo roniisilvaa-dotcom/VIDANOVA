@@ -33,7 +33,7 @@
     
     <!-- Security Headers -->
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://accounts.google.com; img-src 'self' data: blob: https://*.googleusercontent.com; font-src 'self'; manifest-src 'self'; connect-src 'self' https://firestore.googleapis.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://www.googleapis.com; frame-src https://accounts.google.com;" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://accounts.google.com https://cdn.jsdelivr.net https://fonts.googleapis.com; img-src 'self' data: blob: https://*.googleusercontent.com; font-src 'self' https://fonts.gstatic.com https://cdn.jsdelivr.net; manifest-src 'self'; connect-src 'self' https://firestore.googleapis.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://www.googleapis.com; frame-src https://accounts.google.com;" />
     
     <!-- Preload critical resources -->
     <link rel="preload" href="script.js" as="script" />
@@ -46,8 +46,10 @@
     <!-- Stylesheets -->
     <link rel="stylesheet" href="styles.css" />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@300;400;500;600&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css" />
   <link rel="stylesheet" href="styles_override.css" />
   <link rel="stylesheet" href="styles_redesign.css" />
+  <link rel="stylesheet" href="styles_vidanova_new.css" />
   </head>
   <body>
     <div id="vn-splash" style="position:fixed;inset:0;z-index:9999;background:linear-gradient(135deg,#c55b84,#e8829a);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;transition:opacity .5s ease">
@@ -79,43 +81,76 @@
     </script>
     <div class="app-shell">
       <aside class="sidebar">
-        <div class="brand">
-          <div class="brand-mark">
-            <svg viewBox="0 0 64 64" aria-hidden="true">
-              <path d="M32 55V29" />
-              <path d="M32 29C18 24 13 13 16 6c10 1 18 9 16 23Z" />
-              <path d="M32 29C46 24 51 13 48 6c-10 1-18 9-16 23Z" />
-              <path d="M32 39C20 39 10 32 8 22c12-1 22 5 24 17Z" />
-              <path d="M32 39c12 0 22-7 24-17-12-1-22 5-24 17Z" />
-            </svg>
-          </div>
-          <div>
-            <h1>Vida Nova</h1>
-          </div>
+        <div class="sidebar-logo">
+          <div class="logo-mark"><i class="ti ti-leaf" aria-hidden="true"></i></div>
+          <span class="logo-text">Vida Nova</span>
         </div>
 
-        <nav class="sidebar-nav">
-          <a href="#dashboard" data-page-link="dashboard">
-            <span class="sidebar-nav-icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24"><path d="m3 11 9-8 9 8v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1V11Z"/></svg>
-            </span>
-            Início
+        <nav class="sidebar-nav sidebar-nav-new">
+          <a href="#dashboard" data-page-link="dashboard" class="nav-item-new">
+            <i class="ti ti-home" aria-hidden="true"></i>
+            <span>Início</span>
+            <div class="nav-accent"></div>
           </a>
-          <a href="#comunidade" data-page-link="comunidade">
-            <span class="sidebar-nav-icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2m7-10a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm13 10v-2a4 4 0 0 0-3-3.87m-3-12a4 4 0 0 1 0 7.75"/></svg>
-            </span>
-            Comunidade
+          <a href="#comunidade" data-page-link="comunidade" class="nav-item-new">
+            <i class="ti ti-users" aria-hidden="true"></i>
+            <span>Comunidade</span>
+            <div class="nav-accent"></div>
           </a>
-          <a href="#configuracoes" data-page-link="configuracoes">
-            <span class="sidebar-nav-icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>
-            </span>
-            Perfil
+          <a href="#configuracoes" data-page-link="configuracoes" class="nav-item-new">
+            <i class="ti ti-user" aria-hidden="true"></i>
+            <span>Perfil</span>
+            <div class="nav-accent"></div>
           </a>
-          <a href="#admin" data-page-link="admin" id="sidebar-admin-link" class="hidden">Admin</a>
+          <div style="margin-top:8px;padding:8px 12px 4px;">
+            <div style="font-size:9px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:#d4b8c4;">Módulos</div>
+          </div>
+          <a href="#planner" data-page-link="planner" class="nav-item-new">
+            <i class="ti ti-notebook" aria-hidden="true"></i>
+            <span>My Planner</span>
+            <div class="nav-accent"></div>
+          </a>
+          <a href="#financas" data-page-link="finanças" class="nav-item-new">
+            <i class="ti ti-coin" aria-hidden="true"></i>
+            <span>Finanças</span>
+            <div class="nav-accent"></div>
+          </a>
+          <a href="#corpo" data-page-link="corpo" class="nav-item-new">
+            <i class="ti ti-heart" aria-hidden="true"></i>
+            <span>Saúde & Corpo</span>
+            <div class="nav-accent"></div>
+          </a>
+          <a href="#estudos" data-page-link="estudos" class="nav-item-new">
+            <i class="ti ti-book" aria-hidden="true"></i>
+            <span>Estudos</span>
+            <div class="nav-accent"></div>
+          </a>
+          <a href="#imagem" data-page-link="imagem" class="nav-item-new">
+            <i class="ti ti-hanger" aria-hidden="true"></i>
+            <span>Imagem</span>
+            <div class="nav-accent"></div>
+          </a>
+          <a href="#casa" data-page-link="casa" class="nav-item-new">
+            <i class="ti ti-home-2" aria-hidden="true"></i>
+            <span>Lar</span>
+            <div class="nav-accent"></div>
+          </a>
+          <a href="#admin" data-page-link="admin" id="sidebar-admin-link" class="nav-item-new hidden">
+            <i class="ti ti-shield" aria-hidden="true"></i>
+            <span>Admin</span>
+            <div class="nav-accent"></div>
+          </a>
         </nav>
 
+        <div class="sidebar-footer-new">
+          <div class="sidebar-user-new">
+            <div class="user-avatar-new" id="sidebar-avatar">VN</div>
+            <div>
+              <div class="user-name-new" id="sidebar-user-name">Vida Nova</div>
+              <div class="user-status-new">Conta ativa</div>
+            </div>
+          </div>
+        </div>
       </aside>
 
       <main class="main-content">
@@ -490,93 +525,91 @@
             </div>
 
             <section class="tab-panel planner-tab-panel is-active" data-tab-panel="planner-weekly">
-              <div class="planner-hero-banner">
-                <div class="planner-hero-copy">
-                  <span class="planner-hero-icon">📘</span>
-                  <div>
-                    <p class="eyebrow">Planejamento semanal</p>
-                    <h2>Quais serao as prioridades de cada semana?</h2>
-                  </div>
+              <div class="module-hero">
+                <div class="hero-deco">"</div>
+                <div class="hero-icon"><i class="ti ti-layout-board" aria-hidden="true"></i></div>
+                <div>
+                  <div class="hero-eye">Planejamento semanal</div>
+                  <div class="hero-title">Quais serão as prioridades de cada semana?</div>
                 </div>
               </div>
 
-              <div class="planner-top-grid">
-                <article class="planner-spotlight-card planner-focus-card">
-                  <div class="planner-card-header planner-card-header-coral">
-                    <span>📌</span>
-                    <strong>Foco do mes</strong>
+              <div class="reflection-grid-planner">
+                <div class="reflection-card">
+                  <div class="ref-header">
+                    <div class="ref-icon rose"><i class="ti ti-flag" aria-hidden="true"></i></div>
+                    <span class="ref-label-text">Foco do mês</span>
                   </div>
-                  <textarea
-                    class="summary-input planner-input planner-focus-input"
-                    data-persist-key="planner-month-focus"
-                    placeholder="Escreva os focos principais deste mes."
-                  ></textarea>
-                </article>
-
-                <article class="planner-spotlight-card planner-focus-card">
-                  <div class="planner-card-header planner-card-header-cream">
-                    <span>🌼</span>
-                    <strong>O que eu consegui fazer?</strong>
+                  <textarea class="ref-textarea summary-input planner-input planner-focus-input" data-persist-key="planner-month-focus" placeholder="Escreva os focos principais deste mês..."></textarea>
+                </div>
+                <div class="reflection-card">
+                  <div class="ref-header">
+                    <div class="ref-icon amber"><i class="ti ti-check" aria-hidden="true"></i></div>
+                    <span class="ref-label-text">O que eu consegui fazer?</span>
                   </div>
-                  <textarea class="summary-input planner-input planner-focus-input" data-persist-key="planner-wins" placeholder="Registre avancos, constancia, pequenas vitorias e pontos que te orgulham."></textarea>
-                </article>
-
-                <article class="planner-spotlight-card planner-focus-card">
-                  <div class="planner-card-header planner-card-header-cream">
-                    <span>💭</span>
-                    <strong>O que vou precisar melhorar ou adiar?</strong>
+                  <textarea class="ref-textarea summary-input planner-input planner-focus-input" data-persist-key="planner-wins" placeholder="Registre avanços, constância, pequenas vitórias..."></textarea>
+                </div>
+                <div class="reflection-card">
+                  <div class="ref-header">
+                    <div class="ref-icon sage"><i class="ti ti-refresh" aria-hidden="true"></i></div>
+                    <span class="ref-label-text">O que vou melhorar ou adiar?</span>
                   </div>
-                  <textarea class="summary-input planner-input planner-focus-input" data-persist-key="planner-adjustments" placeholder="Liste o que precisa melhorar, simplificar, reorganizar ou deixar para depois."></textarea>
-                </article>
+                  <textarea class="ref-textarea summary-input planner-input planner-focus-input" data-persist-key="planner-adjustments" placeholder="Liste o que precisa melhorar ou reorganizar..."></textarea>
+                </div>
               </div>
 
-              <div class="planner-week-grid">
-                <article class="planner-week-card">
-                  <div class="planner-card-header planner-card-header-peach">
-                    <strong>Semana 1</strong>
-                    <span>🗒️</span>
+              <div class="weeks-grid">
+                <article class="week-card">
+                  <div class="week-header">
+                    <span class="week-title">Semana 1</span>
+                    <div class="week-icon"><i class="ti ti-pencil" aria-hidden="true"></i></div>
                   </div>
-                  <form class="planner-task-form" data-planner-board="week-1">
-                    <input class="planner-task-input" type="text" placeholder="Adicionar tarefa da semana 1" />
-                    <button type="submit" class="ghost-button">Adicionar</button>
-                  </form>
-                  <ul class="planner-task-list" data-planner-list="week-1"></ul>
+                  <div class="week-body">
+                    <form class="planner-task-form week-input-row" data-planner-board="week-1">
+                      <input class="week-input planner-task-input" type="text" placeholder="Adicionar tarefa..." />
+                      <button type="submit" class="week-add-btn">+ Add</button>
+                    </form>
+                    <ul class="planner-task-list" data-planner-list="week-1"></ul>
+                  </div>
                 </article>
-
-                <article class="planner-week-card">
-                  <div class="planner-card-header planner-card-header-peach">
-                    <strong>Semana 2</strong>
-                    <span>🗒️</span>
+                <article class="week-card">
+                  <div class="week-header">
+                    <span class="week-title">Semana 2</span>
+                    <div class="week-icon"><i class="ti ti-pencil" aria-hidden="true"></i></div>
                   </div>
-                  <form class="planner-task-form" data-planner-board="week-2">
-                    <input class="planner-task-input" type="text" placeholder="Adicionar tarefa da semana 2" />
-                    <button type="submit" class="ghost-button">Adicionar</button>
-                  </form>
-                  <ul class="planner-task-list" data-planner-list="week-2"></ul>
+                  <div class="week-body">
+                    <form class="planner-task-form week-input-row" data-planner-board="week-2">
+                      <input class="week-input planner-task-input" type="text" placeholder="Adicionar tarefa..." />
+                      <button type="submit" class="week-add-btn">+ Add</button>
+                    </form>
+                    <ul class="planner-task-list" data-planner-list="week-2"></ul>
+                  </div>
                 </article>
-
-                <article class="planner-week-card">
-                  <div class="planner-card-header planner-card-header-peach">
-                    <strong>Semana 3</strong>
-                    <span>🗒️</span>
+                <article class="week-card">
+                  <div class="week-header">
+                    <span class="week-title">Semana 3</span>
+                    <div class="week-icon"><i class="ti ti-pencil" aria-hidden="true"></i></div>
                   </div>
-                  <form class="planner-task-form" data-planner-board="week-3">
-                    <input class="planner-task-input" type="text" placeholder="Adicionar tarefa da semana 3" />
-                    <button type="submit" class="ghost-button">Adicionar</button>
-                  </form>
-                  <ul class="planner-task-list" data-planner-list="week-3"></ul>
+                  <div class="week-body">
+                    <form class="planner-task-form week-input-row" data-planner-board="week-3">
+                      <input class="week-input planner-task-input" type="text" placeholder="Adicionar tarefa..." />
+                      <button type="submit" class="week-add-btn">+ Add</button>
+                    </form>
+                    <ul class="planner-task-list" data-planner-list="week-3"></ul>
+                  </div>
                 </article>
-
-                <article class="planner-week-card">
-                  <div class="planner-card-header planner-card-header-peach">
-                    <strong>Semana 4</strong>
-                    <span>🗒️</span>
+                <article class="week-card">
+                  <div class="week-header">
+                    <span class="week-title">Semana 4</span>
+                    <div class="week-icon"><i class="ti ti-pencil" aria-hidden="true"></i></div>
                   </div>
-                  <form class="planner-task-form" data-planner-board="week-4">
-                    <input class="planner-task-input" type="text" placeholder="Adicionar tarefa da semana 4" />
-                    <button type="submit" class="ghost-button">Adicionar</button>
-                  </form>
-                  <ul class="planner-task-list" data-planner-list="week-4"></ul>
+                  <div class="week-body">
+                    <form class="planner-task-form week-input-row" data-planner-board="week-4">
+                      <input class="week-input planner-task-input" type="text" placeholder="Adicionar tarefa..." />
+                      <button type="submit" class="week-add-btn">+ Add</button>
+                    </form>
+                    <ul class="planner-task-list" data-planner-list="week-4"></ul>
+                  </div>
                 </article>
               </div>
             </section>
@@ -712,34 +745,127 @@
             </section>
 
             <section class="tab-panel planner-tab-panel" data-tab-panel="planner-dreams">
-              <article class="planner-summary-band planner-dreams-panel">
-                <div class="planner-card-header planner-card-header-green">
-                  <span>✨</span>
-                  <strong>Mural dos sonhos</strong>
+              <div class="module-hero" style="margin-bottom:20px;">
+                <div class="hero-deco">✦</div>
+                <div class="hero-icon"><i class="ti ti-star" aria-hidden="true"></i></div>
+                <div>
+                  <div class="hero-eye">Sonhos & Metas</div>
+                  <div class="hero-title">Construindo a vida que você merece</div>
                 </div>
-                <div class="dream-vision-shell planner-dream-vision-shell">
-                  <div class="planner-dream-board-copy">
-                    <strong>Meu quadro dos sonhos</strong>
-                    <p class="planner-dream-tip">Escolha imagens maiores do seu dispositivo e monte um mosaico com 10 objetivos visuais.</p>
-                  </div>
-                  <div id="planner-dream-board-grid" class="planner-dream-board-grid"></div>
-                </div>
-              </article>
+              </div>
 
-              <article class="planner-summary-band planner-goals-panel">
-                <div class="planner-card-header planner-card-header-lilac">
-                  <span>🎯</span>
-                  <strong>Planejamento por prazo</strong>
+              <div class="sec-title">Mural de visão</div>
+              <div class="mural-intro">
+                <div class="mural-intro-icon"><i class="ti ti-sparkles" aria-hidden="true"></i></div>
+                <div>
+                  <div class="mural-intro-title">Seu quadro dos sonhos</div>
+                  <div class="mural-intro-text">Adicione imagens que representam seus objetivos de vida. Veja este mural todos os dias para manter o foco no que realmente importa.</div>
                 </div>
-                <div class="planner-goals-shell">
-                  <div class="goal-horizon-grid planner-goal-horizon-grid">
-                    <article class="detail-card planner-goal-card"><span class="metric-label">Meta para 3 meses</span><textarea class="summary-input compact-area" data-persist-key="goal-3m"></textarea></article>
-                    <article class="detail-card planner-goal-card"><span class="metric-label">Meta para 6 meses</span><textarea class="summary-input compact-area" data-persist-key="goal-6m"></textarea></article>
-                    <article class="detail-card planner-goal-card"><span class="metric-label">Meta para 1 ano</span><textarea class="summary-input compact-area" data-persist-key="goal-1y"></textarea></article>
-                    <article class="detail-card planner-goal-card"><span class="metric-label">Meta para 2 anos</span><textarea class="summary-input compact-area" data-persist-key="goal-2y"></textarea></article>
+              </div>
+              <div id="planner-dream-board-grid" class="planner-dream-board-grid mural-grid"></div>
+
+              <div class="sec-title" style="margin-top:32px;">Metas por prazo</div>
+              <div class="prazo-grid">
+                <div class="prazo-card">
+                  <div class="prazo-header">
+                    <span class="prazo-badge m3">3 meses</span>
+                    <span class="prazo-title">Curto prazo</span>
+                  </div>
+                  <div class="prazo-body">
+                    <textarea class="prazo-textarea summary-input compact-area" data-persist-key="goal-3m" placeholder="Escreva sua meta para os próximos 3 meses..."></textarea>
+                    <div class="prazo-progress">
+                      <div class="prazo-progress-label"><span>Progresso</span><span>0%</span></div>
+                      <div class="prazo-bar-wrap"><div class="prazo-bar" style="width:0%"></div></div>
+                    </div>
                   </div>
                 </div>
-              </article>
+                <div class="prazo-card">
+                  <div class="prazo-header">
+                    <span class="prazo-badge m6">6 meses</span>
+                    <span class="prazo-title">Médio prazo</span>
+                  </div>
+                  <div class="prazo-body">
+                    <textarea class="prazo-textarea summary-input compact-area" data-persist-key="goal-6m" placeholder="Escreva sua meta para os próximos 6 meses..."></textarea>
+                    <div class="prazo-progress">
+                      <div class="prazo-progress-label"><span>Progresso</span><span>0%</span></div>
+                      <div class="prazo-bar-wrap"><div class="prazo-bar amber" style="width:0%"></div></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="prazo-card">
+                  <div class="prazo-header">
+                    <span class="prazo-badge y1">1 ano</span>
+                    <span class="prazo-title">Longo prazo</span>
+                  </div>
+                  <div class="prazo-body">
+                    <textarea class="prazo-textarea summary-input compact-area" data-persist-key="goal-1y" placeholder="Escreva sua meta para 1 ano..."></textarea>
+                    <div class="prazo-progress">
+                      <div class="prazo-progress-label"><span>Progresso</span><span>0%</span></div>
+                      <div class="prazo-bar-wrap"><div class="prazo-bar blue" style="width:0%"></div></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="prazo-card">
+                  <div class="prazo-header">
+                    <span class="prazo-badge y2">2 anos</span>
+                    <span class="prazo-title">Visão futura</span>
+                  </div>
+                  <div class="prazo-body">
+                    <textarea class="prazo-textarea summary-input compact-area" data-persist-key="goal-2y" placeholder="Escreva sua meta para 2 anos..."></textarea>
+                    <div class="prazo-progress">
+                      <div class="prazo-progress-label"><span>Progresso</span><span>0%</span></div>
+                      <div class="prazo-bar-wrap"><div class="prazo-bar purple" style="width:0%"></div></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="sec-title">Afirmações positivas</div>
+              <div class="afirmacoes-card">
+                <div class="afirmacoes-header">
+                  <i class="ti ti-sparkles" aria-hidden="true"></i>
+                  <span>Minhas afirmações diárias</span>
+                </div>
+                <div class="afirmacoes-list">
+                  <div class="afirmacao-item"><div class="afirmacao-num">1</div><input class="afirmacao-input" type="text" data-persist-key="afirmacao-1" placeholder="Eu sou capaz e merecedora de tudo que desejo..." /></div>
+                  <div class="afirmacao-item"><div class="afirmacao-num">2</div><input class="afirmacao-input" type="text" data-persist-key="afirmacao-2" placeholder="Eu escolho a gratidão e a alegria todos os dias..." /></div>
+                  <div class="afirmacao-item"><div class="afirmacao-num">3</div><input class="afirmacao-input" type="text" data-persist-key="afirmacao-3" placeholder="Escreva sua afirmação..." /></div>
+                  <div class="afirmacao-item"><div class="afirmacao-num">4</div><input class="afirmacao-input" type="text" data-persist-key="afirmacao-4" placeholder="Escreva sua afirmação..." /></div>
+                  <div class="afirmacao-item"><div class="afirmacao-num">5</div><input class="afirmacao-input" type="text" data-persist-key="afirmacao-5" placeholder="Escreva sua afirmação..." /></div>
+                </div>
+              </div>
+
+              <div class="sec-title">Gratidão</div>
+              <div class="gratidao-grid">
+                <div class="gratidao-card">
+                  <div class="gratidao-label">
+                    <div class="grat-icon rose"><i class="ti ti-heart" aria-hidden="true"></i></div>
+                    <span class="gratidao-title">Sou grata por...</span>
+                  </div>
+                  <textarea class="grat-textarea" data-persist-key="gratidao-1" placeholder="Liste o que você é grata nesta semana..."></textarea>
+                </div>
+                <div class="gratidao-card">
+                  <div class="gratidao-label">
+                    <div class="grat-icon amber"><i class="ti ti-sun" aria-hidden="true"></i></div>
+                    <span class="gratidao-title">Minha maior conquista foi...</span>
+                  </div>
+                  <textarea class="grat-textarea" data-persist-key="gratidao-2" placeholder="Celebre suas conquistas desta semana..."></textarea>
+                </div>
+                <div class="gratidao-card">
+                  <div class="gratidao-label">
+                    <div class="grat-icon sage"><i class="ti ti-leaf" aria-hidden="true"></i></div>
+                    <span class="gratidao-title">O que aprendi...</span>
+                  </div>
+                  <textarea class="grat-textarea" data-persist-key="gratidao-3" placeholder="O que esta semana te ensinou..."></textarea>
+                </div>
+                <div class="gratidao-card">
+                  <div class="gratidao-label">
+                    <div class="grat-icon blue"><i class="ti ti-star" aria-hidden="true"></i></div>
+                    <span class="gratidao-title">Vou me cuidar fazendo...</span>
+                  </div>
+                  <textarea class="grat-textarea" data-persist-key="gratidao-4" placeholder="Como vai se cuidar esta semana..."></textarea>
+                </div>
+              </div>
             </section>
           </div>
         </section>
@@ -749,79 +875,173 @@
           <div class="page-return-bar">
             <button class="ghost-button page-return-button" type="button" data-go-home>← Voltar</button>
           </div>
-          <article class="panel module-card">
-            <div class="panel-heading"><div><p class="eyebrow">Estudos</p><h3>Livros e cursos</h3></div></div>
-            <div class="study-books-grid">
-              <section class="agenda-events-card study-books-card">
-                <h4 class="study-section-title">Livros</h4>
-                <div class="home-table-shell study-table-shell">
-                  <table class="home-table study-books-table">
-                    <thead><tr><th>Livro</th><th>Autor</th><th>Inicio</th><th>Fim</th><th>Páginas</th><th>Progresso %</th><th>Status</th><th>Observações</th></tr></thead>
-                    <tbody>
-                      <tr><td><input data-persist-key="book-1-title" placeholder="Título" /></td><td><input data-persist-key="book-1-author" placeholder="Autor" /></td><td><input type="date" data-persist-key="book-1-start" /></td><td><input type="date" data-persist-key="book-1-end" /></td><td><input type="number" data-persist-key="book-1-pages" /></td><td><input type="number" min="0" max="100" data-persist-key="book-1-progress" /></td><td><input data-persist-key="book-1-status" placeholder="lendo..." /></td><td><input data-persist-key="book-1-notes" /></td></tr>
-                      <tr><td><input data-persist-key="book-2-title" /></td><td><input data-persist-key="book-2-author" /></td><td><input type="date" data-persist-key="book-2-start" /></td><td><input type="date" data-persist-key="book-2-end" /></td><td><input type="number" data-persist-key="book-2-pages" /></td><td><input type="number" min="0" max="100" data-persist-key="book-2-progress" /></td><td><input data-persist-key="book-2-status" /></td><td><input data-persist-key="book-2-notes" /></td></tr>
-                      <tr><td><input data-persist-key="book-3-title" /></td><td><input data-persist-key="book-3-author" /></td><td><input type="date" data-persist-key="book-3-start" /></td><td><input type="date" data-persist-key="book-3-end" /></td><td><input type="number" data-persist-key="book-3-pages" /></td><td><input type="number" min="0" max="100" data-persist-key="book-3-progress" /></td><td><input data-persist-key="book-3-status" /></td><td><input data-persist-key="book-3-notes" /></td></tr>
-                      <tr><td><input data-persist-key="book-4-title" /></td><td><input data-persist-key="book-4-author" /></td><td><input type="date" data-persist-key="book-4-start" /></td><td><input type="date" data-persist-key="book-4-end" /></td><td><input type="number" data-persist-key="book-4-pages" /></td><td><input type="number" min="0" max="100" data-persist-key="book-4-progress" /></td><td><input data-persist-key="book-4-status" /></td><td><input data-persist-key="book-4-notes" /></td></tr>
-                      <tr><td><input data-persist-key="book-5-title" /></td><td><input data-persist-key="book-5-author" /></td><td><input type="date" data-persist-key="book-5-start" /></td><td><input type="date" data-persist-key="book-5-end" /></td><td><input type="number" data-persist-key="book-5-pages" /></td><td><input type="number" min="0" max="100" data-persist-key="book-5-progress" /></td><td><input data-persist-key="book-5-status" /></td><td><input data-persist-key="book-5-notes" /></td></tr>
-                    </tbody>
-                  </table>
-                </div>
-              </section>
-              <section class="agenda-events-card study-cursos-card">
-                <h4 class="study-section-title">Cursos</h4>
-                <div class="cursos-grid">
-                  <div class="cursos-card cursos-card-fazendo">
-                    <div class="cursos-card-header">🎓 Cursos que estou fazendo</div>
-                    <div class="cursos-item"><span class="cursos-item-icon">📄</span><input type="text" data-persist-key="curso-f-1" placeholder="Nome do curso" /></div>
-                    <div class="cursos-item"><span class="cursos-item-icon">📄</span><input type="text" data-persist-key="curso-f-2" placeholder="Nome do curso" /></div>
-                    <div class="cursos-item"><span class="cursos-item-icon">📄</span><input type="text" data-persist-key="curso-f-3" placeholder="Nome do curso" /></div>
-                    <div class="cursos-item"><span class="cursos-item-icon">📄</span><input type="text" data-persist-key="curso-f-4" placeholder="Nome do curso" /></div>
-                    <div class="cursos-item"><span class="cursos-item-icon">📄</span><input type="text" data-persist-key="curso-f-5" placeholder="Nome do curso" /></div>
-                    <div class="cursos-item"><span class="cursos-item-icon">📄</span><input type="text" data-persist-key="curso-f-6" placeholder="Nome do curso" /></div>
-                    <div class="cursos-item"><span class="cursos-item-icon">📄</span><input type="text" data-persist-key="curso-f-7" placeholder="Nome do curso" /></div>
-                  </div>
-                  <div class="cursos-card cursos-card-desejo">
-                    <div class="cursos-card-header">🎯 Cursos que desejo fazer</div>
-                    <div class="cursos-item"><span class="cursos-item-icon">🔗</span><input type="text" data-persist-key="curso-d-1" placeholder="Nome ou link do curso" /></div>
-                    <div class="cursos-item"><span class="cursos-item-icon">🔗</span><input type="text" data-persist-key="curso-d-2" placeholder="Nome ou link do curso" /></div>
-                    <div class="cursos-item"><span class="cursos-item-icon">🔗</span><input type="text" data-persist-key="curso-d-3" placeholder="Nome ou link do curso" /></div>
-                    <div class="cursos-item"><span class="cursos-item-icon">🔗</span><input type="text" data-persist-key="curso-d-4" placeholder="Nome ou link do curso" /></div>
-                    <div class="cursos-item"><span class="cursos-item-icon">🔗</span><input type="text" data-persist-key="curso-d-5" placeholder="Nome ou link do curso" /></div>
-                    <div class="cursos-item"><span class="cursos-item-icon">🔗</span><input type="text" data-persist-key="curso-d-6" placeholder="Nome ou link do curso" /></div>
-                    <div class="cursos-item"><span class="cursos-item-icon">🔗</span><input type="text" data-persist-key="curso-d-7" placeholder="Nome ou link do curso" /></div>
-                  </div>
-                </div>
-              </section>
-            </div><!-- /study-books-grid -->
-            <div class="postit-grid">
-              <article class="agenda-summary-card"><h4>Habilidades que quero desenvolver</h4><textarea class="summary-input compact-area" data-persist-key="skills-develop"></textarea></article>
-              <article class="agenda-summary-card"><h4>O que eu faco muito bem</h4><textarea class="summary-input compact-area" data-persist-key="skills-good"></textarea></article>
-              <article class="agenda-summary-card"><h4>O que eu preciso melhorar</h4><textarea class="summary-input compact-area" data-persist-key="skills-improve"></textarea></article>
-              <article class="agenda-summary-card"><h4>Quais sao os meus valores</h4><textarea class="summary-input compact-area" data-persist-key="values"></textarea></article>
-              <article class="agenda-events-card full"><h4>O que eu faco hoje que me afasta da vida que eu quero ter</h4><textarea class="summary-input compact-area" data-persist-key="habits-away"></textarea></article>
+          <div class="module-content">
+            <div class="module-hero">
+              <div class="hero-deco">✦</div>
+              <div class="hero-icon"><i class="ti ti-book" aria-hidden="true"></i></div>
+              <div>
+                <div class="hero-eye">Estudos & Projetos</div>
+                <div class="hero-title">Livros, cursos e seus projetos</div>
+              </div>
             </div>
-            <div class="panel-heading"><div><p class="eyebrow">Projetos</p><h3>Projeto A, B, C e D</h3></div></div>
-            <div class="project-grid">
-              <article class="agenda-events-card project-card"><h4>Projeto A</h4><textarea class="summary-input compact-area" data-persist-key="proj-a-what" placeholder="O que e"></textarea><textarea class="summary-input compact-area" data-persist-key="proj-a-desc" placeholder="Descrição"></textarea><textarea class="summary-input compact-area" data-persist-key="proj-a-plan" placeholder="Plano de acao"></textarea><select data-persist-key="proj-a-status"><option>a começar</option><option>em andamento</option><option>pronto</option></select><input data-persist-key="proj-a-people" placeholder="Pessoas envolvidas" /><input data-persist-key="proj-a-links" placeholder="Links e documentos" /><label class="project-upload-field">Anexos e referencias<input type="file" data-project-upload="a" multiple /></label><div class="project-attachments" data-project-gallery="a"></div></article>
-              <article class="agenda-events-card project-card"><h4>Projeto B</h4><textarea class="summary-input compact-area" data-persist-key="proj-b-what" placeholder="O que e"></textarea><textarea class="summary-input compact-area" data-persist-key="proj-b-desc" placeholder="Descrição"></textarea><textarea class="summary-input compact-area" data-persist-key="proj-b-plan" placeholder="Plano de acao"></textarea><select data-persist-key="proj-b-status"><option>a começar</option><option>em andamento</option><option>pronto</option></select><input data-persist-key="proj-b-people" placeholder="Pessoas envolvidas" /><input data-persist-key="proj-b-links" placeholder="Links e documentos" /><label class="project-upload-field">Anexos e referencias<input type="file" data-project-upload="b" multiple /></label><div class="project-attachments" data-project-gallery="b"></div></article>
-              <article class="agenda-events-card project-card"><h4>Projeto C</h4><textarea class="summary-input compact-area" data-persist-key="proj-c-what" placeholder="O que e"></textarea><textarea class="summary-input compact-area" data-persist-key="proj-c-desc" placeholder="Descrição"></textarea><textarea class="summary-input compact-area" data-persist-key="proj-c-plan" placeholder="Plano de acao"></textarea><select data-persist-key="proj-c-status"><option>a começar</option><option>em andamento</option><option>pronto</option></select><input data-persist-key="proj-c-people" placeholder="Pessoas envolvidas" /><input data-persist-key="proj-c-links" placeholder="Links e documentos" /><label class="project-upload-field">Anexos e referencias<input type="file" data-project-upload="c" multiple /></label><div class="project-attachments" data-project-gallery="c"></div></article>
-              <article class="agenda-events-card project-card"><h4>Projeto D</h4><textarea class="summary-input compact-area" data-persist-key="proj-d-what" placeholder="O que e"></textarea><textarea class="summary-input compact-area" data-persist-key="proj-d-desc" placeholder="Descrição"></textarea><textarea class="summary-input compact-area" data-persist-key="proj-d-plan" placeholder="Plano de acao"></textarea><select data-persist-key="proj-d-status"><option>a começar</option><option>em andamento</option><option>pronto</option></select><input data-persist-key="proj-d-people" placeholder="Pessoas envolvidas" /><input data-persist-key="proj-d-links" placeholder="Links e documentos" /><label class="project-upload-field">Anexos e referencias<input type="file" data-project-upload="d" multiple /></label><div class="project-attachments" data-project-gallery="d"></div></article>
+
+            <div class="section-title">Livros</div>
+            <div class="books-card">
+              <div class="books-header">
+                <div class="books-header-left">
+                  <i class="ti ti-books" aria-hidden="true"></i>
+                  <span>Minha estante de leitura</span>
+                </div>
+              </div>
+              <div style="overflow-x:auto;">
+                <table class="books-table study-books-table">
+                  <thead><tr><th>Livro</th><th>Autor</th><th>Início</th><th>Fim</th><th>Páginas</th><th>Progresso %</th><th>Status</th><th>Observações</th></tr></thead>
+                  <tbody>
+                    <tr><td><input class="bt-input" data-persist-key="book-1-title" placeholder="Título" /></td><td><input class="bt-input" data-persist-key="book-1-author" placeholder="Autor" /></td><td><input class="bt-input" type="date" data-persist-key="book-1-start" /></td><td><input class="bt-input" type="date" data-persist-key="book-1-end" /></td><td><input class="bt-input" type="number" data-persist-key="book-1-pages" /></td><td><input class="bt-input" type="number" min="0" max="100" data-persist-key="book-1-progress" /></td><td><input class="bt-input" data-persist-key="book-1-status" placeholder="lendo..." /></td><td><input class="bt-input" data-persist-key="book-1-notes" /></td></tr>
+                    <tr><td><input class="bt-input" data-persist-key="book-2-title" /></td><td><input class="bt-input" data-persist-key="book-2-author" /></td><td><input class="bt-input" type="date" data-persist-key="book-2-start" /></td><td><input class="bt-input" type="date" data-persist-key="book-2-end" /></td><td><input class="bt-input" type="number" data-persist-key="book-2-pages" /></td><td><input class="bt-input" type="number" min="0" max="100" data-persist-key="book-2-progress" /></td><td><input class="bt-input" data-persist-key="book-2-status" /></td><td><input class="bt-input" data-persist-key="book-2-notes" /></td></tr>
+                    <tr><td><input class="bt-input" data-persist-key="book-3-title" /></td><td><input class="bt-input" data-persist-key="book-3-author" /></td><td><input class="bt-input" type="date" data-persist-key="book-3-start" /></td><td><input class="bt-input" type="date" data-persist-key="book-3-end" /></td><td><input class="bt-input" type="number" data-persist-key="book-3-pages" /></td><td><input class="bt-input" type="number" min="0" max="100" data-persist-key="book-3-progress" /></td><td><input class="bt-input" data-persist-key="book-3-status" /></td><td><input class="bt-input" data-persist-key="book-3-notes" /></td></tr>
+                    <tr><td><input class="bt-input" data-persist-key="book-4-title" /></td><td><input class="bt-input" data-persist-key="book-4-author" /></td><td><input class="bt-input" type="date" data-persist-key="book-4-start" /></td><td><input class="bt-input" type="date" data-persist-key="book-4-end" /></td><td><input class="bt-input" type="number" data-persist-key="book-4-pages" /></td><td><input class="bt-input" type="number" min="0" max="100" data-persist-key="book-4-progress" /></td><td><input class="bt-input" data-persist-key="book-4-status" /></td><td><input class="bt-input" data-persist-key="book-4-notes" /></td></tr>
+                    <tr><td><input class="bt-input" data-persist-key="book-5-title" /></td><td><input class="bt-input" data-persist-key="book-5-author" /></td><td><input class="bt-input" type="date" data-persist-key="book-5-start" /></td><td><input class="bt-input" type="date" data-persist-key="book-5-end" /></td><td><input class="bt-input" type="number" data-persist-key="book-5-pages" /></td><td><input class="bt-input" type="number" min="0" max="100" data-persist-key="book-5-progress" /></td><td><input class="bt-input" data-persist-key="book-5-status" /></td><td><input class="bt-input" data-persist-key="book-5-notes" /></td></tr>
+                  </tbody>
+                </table>
+              </div>
             </div>
-          </article>
+
+            <div class="section-title">Cursos</div>
+            <div class="two-col">
+              <div class="course-card">
+                <div class="course-header rose">
+                  <i class="ti ti-player-play" aria-hidden="true"></i>
+                  <span>Cursos que estou fazendo</span>
+                </div>
+                <div class="course-list">
+                  <div class="course-item"><i class="ti ti-circle-check" aria-hidden="true"></i><input class="course-input" type="text" data-persist-key="curso-f-1" placeholder="Nome do curso" /></div>
+                  <div class="course-item"><i class="ti ti-circle-check" aria-hidden="true"></i><input class="course-input" type="text" data-persist-key="curso-f-2" placeholder="Nome do curso" /></div>
+                  <div class="course-item"><i class="ti ti-circle-check" aria-hidden="true"></i><input class="course-input" type="text" data-persist-key="curso-f-3" placeholder="Nome do curso" /></div>
+                  <div class="course-item"><i class="ti ti-circle-check" aria-hidden="true"></i><input class="course-input" type="text" data-persist-key="curso-f-4" placeholder="Nome do curso" /></div>
+                  <div class="course-item"><i class="ti ti-circle-check" aria-hidden="true"></i><input class="course-input" type="text" data-persist-key="curso-f-5" placeholder="Nome do curso" /></div>
+                  <div class="course-item"><i class="ti ti-circle-check" aria-hidden="true"></i><input class="course-input" type="text" data-persist-key="curso-f-6" placeholder="Nome do curso" /></div>
+                  <div class="course-item"><i class="ti ti-circle-check" aria-hidden="true"></i><input class="course-input" type="text" data-persist-key="curso-f-7" placeholder="Nome do curso" /></div>
+                </div>
+              </div>
+              <div class="course-card">
+                <div class="course-header amber">
+                  <i class="ti ti-link" aria-hidden="true"></i>
+                  <span>Cursos que desejo fazer</span>
+                </div>
+                <div class="course-list">
+                  <div class="course-item amber-icon"><i class="ti ti-circle" aria-hidden="true"></i><input class="course-input" type="text" data-persist-key="curso-d-1" placeholder="Nome ou link do curso" /></div>
+                  <div class="course-item amber-icon"><i class="ti ti-circle" aria-hidden="true"></i><input class="course-input" type="text" data-persist-key="curso-d-2" placeholder="Nome ou link do curso" /></div>
+                  <div class="course-item amber-icon"><i class="ti ti-circle" aria-hidden="true"></i><input class="course-input" type="text" data-persist-key="curso-d-3" placeholder="Nome ou link do curso" /></div>
+                  <div class="course-item amber-icon"><i class="ti ti-circle" aria-hidden="true"></i><input class="course-input" type="text" data-persist-key="curso-d-4" placeholder="Nome ou link do curso" /></div>
+                  <div class="course-item amber-icon"><i class="ti ti-circle" aria-hidden="true"></i><input class="course-input" type="text" data-persist-key="curso-d-5" placeholder="Nome ou link do curso" /></div>
+                  <div class="course-item amber-icon"><i class="ti ti-circle" aria-hidden="true"></i><input class="course-input" type="text" data-persist-key="curso-d-6" placeholder="Nome ou link do curso" /></div>
+                  <div class="course-item amber-icon"><i class="ti ti-circle" aria-hidden="true"></i><input class="course-input" type="text" data-persist-key="curso-d-7" placeholder="Nome ou link do curso" /></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="section-title">Reflexão e autoconhecimento</div>
+            <div class="reflection-grid">
+              <div class="reflection-card">
+                <div class="ref-label"><div class="ref-label-icon rose"><i class="ti ti-bulb" aria-hidden="true"></i></div><span>Habilidades que quero desenvolver</span></div>
+                <textarea class="ref-textarea summary-input compact-area" data-persist-key="skills-develop" placeholder="Quais habilidades você quer desenvolver..."></textarea>
+              </div>
+              <div class="reflection-card">
+                <div class="ref-label"><div class="ref-label-icon sage"><i class="ti ti-star" aria-hidden="true"></i></div><span>O que eu faço muito bem</span></div>
+                <textarea class="ref-textarea summary-input compact-area" data-persist-key="skills-good" placeholder="Suas maiores forças..."></textarea>
+              </div>
+              <div class="reflection-card">
+                <div class="ref-label"><div class="ref-label-icon amber"><i class="ti ti-trending-up" aria-hidden="true"></i></div><span>O que preciso melhorar</span></div>
+                <textarea class="ref-textarea summary-input compact-area" data-persist-key="skills-improve" placeholder="Áreas de melhoria..."></textarea>
+              </div>
+              <div class="reflection-card">
+                <div class="ref-label"><div class="ref-label-icon blue"><i class="ti ti-heart" aria-hidden="true"></i></div><span>Quais são os meus valores</span></div>
+                <textarea class="ref-textarea summary-input compact-area" data-persist-key="values" placeholder="Seus valores essenciais..."></textarea>
+              </div>
+            </div>
+            <div class="reflection-full">
+              <div class="ref-label"><div class="ref-label-icon rose"><i class="ti ti-arrow-right" aria-hidden="true"></i></div><span>O que faço hoje que me afasta da vida que quero ter</span></div>
+              <textarea class="ref-textarea summary-input compact-area" data-persist-key="habits-away" placeholder="Hábitos e comportamentos que precisam mudar..."></textarea>
+            </div>
+
+            <div class="section-title">Projetos</div>
+            <div class="projects-grid">
+              <div class="project-card">
+                <div class="project-header">
+                  <input class="project-name-input" data-persist-key="proj-a-what" placeholder="Projeto A — nome do projeto" />
+                  <select class="status-select" data-persist-key="proj-a-status"><option>a começar</option><option>em andamento</option><option>pronto</option></select>
+                </div>
+                <div class="project-body">
+                  <div><div class="proj-field-label">Descrição</div><textarea class="proj-textarea summary-input" data-persist-key="proj-a-desc" placeholder="Descreva o projeto..."></textarea></div>
+                  <div><div class="proj-field-label">Plano de ação</div><textarea class="proj-textarea summary-input" data-persist-key="proj-a-plan" placeholder="Quais são os próximos passos..."></textarea></div>
+                  <div><div class="proj-field-label">Pessoas envolvidas</div><input class="proj-input" data-persist-key="proj-a-people" placeholder="Nomes e funções..." /></div>
+                  <div><div class="proj-field-label">Links e documentos</div><input class="proj-input" data-persist-key="proj-a-links" placeholder="URLs e referências..." /></div>
+                  <label class="proj-attach"><i class="ti ti-paperclip" aria-hidden="true"></i><span>Anexos</span><input type="file" data-project-upload="a" multiple style="display:none" /></label>
+                  <div class="project-attachments" data-project-gallery="a"></div>
+                </div>
+              </div>
+              <div class="project-card">
+                <div class="project-header">
+                  <input class="project-name-input" data-persist-key="proj-b-what" placeholder="Projeto B — nome do projeto" />
+                  <select class="status-select" data-persist-key="proj-b-status"><option>a começar</option><option>em andamento</option><option>pronto</option></select>
+                </div>
+                <div class="project-body">
+                  <div><div class="proj-field-label">Descrição</div><textarea class="proj-textarea summary-input" data-persist-key="proj-b-desc" placeholder="Descreva o projeto..."></textarea></div>
+                  <div><div class="proj-field-label">Plano de ação</div><textarea class="proj-textarea summary-input" data-persist-key="proj-b-plan" placeholder="Quais são os próximos passos..."></textarea></div>
+                  <div><div class="proj-field-label">Pessoas envolvidas</div><input class="proj-input" data-persist-key="proj-b-people" placeholder="Nomes e funções..." /></div>
+                  <div><div class="proj-field-label">Links e documentos</div><input class="proj-input" data-persist-key="proj-b-links" placeholder="URLs e referências..." /></div>
+                  <label class="proj-attach"><i class="ti ti-paperclip" aria-hidden="true"></i><span>Anexos</span><input type="file" data-project-upload="b" multiple style="display:none" /></label>
+                  <div class="project-attachments" data-project-gallery="b"></div>
+                </div>
+              </div>
+              <div class="project-card">
+                <div class="project-header">
+                  <input class="project-name-input" data-persist-key="proj-c-what" placeholder="Projeto C — nome do projeto" />
+                  <select class="status-select" data-persist-key="proj-c-status"><option>a começar</option><option>em andamento</option><option>pronto</option></select>
+                </div>
+                <div class="project-body">
+                  <div><div class="proj-field-label">Descrição</div><textarea class="proj-textarea summary-input" data-persist-key="proj-c-desc" placeholder="Descreva o projeto..."></textarea></div>
+                  <div><div class="proj-field-label">Plano de ação</div><textarea class="proj-textarea summary-input" data-persist-key="proj-c-plan" placeholder="Quais são os próximos passos..."></textarea></div>
+                  <div><div class="proj-field-label">Pessoas envolvidas</div><input class="proj-input" data-persist-key="proj-c-people" placeholder="Nomes e funções..." /></div>
+                  <div><div class="proj-field-label">Links e documentos</div><input class="proj-input" data-persist-key="proj-c-links" placeholder="URLs e referências..." /></div>
+                  <label class="proj-attach"><i class="ti ti-paperclip" aria-hidden="true"></i><span>Anexos</span><input type="file" data-project-upload="c" multiple style="display:none" /></label>
+                  <div class="project-attachments" data-project-gallery="c"></div>
+                </div>
+              </div>
+              <div class="project-card">
+                <div class="project-header">
+                  <input class="project-name-input" data-persist-key="proj-d-what" placeholder="Projeto D — nome do projeto" />
+                  <select class="status-select" data-persist-key="proj-d-status"><option>a começar</option><option>em andamento</option><option>pronto</option></select>
+                </div>
+                <div class="project-body">
+                  <div><div class="proj-field-label">Descrição</div><textarea class="proj-textarea summary-input" data-persist-key="proj-d-desc" placeholder="Descreva o projeto..."></textarea></div>
+                  <div><div class="proj-field-label">Plano de ação</div><textarea class="proj-textarea summary-input" data-persist-key="proj-d-plan" placeholder="Quais são os próximos passos..."></textarea></div>
+                  <div><div class="proj-field-label">Pessoas envolvidas</div><input class="proj-input" data-persist-key="proj-d-people" placeholder="Nomes e funções..." /></div>
+                  <div><div class="proj-field-label">Links e documentos</div><input class="proj-input" data-persist-key="proj-d-links" placeholder="URLs e referências..." /></div>
+                  <label class="proj-attach"><i class="ti ti-paperclip" aria-hidden="true"></i><span>Anexos</span><input type="file" data-project-upload="d" multiple style="display:none" /></label>
+                  <div class="project-attachments" data-project-gallery="d"></div>
+                </div>
+              </div>
+            </div>
+          </div><!-- /module-content -->
         </section>
 
         <section class="page-view" data-page-view="finanças" id="finanças">
           <div class="page-return-bar">
             <button class="ghost-button page-return-button" type="button" data-go-home>← Voltar</button>
           </div>
-          <article class="panel module-card finance-card">
-            <div class="panel-heading">
-              <div>
-                <p class="eyebrow">Finanças</p>
-                <h3>Controle financeiro</h3>
-              </div>
+          <div class="module-content">
+          <div class="module-hero">
+            <div class="hero-deco">R$</div>
+            <div class="hero-icon"><i class="ti ti-coin" aria-hidden="true"></i></div>
+            <div>
+              <div class="hero-eye">Finanças</div>
+              <div class="hero-title">Controle financeiro</div>
             </div>
+          </div>
 
+          <article class="panel module-card finance-card">
             <!-- Hidden legacy compat elements (used by renderFinance JS) -->
             <div style="display:none">
               <input id="finance-income-input" type="number" />
@@ -1076,53 +1296,218 @@
 
             </div><!-- /tab-shell financas -->
           </article>
+          </div><!-- /module-content finance -->
         </section>
 
         <section class="page-view" data-page-view="imagem" id="imagem">
           <div class="page-return-bar">
             <button class="ghost-button page-return-button" type="button" data-go-home>← Voltar</button>
           </div>
-          <article class="panel module-card wardrobe-card module-open-card" data-module="wardrobe">
-            <div class="panel-heading">
+          <div class="module-content">
+            <div class="module-hero">
+              <div class="hero-deco">✦</div>
+              <div class="hero-icon"><i class="ti ti-hanger" aria-hidden="true"></i></div>
               <div>
-                <p class="eyebrow">Imagem e estilo</p>
-                <h3>Guarda-roupa inteligente</h3>
+                <div class="hero-eye">Imagem & Estilo</div>
+                <div class="hero-title">Seu guarda-roupa inteligente</div>
               </div>
-              <button class="ghost-button module-open-button" type="button" data-module="wardrobe">Abrir</button>
             </div>
-            <div class="structured-card-grid">
-              <div class="detail-card"><span class="metric-label">Looks da semana</span><strong>0 cadastrados</strong></div>
-              <div class="detail-card"><span class="metric-label">Pecas-chave</span><strong>Nenhuma peca cadastrada</strong></div>
+
+            <!-- Tabs -->
+            <div class="tabs-row" data-tab-group="imagem">
+              <button class="tab is-active" type="button" data-tab-target="img-estilo"><i class="ti ti-sparkles" aria-hidden="true"></i>Meu estilo</button>
+              <button class="tab" type="button" data-tab-target="img-looks"><i class="ti ti-camera" aria-hidden="true"></i>Looks da semana</button>
+              <button class="tab" type="button" data-tab-target="img-catalogo"><i class="ti ti-shirt" aria-hidden="true"></i>Catálogo de peças</button>
+              <button class="tab" type="button" data-tab-target="img-comprar"><i class="ti ti-shopping-bag" aria-hidden="true"></i>Preciso comprar</button>
+              <button class="tab" type="button" data-tab-target="img-paleta"><i class="ti ti-palette" aria-hidden="true"></i>Minha paleta</button>
             </div>
-            <ul id="wardrobe-preview-list" class="mini-list module-preview-list"></ul>
-            <ul class="mini-list">
-              <li>Catalogar pecas favoritas e combinar por ocasiao</li>
-              <li>Mapear o que falta antes de comprar</li>
-              <li>Separar lista de desejo e lista de necessidade</li>
-            </ul>
-          </article>
+
+            <!-- Tab: Meu estilo -->
+            <section class="tab-panel is-active" data-tab-panel="img-estilo">
+              <div class="sec-title">Perfil de estilo</div>
+              <div class="perfil-grid">
+                <div class="perfil-card">
+                  <div class="pc-label">
+                    <div class="pc-icon rose"><i class="ti ti-heart" aria-hidden="true"></i></div>
+                    <span class="pc-title">Estilo pessoal</span>
+                  </div>
+                  <div class="style-chips">
+                    <span class="chip">Clássico</span><span class="chip">Romântico</span><span class="chip">Casual</span><span class="chip">Minimalista</span><span class="chip">Boho</span><span class="chip">Streetwear</span><span class="chip">Elegante</span><span class="chip">Esportivo</span>
+                  </div>
+                </div>
+                <div class="perfil-card">
+                  <div class="pc-label">
+                    <div class="pc-icon amber"><i class="ti ti-sparkles" aria-hidden="true"></i></div>
+                    <span class="pc-title">Ocasiões frequentes</span>
+                  </div>
+                  <div class="style-chips">
+                    <span class="chip">Trabalho</span><span class="chip">Casual</span><span class="chip">Festa</span><span class="chip">Academia</span><span class="chip">Praia</span><span class="chip">Encontro</span><span class="chip">Viagem</span>
+                  </div>
+                </div>
+                <div class="perfil-card">
+                  <div class="pc-label">
+                    <div class="pc-icon sage"><i class="ti ti-palette" aria-hidden="true"></i></div>
+                    <span class="pc-title">Cores favoritas</span>
+                  </div>
+                  <div class="color-palette">
+                    <div class="color-item"><div class="color-dot" style="background:#2a1f28;"></div><span class="color-dot-label">Preto</span></div>
+                    <div class="color-item"><div class="color-dot" style="background:#c9395f;"></div><span class="color-dot-label">Rosa</span></div>
+                    <div class="color-item"><div class="color-dot" style="background:#f8f0e8;"></div><span class="color-dot-label">Nude</span></div>
+                    <div class="color-item"><div class="color-dot" style="background:#3060b0;"></div><span class="color-dot-label">Azul</span></div>
+                    <div class="color-item"><div class="color-dot" style="background:#4a9a6a;"></div><span class="color-dot-label">Verde</span></div>
+                    <div class="color-item"><div class="color-dot" style="background:#fff;border:0.5px solid #f0dce6;"></div><span class="color-dot-label">Branco</span></div>
+                  </div>
+                </div>
+                <div class="perfil-card">
+                  <div class="pc-label">
+                    <div class="pc-icon blue"><i class="ti ti-ruler" aria-hidden="true"></i></div>
+                    <span class="pc-title">Meu tipo de corpo</span>
+                  </div>
+                  <div style="display:flex;flex-direction:column;gap:8px;">
+                    <div class="field-label">Silhueta</div>
+                    <input class="input-field" data-persist-key="img-silhueta" placeholder="Ex.: Ampulheta, triângulo..." />
+                    <div class="field-label">Observações de estilo</div>
+                    <textarea class="textarea-field" data-persist-key="img-obs-estilo" placeholder="O que valoriza sua silhueta..."></textarea>
+                  </div>
+                </div>
+              </div>
+
+              <div class="sec-title">Dicas de consultora</div>
+              <div class="tips-grid">
+                <div class="tip-card">
+                  <div class="tip-header"><div class="tip-icon rose"><i class="ti ti-heart" aria-hidden="true"></i></div><span class="tip-title">Valorize seu tipo de corpo</span></div>
+                  <div class="tip-list">
+                    <div class="tip-item"><i class="ti ti-point" aria-hidden="true"></i>Use peças que definem a cintura</div>
+                    <div class="tip-item"><i class="ti ti-point" aria-hidden="true"></i>Aposte em cortes que equilibram os ombros</div>
+                    <div class="tip-item"><i class="ti ti-point" aria-hidden="true"></i>Crie contraste entre cima e baixo</div>
+                  </div>
+                </div>
+                <div class="tip-card">
+                  <div class="tip-header"><div class="tip-icon amber"><i class="ti ti-sun" aria-hidden="true"></i></div><span class="tip-title">Combinações certeiras</span></div>
+                  <div class="tip-list">
+                    <div class="tip-item"><i class="ti ti-point" aria-hidden="true"></i>Misture texturas diferentes</div>
+                    <div class="tip-item"><i class="ti ti-point" aria-hidden="true"></i>Use a regra do terço para cores</div>
+                    <div class="tip-item"><i class="ti ti-point" aria-hidden="true"></i>Acessórios fazem toda diferença</div>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <!-- Tab: Looks da semana -->
+            <section class="tab-panel" data-tab-panel="img-looks">
+              <div class="sec-title">Looks da semana</div>
+              <div class="looks-grid">
+                <div class="look-card"><div class="look-day">Dom</div><div class="look-img"><i class="ti ti-camera" aria-hidden="true"></i></div><div class="look-body"><input class="look-ocasiao" data-persist-key="look-dom-ocasiao" placeholder="Ocasião..." /><input class="look-peca" data-persist-key="look-dom-p1" placeholder="Peça 1..." /><input class="look-peca" data-persist-key="look-dom-p2" placeholder="Peça 2..." /></div></div>
+                <div class="look-card"><div class="look-day">Seg</div><div class="look-img"><i class="ti ti-camera" aria-hidden="true"></i></div><div class="look-body"><input class="look-ocasiao" data-persist-key="look-seg-ocasiao" placeholder="Ocasião..." /><input class="look-peca" data-persist-key="look-seg-p1" placeholder="Peça 1..." /><input class="look-peca" data-persist-key="look-seg-p2" placeholder="Peça 2..." /></div></div>
+                <div class="look-card"><div class="look-day">Ter</div><div class="look-img"><i class="ti ti-camera" aria-hidden="true"></i></div><div class="look-body"><input class="look-ocasiao" data-persist-key="look-ter-ocasiao" placeholder="Ocasião..." /><input class="look-peca" data-persist-key="look-ter-p1" placeholder="Peça 1..." /><input class="look-peca" data-persist-key="look-ter-p2" placeholder="Peça 2..." /></div></div>
+                <div class="look-card"><div class="look-day">Qua</div><div class="look-img"><i class="ti ti-camera" aria-hidden="true"></i></div><div class="look-body"><input class="look-ocasiao" data-persist-key="look-qua-ocasiao" placeholder="Ocasião..." /><input class="look-peca" data-persist-key="look-qua-p1" placeholder="Peça 1..." /><input class="look-peca" data-persist-key="look-qua-p2" placeholder="Peça 2..." /></div></div>
+                <div class="look-card"><div class="look-day">Qui</div><div class="look-img"><i class="ti ti-camera" aria-hidden="true"></i></div><div class="look-body"><input class="look-ocasiao" data-persist-key="look-qui-ocasiao" placeholder="Ocasião..." /><input class="look-peca" data-persist-key="look-qui-p1" placeholder="Peça 1..." /><input class="look-peca" data-persist-key="look-qui-p2" placeholder="Peça 2..." /></div></div>
+                <div class="look-card"><div class="look-day">Sex</div><div class="look-img"><i class="ti ti-camera" aria-hidden="true"></i></div><div class="look-body"><input class="look-ocasiao" data-persist-key="look-sex-ocasiao" placeholder="Ocasião..." /><input class="look-peca" data-persist-key="look-sex-p1" placeholder="Peça 1..." /><input class="look-peca" data-persist-key="look-sex-p2" placeholder="Peça 2..." /></div></div>
+                <div class="look-card"><div class="look-day">Sáb</div><div class="look-img"><i class="ti ti-camera" aria-hidden="true"></i></div><div class="look-body"><input class="look-ocasiao" data-persist-key="look-sab-ocasiao" placeholder="Ocasião..." /><input class="look-peca" data-persist-key="look-sab-p1" placeholder="Peça 1..." /><input class="look-peca" data-persist-key="look-sab-p2" placeholder="Peça 2..." /></div></div>
+              </div>
+            </section>
+
+            <!-- Tab: Catálogo de peças -->
+            <section class="tab-panel" data-tab-panel="img-catalogo">
+              <div class="catalogo-header">
+                <div class="sec-title" style="margin-bottom:0;">Catálogo de peças</div>
+              </div>
+              <div class="cat-filters">
+                <span class="cat-filter active">Todas</span><span class="cat-filter">Blusas</span><span class="cat-filter">Calças</span><span class="cat-filter">Vestidos</span><span class="cat-filter">Sapatos</span><span class="cat-filter">Acessórios</span>
+              </div>
+              <div class="peca-grid">
+                <div class="peca-card"><div class="peca-img rosa-bg"><i class="ti ti-shirt" aria-hidden="true"></i></div><div class="peca-body"><input class="peca-name" data-persist-key="peca-1-nome" placeholder="Nome da peça..." /><div class="peca-meta"><span class="peca-tag">Rosa</span></div></div></div>
+                <div class="peca-card"><div class="peca-img nude-bg"><i class="ti ti-shirt" aria-hidden="true"></i></div><div class="peca-body"><input class="peca-name" data-persist-key="peca-2-nome" placeholder="Nome da peça..." /><div class="peca-meta"><span class="peca-tag">Nude</span></div></div></div>
+                <div class="peca-card"><div class="peca-img azul-bg"><i class="ti ti-shirt" aria-hidden="true"></i></div><div class="peca-body"><input class="peca-name" data-persist-key="peca-3-nome" placeholder="Nome da peça..." /><div class="peca-meta"><span class="peca-tag">Azul</span></div></div></div>
+                <div class="peca-card"><div class="peca-img verde-bg"><i class="ti ti-shirt" aria-hidden="true"></i></div><div class="peca-body"><input class="peca-name" data-persist-key="peca-4-nome" placeholder="Nome da peça..." /><div class="peca-meta"><span class="peca-tag">Verde</span></div></div></div>
+              </div>
+            </section>
+
+            <!-- Tab: Preciso comprar -->
+            <section class="tab-panel" data-tab-panel="img-comprar">
+              <div class="need-grid">
+                <div class="need-card">
+                  <div class="need-header rose"><i class="ti ti-shopping-bag" aria-hidden="true"></i><span>Necessidades</span></div>
+                  <div class="need-list">
+                    <div class="need-item"><input type="checkbox" data-persist-key="need-1-cb" /><div class="need-item-inputs"><input class="need-input" data-persist-key="need-1-nome" placeholder="Item necessário..." /><input class="need-price" data-persist-key="need-1-preco" placeholder="R$..." /></div></div>
+                    <div class="need-item"><input type="checkbox" data-persist-key="need-2-cb" /><div class="need-item-inputs"><input class="need-input" data-persist-key="need-2-nome" placeholder="Item necessário..." /><input class="need-price" data-persist-key="need-2-preco" placeholder="R$..." /></div></div>
+                    <div class="need-item"><input type="checkbox" data-persist-key="need-3-cb" /><div class="need-item-inputs"><input class="need-input" data-persist-key="need-3-nome" placeholder="Item necessário..." /><input class="need-price" data-persist-key="need-3-preco" placeholder="R$..." /></div></div>
+                    <div class="need-item"><input type="checkbox" data-persist-key="need-4-cb" /><div class="need-item-inputs"><input class="need-input" data-persist-key="need-4-nome" placeholder="Item necessário..." /><input class="need-price" data-persist-key="need-4-preco" placeholder="R$..." /></div></div>
+                    <div class="need-item"><input type="checkbox" data-persist-key="need-5-cb" /><div class="need-item-inputs"><input class="need-input" data-persist-key="need-5-nome" placeholder="Item necessário..." /><input class="need-price" data-persist-key="need-5-preco" placeholder="R$..." /></div></div>
+                  </div>
+                </div>
+                <div class="need-card">
+                  <div class="need-header amber"><i class="ti ti-heart" aria-hidden="true"></i><span>Desejo comprar</span></div>
+                  <div class="need-list">
+                    <div class="need-item"><input type="checkbox" data-persist-key="desejo-1-cb" /><div class="need-item-inputs"><input class="need-input" data-persist-key="desejo-1-nome" placeholder="Item que desejo..." /><input class="need-price" data-persist-key="desejo-1-preco" placeholder="R$..." /></div></div>
+                    <div class="need-item"><input type="checkbox" data-persist-key="desejo-2-cb" /><div class="need-item-inputs"><input class="need-input" data-persist-key="desejo-2-nome" placeholder="Item que desejo..." /><input class="need-price" data-persist-key="desejo-2-preco" placeholder="R$..." /></div></div>
+                    <div class="need-item"><input type="checkbox" data-persist-key="desejo-3-cb" /><div class="need-item-inputs"><input class="need-input" data-persist-key="desejo-3-nome" placeholder="Item que desejo..." /><input class="need-price" data-persist-key="desejo-3-preco" placeholder="R$..." /></div></div>
+                    <div class="need-item"><input type="checkbox" data-persist-key="desejo-4-cb" /><div class="need-item-inputs"><input class="need-input" data-persist-key="desejo-4-nome" placeholder="Item que desejo..." /><input class="need-price" data-persist-key="desejo-4-preco" placeholder="R$..." /></div></div>
+                    <div class="need-item"><input type="checkbox" data-persist-key="desejo-5-cb" /><div class="need-item-inputs"><input class="need-input" data-persist-key="desejo-5-nome" placeholder="Item que desejo..." /><input class="need-price" data-persist-key="desejo-5-preco" placeholder="R$..." /></div></div>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <!-- Tab: Minha paleta -->
+            <section class="tab-panel" data-tab-panel="img-paleta">
+              <div class="paleta-card">
+                <div class="paleta-header"><i class="ti ti-palette" aria-hidden="true"></i><span>Paleta pessoal de cores</span></div>
+                <div class="paleta-sub">Suas cores harmonizadas para criar looks incríveis</div>
+                <div class="paleta-section">
+                  <div class="paleta-section-title">Cores base</div>
+                  <div class="paleta-swatches">
+                    <div class="swatch" style="background:#2a1f28;"></div>
+                    <div class="swatch" style="background:#fff;border:1px solid rgba(255,255,255,.2);"></div>
+                    <div class="swatch" style="background:#f8f0e8;"></div>
+                    <div class="swatch" style="background:#3060b0;"></div>
+                  </div>
+                </div>
+                <div class="paleta-section">
+                  <div class="paleta-section-title">Cores de acento</div>
+                  <div class="paleta-swatches">
+                    <div class="swatch" style="background:#c9395f;"></div>
+                    <div class="swatch" style="background:#c9853f;"></div>
+                    <div class="swatch" style="background:#4a9a6a;"></div>
+                    <div class="swatch" style="background:#7040c0;"></div>
+                  </div>
+                </div>
+                <div class="paleta-tips">
+                  <div class="paleta-tip"><div class="pt-label">Tipo de pele</div><div class="pt-value">Neutra quente</div></div>
+                  <div class="paleta-tip"><div class="pt-label">Estação cromática</div><div class="pt-value">Outono/Verão</div></div>
+                </div>
+              </div>
+            </section>
+
+            <!-- Hidden compat for wardrobe JS -->
+            <div style="display:none" aria-hidden="true">
+              <ul id="wardrobe-preview-list" class="mini-list module-preview-list"></ul>
+            </div>
+          </div><!-- /module-content imagem -->
         </section>
 
         <section class="page-view" data-page-view="casa" id="casa">
           <div class="page-return-bar">
             <button class="ghost-button page-return-button" type="button" data-go-home>← Voltar</button>
           </div>
-          <article class="panel module-card home-card">
-            <div class="panel-heading">
-              <div>
-                <p class="eyebrow">Alimentação e Lar</p>
-                <h3>Planejamento da casa e refeições</h3>
-              </div>
+          <div class="module-hero">
+            <div class="hero-deco">✦</div>
+            <div class="hero-icon"><i class="ti ti-home" aria-hidden="true"></i></div>
+            <div>
+              <div class="hero-eye">Alimentação e Lar</div>
+              <div class="hero-title">Planejamento da casa e refeições</div>
             </div>
+          </div>
 
+          <article class="panel module-card home-card">
             <!-- Abas da Casa -->
             <div class="tab-shell casa-tab-shell" data-tab-group="casa">
-              <div class="casa-tab-ribbon" role="tablist" aria-label="Abas da casa">
-                <button class="casa-tab is-active" type="button" data-tab-target="casa-refeição">🍽️ Planner de Refeição</button>
-                <button class="casa-tab" type="button" data-tab-target="casa-mercado">🛒 Lista do Mercado</button>
-                <button class="casa-tab" type="button" data-tab-target="casa-limpeza">🧹 Cronograma de Limpeza</button>
-                <button class="casa-tab" type="button" data-tab-target="casa-cômodos">🏠 Checklist Cômodos</button>
-                <button class="casa-tab" type="button" data-tab-target="casa-reforma">🔨 Reforma da Casa</button>
+              <div class="casa-tab-ribbon tabs-row" role="tablist" aria-label="Abas da casa">
+                <button class="casa-tab tab is-active" type="button" data-tab-target="casa-refeição"><i class="ti ti-tools-kitchen-2" aria-hidden="true"></i>Planner de Refeição</button>
+                <button class="casa-tab tab" type="button" data-tab-target="casa-mercado"><i class="ti ti-shopping-cart" aria-hidden="true"></i>Lista do Mercado</button>
+                <button class="casa-tab tab" type="button" data-tab-target="casa-limpeza"><i class="ti ti-sparkles" aria-hidden="true"></i>Cronograma de Limpeza</button>
+                <button class="casa-tab tab" type="button" data-tab-target="casa-cômodos"><i class="ti ti-home-check" aria-hidden="true"></i>Checklist Cômodos</button>
+                <button class="casa-tab tab" type="button" data-tab-target="casa-reforma"><i class="ti ti-hammer" aria-hidden="true"></i>Reforma da Casa</button>
               </div>
 
               <!-- ABA 1: Planner de Refeição -->
@@ -1484,20 +1869,22 @@
           <div class="page-return-bar">
             <button class="ghost-button page-return-button" type="button" data-go-home>← Voltar</button>
           </div>
-          <!-- corpo-card removido: página exibe somente o ciclo menstrual -->
+          <!-- corpo-card: Saúde & Beleza (hidden — ciclo is primary) -->
           <article class="panel module-card body-card" style="display:none">
-            <div class="panel-heading">
+            <div class="module-hero">
+              <div class="hero-deco">✦</div>
+              <div class="hero-icon"><i class="ti ti-heart" aria-hidden="true"></i></div>
               <div>
-                <p class="eyebrow">Corpo e autocuidado</p>
-                <h3>Gestão completa do autocuidado</h3>
+                <div class="hero-eye">Corpo e autocuidado</div>
+                <div class="hero-title">Gestão completa do autocuidado</div>
               </div>
             </div>
             <div class="tab-shell" data-tab-group="autocuidado">
-              <div class="tab-buttons">
-                <button class="ghost-button is-active" type="button" data-tab-target="medidas">Progresso de medidas</button>
-                <button class="ghost-button" type="button" data-tab-target="exercicios">Cronograma de exercicios</button>
-                <button class="ghost-button" type="button" data-tab-target="saúde">Cuidados de saúde</button>
-                <button class="ghost-button" type="button" data-tab-target="beleza">Rituais de beleza</button>
+              <div class="tab-buttons tabs-row">
+                <button class="tab ghost-button is-active" type="button" data-tab-target="medidas">Progresso de medidas</button>
+                <button class="tab ghost-button" type="button" data-tab-target="exercicios">Cronograma de exercícios</button>
+                <button class="tab ghost-button" type="button" data-tab-target="saúde">Cuidados de saúde</button>
+                <button class="tab ghost-button" type="button" data-tab-target="beleza">Rituais de beleza</button>
               </div>
               <!-- MEDIDAS -->
               <section class="tab-panel is-active" data-tab-panel="medidas">
@@ -1835,23 +2222,22 @@
 
           <!-- ═══ CICLO MENSTRUAL ═══ -->
           <article class="panel" id="ciclo-module">
-            <div class="ciclo-hero">
-              <div class="ciclo-hero-icon">
-                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
-              </div>
+            <div class="module-hero ciclo-hero">
+              <div class="hero-deco">☽</div>
+              <div class="hero-icon ciclo-hero-icon"><i class="ti ti-moon" aria-hidden="true"></i></div>
               <div>
-                <div class="ciclo-hero-eye">Saúde feminina</div>
-                <div class="ciclo-hero-title">Calendário do ciclo menstrual</div>
+                <div class="hero-eye ciclo-hero-eye">Saúde feminina</div>
+                <div class="hero-title ciclo-hero-title">Calendário do ciclo menstrual</div>
               </div>
             </div>
 
             <!-- Abas -->
-            <div class="ciclo-tabs">
-              <div class="ciclo-tab active" data-ciclo-tab="calendario">📅 Calendário</div>
-              <div class="ciclo-tab" data-ciclo-tab="fases">🌸 Fases do ciclo</div>
-              <div class="ciclo-tab" data-ciclo-tab="registro">✏️ Registro diário</div>
-              <div class="ciclo-tab" data-ciclo-tab="tpm">🧠 TPM tracker</div>
-              <div class="ciclo-tab" data-ciclo-tab="historico">📊 Histórico</div>
+            <div class="ciclo-tabs tabs-row">
+              <div class="ciclo-tab tab active" data-ciclo-tab="calendario"><i class="ti ti-calendar" aria-hidden="true"></i>Calendário</div>
+              <div class="ciclo-tab tab" data-ciclo-tab="fases"><i class="ti ti-activity" aria-hidden="true"></i>Fases do ciclo</div>
+              <div class="ciclo-tab tab" data-ciclo-tab="registro"><i class="ti ti-pencil" aria-hidden="true"></i>Registro diário</div>
+              <div class="ciclo-tab tab" data-ciclo-tab="tpm"><i class="ti ti-brain" aria-hidden="true"></i>TPM tracker</div>
+              <div class="ciclo-tab tab" data-ciclo-tab="historico"><i class="ti ti-history" aria-hidden="true"></i>Histórico</div>
             </div>
 
             <!-- PAINEL: Calendário -->

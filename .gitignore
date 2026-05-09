@@ -31,6 +31,9 @@ dist/
 build/
 .cache/
 
+# Protótipos de redesign (não incluir no git)
+ARQUIVOS VIDA NOVA - ATUALZAÇÃO/
+
 # Arquivos temporários
 tmp/
 temp/
