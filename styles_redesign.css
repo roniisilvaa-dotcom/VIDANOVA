@@ -1,0 +1,830 @@
+/* ================================================================
+   VIDA NOVA — REDESIGN ROSE PREMIUM
+   Arquivo: styles_redesign.css
+   Adicione DEPOIS de styles_override.css no index.html:
+   <link rel="stylesheet" href="styles_redesign.css" />
+
+   Fontes necessárias (adicione no <head> do index.html):
+   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css" />
+================================================================ */
+
+/* ── VARIÁVEIS DO REDESIGN ───────────────────────────────────── */
+:root {
+  --vn-rose:        #c9395f;
+  --vn-rose-light:  #fbeef3;
+  --vn-rose-mid:    #f0dce6;
+  --vn-rose-pale:   #fdf7f9;
+  --vn-rose-hover:  #fdf0f4;
+  --vn-rose-dark:   #a62048;
+  --vn-blush:       #f9eef3;
+  --vn-nude:        #fdf8f4;
+  --vn-nude-border: #e8d5c4;
+  --vn-gold:        #c9a96e;
+  --vn-ink:         #2a1f28;
+  --vn-ink-soft:    #5a4a56;
+  --vn-ink-muted:   #9a8a94;
+  --vn-ink-faint:   #c9b8c4;
+  --vn-white:       #ffffff;
+  --vn-border:      #f0dce6;
+  --vn-border-mid:  #e8d0da;
+  --vn-radius:      16px;
+  --vn-radius-sm:   10px;
+  --vn-radius-pill: 60px;
+  --vn-font-body:   'DM Sans', 'Segoe UI', sans-serif;
+  --vn-font-serif:  'Cormorant Garamond', 'Palatino Linotype', Georgia, serif;
+}
+
+/* ── FUNDO GLOBAL ────────────────────────────────────────────── */
+body {
+  background: var(--vn-nude) !important;
+  font-family: var(--vn-font-body) !important;
+}
+
+body[data-theme="dark"] {
+  background: #1a1218 !important;
+  --vn-rose-pale: #1e1218;
+  --vn-border: #3a2030;
+  --vn-white: #221620;
+  --vn-ink: #f5eef7;
+  --vn-ink-soft: #d4b8c4;
+  --vn-ink-muted: #9a7a8a;
+}
+
+/* ── SIDEBAR ─────────────────────────────────────────────────── */
+.sidebar {
+  background: var(--vn-white) !important;
+  border-right: 0.5px solid var(--vn-border) !important;
+  box-shadow: none !important;
+}
+
+.sidebar-brand h1,
+.brand h1 {
+  font-family: var(--vn-font-serif) !important;
+  font-size: 20px !important;
+  font-weight: 500 !important;
+  letter-spacing: -0.01em !important;
+  color: var(--vn-ink) !important;
+}
+
+.sidebar-nav a,
+.mobile-nav a {
+  font-family: var(--vn-font-body) !important;
+  font-size: 13px !important;
+  font-weight: 400 !important;
+  color: var(--vn-ink-muted) !important;
+  border-radius: 12px !important;
+  padding: 10px 14px !important;
+  transition: background 0.15s, color 0.15s !important;
+}
+
+.sidebar-nav a:hover,
+.sidebar-nav a.is-active,
+.mobile-nav a:hover,
+.mobile-nav a.is-active {
+  background: var(--vn-rose-light) !important;
+  color: var(--vn-rose) !important;
+  font-weight: 500 !important;
+}
+
+/* ── TOPBAR ──────────────────────────────────────────────────── */
+.app-topbar {
+  background: var(--vn-white) !important;
+  border-bottom: 0.5px solid var(--vn-border) !important;
+  box-shadow: none !important;
+}
+
+#user-greeting {
+  font-family: var(--vn-font-body) !important;
+  font-size: 12px !important;
+  font-weight: 300 !important;
+  color: var(--vn-ink-muted) !important;
+}
+
+#topbar-account-name {
+  font-family: var(--vn-font-body) !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  color: var(--vn-ink) !important;
+  text-transform: none !important;
+  letter-spacing: 0 !important;
+}
+
+.topbar-account-card {
+  border: 0.5px solid var(--vn-border) !important;
+  border-radius: var(--vn-radius-pill) !important;
+  background: var(--vn-nude) !important;
+  padding: 5px 14px 5px 6px !important;
+  box-shadow: none !important;
+}
+
+.topbar-avatar,
+.topbar-avatar-large {
+  background: var(--vn-rose) !important;
+  color: #fff !important;
+  font-family: var(--vn-font-serif) !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  border: none !important;
+  border-radius: 50% !important;
+}
+
+/* ── VERSÍCULO DO DIA ────────────────────────────────────────── */
+.verse-banner {
+  background: var(--vn-rose) !important;
+  border: none !important;
+  border-radius: var(--vn-radius) !important;
+  box-shadow: none !important;
+  position: relative !important;
+  overflow: hidden !important;
+}
+
+.verse-banner::before {
+  content: '"';
+  position: absolute;
+  right: 20px;
+  top: -10px;
+  font-family: var(--vn-font-serif);
+  font-size: 120px;
+  color: rgba(255,255,255,0.06);
+  line-height: 1;
+  pointer-events: none;
+}
+
+.verse-banner .eyebrow,
+.verse-banner .panel-heading h3 {
+  font-size: 9px !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.15em !important;
+  text-transform: uppercase !important;
+  color: rgba(255,255,255,0.55) !important;
+  font-family: var(--vn-font-body) !important;
+}
+
+.verse-banner-copy strong,
+.verse-banner-copy .verse-quote {
+  font-family: var(--vn-font-serif) !important;
+  font-size: 17px !important;
+  font-style: italic !important;
+  font-weight: 400 !important;
+  color: #fff !important;
+  line-height: 1.55 !important;
+}
+
+.verse-banner-copy strong::before,
+.verse-banner-copy strong::after {
+  content: '' !important;
+}
+
+.verse-banner-copy small,
+.verse-reference {
+  font-size: 11px !important;
+  color: rgba(255,255,255,0.6) !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.04em !important;
+  font-family: var(--vn-font-body) !important;
+}
+
+/* ── CARDS DOS MÓDULOS (DASHBOARD) ───────────────────────────── */
+.workspace-card-grid {
+  gap: 12px !important;
+}
+
+.workspace-card {
+  background: var(--vn-white) !important;
+  border: 0.5px solid var(--vn-border) !important;
+  border-radius: var(--vn-radius) !important;
+  box-shadow: none !important;
+  transition: transform 0.15s, box-shadow 0.15s !important;
+}
+
+.workspace-card:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 8px 24px rgba(201,57,95,0.08) !important;
+}
+
+.workspace-card strong {
+  font-family: var(--vn-font-body) !important;
+  font-size: 12px !important;
+  font-weight: 500 !important;
+  color: var(--vn-ink) !important;
+}
+
+.workspace-card small {
+  font-size: 10px !important;
+  color: var(--vn-ink-muted) !important;
+}
+
+/* Seta dos módulos */
+.workspace-card::after {
+  content: '';
+  width: 26px !important;
+  height: 26px !important;
+  background: var(--vn-rose-light) !important;
+  border-radius: 50% !important;
+  border: none !important;
+}
+
+/* ── PAINÉIS INTERNOS ────────────────────────────────────────── */
+.panel,
+.agenda-panel,
+.calendar-card,
+.finance-card,
+.study-books-card {
+  background: var(--vn-white) !important;
+  border: 0.5px solid var(--vn-border) !important;
+  border-radius: var(--vn-radius) !important;
+  box-shadow: none !important;
+}
+
+.panel-heading,
+.panel-heading h3,
+.panel h3 {
+  font-family: var(--vn-font-serif) !important;
+  font-size: 18px !important;
+  font-weight: 500 !important;
+  color: var(--vn-ink) !important;
+}
+
+.eyebrow {
+  font-size: 9px !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.14em !important;
+  text-transform: uppercase !important;
+  color: var(--vn-ink-muted) !important;
+  font-family: var(--vn-font-body) !important;
+}
+
+/* ── ABAS (TABS) ─────────────────────────────────────────────── */
+.tab-buttons,
+.planner-tab-ribbon,
+.planner-tab-buttons {
+  background: transparent !important;
+  border-bottom: none !important;
+  gap: 6px !important;
+  padding: 0 0 16px !important;
+  display: flex !important;
+  flex-wrap: wrap !important;
+}
+
+.planner-tab,
+.tab-buttons .ghost-button,
+.tab-buttons .secondary-button,
+.corpo-tab,
+.finance-tab,
+.casa-tab,
+.estudo-tab {
+  font-family: var(--vn-font-body) !important;
+  font-size: 12px !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.04em !important;
+  padding: 8px 18px !important;
+  border-radius: var(--vn-radius-pill) !important;
+  border: 0.5px solid var(--vn-border-mid) !important;
+  background: var(--vn-white) !important;
+  color: var(--vn-ink-muted) !important;
+  box-shadow: none !important;
+  transition: background 0.15s, color 0.15s !important;
+}
+
+.planner-tab-weekly,
+.planner-tab-agenda,
+.planner-tab-dreams {
+  background: var(--vn-white) !important;
+}
+
+.planner-tab.is-active,
+.tab-buttons .ghost-button.is-active,
+.tab-buttons .secondary-button.is-active,
+.corpo-tab.is-active,
+.finance-tab.is-active,
+.casa-tab.is-active,
+.estudo-tab.is-active {
+  background: var(--vn-rose) !important;
+  color: #fff !important;
+  border-color: var(--vn-rose) !important;
+}
+
+.planner-tab:hover:not(.is-active),
+.tab-buttons .ghost-button:hover:not(.is-active) {
+  background: var(--vn-rose-hover) !important;
+  color: var(--vn-rose) !important;
+  border-color: var(--vn-rose-mid) !important;
+}
+
+/* ── BOTÕES ──────────────────────────────────────────────────── */
+.primary-button {
+  background: var(--vn-rose) !important;
+  border: none !important;
+  border-radius: var(--vn-radius-pill) !important;
+  font-family: var(--vn-font-body) !important;
+  font-size: 12px !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.06em !important;
+  color: #fff !important;
+  box-shadow: none !important;
+  transition: background 0.15s, transform 0.1s !important;
+}
+
+.primary-button:hover {
+  background: var(--vn-rose-dark) !important;
+  transform: translateY(-1px) !important;
+}
+
+.ghost-button {
+  border-radius: var(--vn-radius-pill) !important;
+  border: 0.5px solid var(--vn-border-mid) !important;
+  font-family: var(--vn-font-body) !important;
+  font-size: 12px !important;
+  font-weight: 500 !important;
+  color: var(--vn-ink-soft) !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.ghost-button:hover {
+  background: var(--vn-rose-hover) !important;
+  border-color: var(--vn-rose-mid) !important;
+  color: var(--vn-rose) !important;
+}
+
+.secondary-button {
+  border-radius: var(--vn-radius-pill) !important;
+  border: 0.5px solid var(--vn-border-mid) !important;
+  background: var(--vn-white) !important;
+  font-family: var(--vn-font-body) !important;
+  font-size: 12px !important;
+  font-weight: 500 !important;
+  color: var(--vn-ink-soft) !important;
+  box-shadow: none !important;
+}
+
+/* ── INPUTS E FORMULÁRIOS ────────────────────────────────────── */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+input[type="date"],
+input[type="time"],
+input[type="url"],
+textarea,
+select {
+  font-family: var(--vn-font-body) !important;
+  font-size: 12px !important;
+  color: var(--vn-ink) !important;
+  background: var(--vn-nude) !important;
+  border: 0.5px solid var(--vn-border) !important;
+  border-radius: var(--vn-radius-sm) !important;
+  padding: 9px 12px !important;
+  box-shadow: none !important;
+  outline: none !important;
+  transition: border-color 0.2s !important;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+textarea:focus,
+select:focus {
+  border-color: var(--vn-rose) !important;
+  box-shadow: none !important;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: var(--vn-ink-faint) !important;
+}
+
+/* Checkboxes */
+input[type="checkbox"] {
+  accent-color: var(--vn-rose) !important;
+  width: 15px !important;
+  height: 15px !important;
+}
+
+/* Range sliders */
+input[type="range"] {
+  accent-color: var(--vn-rose) !important;
+}
+
+/* ── CALENDÁRIO ──────────────────────────────────────────────── */
+.calendar-view-switcher .ghost-button.is-active {
+  background: var(--vn-rose) !important;
+  color: #fff !important;
+  border-color: var(--vn-rose) !important;
+}
+
+.calendar-day.is-today,
+.gcal-day.is-today {
+  background: var(--vn-rose-light) !important;
+  border: 1.5px solid var(--vn-rose) !important;
+  border-radius: 10px !important;
+  color: var(--vn-rose) !important;
+  font-weight: 600 !important;
+}
+
+.calendar-event,
+.gcal-event {
+  background: var(--vn-rose) !important;
+  border-radius: 6px !important;
+  color: #fff !important;
+}
+
+/* ── FINANÇAS ────────────────────────────────────────────────── */
+.finance-chip.is-active {
+  background: var(--vn-rose) !important;
+  color: #fff !important;
+  border-color: var(--vn-rose) !important;
+}
+
+.finance-table thead th {
+  font-size: 9px !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.09em !important;
+  text-transform: uppercase !important;
+  color: var(--vn-ink-muted) !important;
+  border-bottom: 0.5px solid var(--vn-border) !important;
+  background: var(--vn-rose-hover) !important;
+}
+
+.finance-month-mark.is-active {
+  background: var(--vn-rose) !important;
+  color: #fff !important;
+  border-radius: var(--vn-radius-pill) !important;
+}
+
+/* ── PLANNER SEMANAL ─────────────────────────────────────────── */
+.planner-tab-panel {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+}
+
+/* Header dos blocos do planner */
+.planner-block-header,
+.workspace-block-header {
+  background: var(--vn-rose) !important;
+  border-radius: var(--vn-radius) var(--vn-radius) 0 0 !important;
+  color: #fff !important;
+  font-family: var(--vn-font-body) !important;
+  font-size: 11px !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase !important;
+}
+
+/* Semanas cards */
+.week-block,
+.planner-week-card {
+  background: var(--vn-white) !important;
+  border: 0.5px solid var(--vn-border) !important;
+  border-radius: var(--vn-radius) !important;
+  box-shadow: none !important;
+}
+
+/* ── CARDS DE REFLEXÃO ───────────────────────────────────────── */
+.summary-input,
+.compact-area {
+  background: var(--vn-nude) !important;
+  border: 0.5px solid var(--vn-border) !important;
+  border-radius: var(--vn-radius-sm) !important;
+  font-family: var(--vn-font-body) !important;
+  font-size: 12px !important;
+  color: var(--vn-ink) !important;
+  line-height: 1.6 !important;
+}
+
+/* ── MURAL DOS SONHOS ────────────────────────────────────────── */
+.dream-board,
+.dream-slot {
+  border-radius: var(--vn-radius) !important;
+  border: 1px dashed var(--vn-rose-mid) !important;
+  background: var(--vn-white) !important;
+}
+
+.dream-slot:hover {
+  background: var(--vn-rose-hover) !important;
+}
+
+/* ── MÓDULOS INTERNOS (corpo, estudos, etc.) ─────────────────── */
+.module-card,
+.module-card-header {
+  background: var(--vn-white) !important;
+  border: 0.5px solid var(--vn-border) !important;
+  border-radius: var(--vn-radius) !important;
+  box-shadow: none !important;
+}
+
+.module-card-header {
+  background: var(--vn-rose-hover) !important;
+  border-radius: var(--vn-radius) var(--vn-radius) 0 0 !important;
+  border-bottom: 0.5px solid var(--vn-border) !important;
+}
+
+.module-card-header h4 {
+  font-family: var(--vn-font-body) !important;
+  font-size: 12px !important;
+  font-weight: 500 !important;
+  color: var(--vn-rose) !important;
+}
+
+/* ── PROJETOS ────────────────────────────────────────────────── */
+.project-card {
+  background: var(--vn-white) !important;
+  border: 0.5px solid var(--vn-border) !important;
+  border-radius: var(--vn-radius) !important;
+  box-shadow: none !important;
+}
+
+.project-card h4 {
+  font-family: var(--vn-font-body) !important;
+  font-size: 13px !important;
+  font-weight: 500 !important;
+  color: var(--vn-ink) !important;
+}
+
+/* Status badges dos projetos */
+.project-card select {
+  background: var(--vn-rose-light) !important;
+  color: var(--vn-rose) !important;
+  border: 0.5px solid var(--vn-rose-mid) !important;
+  border-radius: var(--vn-radius-pill) !important;
+  font-size: 10px !important;
+  font-weight: 500 !important;
+  padding: 4px 10px !important;
+}
+
+/* ── CONFIGURAÇÕES E PERFIL ──────────────────────────────────── */
+.preferences-card,
+.settings-card {
+  background: var(--vn-white) !important;
+  border: 0.5px solid var(--vn-border) !important;
+  border-radius: var(--vn-radius) !important;
+  box-shadow: none !important;
+}
+
+.accent-preset.is-active {
+  border: 2px solid var(--vn-rose) !important;
+  box-shadow: 0 0 0 3px var(--vn-rose-light) !important;
+}
+
+.app-color-swatch.is-active {
+  border: 2px solid var(--vn-rose) !important;
+}
+
+/* ── ADMIN ───────────────────────────────────────────────────── */
+.admin-shell-link.is-active {
+  background: var(--vn-rose-light) !important;
+  color: var(--vn-rose) !important;
+}
+
+.admin-badge.is-active {
+  background: var(--vn-rose) !important;
+  color: #fff !important;
+}
+
+/* ── FAB (botão flutuante) ───────────────────────────────────── */
+.agenda-fab,
+.fab-button {
+  background: var(--vn-rose) !important;
+  border-radius: 50% !important;
+  box-shadow: 0 4px 16px rgba(201,57,95,0.3) !important;
+  border: none !important;
+  color: #fff !important;
+}
+
+/* ── MOBILE NAV ──────────────────────────────────────────────── */
+.mobile-nav {
+  background: var(--vn-white) !important;
+  border-top: 0.5px solid var(--vn-border) !important;
+  box-shadow: none !important;
+}
+
+.mobile-nav a.is-active {
+  color: var(--vn-rose) !important;
+}
+
+/* ── NOTIFICAÇÕES E STATUS ───────────────────────────────────── */
+.topbar-status-pill {
+  font-family: var(--vn-font-body) !important;
+  font-size: 10px !important;
+  font-weight: 500 !important;
+  border-radius: var(--vn-radius-pill) !important;
+}
+
+.topbar-status-pill.is-active {
+  background: #eef7ee !important;
+  color: #3a7a3a !important;
+  border-color: #b8ddb8 !important;
+}
+
+.topbar-status-pill.is-pending {
+  background: var(--vn-rose-light) !important;
+  color: var(--vn-rose) !important;
+  border-color: var(--vn-rose-mid) !important;
+}
+
+/* ── TABELAS GERAIS ──────────────────────────────────────────── */
+table {
+  border-collapse: collapse !important;
+}
+
+th {
+  font-family: var(--vn-font-body) !important;
+  font-size: 9px !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.09em !important;
+  text-transform: uppercase !important;
+  color: var(--vn-ink-muted) !important;
+  padding: 10px 12px !important;
+  border-bottom: 0.5px solid var(--vn-border) !important;
+  background: var(--vn-rose-hover) !important;
+}
+
+td {
+  font-size: 12px !important;
+  color: var(--vn-ink-soft) !important;
+  padding: 9px 12px !important;
+  border-bottom: 0.5px solid #fdf0f4 !important;
+}
+
+tr:last-child td {
+  border-bottom: none !important;
+}
+
+tr:hover td {
+  background: var(--vn-rose-hover) !important;
+}
+
+/* ── SCROLLBAR PERSONALIZADA ─────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--vn-rose-mid);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--vn-rose);
+}
+
+/* ── RESPONSIVIDADE MOBILE ───────────────────────────────────── */
+@media (max-width: 768px) {
+  .verse-banner {
+    padding: 16px 18px !important;
+    border-radius: 14px !important;
+  }
+
+  .verse-banner-copy strong {
+    font-size: 15px !important;
+  }
+
+  .workspace-card {
+    border-radius: 14px !important;
+  }
+
+  .planner-tab,
+  .tab-buttons .ghost-button,
+  .corpo-tab,
+  .finance-tab,
+  .casa-tab {
+    font-size: 11px !important;
+    padding: 7px 14px !important;
+  }
+
+  .panel-heading h3,
+  .panel h3 {
+    font-size: 16px !important;
+  }
+
+  .primary-button,
+  .ghost-button {
+    min-height: 44px !important;
+    display: flex !important;
+    align-items: center !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .planner-tab-ribbon,
+  .tab-buttons {
+    gap: 4px !important;
+    padding: 0 0 12px !important;
+  }
+
+  .planner-tab,
+  .tab-buttons .ghost-button {
+    font-size: 10px !important;
+    padding: 6px 12px !important;
+  }
+
+  .verse-banner-copy strong {
+    font-size: 14px !important;
+  }
+}
+
+/* ── DARK MODE ───────────────────────────────────────────────── */
+body[data-theme="dark"] .panel,
+body[data-theme="dark"] .workspace-card,
+body[data-theme="dark"] .calendar-card,
+body[data-theme="dark"] .finance-card,
+body[data-theme="dark"] .project-card,
+body[data-theme="dark"] .preferences-card,
+body[data-theme="dark"] .module-card,
+body[data-theme="dark"] .week-block {
+  background: #221620 !important;
+  border-color: #3a2030 !important;
+}
+
+body[data-theme="dark"] .sidebar,
+body[data-theme="dark"] .app-topbar,
+body[data-theme="dark"] .mobile-nav {
+  background: #1a1218 !important;
+  border-color: #3a2030 !important;
+}
+
+body[data-theme="dark"] input[type="text"],
+body[data-theme="dark"] input[type="email"],
+body[data-theme="dark"] textarea,
+body[data-theme="dark"] select {
+  background: #2a1e26 !important;
+  border-color: #3a2030 !important;
+  color: #f5eef7 !important;
+}
+
+body[data-theme="dark"] .planner-tab:not(.is-active),
+body[data-theme="dark"] .tab-buttons .ghost-button:not(.is-active),
+body[data-theme="dark"] .corpo-tab:not(.is-active),
+body[data-theme="dark"] .finance-tab:not(.is-active) {
+  background: #2a1e26 !important;
+  border-color: #3a2030 !important;
+  color: #9a7a8a !important;
+}
+
+body[data-theme="dark"] th {
+  background: #2a1e26 !important;
+  border-color: #3a2030 !important;
+}
+
+body[data-theme="dark"] td {
+  border-color: #2a1e26 !important;
+}
+
+body[data-theme="dark"] tr:hover td {
+  background: #2a1e26 !important;
+}
+
+/* ── SELETOR DE COR DO BLOCO ─────────────────────────────────── */
+.block-color-swatch {
+  border-radius: 10px !important;
+  border: 2px solid transparent !important;
+  transition: transform 0.15s, border-color 0.15s !important;
+}
+
+.block-color-swatch:hover {
+  transform: scale(1.05) !important;
+}
+
+.block-color-swatch.is-active {
+  border-color: var(--vn-ink) !important;
+  transform: scale(1.08) !important;
+}
+
+/* ── ADMIN TABS ──────────────────────────────────────────────── */
+.admin-comm-tab.is-active {
+  background: var(--vn-rose) !important;
+  color: #fff !important;
+  border-color: var(--vn-rose) !important;
+  border-radius: var(--vn-radius-pill) !important;
+}
+
+/* ── INSTALL BANNER ──────────────────────────────────────────── */
+.install-banner {
+  background: var(--vn-rose-light) !important;
+  border: 0.5px solid var(--vn-rose-mid) !important;
+  border-radius: var(--vn-radius) !important;
+}
+
+/* ── COMMUNITY ───────────────────────────────────────────────── */
+.home-community-cta {
+  background: var(--vn-rose) !important;
+  border-radius: var(--vn-radius-pill) !important;
+  color: #fff !important;
+  font-family: var(--vn-font-body) !important;
+  font-size: 12px !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.05em !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.home-community-cta:hover {
+  background: var(--vn-rose-dark) !important;
+}
