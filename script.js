@@ -245,15 +245,6 @@ const financeGoalDisplay = document.querySelector("#finance-goal-display");
 const financeStatusDisplay = document.querySelector("#finance-status-display");
 const financeBalanceHero = document.querySelector("#finance-balance-hero");
 const financeCaption = document.querySelector("#finance-caption");
-
-// Preenche a data de hoje no card Dia a Dia | Agenda
-(function() {
-  const el = document.getElementById("agenda-card-date");
-  if (!el) return;
-  const now = new Date();
-  const months = ["janeiro","fevereiro","março","abril","maio","junho","julho","agosto","setembro","outubro","novembro","dezembro"];
-  el.textContent = `${now.getDate()} de ${months[now.getMonth()]} de ${now.getFullYear()}`;
-})();
 const financePanelBalance = document.querySelector("#finance-panel-balance");
 const financePanelCaption = document.querySelector("#finance-panel-caption");
 const calculatorDisplay = document.querySelector("#calculator-display");
@@ -8141,70 +8132,6 @@ window.addEventListener("beforeunload", flushSyncNow);
 document.addEventListener("visibilitychange", () => {
   if (document.visibilityState === "hidden") flushSyncNow();
 });
-
-// ── Community new UI ──────────────────────────────────────────────────────────
-(function initCommunityUI() {
-  const newPostBtn = document.getElementById("community-new-post-btn");
-  const composerWrap = document.getElementById("vn-composer-wrap");
-
-  if (newPostBtn && composerWrap) {
-    newPostBtn.addEventListener("click", () => {
-      composerWrap.hidden = !composerWrap.hidden;
-      if (!composerWrap.hidden) {
-        const ta = composerWrap.querySelector("#community-post-input");
-        if (ta) ta.focus();
-      }
-    });
-    const form = document.getElementById("community-post-form");
-    if (form) {
-      form.addEventListener("submit", () => {
-        setTimeout(() => { composerWrap.hidden = true; }, 1800);
-      });
-    }
-  }
-
-  const pillsContainer = document.getElementById("vn-filter-pills");
-  if (pillsContainer) {
-    pillsContainer.addEventListener("click", (e) => {
-      const pill = e.target.closest(".vn-pill");
-      if (!pill) return;
-      pillsContainer.querySelectorAll(".vn-pill").forEach((p) => {
-        p.classList.remove("is-active");
-        p.setAttribute("aria-selected", "false");
-      });
-      pill.classList.add("is-active");
-      pill.setAttribute("aria-selected", "true");
-      filterCommunityFeedPosts(pill.dataset.filter);
-    });
-  }
-
-  const searchInput = document.getElementById("community-search-input");
-  if (searchInput) {
-    searchInput.addEventListener("input", () => {
-      filterCommunityFeedPosts("search", searchInput.value);
-    });
-  }
-})();
-
-function filterCommunityFeedPosts(filter, query = "") {
-  const feed = document.getElementById("community-feed");
-  if (!feed) return;
-  const kw = {
-    oracao: ["oraç", "ore", "pedido", "deus", "senhor", "fé", "graça"],
-    vitorias: ["vitória", "consegui", "venci", "alcancei", "superando", "celebrando"],
-    duvidas: ["como ", "alguém", "alguma", "dúvida", "dica", "conselho", "aceito", "?"],
-  };
-  feed.querySelectorAll(".community-post-card").forEach((card) => {
-    const text = (card.querySelector(".community-post-text")?.textContent || "").toLowerCase();
-    let show = true;
-    if (filter === "search" && query) {
-      show = text.includes(query.toLowerCase());
-    } else if (filter !== "all" && filter !== "recentes" && kw[filter]) {
-      show = kw[filter].some((w) => text.includes(w));
-    }
-    card.style.display = show ? "" : "none";
-  });
-}
 
 bootApp().catch((error) => {
   console.error("Erro ao iniciar o app:", error);

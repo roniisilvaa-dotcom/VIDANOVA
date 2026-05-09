@@ -72,7 +72,7 @@ html {
 body {
   margin: 0;
   min-height: 100vh;
-  color: #ffffff;
+  color: var(--ink);
   font-family: "Avenir Next", "Segoe UI", "Trebuchet MS", sans-serif;
   background:
     radial-gradient(circle at top left, rgba(255, 201, 149, 0.45), transparent 24%),
@@ -261,7 +261,7 @@ body.subscription-locked .subscription-gate {
   border: 1px solid var(--line);
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.76);
-  color: #ffffff;
+  color: var(--ink);
   cursor: pointer;
   font: inherit;
 }
@@ -473,23 +473,9 @@ body.subscription-locked .subscription-gate {
 
 .verse-banner {
   margin-bottom: 18px;
-  background: #c9395f;
-  border: none !important;
-  border-radius: 16px !important;
-  position: relative;
-  overflow: hidden;
-}
-
-.verse-banner::before {
-  content: '"';
-  position: absolute;
-  right: 16px;
-  top: -12px;
-  font-family: 'Cormorant Garamond', Georgia, serif;
-  font-size: 120px;
-  color: rgba(255,255,255,0.07);
-  line-height: 1;
-  pointer-events: none;
+  background:
+    linear-gradient(130deg, rgba(255, 239, 231, 0.97), rgba(255, 255, 255, 0.85)),
+    linear-gradient(130deg, var(--peach), var(--rose));
 }
 
 .verse-banner-copy {
@@ -504,27 +490,26 @@ body.subscription-locked .subscription-gate {
   line-height: 1.18;
   font-style: italic;
   letter-spacing: 0.01em;
-  color: #ffffff;
+  color: var(--ink);
 }
 
 .verse-banner-copy small {
-  color: rgba(255,255,255,0.65);
-  font-weight: 600;
-  letter-spacing: 0.1em;
+  color: var(--berry);
+  font-weight: 700;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
-  font-size: 11px;
 }
 
 .verse-banner-copy strong::before {
   content: "“";
-  margin-right: 0.05em;
-  color: rgba(255,255,255,0.4);
+  margin-right: 0.1em;
+  color: var(--berry);
 }
 
 .verse-banner-copy strong::after {
   content: "”";
-  margin-left: 0.05em;
-  color: rgba(255,255,255,0.4);
+  margin-left: 0.08em;
+  color: var(--berry);
 }
 
 .install-banner {
@@ -932,7 +917,7 @@ body.subscription-locked .subscription-gate {
   border-radius: 18px;
   background: rgba(255, 255, 255, 0.94);
   box-shadow: var(--shadow);
-  color: #ffffff;
+  color: var(--ink);
   font: inherit;
   font-weight: 600;
   cursor: pointer;
@@ -974,7 +959,7 @@ body.subscription-locked .subscription-gate {
   border-radius: 14px;
   border: 1px solid var(--line);
   background: rgba(255, 255, 255, 0.88);
-  color: #ffffff;
+  color: var(--ink);
   font: inherit;
 }
 
@@ -1000,7 +985,7 @@ body.subscription-locked .subscription-gate {
   border-radius: 12px;
   border: 1px solid var(--line);
   background: rgba(255, 255, 255, 0.88);
-  color: #ffffff;
+  color: var(--ink);
 }
 
 .agenda-layout {
@@ -1163,7 +1148,7 @@ body.subscription-locked .subscription-gate {
   border: 1px solid transparent;
   border-radius: 10px;
   background: transparent;
-  color: #ffffff;
+  color: var(--ink);
   font: inherit;
   cursor: pointer;
 }
@@ -1246,7 +1231,7 @@ body.subscription-locked .subscription-gate {
   border: 1px solid transparent;
   border-radius: 10px;
   background: rgba(43, 34, 50, 0.06);
-  color: #ffffff;
+  color: var(--ink);
   font: inherit;
   cursor: pointer;
 }
@@ -1312,7 +1297,7 @@ body.subscription-locked .subscription-gate {
   border-radius: 20px;
   background: rgba(255, 255, 255, 0.82);
   text-align: left;
-  color: #ffffff;
+  color: var(--ink);
   cursor: pointer;
   font: inherit;
   transition: transform 140ms ease, box-shadow 140ms ease, border-color 140ms ease;
@@ -1367,7 +1352,7 @@ body.subscription-locked .subscription-gate {
   border: 1px solid var(--line);
   border-radius: 16px;
   background: rgba(255, 255, 255, 0.74);
-  color: #ffffff;
+  color: var(--ink);
   font: inherit;
   line-height: 1.6;
   resize: vertical;
@@ -1398,7 +1383,7 @@ body.subscription-locked .subscription-gate {
   font: inherit;
   font-size: 1.25rem;
   font-weight: 700;
-  color: #ffffff;
+  color: var(--ink);
   padding: 6px 0;
   outline: none;
   transition: border-color .18s;
@@ -1441,7 +1426,7 @@ body.subscription-locked .subscription-gate {
   padding: 8px 12px;
   font: inherit;
   font-size: .92rem;
-  color: #ffffff;
+  color: var(--ink);
   background: rgba(255, 255, 255, .85);
   outline: none;
   transition: border-color .18s;
@@ -1470,7 +1455,7 @@ body.subscription-locked .subscription-gate {
   padding: 8px 12px;
   font: inherit;
   font-size: .92rem;
-  color: #ffffff;
+  color: var(--ink);
   background: rgba(255, 255, 255, .85);
   outline: none;
   cursor: pointer;
@@ -1512,7 +1497,7 @@ body.subscription-locked .subscription-gate {
   padding: 10px 12px;
   font: inherit;
   font-size: .9rem;
-  color: #ffffff;
+  color: var(--ink);
   background: rgba(255, 255, 255, .7);
   resize: vertical;
   min-height: 70px;
@@ -1607,7 +1592,7 @@ body.subscription-locked .subscription-gate {
 .recurrence-dialog-title {
   font-size: 1.15rem;
   font-weight: 800;
-  color: #ffffff;
+  color: var(--ink);
   margin: 0;
 }
 
@@ -1621,7 +1606,7 @@ body.subscription-locked .subscription-gate {
 .recurrence-field-label {
   font-size: .9rem;
   font-weight: 600;
-  color: #ffffff;
+  color: var(--ink);
   min-width: 110px;
 }
 
@@ -1670,7 +1655,7 @@ body.subscription-locked .subscription-gate {
   font: inherit;
   font-size: .82rem;
   font-weight: 700;
-  color: #ffffff;
+  color: var(--ink);
   cursor: pointer;
   transition: background .15s, color .15s, border-color .15s;
 }
@@ -1694,7 +1679,7 @@ body.subscription-locked .subscription-gate {
   align-items: center;
   gap: 8px;
   font-size: .9rem;
-  color: #ffffff;
+  color: var(--ink);
   cursor: pointer;
 }
 .recurrence-end-opt input[type="radio"] { accent-color: var(--berry); }
@@ -1803,7 +1788,7 @@ body.subscription-locked .subscription-gate {
   border: 1px solid var(--line);
   border-radius: 18px;
   background: rgba(255, 255, 255, 0.86);
-  color: #ffffff;
+  color: var(--ink);
   cursor: pointer;
   font: inherit;
   text-align: center;
@@ -2011,7 +1996,7 @@ body.subscription-locked .subscription-gate {
   border: 1px solid var(--line);
   border-radius: 16px;
   background: rgba(255, 255, 255, 0.74);
-  color: #ffffff;
+  color: var(--ink);
   font: inherit;
   line-height: 1.6;
   resize: vertical;
@@ -2033,7 +2018,7 @@ body.subscription-locked .subscription-gate {
   border: none;
   border-radius: 14px 14px 0 0;
   background: rgba(255, 221, 141, 0.5);
-  color: #ffffff;
+  color: var(--ink);
   font: inherit;
   font-size: 0.8rem;
   font-weight: 700;
@@ -2326,7 +2311,7 @@ body.subscription-locked .subscription-gate {
 .mobile-install-card strong {
   display: block;
   margin-top: 6px;
-  color: #ffffff;
+  color: var(--ink);
   font-size: 1rem;
 }
 
@@ -2341,7 +2326,7 @@ body.subscription-locked .subscription-gate {
   border: 1px solid var(--line);
   border-radius: 16px;
   background: rgba(255, 255, 255, 0.82);
-  color: #ffffff;
+  color: var(--ink);
   font: inherit;
   cursor: pointer;
 }
@@ -2497,7 +2482,7 @@ body.subscription-locked .subscription-gate {
   border-radius: 16px;
   border: 1px solid var(--line);
   background: rgba(255, 255, 255, 0.82);
-  color: #ffffff;
+  color: var(--ink);
   font: inherit;
 }
 
@@ -2543,7 +2528,7 @@ body.subscription-locked .subscription-gate {
   border-radius: 16px;
   border: 1px solid var(--line);
   background: rgba(255, 255, 255, 0.84);
-  color: #ffffff;
+  color: var(--ink);
   font: inherit;
   cursor: pointer;
   text-align: left;
@@ -2673,7 +2658,7 @@ body.subscription-locked .subscription-gate {
   border-radius: 16px;
   border: 1px solid var(--line);
   background: rgba(247, 248, 252, 0.96);
-  color: #ffffff;
+  color: var(--ink);
   font: inherit;
 }
 
@@ -3106,7 +3091,7 @@ body.subscription-locked .subscription-gate {
   border: 1px solid var(--line);
   border-radius: 18px;
   background: rgba(255, 255, 255, 0.72);
-  color: #ffffff;
+  color: var(--ink);
   font: inherit;
   line-height: 1.6;
   resize: vertical;
@@ -3328,7 +3313,7 @@ body[data-theme="dark"] .editor-sheet,
 body[data-theme="dark"] .editor-form input,
 body[data-theme="dark"] .editor-form textarea {
   background: rgba(27, 22, 33, 0.88);
-  color: #ffffff;
+  color: var(--ink);
 }
 
 body[data-theme="dark"] .panel-highlight,
@@ -3425,7 +3410,7 @@ body[data-layout="magazine"] .module-grid .spiritual-card {
   border: 1px solid var(--line);
   border-radius: 16px;
   background: rgba(255, 255, 255, 0.82);
-  color: #ffffff;
+  color: var(--ink);
   font: inherit;
   resize: vertical;
 }
@@ -4097,7 +4082,7 @@ select {
   border: 1px solid var(--line);
   border-radius: 14px;
   background: rgba(255, 255, 255, 0.74);
-  color: #ffffff;
+  color: var(--ink);
   cursor: pointer;
   font: inherit;
 }
@@ -4915,7 +4900,7 @@ select {
   border: 1px solid var(--line);
   border-radius: 16px;
   background: rgba(255, 255, 255, 0.88);
-  color: #ffffff;
+  color: var(--ink);
   font: inherit;
 }
 
@@ -5611,7 +5596,7 @@ select {
   margin: 0 0 12px;
   font-size: 1rem;
   font-weight: 700;
-  color: #ffffff;
+  color: var(--ink);
 }
 
 .study-table-shell {
@@ -5702,7 +5687,7 @@ select {
 
 .home-table td:first-child {
   font-weight: 700;
-  color: #ffffff;
+  color: var(--ink);
 }
 
 .home-table input,
@@ -5713,7 +5698,7 @@ select {
   border: 1px solid rgba(89, 62, 87, 0.12);
   border-radius: 12px;
   background: rgba(255, 255, 255, 0.92);
-  color: #ffffff;
+  color: var(--ink);
   font: inherit;
 }
 
@@ -5758,7 +5743,7 @@ select {
   display: flex;
   align-items: center;
   gap: 10px;
-  color: #ffffff;
+  color: var(--ink);
   cursor: pointer;
   padding: 3px 0;
 }
@@ -7517,7 +7502,7 @@ select {
   border: 1.5px solid rgba(197, 91, 132, .25);
   border-radius: 30px;
   background: rgba(255, 255, 255, .7);
-  color: #ffffff;
+  color: var(--ink);
   font-size: .88rem;
   font-weight: 600;
   cursor: pointer;
@@ -7583,7 +7568,7 @@ select {
   min-height: 80px;
   border: none;
   background: transparent;
-  color: #ffffff;
+  color: var(--ink);
   font: inherit;
   font-size: .85rem;
   line-height: 1.5;
@@ -7625,7 +7610,7 @@ select {
 .limpeza-col-title {
   font-weight: 800;
   font-size: 1rem;
-  color: #ffffff;
+  color: var(--ink);
   padding: 14px 18px 8px;
   border-bottom: 1.5px solid rgba(197, 91, 132, .1);
 }
@@ -7646,7 +7631,7 @@ select {
   border-bottom: 1px solid rgba(197, 91, 132, .07);
   cursor: pointer;
   font-size: .9rem;
-  color: #ffffff;
+  color: var(--ink);
 }
 .limpeza-task:last-of-type { border-bottom: none; }
 .limpeza-task input[type=checkbox] { accent-color: var(--berry); width: 16px; height: 16px; flex-shrink: 0; }
@@ -7658,7 +7643,7 @@ select {
   border: none;
   border-bottom: 1.5px dashed rgba(197, 91, 132, .25);
   background: transparent;
-  color: #ffffff;
+  color: var(--ink);
   font: inherit;
   font-size: .85rem;
   padding: 6px 0;
@@ -7705,7 +7690,7 @@ select {
 .comodo-title {
   font-weight: 800;
   font-size: .95rem;
-  color: #ffffff;
+  color: var(--ink);
   margin-bottom: 6px;
 }
 
@@ -7715,7 +7700,7 @@ select {
   border: 1.5px solid rgba(197, 91, 132, .14);
   border-radius: 10px;
   background: rgba(252, 244, 247, .5);
-  color: #ffffff;
+  color: var(--ink);
   font: inherit;
   font-size: .82rem;
   padding: 8px 10px;
@@ -7762,7 +7747,7 @@ select {
   border: none;
   border-bottom: 2px solid rgba(197, 91, 132, .2);
   background: transparent;
-  color: #ffffff;
+  color: var(--ink);
   font: inherit;
   font-size: 1rem;
   font-weight: 700;
@@ -7791,7 +7776,7 @@ select {
   padding: 7px 10px;
   font: inherit;
   font-size: .88rem;
-  color: #ffffff;
+  color: var(--ink);
   background: rgba(252, 244, 247, .5);
   width: 100%;
 }
@@ -7865,7 +7850,7 @@ select {
   gap: 8px;
   margin-bottom: 20px;
   font-weight: 600;
-  color: #ffffff;
+  color: var(--ink);
 }
 .fin-saldo-banner strong { color: var(--rose); font-size: 1.1rem; }
 
@@ -7873,7 +7858,7 @@ select {
 .fin-section-title {
   font-size: .9rem;
   font-weight: 700;
-  color: #ffffff;
+  color: var(--ink);
   margin-bottom: 10px;
   padding-bottom: 6px;
   border-bottom: 2px solid var(--rose-soft);
@@ -7937,7 +7922,7 @@ select {
   width: 100%;
   min-width: 60px;
   font-size: .85rem;
-  color: #ffffff;
+  color: var(--ink);
   padding: 2px 0;
 }
 .fin-annual-table td input:focus,
@@ -8053,7 +8038,7 @@ select {
 .fin-desejo-col-title {
   font-size: .9rem;
   font-weight: 700;
-  color: #ffffff;
+  color: var(--ink);
   margin-bottom: 8px;
 }
 
@@ -8071,7 +8056,7 @@ select {
   padding: 16px;
   position: relative;
 }
-.fin-meta-card-title { font-weight: 700; font-size: .95rem; margin-bottom: 4px; color: #ffffff; }
+.fin-meta-card-title { font-weight: 700; font-size: .95rem; margin-bottom: 4px; color: var(--ink); }
 .fin-meta-card-valor { font-size: 1.15rem; font-weight: 900; color: var(--rose); margin-bottom: 4px; }
 .fin-meta-card-data { font-size: .78rem; color: var(--ink-muted, #888); margin-bottom: 10px; }
 .fin-meta-progress-bar { height: 8px; background: var(--border); border-radius: 4px; overflow: hidden; margin-bottom: 6px; }
@@ -8093,7 +8078,7 @@ select {
   display: flex; flex-direction: column; gap: 14px;
 }
 .fin-meta-modal-box h4 { font-size: 1.1rem; font-weight: 800; color: var(--rose); margin: 0; }
-.fin-meta-modal-box label { display: flex; flex-direction: column; gap: 4px; font-size: .85rem; font-weight: 600; color: #ffffff; }
+.fin-meta-modal-box label { display: flex; flex-direction: column; gap: 4px; font-size: .85rem; font-weight: 600; color: var(--ink); }
 .fin-meta-modal-box input[type=text],
 .fin-meta-modal-box input[type=date] { padding: 8px 12px; border: 1px solid var(--border); border-radius: 8px; font-size: .9rem; }
 .fin-meta-modal-box input[type=range] { width: 100%; }
@@ -8109,10 +8094,10 @@ select {
 .fin-color-variaveis { color: #8e44ad; }
 .fin-color-dividas  { color: #e74c3c; }
 .fin-balanco-card { background: var(--rose-soft); border-radius: 14px; padding: 16px; margin-top: 20px; }
-.fin-balanco-card h4 { font-size: .95rem; font-weight: 800; margin-bottom: 12px; color: #ffffff; }
+.fin-balanco-card h4 { font-size: .95rem; font-weight: 800; margin-bottom: 12px; color: var(--ink); }
 .fin-balanco-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 14px; }
 .fin-balanco-item { display: flex; flex-direction: column; gap: 4px; }
-.fin-balanco-item span { font-size: .75rem; font-weight: 600; color: #ffffff; opacity: .7; text-transform: uppercase; }
+.fin-balanco-item span { font-size: .75rem; font-weight: 600; color: var(--ink); opacity: .7; text-transform: uppercase; }
 .fin-balanco-item strong { font-size: 1rem; font-weight: 900; }
 .fin-balanco-total strong { font-size: 1.2rem; color: var(--rose); }
 .fin-mensal-notes { width: 100%; min-height: 80px; padding: 10px; border: 1px solid var(--border); border-radius: 8px; font-size: .88rem; resize: vertical; }
@@ -8190,7 +8175,7 @@ select {
   margin-bottom: 12px;
 }
 .travel-cat-icon { font-size: 1.3rem; }
-.travel-cat-header h4 { flex: 1; font-size: .95rem; font-weight: 700; color: #ffffff; margin: 0; }
+.travel-cat-header h4 { flex: 1; font-size: .95rem; font-weight: 700; color: var(--ink); margin: 0; }
 .travel-cat-total { font-size: .95rem; font-weight: 800; color: var(--rose); }
 
 /* Responsive */
@@ -8242,7 +8227,7 @@ select {
   border-bottom: 1px solid rgba(0,0,0,.1);
   padding: 3px 4px;
   font-size: .84rem;
-  color: #ffffff;
+  color: var(--ink);
   border-radius: 0;
 }
 .fin-annual-table td input:focus,
@@ -8295,7 +8280,7 @@ select {
 }
 .fin-cc-tab-edit {
   background: transparent;
-  color: #ffffff;
+  color: var(--ink);
   border-style: dashed;
   font-weight: 600;
 }
@@ -11596,7 +11581,7 @@ select {
   resize: none;
   font: inherit;
   font-size: 0.95rem;
-  color: #ffffff;
+  color: var(--ink);
   background: transparent;
   min-height: 64px;
   line-height: 1.55;
@@ -11713,7 +11698,7 @@ select {
   text-align: center;
   color: var(--muted);
 }
-.community-empty strong { display: block; color: #ffffff; margin-bottom: 6px; }
+.community-empty strong { display: block; color: var(--ink); margin-bottom: 6px; }
 
 /* Post card */
 .community-post-card {
@@ -11975,7 +11960,7 @@ select {
   padding: 7px 14px;
   font: inherit;
   font-size: 0.85rem;
-  color: #ffffff;
+  color: var(--ink);
   background: #fafafa;
   outline: none;
   transition: border-color 0.2s;
@@ -12024,7 +12009,7 @@ select {
   padding: 10px 14px;
   font: inherit;
   font-size: 0.92rem;
-  color: #ffffff;
+  color: var(--ink);
   background: #fafafa;
   outline: none;
 }
@@ -15167,7 +15152,7 @@ body:not(.agenda-tab-active) .workspace-card-cover::after {
   border: 0;
   outline: 0;
   background: transparent;
-  color: #ffffff;
+  color: var(--ink);
   font: inherit;
   font-size: 0.86rem;
   line-height: 1.45;
@@ -15218,7 +15203,7 @@ body:not(.agenda-tab-active) .workspace-card-cover::after {
 
 [data-page-view="casa"] :is(.comodo-title, .cômodo-title) {
   margin-bottom: 6px;
-  color: #ffffff;
+  color: var(--ink);
   font-size: 0.95rem;
   font-weight: 600;
 }
@@ -15232,7 +15217,7 @@ body:not(.agenda-tab-active) .workspace-card-cover::after {
   border: 1px solid rgba(197, 91, 132, 0.14);
   border-radius: 10px;
   background: rgba(252, 244, 247, 0.5);
-  color: #ffffff;
+  color: var(--ink);
   font: inherit;
   font-size: 0.82rem;
   resize: vertical;

@@ -33,7 +33,7 @@
     
     <!-- Security Headers -->
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://accounts.google.com https://cdn.jsdelivr.net https://fonts.googleapis.com; img-src 'self' data: blob: https://*.googleusercontent.com; font-src 'self' https://fonts.gstatic.com https://cdn.jsdelivr.net; manifest-src 'self'; connect-src 'self' https://firestore.googleapis.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://www.googleapis.com; frame-src https://accounts.google.com;" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://accounts.google.com; img-src 'self' data: blob: https://*.googleusercontent.com; font-src 'self'; manifest-src 'self'; connect-src 'self' https://firestore.googleapis.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://www.googleapis.com; frame-src https://accounts.google.com;" />
     
     <!-- Preload critical resources -->
     <link rel="preload" href="script.js" as="script" />
@@ -45,11 +45,8 @@
     
     <!-- Stylesheets -->
     <link rel="stylesheet" href="styles.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@300;400;500;600&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles_override.css" />
-  <link rel="stylesheet" href="styles_redesign.css" />
-  <link rel="stylesheet" href="styles_vidanova_new.css" />
   </head>
   <body>
     <div id="vn-splash" style="position:fixed;inset:0;z-index:9999;background:linear-gradient(135deg,#c55b84,#e8829a);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;transition:opacity .5s ease">
@@ -81,76 +78,43 @@
     </script>
     <div class="app-shell">
       <aside class="sidebar">
-        <div class="sidebar-logo">
-          <div class="logo-mark"><i class="ti ti-leaf" aria-hidden="true"></i></div>
-          <span class="logo-text">Vida Nova</span>
+        <div class="brand">
+          <div class="brand-mark">
+            <svg viewBox="0 0 64 64" aria-hidden="true">
+              <path d="M32 55V29" />
+              <path d="M32 29C18 24 13 13 16 6c10 1 18 9 16 23Z" />
+              <path d="M32 29C46 24 51 13 48 6c-10 1-18 9-16 23Z" />
+              <path d="M32 39C20 39 10 32 8 22c12-1 22 5 24 17Z" />
+              <path d="M32 39c12 0 22-7 24-17-12-1-22 5-24 17Z" />
+            </svg>
+          </div>
+          <div>
+            <h1>Vida Nova</h1>
+          </div>
         </div>
 
-        <nav class="sidebar-nav sidebar-nav-new">
-          <a href="#dashboard" data-page-link="dashboard" class="nav-item-new">
-            <i class="ti ti-home" aria-hidden="true"></i>
-            <span>Início</span>
-            <div class="nav-accent"></div>
+        <nav class="sidebar-nav">
+          <a href="#dashboard" data-page-link="dashboard">
+            <span class="sidebar-nav-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="m3 11 9-8 9 8v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1V11Z"/></svg>
+            </span>
+            Início
           </a>
-          <a href="#comunidade" data-page-link="comunidade" class="nav-item-new">
-            <i class="ti ti-users" aria-hidden="true"></i>
-            <span>Comunidade</span>
-            <div class="nav-accent"></div>
+          <a href="#comunidade" data-page-link="comunidade">
+            <span class="sidebar-nav-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2m7-10a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm13 10v-2a4 4 0 0 0-3-3.87m-3-12a4 4 0 0 1 0 7.75"/></svg>
+            </span>
+            Comunidade
           </a>
-          <a href="#configuracoes" data-page-link="configuracoes" class="nav-item-new">
-            <i class="ti ti-user" aria-hidden="true"></i>
-            <span>Perfil</span>
-            <div class="nav-accent"></div>
+          <a href="#configuracoes" data-page-link="configuracoes">
+            <span class="sidebar-nav-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>
+            </span>
+            Perfil
           </a>
-          <div style="margin-top:8px;padding:8px 12px 4px;">
-            <div style="font-size:9px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:#d4b8c4;">Módulos</div>
-          </div>
-          <a href="#planner" data-page-link="planner" class="nav-item-new">
-            <i class="ti ti-notebook" aria-hidden="true"></i>
-            <span>My Planner</span>
-            <div class="nav-accent"></div>
-          </a>
-          <a href="#financas" data-page-link="finanças" class="nav-item-new">
-            <i class="ti ti-coin" aria-hidden="true"></i>
-            <span>Finanças</span>
-            <div class="nav-accent"></div>
-          </a>
-          <a href="#corpo" data-page-link="corpo" class="nav-item-new">
-            <i class="ti ti-heart" aria-hidden="true"></i>
-            <span>Saúde & Corpo</span>
-            <div class="nav-accent"></div>
-          </a>
-          <a href="#estudos" data-page-link="estudos" class="nav-item-new">
-            <i class="ti ti-book" aria-hidden="true"></i>
-            <span>Estudos</span>
-            <div class="nav-accent"></div>
-          </a>
-          <a href="#imagem" data-page-link="imagem" class="nav-item-new">
-            <i class="ti ti-hanger" aria-hidden="true"></i>
-            <span>Imagem</span>
-            <div class="nav-accent"></div>
-          </a>
-          <a href="#casa" data-page-link="casa" class="nav-item-new">
-            <i class="ti ti-home-2" aria-hidden="true"></i>
-            <span>Lar</span>
-            <div class="nav-accent"></div>
-          </a>
-          <a href="#admin" data-page-link="admin" id="sidebar-admin-link" class="nav-item-new hidden">
-            <i class="ti ti-shield" aria-hidden="true"></i>
-            <span>Admin</span>
-            <div class="nav-accent"></div>
-          </a>
+          <a href="#admin" data-page-link="admin" id="sidebar-admin-link" class="hidden">Admin</a>
         </nav>
 
-        <div class="sidebar-footer-new">
-          <div class="sidebar-user-new">
-            <div class="user-avatar-new" id="sidebar-avatar">VN</div>
-            <div>
-              <div class="user-name-new" id="sidebar-user-name">Vida Nova</div>
-              <div class="user-status-new">Conta ativa</div>
-            </div>
-          </div>
-        </div>
       </aside>
 
       <main class="main-content">
@@ -327,8 +291,8 @@
                 </div>
                 <span class="workspace-card-badge">Meu planner</span>
               </div>
-              <strong>My Planner</strong>
-              <small>Abra e edite sua planner pessoal</small>
+              <strong>Meu Planner</strong>
+              <small>Organize seu dia</small>
             </button>
 
             <button class="workspace-card workspace-card-body" type="button" data-dashboard-open="corpo" data-cover-key="corpo">
@@ -340,8 +304,8 @@
                   </label>
                 </div>
               </div>
-              <strong>Saude | Beleza | Bem-estar</strong>
-              <small>Autocuidado e rituais</small>
+              <strong>Saúde</strong>
+              <small>Autocuidado</small>
             </button>
 
             <button class="workspace-card workspace-card-finance" type="button" data-dashboard-open="finanças" data-cover-key="finanças">
@@ -353,8 +317,8 @@
                   </label>
                 </div>
               </div>
-              <strong>Financas | Controle</strong>
-              <small id="finance-caption">Planejamento base: entradas R$ 0,00 | saidas R$ 0,00</small>
+              <strong>Finanças</strong>
+              <small id="finance-caption">Controle financeiro</small>
             </button>
 
             <button class="workspace-card workspace-card-study" type="button" data-dashboard-open="estudos" data-cover-key="estudos">
@@ -366,8 +330,8 @@
                   </label>
                 </div>
               </div>
-              <strong>Estudos | Projetos</strong>
-              <small>Livros, cursos e projetos</small>
+              <strong>Estudos</strong>
+              <small>Cursos e projetos</small>
             </button>
 
             <button class="workspace-card workspace-card-home" type="button" data-dashboard-open="casa" data-cover-key="casa">
@@ -379,8 +343,8 @@
                   </label>
                 </div>
               </div>
-              <strong>Alimentacao | Mercado | Lar</strong>
-              <small>Casa, refeicoes e reparos</small>
+              <strong>Casa</strong>
+              <small>Meu lar, meu refúgio</small>
             </button>
 
             <button class="workspace-card workspace-card-dreams" type="button" data-dashboard-open="planner" data-planner-open="planner-dreams" data-cover-key="sonhos">
@@ -392,8 +356,8 @@
                   </label>
                 </div>
               </div>
-              <strong>Sonhos e Metas</strong>
-              <small>Metas por prazo e mural dos sonhos</small>
+              <strong>Sonhos</strong>
+              <small>Planos e objetivos</small>
             </button>
 
             <button class="workspace-card workspace-card-image" type="button" data-dashboard-open="imagem" data-cover-key="imagem">
@@ -405,21 +369,21 @@
                   </label>
                 </div>
               </div>
-              <strong>Imagem | Estilo</strong>
-              <small>Guarda-roupa e composicao visual</small>
+              <strong>Autocuidado</strong>
+              <small>Você em primeiro lugar</small>
             </button>
 
-            <button class="workspace-card workspace-card-travel" type="button" data-dashboard-open="corpo" data-cover-key="ciclo">
+            <button class="workspace-card workspace-card-travel" type="button" data-dashboard-open="estudos" data-cover-key="estudos">
               <div class="workspace-card-cover">
                 <div class="workspace-card-tools">
                   <label class="workspace-cover-upload">
-                    <input type="file" accept="image/*" data-cover-upload="ciclo" />
+                    <input type="file" accept="image/*" data-cover-upload="estudos" />
                     Trocar capa
                   </label>
                 </div>
               </div>
-              <strong>Ciclo Menstrual</strong>
-              <small>Calendário e fases do ciclo</small>
+              <strong>Projetos</strong>
+              <small>Ideias em ação</small>
             </button>
 
             <button class="workspace-card workspace-card-spiritual" type="button" data-dashboard-open="espiritual" data-cover-key="espiritual">
@@ -525,91 +489,93 @@
             </div>
 
             <section class="tab-panel planner-tab-panel is-active" data-tab-panel="planner-weekly">
-              <div class="module-hero">
-                <div class="hero-deco">"</div>
-                <div class="hero-icon"><i class="ti ti-layout-board" aria-hidden="true"></i></div>
-                <div>
-                  <div class="hero-eye">Planejamento semanal</div>
-                  <div class="hero-title">Quais serão as prioridades de cada semana?</div>
+              <div class="planner-hero-banner">
+                <div class="planner-hero-copy">
+                  <span class="planner-hero-icon">📘</span>
+                  <div>
+                    <p class="eyebrow">Planejamento semanal</p>
+                    <h2>Quais serao as prioridades de cada semana?</h2>
+                  </div>
                 </div>
               </div>
 
-              <div class="reflection-grid-planner">
-                <div class="reflection-card">
-                  <div class="ref-header">
-                    <div class="ref-icon rose"><i class="ti ti-flag" aria-hidden="true"></i></div>
-                    <span class="ref-label-text">Foco do mês</span>
+              <div class="planner-top-grid">
+                <article class="planner-spotlight-card planner-focus-card">
+                  <div class="planner-card-header planner-card-header-coral">
+                    <span>📌</span>
+                    <strong>Foco do mes</strong>
                   </div>
-                  <textarea class="ref-textarea summary-input planner-input planner-focus-input" data-persist-key="planner-month-focus" placeholder="Escreva os focos principais deste mês..."></textarea>
-                </div>
-                <div class="reflection-card">
-                  <div class="ref-header">
-                    <div class="ref-icon amber"><i class="ti ti-check" aria-hidden="true"></i></div>
-                    <span class="ref-label-text">O que eu consegui fazer?</span>
+                  <textarea
+                    class="summary-input planner-input planner-focus-input"
+                    data-persist-key="planner-month-focus"
+                    placeholder="Escreva os focos principais deste mes."
+                  ></textarea>
+                </article>
+
+                <article class="planner-spotlight-card planner-focus-card">
+                  <div class="planner-card-header planner-card-header-cream">
+                    <span>🌼</span>
+                    <strong>O que eu consegui fazer?</strong>
                   </div>
-                  <textarea class="ref-textarea summary-input planner-input planner-focus-input" data-persist-key="planner-wins" placeholder="Registre avanços, constância, pequenas vitórias..."></textarea>
-                </div>
-                <div class="reflection-card">
-                  <div class="ref-header">
-                    <div class="ref-icon sage"><i class="ti ti-refresh" aria-hidden="true"></i></div>
-                    <span class="ref-label-text">O que vou melhorar ou adiar?</span>
+                  <textarea class="summary-input planner-input planner-focus-input" data-persist-key="planner-wins" placeholder="Registre avancos, constancia, pequenas vitorias e pontos que te orgulham."></textarea>
+                </article>
+
+                <article class="planner-spotlight-card planner-focus-card">
+                  <div class="planner-card-header planner-card-header-cream">
+                    <span>💭</span>
+                    <strong>O que vou precisar melhorar ou adiar?</strong>
                   </div>
-                  <textarea class="ref-textarea summary-input planner-input planner-focus-input" data-persist-key="planner-adjustments" placeholder="Liste o que precisa melhorar ou reorganizar..."></textarea>
-                </div>
+                  <textarea class="summary-input planner-input planner-focus-input" data-persist-key="planner-adjustments" placeholder="Liste o que precisa melhorar, simplificar, reorganizar ou deixar para depois."></textarea>
+                </article>
               </div>
 
-              <div class="weeks-grid">
-                <article class="week-card">
-                  <div class="week-header">
-                    <span class="week-title">Semana 1</span>
-                    <div class="week-icon"><i class="ti ti-pencil" aria-hidden="true"></i></div>
+              <div class="planner-week-grid">
+                <article class="planner-week-card">
+                  <div class="planner-card-header planner-card-header-peach">
+                    <strong>Semana 1</strong>
+                    <span>🗒️</span>
                   </div>
-                  <div class="week-body">
-                    <form class="planner-task-form week-input-row" data-planner-board="week-1">
-                      <input class="week-input planner-task-input" type="text" placeholder="Adicionar tarefa..." />
-                      <button type="submit" class="week-add-btn">+ Add</button>
-                    </form>
-                    <ul class="planner-task-list" data-planner-list="week-1"></ul>
-                  </div>
+                  <form class="planner-task-form" data-planner-board="week-1">
+                    <input class="planner-task-input" type="text" placeholder="Adicionar tarefa da semana 1" />
+                    <button type="submit" class="ghost-button">Adicionar</button>
+                  </form>
+                  <ul class="planner-task-list" data-planner-list="week-1"></ul>
                 </article>
-                <article class="week-card">
-                  <div class="week-header">
-                    <span class="week-title">Semana 2</span>
-                    <div class="week-icon"><i class="ti ti-pencil" aria-hidden="true"></i></div>
+
+                <article class="planner-week-card">
+                  <div class="planner-card-header planner-card-header-peach">
+                    <strong>Semana 2</strong>
+                    <span>🗒️</span>
                   </div>
-                  <div class="week-body">
-                    <form class="planner-task-form week-input-row" data-planner-board="week-2">
-                      <input class="week-input planner-task-input" type="text" placeholder="Adicionar tarefa..." />
-                      <button type="submit" class="week-add-btn">+ Add</button>
-                    </form>
-                    <ul class="planner-task-list" data-planner-list="week-2"></ul>
-                  </div>
+                  <form class="planner-task-form" data-planner-board="week-2">
+                    <input class="planner-task-input" type="text" placeholder="Adicionar tarefa da semana 2" />
+                    <button type="submit" class="ghost-button">Adicionar</button>
+                  </form>
+                  <ul class="planner-task-list" data-planner-list="week-2"></ul>
                 </article>
-                <article class="week-card">
-                  <div class="week-header">
-                    <span class="week-title">Semana 3</span>
-                    <div class="week-icon"><i class="ti ti-pencil" aria-hidden="true"></i></div>
+
+                <article class="planner-week-card">
+                  <div class="planner-card-header planner-card-header-peach">
+                    <strong>Semana 3</strong>
+                    <span>🗒️</span>
                   </div>
-                  <div class="week-body">
-                    <form class="planner-task-form week-input-row" data-planner-board="week-3">
-                      <input class="week-input planner-task-input" type="text" placeholder="Adicionar tarefa..." />
-                      <button type="submit" class="week-add-btn">+ Add</button>
-                    </form>
-                    <ul class="planner-task-list" data-planner-list="week-3"></ul>
-                  </div>
+                  <form class="planner-task-form" data-planner-board="week-3">
+                    <input class="planner-task-input" type="text" placeholder="Adicionar tarefa da semana 3" />
+                    <button type="submit" class="ghost-button">Adicionar</button>
+                  </form>
+                  <ul class="planner-task-list" data-planner-list="week-3"></ul>
                 </article>
-                <article class="week-card">
-                  <div class="week-header">
-                    <span class="week-title">Semana 4</span>
-                    <div class="week-icon"><i class="ti ti-pencil" aria-hidden="true"></i></div>
+
+                <article class="planner-week-card">
+                  <div class="planner-card-header planner-card-header-peach">
+                    <strong>Semana 4</strong>
+                    <span>🗒️</span>
                   </div>
-                  <div class="week-body">
-                    <form class="planner-task-form week-input-row" data-planner-board="week-4">
-                      <input class="week-input planner-task-input" type="text" placeholder="Adicionar tarefa..." />
-                      <button type="submit" class="week-add-btn">+ Add</button>
-                    </form>
-                    <ul class="planner-task-list" data-planner-list="week-4"></ul>
-                  </div>
+                  <form class="planner-task-form" data-planner-board="week-4">
+                    <input class="planner-task-input" type="text" placeholder="Adicionar tarefa da semana 4" />
+                    <button type="submit" class="ghost-button">Adicionar</button>
+                  </form>
+                  <ul class="planner-task-list" data-planner-list="week-4"></ul>
                 </article>
               </div>
             </section>
@@ -745,127 +711,34 @@
             </section>
 
             <section class="tab-panel planner-tab-panel" data-tab-panel="planner-dreams">
-              <div class="module-hero" style="margin-bottom:20px;">
-                <div class="hero-deco">✦</div>
-                <div class="hero-icon"><i class="ti ti-star" aria-hidden="true"></i></div>
-                <div>
-                  <div class="hero-eye">Sonhos & Metas</div>
-                  <div class="hero-title">Construindo a vida que você merece</div>
+              <article class="planner-summary-band planner-dreams-panel">
+                <div class="planner-card-header planner-card-header-green">
+                  <span>✨</span>
+                  <strong>Mural dos sonhos</strong>
                 </div>
-              </div>
+                <div class="dream-vision-shell planner-dream-vision-shell">
+                  <div class="planner-dream-board-copy">
+                    <strong>Meu quadro dos sonhos</strong>
+                    <p class="planner-dream-tip">Escolha imagens maiores do seu dispositivo e monte um mosaico com 10 objetivos visuais.</p>
+                  </div>
+                  <div id="planner-dream-board-grid" class="planner-dream-board-grid"></div>
+                </div>
+              </article>
 
-              <div class="sec-title">Mural de visão</div>
-              <div class="mural-intro">
-                <div class="mural-intro-icon"><i class="ti ti-sparkles" aria-hidden="true"></i></div>
-                <div>
-                  <div class="mural-intro-title">Seu quadro dos sonhos</div>
-                  <div class="mural-intro-text">Adicione imagens que representam seus objetivos de vida. Veja este mural todos os dias para manter o foco no que realmente importa.</div>
+              <article class="planner-summary-band planner-goals-panel">
+                <div class="planner-card-header planner-card-header-lilac">
+                  <span>🎯</span>
+                  <strong>Planejamento por prazo</strong>
                 </div>
-              </div>
-              <div id="planner-dream-board-grid" class="planner-dream-board-grid mural-grid"></div>
-
-              <div class="sec-title" style="margin-top:32px;">Metas por prazo</div>
-              <div class="prazo-grid">
-                <div class="prazo-card">
-                  <div class="prazo-header">
-                    <span class="prazo-badge m3">3 meses</span>
-                    <span class="prazo-title">Curto prazo</span>
-                  </div>
-                  <div class="prazo-body">
-                    <textarea class="prazo-textarea summary-input compact-area" data-persist-key="goal-3m" placeholder="Escreva sua meta para os próximos 3 meses..."></textarea>
-                    <div class="prazo-progress">
-                      <div class="prazo-progress-label"><span>Progresso</span><span>0%</span></div>
-                      <div class="prazo-bar-wrap"><div class="prazo-bar" style="width:0%"></div></div>
-                    </div>
+                <div class="planner-goals-shell">
+                  <div class="goal-horizon-grid planner-goal-horizon-grid">
+                    <article class="detail-card planner-goal-card"><span class="metric-label">Meta para 3 meses</span><textarea class="summary-input compact-area" data-persist-key="goal-3m"></textarea></article>
+                    <article class="detail-card planner-goal-card"><span class="metric-label">Meta para 6 meses</span><textarea class="summary-input compact-area" data-persist-key="goal-6m"></textarea></article>
+                    <article class="detail-card planner-goal-card"><span class="metric-label">Meta para 1 ano</span><textarea class="summary-input compact-area" data-persist-key="goal-1y"></textarea></article>
+                    <article class="detail-card planner-goal-card"><span class="metric-label">Meta para 2 anos</span><textarea class="summary-input compact-area" data-persist-key="goal-2y"></textarea></article>
                   </div>
                 </div>
-                <div class="prazo-card">
-                  <div class="prazo-header">
-                    <span class="prazo-badge m6">6 meses</span>
-                    <span class="prazo-title">Médio prazo</span>
-                  </div>
-                  <div class="prazo-body">
-                    <textarea class="prazo-textarea summary-input compact-area" data-persist-key="goal-6m" placeholder="Escreva sua meta para os próximos 6 meses..."></textarea>
-                    <div class="prazo-progress">
-                      <div class="prazo-progress-label"><span>Progresso</span><span>0%</span></div>
-                      <div class="prazo-bar-wrap"><div class="prazo-bar amber" style="width:0%"></div></div>
-                    </div>
-                  </div>
-                </div>
-                <div class="prazo-card">
-                  <div class="prazo-header">
-                    <span class="prazo-badge y1">1 ano</span>
-                    <span class="prazo-title">Longo prazo</span>
-                  </div>
-                  <div class="prazo-body">
-                    <textarea class="prazo-textarea summary-input compact-area" data-persist-key="goal-1y" placeholder="Escreva sua meta para 1 ano..."></textarea>
-                    <div class="prazo-progress">
-                      <div class="prazo-progress-label"><span>Progresso</span><span>0%</span></div>
-                      <div class="prazo-bar-wrap"><div class="prazo-bar blue" style="width:0%"></div></div>
-                    </div>
-                  </div>
-                </div>
-                <div class="prazo-card">
-                  <div class="prazo-header">
-                    <span class="prazo-badge y2">2 anos</span>
-                    <span class="prazo-title">Visão futura</span>
-                  </div>
-                  <div class="prazo-body">
-                    <textarea class="prazo-textarea summary-input compact-area" data-persist-key="goal-2y" placeholder="Escreva sua meta para 2 anos..."></textarea>
-                    <div class="prazo-progress">
-                      <div class="prazo-progress-label"><span>Progresso</span><span>0%</span></div>
-                      <div class="prazo-bar-wrap"><div class="prazo-bar purple" style="width:0%"></div></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="sec-title">Afirmações positivas</div>
-              <div class="afirmacoes-card">
-                <div class="afirmacoes-header">
-                  <i class="ti ti-sparkles" aria-hidden="true"></i>
-                  <span>Minhas afirmações diárias</span>
-                </div>
-                <div class="afirmacoes-list">
-                  <div class="afirmacao-item"><div class="afirmacao-num">1</div><input class="afirmacao-input" type="text" data-persist-key="afirmacao-1" placeholder="Eu sou capaz e merecedora de tudo que desejo..." /></div>
-                  <div class="afirmacao-item"><div class="afirmacao-num">2</div><input class="afirmacao-input" type="text" data-persist-key="afirmacao-2" placeholder="Eu escolho a gratidão e a alegria todos os dias..." /></div>
-                  <div class="afirmacao-item"><div class="afirmacao-num">3</div><input class="afirmacao-input" type="text" data-persist-key="afirmacao-3" placeholder="Escreva sua afirmação..." /></div>
-                  <div class="afirmacao-item"><div class="afirmacao-num">4</div><input class="afirmacao-input" type="text" data-persist-key="afirmacao-4" placeholder="Escreva sua afirmação..." /></div>
-                  <div class="afirmacao-item"><div class="afirmacao-num">5</div><input class="afirmacao-input" type="text" data-persist-key="afirmacao-5" placeholder="Escreva sua afirmação..." /></div>
-                </div>
-              </div>
-
-              <div class="sec-title">Gratidão</div>
-              <div class="gratidao-grid">
-                <div class="gratidao-card">
-                  <div class="gratidao-label">
-                    <div class="grat-icon rose"><i class="ti ti-heart" aria-hidden="true"></i></div>
-                    <span class="gratidao-title">Sou grata por...</span>
-                  </div>
-                  <textarea class="grat-textarea" data-persist-key="gratidao-1" placeholder="Liste o que você é grata nesta semana..."></textarea>
-                </div>
-                <div class="gratidao-card">
-                  <div class="gratidao-label">
-                    <div class="grat-icon amber"><i class="ti ti-sun" aria-hidden="true"></i></div>
-                    <span class="gratidao-title">Minha maior conquista foi...</span>
-                  </div>
-                  <textarea class="grat-textarea" data-persist-key="gratidao-2" placeholder="Celebre suas conquistas desta semana..."></textarea>
-                </div>
-                <div class="gratidao-card">
-                  <div class="gratidao-label">
-                    <div class="grat-icon sage"><i class="ti ti-leaf" aria-hidden="true"></i></div>
-                    <span class="gratidao-title">O que aprendi...</span>
-                  </div>
-                  <textarea class="grat-textarea" data-persist-key="gratidao-3" placeholder="O que esta semana te ensinou..."></textarea>
-                </div>
-                <div class="gratidao-card">
-                  <div class="gratidao-label">
-                    <div class="grat-icon blue"><i class="ti ti-star" aria-hidden="true"></i></div>
-                    <span class="gratidao-title">Vou me cuidar fazendo...</span>
-                  </div>
-                  <textarea class="grat-textarea" data-persist-key="gratidao-4" placeholder="Como vai se cuidar esta semana..."></textarea>
-                </div>
-              </div>
+              </article>
             </section>
           </div>
         </section>
@@ -875,173 +748,79 @@
           <div class="page-return-bar">
             <button class="ghost-button page-return-button" type="button" data-go-home>← Voltar</button>
           </div>
-          <div class="module-content">
-            <div class="module-hero">
-              <div class="hero-deco">✦</div>
-              <div class="hero-icon"><i class="ti ti-book" aria-hidden="true"></i></div>
-              <div>
-                <div class="hero-eye">Estudos & Projetos</div>
-                <div class="hero-title">Livros, cursos e seus projetos</div>
-              </div>
+          <article class="panel module-card">
+            <div class="panel-heading"><div><p class="eyebrow">Estudos</p><h3>Livros e cursos</h3></div></div>
+            <div class="study-books-grid">
+              <section class="agenda-events-card study-books-card">
+                <h4 class="study-section-title">Livros</h4>
+                <div class="home-table-shell study-table-shell">
+                  <table class="home-table study-books-table">
+                    <thead><tr><th>Livro</th><th>Autor</th><th>Inicio</th><th>Fim</th><th>Páginas</th><th>Progresso %</th><th>Status</th><th>Observações</th></tr></thead>
+                    <tbody>
+                      <tr><td><input data-persist-key="book-1-title" placeholder="Título" /></td><td><input data-persist-key="book-1-author" placeholder="Autor" /></td><td><input type="date" data-persist-key="book-1-start" /></td><td><input type="date" data-persist-key="book-1-end" /></td><td><input type="number" data-persist-key="book-1-pages" /></td><td><input type="number" min="0" max="100" data-persist-key="book-1-progress" /></td><td><input data-persist-key="book-1-status" placeholder="lendo..." /></td><td><input data-persist-key="book-1-notes" /></td></tr>
+                      <tr><td><input data-persist-key="book-2-title" /></td><td><input data-persist-key="book-2-author" /></td><td><input type="date" data-persist-key="book-2-start" /></td><td><input type="date" data-persist-key="book-2-end" /></td><td><input type="number" data-persist-key="book-2-pages" /></td><td><input type="number" min="0" max="100" data-persist-key="book-2-progress" /></td><td><input data-persist-key="book-2-status" /></td><td><input data-persist-key="book-2-notes" /></td></tr>
+                      <tr><td><input data-persist-key="book-3-title" /></td><td><input data-persist-key="book-3-author" /></td><td><input type="date" data-persist-key="book-3-start" /></td><td><input type="date" data-persist-key="book-3-end" /></td><td><input type="number" data-persist-key="book-3-pages" /></td><td><input type="number" min="0" max="100" data-persist-key="book-3-progress" /></td><td><input data-persist-key="book-3-status" /></td><td><input data-persist-key="book-3-notes" /></td></tr>
+                      <tr><td><input data-persist-key="book-4-title" /></td><td><input data-persist-key="book-4-author" /></td><td><input type="date" data-persist-key="book-4-start" /></td><td><input type="date" data-persist-key="book-4-end" /></td><td><input type="number" data-persist-key="book-4-pages" /></td><td><input type="number" min="0" max="100" data-persist-key="book-4-progress" /></td><td><input data-persist-key="book-4-status" /></td><td><input data-persist-key="book-4-notes" /></td></tr>
+                      <tr><td><input data-persist-key="book-5-title" /></td><td><input data-persist-key="book-5-author" /></td><td><input type="date" data-persist-key="book-5-start" /></td><td><input type="date" data-persist-key="book-5-end" /></td><td><input type="number" data-persist-key="book-5-pages" /></td><td><input type="number" min="0" max="100" data-persist-key="book-5-progress" /></td><td><input data-persist-key="book-5-status" /></td><td><input data-persist-key="book-5-notes" /></td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </section>
+              <section class="agenda-events-card study-cursos-card">
+                <h4 class="study-section-title">Cursos</h4>
+                <div class="cursos-grid">
+                  <div class="cursos-card cursos-card-fazendo">
+                    <div class="cursos-card-header">🎓 Cursos que estou fazendo</div>
+                    <div class="cursos-item"><span class="cursos-item-icon">📄</span><input type="text" data-persist-key="curso-f-1" placeholder="Nome do curso" /></div>
+                    <div class="cursos-item"><span class="cursos-item-icon">📄</span><input type="text" data-persist-key="curso-f-2" placeholder="Nome do curso" /></div>
+                    <div class="cursos-item"><span class="cursos-item-icon">📄</span><input type="text" data-persist-key="curso-f-3" placeholder="Nome do curso" /></div>
+                    <div class="cursos-item"><span class="cursos-item-icon">📄</span><input type="text" data-persist-key="curso-f-4" placeholder="Nome do curso" /></div>
+                    <div class="cursos-item"><span class="cursos-item-icon">📄</span><input type="text" data-persist-key="curso-f-5" placeholder="Nome do curso" /></div>
+                    <div class="cursos-item"><span class="cursos-item-icon">📄</span><input type="text" data-persist-key="curso-f-6" placeholder="Nome do curso" /></div>
+                    <div class="cursos-item"><span class="cursos-item-icon">📄</span><input type="text" data-persist-key="curso-f-7" placeholder="Nome do curso" /></div>
+                  </div>
+                  <div class="cursos-card cursos-card-desejo">
+                    <div class="cursos-card-header">🎯 Cursos que desejo fazer</div>
+                    <div class="cursos-item"><span class="cursos-item-icon">🔗</span><input type="text" data-persist-key="curso-d-1" placeholder="Nome ou link do curso" /></div>
+                    <div class="cursos-item"><span class="cursos-item-icon">🔗</span><input type="text" data-persist-key="curso-d-2" placeholder="Nome ou link do curso" /></div>
+                    <div class="cursos-item"><span class="cursos-item-icon">🔗</span><input type="text" data-persist-key="curso-d-3" placeholder="Nome ou link do curso" /></div>
+                    <div class="cursos-item"><span class="cursos-item-icon">🔗</span><input type="text" data-persist-key="curso-d-4" placeholder="Nome ou link do curso" /></div>
+                    <div class="cursos-item"><span class="cursos-item-icon">🔗</span><input type="text" data-persist-key="curso-d-5" placeholder="Nome ou link do curso" /></div>
+                    <div class="cursos-item"><span class="cursos-item-icon">🔗</span><input type="text" data-persist-key="curso-d-6" placeholder="Nome ou link do curso" /></div>
+                    <div class="cursos-item"><span class="cursos-item-icon">🔗</span><input type="text" data-persist-key="curso-d-7" placeholder="Nome ou link do curso" /></div>
+                  </div>
+                </div>
+              </section>
+            </div><!-- /study-books-grid -->
+            <div class="postit-grid">
+              <article class="agenda-summary-card"><h4>Habilidades que quero desenvolver</h4><textarea class="summary-input compact-area" data-persist-key="skills-develop"></textarea></article>
+              <article class="agenda-summary-card"><h4>O que eu faco muito bem</h4><textarea class="summary-input compact-area" data-persist-key="skills-good"></textarea></article>
+              <article class="agenda-summary-card"><h4>O que eu preciso melhorar</h4><textarea class="summary-input compact-area" data-persist-key="skills-improve"></textarea></article>
+              <article class="agenda-summary-card"><h4>Quais sao os meus valores</h4><textarea class="summary-input compact-area" data-persist-key="values"></textarea></article>
+              <article class="agenda-events-card full"><h4>O que eu faco hoje que me afasta da vida que eu quero ter</h4><textarea class="summary-input compact-area" data-persist-key="habits-away"></textarea></article>
             </div>
-
-            <div class="section-title">Livros</div>
-            <div class="books-card">
-              <div class="books-header">
-                <div class="books-header-left">
-                  <i class="ti ti-books" aria-hidden="true"></i>
-                  <span>Minha estante de leitura</span>
-                </div>
-              </div>
-              <div style="overflow-x:auto;">
-                <table class="books-table study-books-table">
-                  <thead><tr><th>Livro</th><th>Autor</th><th>Início</th><th>Fim</th><th>Páginas</th><th>Progresso %</th><th>Status</th><th>Observações</th></tr></thead>
-                  <tbody>
-                    <tr><td><input class="bt-input" data-persist-key="book-1-title" placeholder="Título" /></td><td><input class="bt-input" data-persist-key="book-1-author" placeholder="Autor" /></td><td><input class="bt-input" type="date" data-persist-key="book-1-start" /></td><td><input class="bt-input" type="date" data-persist-key="book-1-end" /></td><td><input class="bt-input" type="number" data-persist-key="book-1-pages" /></td><td><input class="bt-input" type="number" min="0" max="100" data-persist-key="book-1-progress" /></td><td><input class="bt-input" data-persist-key="book-1-status" placeholder="lendo..." /></td><td><input class="bt-input" data-persist-key="book-1-notes" /></td></tr>
-                    <tr><td><input class="bt-input" data-persist-key="book-2-title" /></td><td><input class="bt-input" data-persist-key="book-2-author" /></td><td><input class="bt-input" type="date" data-persist-key="book-2-start" /></td><td><input class="bt-input" type="date" data-persist-key="book-2-end" /></td><td><input class="bt-input" type="number" data-persist-key="book-2-pages" /></td><td><input class="bt-input" type="number" min="0" max="100" data-persist-key="book-2-progress" /></td><td><input class="bt-input" data-persist-key="book-2-status" /></td><td><input class="bt-input" data-persist-key="book-2-notes" /></td></tr>
-                    <tr><td><input class="bt-input" data-persist-key="book-3-title" /></td><td><input class="bt-input" data-persist-key="book-3-author" /></td><td><input class="bt-input" type="date" data-persist-key="book-3-start" /></td><td><input class="bt-input" type="date" data-persist-key="book-3-end" /></td><td><input class="bt-input" type="number" data-persist-key="book-3-pages" /></td><td><input class="bt-input" type="number" min="0" max="100" data-persist-key="book-3-progress" /></td><td><input class="bt-input" data-persist-key="book-3-status" /></td><td><input class="bt-input" data-persist-key="book-3-notes" /></td></tr>
-                    <tr><td><input class="bt-input" data-persist-key="book-4-title" /></td><td><input class="bt-input" data-persist-key="book-4-author" /></td><td><input class="bt-input" type="date" data-persist-key="book-4-start" /></td><td><input class="bt-input" type="date" data-persist-key="book-4-end" /></td><td><input class="bt-input" type="number" data-persist-key="book-4-pages" /></td><td><input class="bt-input" type="number" min="0" max="100" data-persist-key="book-4-progress" /></td><td><input class="bt-input" data-persist-key="book-4-status" /></td><td><input class="bt-input" data-persist-key="book-4-notes" /></td></tr>
-                    <tr><td><input class="bt-input" data-persist-key="book-5-title" /></td><td><input class="bt-input" data-persist-key="book-5-author" /></td><td><input class="bt-input" type="date" data-persist-key="book-5-start" /></td><td><input class="bt-input" type="date" data-persist-key="book-5-end" /></td><td><input class="bt-input" type="number" data-persist-key="book-5-pages" /></td><td><input class="bt-input" type="number" min="0" max="100" data-persist-key="book-5-progress" /></td><td><input class="bt-input" data-persist-key="book-5-status" /></td><td><input class="bt-input" data-persist-key="book-5-notes" /></td></tr>
-                  </tbody>
-                </table>
-              </div>
+            <div class="panel-heading"><div><p class="eyebrow">Projetos</p><h3>Projeto A, B, C e D</h3></div></div>
+            <div class="project-grid">
+              <article class="agenda-events-card project-card"><h4>Projeto A</h4><textarea class="summary-input compact-area" data-persist-key="proj-a-what" placeholder="O que e"></textarea><textarea class="summary-input compact-area" data-persist-key="proj-a-desc" placeholder="Descrição"></textarea><textarea class="summary-input compact-area" data-persist-key="proj-a-plan" placeholder="Plano de acao"></textarea><select data-persist-key="proj-a-status"><option>a começar</option><option>em andamento</option><option>pronto</option></select><input data-persist-key="proj-a-people" placeholder="Pessoas envolvidas" /><input data-persist-key="proj-a-links" placeholder="Links e documentos" /><label class="project-upload-field">Anexos e referencias<input type="file" data-project-upload="a" multiple /></label><div class="project-attachments" data-project-gallery="a"></div></article>
+              <article class="agenda-events-card project-card"><h4>Projeto B</h4><textarea class="summary-input compact-area" data-persist-key="proj-b-what" placeholder="O que e"></textarea><textarea class="summary-input compact-area" data-persist-key="proj-b-desc" placeholder="Descrição"></textarea><textarea class="summary-input compact-area" data-persist-key="proj-b-plan" placeholder="Plano de acao"></textarea><select data-persist-key="proj-b-status"><option>a começar</option><option>em andamento</option><option>pronto</option></select><input data-persist-key="proj-b-people" placeholder="Pessoas envolvidas" /><input data-persist-key="proj-b-links" placeholder="Links e documentos" /><label class="project-upload-field">Anexos e referencias<input type="file" data-project-upload="b" multiple /></label><div class="project-attachments" data-project-gallery="b"></div></article>
+              <article class="agenda-events-card project-card"><h4>Projeto C</h4><textarea class="summary-input compact-area" data-persist-key="proj-c-what" placeholder="O que e"></textarea><textarea class="summary-input compact-area" data-persist-key="proj-c-desc" placeholder="Descrição"></textarea><textarea class="summary-input compact-area" data-persist-key="proj-c-plan" placeholder="Plano de acao"></textarea><select data-persist-key="proj-c-status"><option>a começar</option><option>em andamento</option><option>pronto</option></select><input data-persist-key="proj-c-people" placeholder="Pessoas envolvidas" /><input data-persist-key="proj-c-links" placeholder="Links e documentos" /><label class="project-upload-field">Anexos e referencias<input type="file" data-project-upload="c" multiple /></label><div class="project-attachments" data-project-gallery="c"></div></article>
+              <article class="agenda-events-card project-card"><h4>Projeto D</h4><textarea class="summary-input compact-area" data-persist-key="proj-d-what" placeholder="O que e"></textarea><textarea class="summary-input compact-area" data-persist-key="proj-d-desc" placeholder="Descrição"></textarea><textarea class="summary-input compact-area" data-persist-key="proj-d-plan" placeholder="Plano de acao"></textarea><select data-persist-key="proj-d-status"><option>a começar</option><option>em andamento</option><option>pronto</option></select><input data-persist-key="proj-d-people" placeholder="Pessoas envolvidas" /><input data-persist-key="proj-d-links" placeholder="Links e documentos" /><label class="project-upload-field">Anexos e referencias<input type="file" data-project-upload="d" multiple /></label><div class="project-attachments" data-project-gallery="d"></div></article>
             </div>
-
-            <div class="section-title">Cursos</div>
-            <div class="two-col">
-              <div class="course-card">
-                <div class="course-header rose">
-                  <i class="ti ti-player-play" aria-hidden="true"></i>
-                  <span>Cursos que estou fazendo</span>
-                </div>
-                <div class="course-list">
-                  <div class="course-item"><i class="ti ti-circle-check" aria-hidden="true"></i><input class="course-input" type="text" data-persist-key="curso-f-1" placeholder="Nome do curso" /></div>
-                  <div class="course-item"><i class="ti ti-circle-check" aria-hidden="true"></i><input class="course-input" type="text" data-persist-key="curso-f-2" placeholder="Nome do curso" /></div>
-                  <div class="course-item"><i class="ti ti-circle-check" aria-hidden="true"></i><input class="course-input" type="text" data-persist-key="curso-f-3" placeholder="Nome do curso" /></div>
-                  <div class="course-item"><i class="ti ti-circle-check" aria-hidden="true"></i><input class="course-input" type="text" data-persist-key="curso-f-4" placeholder="Nome do curso" /></div>
-                  <div class="course-item"><i class="ti ti-circle-check" aria-hidden="true"></i><input class="course-input" type="text" data-persist-key="curso-f-5" placeholder="Nome do curso" /></div>
-                  <div class="course-item"><i class="ti ti-circle-check" aria-hidden="true"></i><input class="course-input" type="text" data-persist-key="curso-f-6" placeholder="Nome do curso" /></div>
-                  <div class="course-item"><i class="ti ti-circle-check" aria-hidden="true"></i><input class="course-input" type="text" data-persist-key="curso-f-7" placeholder="Nome do curso" /></div>
-                </div>
-              </div>
-              <div class="course-card">
-                <div class="course-header amber">
-                  <i class="ti ti-link" aria-hidden="true"></i>
-                  <span>Cursos que desejo fazer</span>
-                </div>
-                <div class="course-list">
-                  <div class="course-item amber-icon"><i class="ti ti-circle" aria-hidden="true"></i><input class="course-input" type="text" data-persist-key="curso-d-1" placeholder="Nome ou link do curso" /></div>
-                  <div class="course-item amber-icon"><i class="ti ti-circle" aria-hidden="true"></i><input class="course-input" type="text" data-persist-key="curso-d-2" placeholder="Nome ou link do curso" /></div>
-                  <div class="course-item amber-icon"><i class="ti ti-circle" aria-hidden="true"></i><input class="course-input" type="text" data-persist-key="curso-d-3" placeholder="Nome ou link do curso" /></div>
-                  <div class="course-item amber-icon"><i class="ti ti-circle" aria-hidden="true"></i><input class="course-input" type="text" data-persist-key="curso-d-4" placeholder="Nome ou link do curso" /></div>
-                  <div class="course-item amber-icon"><i class="ti ti-circle" aria-hidden="true"></i><input class="course-input" type="text" data-persist-key="curso-d-5" placeholder="Nome ou link do curso" /></div>
-                  <div class="course-item amber-icon"><i class="ti ti-circle" aria-hidden="true"></i><input class="course-input" type="text" data-persist-key="curso-d-6" placeholder="Nome ou link do curso" /></div>
-                  <div class="course-item amber-icon"><i class="ti ti-circle" aria-hidden="true"></i><input class="course-input" type="text" data-persist-key="curso-d-7" placeholder="Nome ou link do curso" /></div>
-                </div>
-              </div>
-            </div>
-
-            <div class="section-title">Reflexão e autoconhecimento</div>
-            <div class="reflection-grid">
-              <div class="reflection-card">
-                <div class="ref-label"><div class="ref-label-icon rose"><i class="ti ti-bulb" aria-hidden="true"></i></div><span>Habilidades que quero desenvolver</span></div>
-                <textarea class="ref-textarea summary-input compact-area" data-persist-key="skills-develop" placeholder="Quais habilidades você quer desenvolver..."></textarea>
-              </div>
-              <div class="reflection-card">
-                <div class="ref-label"><div class="ref-label-icon sage"><i class="ti ti-star" aria-hidden="true"></i></div><span>O que eu faço muito bem</span></div>
-                <textarea class="ref-textarea summary-input compact-area" data-persist-key="skills-good" placeholder="Suas maiores forças..."></textarea>
-              </div>
-              <div class="reflection-card">
-                <div class="ref-label"><div class="ref-label-icon amber"><i class="ti ti-trending-up" aria-hidden="true"></i></div><span>O que preciso melhorar</span></div>
-                <textarea class="ref-textarea summary-input compact-area" data-persist-key="skills-improve" placeholder="Áreas de melhoria..."></textarea>
-              </div>
-              <div class="reflection-card">
-                <div class="ref-label"><div class="ref-label-icon blue"><i class="ti ti-heart" aria-hidden="true"></i></div><span>Quais são os meus valores</span></div>
-                <textarea class="ref-textarea summary-input compact-area" data-persist-key="values" placeholder="Seus valores essenciais..."></textarea>
-              </div>
-            </div>
-            <div class="reflection-full">
-              <div class="ref-label"><div class="ref-label-icon rose"><i class="ti ti-arrow-right" aria-hidden="true"></i></div><span>O que faço hoje que me afasta da vida que quero ter</span></div>
-              <textarea class="ref-textarea summary-input compact-area" data-persist-key="habits-away" placeholder="Hábitos e comportamentos que precisam mudar..."></textarea>
-            </div>
-
-            <div class="section-title">Projetos</div>
-            <div class="projects-grid">
-              <div class="project-card">
-                <div class="project-header">
-                  <input class="project-name-input" data-persist-key="proj-a-what" placeholder="Projeto A — nome do projeto" />
-                  <select class="status-select" data-persist-key="proj-a-status"><option>a começar</option><option>em andamento</option><option>pronto</option></select>
-                </div>
-                <div class="project-body">
-                  <div><div class="proj-field-label">Descrição</div><textarea class="proj-textarea summary-input" data-persist-key="proj-a-desc" placeholder="Descreva o projeto..."></textarea></div>
-                  <div><div class="proj-field-label">Plano de ação</div><textarea class="proj-textarea summary-input" data-persist-key="proj-a-plan" placeholder="Quais são os próximos passos..."></textarea></div>
-                  <div><div class="proj-field-label">Pessoas envolvidas</div><input class="proj-input" data-persist-key="proj-a-people" placeholder="Nomes e funções..." /></div>
-                  <div><div class="proj-field-label">Links e documentos</div><input class="proj-input" data-persist-key="proj-a-links" placeholder="URLs e referências..." /></div>
-                  <label class="proj-attach"><i class="ti ti-paperclip" aria-hidden="true"></i><span>Anexos</span><input type="file" data-project-upload="a" multiple style="display:none" /></label>
-                  <div class="project-attachments" data-project-gallery="a"></div>
-                </div>
-              </div>
-              <div class="project-card">
-                <div class="project-header">
-                  <input class="project-name-input" data-persist-key="proj-b-what" placeholder="Projeto B — nome do projeto" />
-                  <select class="status-select" data-persist-key="proj-b-status"><option>a começar</option><option>em andamento</option><option>pronto</option></select>
-                </div>
-                <div class="project-body">
-                  <div><div class="proj-field-label">Descrição</div><textarea class="proj-textarea summary-input" data-persist-key="proj-b-desc" placeholder="Descreva o projeto..."></textarea></div>
-                  <div><div class="proj-field-label">Plano de ação</div><textarea class="proj-textarea summary-input" data-persist-key="proj-b-plan" placeholder="Quais são os próximos passos..."></textarea></div>
-                  <div><div class="proj-field-label">Pessoas envolvidas</div><input class="proj-input" data-persist-key="proj-b-people" placeholder="Nomes e funções..." /></div>
-                  <div><div class="proj-field-label">Links e documentos</div><input class="proj-input" data-persist-key="proj-b-links" placeholder="URLs e referências..." /></div>
-                  <label class="proj-attach"><i class="ti ti-paperclip" aria-hidden="true"></i><span>Anexos</span><input type="file" data-project-upload="b" multiple style="display:none" /></label>
-                  <div class="project-attachments" data-project-gallery="b"></div>
-                </div>
-              </div>
-              <div class="project-card">
-                <div class="project-header">
-                  <input class="project-name-input" data-persist-key="proj-c-what" placeholder="Projeto C — nome do projeto" />
-                  <select class="status-select" data-persist-key="proj-c-status"><option>a começar</option><option>em andamento</option><option>pronto</option></select>
-                </div>
-                <div class="project-body">
-                  <div><div class="proj-field-label">Descrição</div><textarea class="proj-textarea summary-input" data-persist-key="proj-c-desc" placeholder="Descreva o projeto..."></textarea></div>
-                  <div><div class="proj-field-label">Plano de ação</div><textarea class="proj-textarea summary-input" data-persist-key="proj-c-plan" placeholder="Quais são os próximos passos..."></textarea></div>
-                  <div><div class="proj-field-label">Pessoas envolvidas</div><input class="proj-input" data-persist-key="proj-c-people" placeholder="Nomes e funções..." /></div>
-                  <div><div class="proj-field-label">Links e documentos</div><input class="proj-input" data-persist-key="proj-c-links" placeholder="URLs e referências..." /></div>
-                  <label class="proj-attach"><i class="ti ti-paperclip" aria-hidden="true"></i><span>Anexos</span><input type="file" data-project-upload="c" multiple style="display:none" /></label>
-                  <div class="project-attachments" data-project-gallery="c"></div>
-                </div>
-              </div>
-              <div class="project-card">
-                <div class="project-header">
-                  <input class="project-name-input" data-persist-key="proj-d-what" placeholder="Projeto D — nome do projeto" />
-                  <select class="status-select" data-persist-key="proj-d-status"><option>a começar</option><option>em andamento</option><option>pronto</option></select>
-                </div>
-                <div class="project-body">
-                  <div><div class="proj-field-label">Descrição</div><textarea class="proj-textarea summary-input" data-persist-key="proj-d-desc" placeholder="Descreva o projeto..."></textarea></div>
-                  <div><div class="proj-field-label">Plano de ação</div><textarea class="proj-textarea summary-input" data-persist-key="proj-d-plan" placeholder="Quais são os próximos passos..."></textarea></div>
-                  <div><div class="proj-field-label">Pessoas envolvidas</div><input class="proj-input" data-persist-key="proj-d-people" placeholder="Nomes e funções..." /></div>
-                  <div><div class="proj-field-label">Links e documentos</div><input class="proj-input" data-persist-key="proj-d-links" placeholder="URLs e referências..." /></div>
-                  <label class="proj-attach"><i class="ti ti-paperclip" aria-hidden="true"></i><span>Anexos</span><input type="file" data-project-upload="d" multiple style="display:none" /></label>
-                  <div class="project-attachments" data-project-gallery="d"></div>
-                </div>
-              </div>
-            </div>
-          </div><!-- /module-content -->
+          </article>
         </section>
 
         <section class="page-view" data-page-view="finanças" id="finanças">
           <div class="page-return-bar">
             <button class="ghost-button page-return-button" type="button" data-go-home>← Voltar</button>
           </div>
-          <div class="module-content">
-          <div class="module-hero">
-            <div class="hero-deco">R$</div>
-            <div class="hero-icon"><i class="ti ti-coin" aria-hidden="true"></i></div>
-            <div>
-              <div class="hero-eye">Finanças</div>
-              <div class="hero-title">Controle financeiro</div>
-            </div>
-          </div>
-
           <article class="panel module-card finance-card">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">Finanças</p>
+                <h3>Controle financeiro</h3>
+              </div>
+            </div>
+
             <!-- Hidden legacy compat elements (used by renderFinance JS) -->
             <div style="display:none">
               <input id="finance-income-input" type="number" />
@@ -1296,218 +1075,53 @@
 
             </div><!-- /tab-shell financas -->
           </article>
-          </div><!-- /module-content finance -->
         </section>
 
         <section class="page-view" data-page-view="imagem" id="imagem">
           <div class="page-return-bar">
             <button class="ghost-button page-return-button" type="button" data-go-home>← Voltar</button>
           </div>
-          <div class="module-content">
-            <div class="module-hero">
-              <div class="hero-deco">✦</div>
-              <div class="hero-icon"><i class="ti ti-hanger" aria-hidden="true"></i></div>
+          <article class="panel module-card wardrobe-card module-open-card" data-module="wardrobe">
+            <div class="panel-heading">
               <div>
-                <div class="hero-eye">Imagem & Estilo</div>
-                <div class="hero-title">Seu guarda-roupa inteligente</div>
+                <p class="eyebrow">Imagem e estilo</p>
+                <h3>Guarda-roupa inteligente</h3>
               </div>
+              <button class="ghost-button module-open-button" type="button" data-module="wardrobe">Abrir</button>
             </div>
-
-            <!-- Tabs -->
-            <div class="tabs-row" data-tab-group="imagem">
-              <button class="tab is-active" type="button" data-tab-target="img-estilo"><i class="ti ti-sparkles" aria-hidden="true"></i>Meu estilo</button>
-              <button class="tab" type="button" data-tab-target="img-looks"><i class="ti ti-camera" aria-hidden="true"></i>Looks da semana</button>
-              <button class="tab" type="button" data-tab-target="img-catalogo"><i class="ti ti-shirt" aria-hidden="true"></i>Catálogo de peças</button>
-              <button class="tab" type="button" data-tab-target="img-comprar"><i class="ti ti-shopping-bag" aria-hidden="true"></i>Preciso comprar</button>
-              <button class="tab" type="button" data-tab-target="img-paleta"><i class="ti ti-palette" aria-hidden="true"></i>Minha paleta</button>
+            <div class="structured-card-grid">
+              <div class="detail-card"><span class="metric-label">Looks da semana</span><strong>0 cadastrados</strong></div>
+              <div class="detail-card"><span class="metric-label">Pecas-chave</span><strong>Nenhuma peca cadastrada</strong></div>
             </div>
-
-            <!-- Tab: Meu estilo -->
-            <section class="tab-panel is-active" data-tab-panel="img-estilo">
-              <div class="sec-title">Perfil de estilo</div>
-              <div class="perfil-grid">
-                <div class="perfil-card">
-                  <div class="pc-label">
-                    <div class="pc-icon rose"><i class="ti ti-heart" aria-hidden="true"></i></div>
-                    <span class="pc-title">Estilo pessoal</span>
-                  </div>
-                  <div class="style-chips">
-                    <span class="chip">Clássico</span><span class="chip">Romântico</span><span class="chip">Casual</span><span class="chip">Minimalista</span><span class="chip">Boho</span><span class="chip">Streetwear</span><span class="chip">Elegante</span><span class="chip">Esportivo</span>
-                  </div>
-                </div>
-                <div class="perfil-card">
-                  <div class="pc-label">
-                    <div class="pc-icon amber"><i class="ti ti-sparkles" aria-hidden="true"></i></div>
-                    <span class="pc-title">Ocasiões frequentes</span>
-                  </div>
-                  <div class="style-chips">
-                    <span class="chip">Trabalho</span><span class="chip">Casual</span><span class="chip">Festa</span><span class="chip">Academia</span><span class="chip">Praia</span><span class="chip">Encontro</span><span class="chip">Viagem</span>
-                  </div>
-                </div>
-                <div class="perfil-card">
-                  <div class="pc-label">
-                    <div class="pc-icon sage"><i class="ti ti-palette" aria-hidden="true"></i></div>
-                    <span class="pc-title">Cores favoritas</span>
-                  </div>
-                  <div class="color-palette">
-                    <div class="color-item"><div class="color-dot" style="background:#2a1f28;"></div><span class="color-dot-label">Preto</span></div>
-                    <div class="color-item"><div class="color-dot" style="background:#c9395f;"></div><span class="color-dot-label">Rosa</span></div>
-                    <div class="color-item"><div class="color-dot" style="background:#f8f0e8;"></div><span class="color-dot-label">Nude</span></div>
-                    <div class="color-item"><div class="color-dot" style="background:#3060b0;"></div><span class="color-dot-label">Azul</span></div>
-                    <div class="color-item"><div class="color-dot" style="background:#4a9a6a;"></div><span class="color-dot-label">Verde</span></div>
-                    <div class="color-item"><div class="color-dot" style="background:#fff;border:0.5px solid #f0dce6;"></div><span class="color-dot-label">Branco</span></div>
-                  </div>
-                </div>
-                <div class="perfil-card">
-                  <div class="pc-label">
-                    <div class="pc-icon blue"><i class="ti ti-ruler" aria-hidden="true"></i></div>
-                    <span class="pc-title">Meu tipo de corpo</span>
-                  </div>
-                  <div style="display:flex;flex-direction:column;gap:8px;">
-                    <div class="field-label">Silhueta</div>
-                    <input class="input-field" data-persist-key="img-silhueta" placeholder="Ex.: Ampulheta, triângulo..." />
-                    <div class="field-label">Observações de estilo</div>
-                    <textarea class="textarea-field" data-persist-key="img-obs-estilo" placeholder="O que valoriza sua silhueta..."></textarea>
-                  </div>
-                </div>
-              </div>
-
-              <div class="sec-title">Dicas de consultora</div>
-              <div class="tips-grid">
-                <div class="tip-card">
-                  <div class="tip-header"><div class="tip-icon rose"><i class="ti ti-heart" aria-hidden="true"></i></div><span class="tip-title">Valorize seu tipo de corpo</span></div>
-                  <div class="tip-list">
-                    <div class="tip-item"><i class="ti ti-point" aria-hidden="true"></i>Use peças que definem a cintura</div>
-                    <div class="tip-item"><i class="ti ti-point" aria-hidden="true"></i>Aposte em cortes que equilibram os ombros</div>
-                    <div class="tip-item"><i class="ti ti-point" aria-hidden="true"></i>Crie contraste entre cima e baixo</div>
-                  </div>
-                </div>
-                <div class="tip-card">
-                  <div class="tip-header"><div class="tip-icon amber"><i class="ti ti-sun" aria-hidden="true"></i></div><span class="tip-title">Combinações certeiras</span></div>
-                  <div class="tip-list">
-                    <div class="tip-item"><i class="ti ti-point" aria-hidden="true"></i>Misture texturas diferentes</div>
-                    <div class="tip-item"><i class="ti ti-point" aria-hidden="true"></i>Use a regra do terço para cores</div>
-                    <div class="tip-item"><i class="ti ti-point" aria-hidden="true"></i>Acessórios fazem toda diferença</div>
-                  </div>
-                </div>
-              </div>
-            </section>
-
-            <!-- Tab: Looks da semana -->
-            <section class="tab-panel" data-tab-panel="img-looks">
-              <div class="sec-title">Looks da semana</div>
-              <div class="looks-grid">
-                <div class="look-card"><div class="look-day">Dom</div><div class="look-img"><i class="ti ti-camera" aria-hidden="true"></i></div><div class="look-body"><input class="look-ocasiao" data-persist-key="look-dom-ocasiao" placeholder="Ocasião..." /><input class="look-peca" data-persist-key="look-dom-p1" placeholder="Peça 1..." /><input class="look-peca" data-persist-key="look-dom-p2" placeholder="Peça 2..." /></div></div>
-                <div class="look-card"><div class="look-day">Seg</div><div class="look-img"><i class="ti ti-camera" aria-hidden="true"></i></div><div class="look-body"><input class="look-ocasiao" data-persist-key="look-seg-ocasiao" placeholder="Ocasião..." /><input class="look-peca" data-persist-key="look-seg-p1" placeholder="Peça 1..." /><input class="look-peca" data-persist-key="look-seg-p2" placeholder="Peça 2..." /></div></div>
-                <div class="look-card"><div class="look-day">Ter</div><div class="look-img"><i class="ti ti-camera" aria-hidden="true"></i></div><div class="look-body"><input class="look-ocasiao" data-persist-key="look-ter-ocasiao" placeholder="Ocasião..." /><input class="look-peca" data-persist-key="look-ter-p1" placeholder="Peça 1..." /><input class="look-peca" data-persist-key="look-ter-p2" placeholder="Peça 2..." /></div></div>
-                <div class="look-card"><div class="look-day">Qua</div><div class="look-img"><i class="ti ti-camera" aria-hidden="true"></i></div><div class="look-body"><input class="look-ocasiao" data-persist-key="look-qua-ocasiao" placeholder="Ocasião..." /><input class="look-peca" data-persist-key="look-qua-p1" placeholder="Peça 1..." /><input class="look-peca" data-persist-key="look-qua-p2" placeholder="Peça 2..." /></div></div>
-                <div class="look-card"><div class="look-day">Qui</div><div class="look-img"><i class="ti ti-camera" aria-hidden="true"></i></div><div class="look-body"><input class="look-ocasiao" data-persist-key="look-qui-ocasiao" placeholder="Ocasião..." /><input class="look-peca" data-persist-key="look-qui-p1" placeholder="Peça 1..." /><input class="look-peca" data-persist-key="look-qui-p2" placeholder="Peça 2..." /></div></div>
-                <div class="look-card"><div class="look-day">Sex</div><div class="look-img"><i class="ti ti-camera" aria-hidden="true"></i></div><div class="look-body"><input class="look-ocasiao" data-persist-key="look-sex-ocasiao" placeholder="Ocasião..." /><input class="look-peca" data-persist-key="look-sex-p1" placeholder="Peça 1..." /><input class="look-peca" data-persist-key="look-sex-p2" placeholder="Peça 2..." /></div></div>
-                <div class="look-card"><div class="look-day">Sáb</div><div class="look-img"><i class="ti ti-camera" aria-hidden="true"></i></div><div class="look-body"><input class="look-ocasiao" data-persist-key="look-sab-ocasiao" placeholder="Ocasião..." /><input class="look-peca" data-persist-key="look-sab-p1" placeholder="Peça 1..." /><input class="look-peca" data-persist-key="look-sab-p2" placeholder="Peça 2..." /></div></div>
-              </div>
-            </section>
-
-            <!-- Tab: Catálogo de peças -->
-            <section class="tab-panel" data-tab-panel="img-catalogo">
-              <div class="catalogo-header">
-                <div class="sec-title" style="margin-bottom:0;">Catálogo de peças</div>
-              </div>
-              <div class="cat-filters">
-                <span class="cat-filter active">Todas</span><span class="cat-filter">Blusas</span><span class="cat-filter">Calças</span><span class="cat-filter">Vestidos</span><span class="cat-filter">Sapatos</span><span class="cat-filter">Acessórios</span>
-              </div>
-              <div class="peca-grid">
-                <div class="peca-card"><div class="peca-img rosa-bg"><i class="ti ti-shirt" aria-hidden="true"></i></div><div class="peca-body"><input class="peca-name" data-persist-key="peca-1-nome" placeholder="Nome da peça..." /><div class="peca-meta"><span class="peca-tag">Rosa</span></div></div></div>
-                <div class="peca-card"><div class="peca-img nude-bg"><i class="ti ti-shirt" aria-hidden="true"></i></div><div class="peca-body"><input class="peca-name" data-persist-key="peca-2-nome" placeholder="Nome da peça..." /><div class="peca-meta"><span class="peca-tag">Nude</span></div></div></div>
-                <div class="peca-card"><div class="peca-img azul-bg"><i class="ti ti-shirt" aria-hidden="true"></i></div><div class="peca-body"><input class="peca-name" data-persist-key="peca-3-nome" placeholder="Nome da peça..." /><div class="peca-meta"><span class="peca-tag">Azul</span></div></div></div>
-                <div class="peca-card"><div class="peca-img verde-bg"><i class="ti ti-shirt" aria-hidden="true"></i></div><div class="peca-body"><input class="peca-name" data-persist-key="peca-4-nome" placeholder="Nome da peça..." /><div class="peca-meta"><span class="peca-tag">Verde</span></div></div></div>
-              </div>
-            </section>
-
-            <!-- Tab: Preciso comprar -->
-            <section class="tab-panel" data-tab-panel="img-comprar">
-              <div class="need-grid">
-                <div class="need-card">
-                  <div class="need-header rose"><i class="ti ti-shopping-bag" aria-hidden="true"></i><span>Necessidades</span></div>
-                  <div class="need-list">
-                    <div class="need-item"><input type="checkbox" data-persist-key="need-1-cb" /><div class="need-item-inputs"><input class="need-input" data-persist-key="need-1-nome" placeholder="Item necessário..." /><input class="need-price" data-persist-key="need-1-preco" placeholder="R$..." /></div></div>
-                    <div class="need-item"><input type="checkbox" data-persist-key="need-2-cb" /><div class="need-item-inputs"><input class="need-input" data-persist-key="need-2-nome" placeholder="Item necessário..." /><input class="need-price" data-persist-key="need-2-preco" placeholder="R$..." /></div></div>
-                    <div class="need-item"><input type="checkbox" data-persist-key="need-3-cb" /><div class="need-item-inputs"><input class="need-input" data-persist-key="need-3-nome" placeholder="Item necessário..." /><input class="need-price" data-persist-key="need-3-preco" placeholder="R$..." /></div></div>
-                    <div class="need-item"><input type="checkbox" data-persist-key="need-4-cb" /><div class="need-item-inputs"><input class="need-input" data-persist-key="need-4-nome" placeholder="Item necessário..." /><input class="need-price" data-persist-key="need-4-preco" placeholder="R$..." /></div></div>
-                    <div class="need-item"><input type="checkbox" data-persist-key="need-5-cb" /><div class="need-item-inputs"><input class="need-input" data-persist-key="need-5-nome" placeholder="Item necessário..." /><input class="need-price" data-persist-key="need-5-preco" placeholder="R$..." /></div></div>
-                  </div>
-                </div>
-                <div class="need-card">
-                  <div class="need-header amber"><i class="ti ti-heart" aria-hidden="true"></i><span>Desejo comprar</span></div>
-                  <div class="need-list">
-                    <div class="need-item"><input type="checkbox" data-persist-key="desejo-1-cb" /><div class="need-item-inputs"><input class="need-input" data-persist-key="desejo-1-nome" placeholder="Item que desejo..." /><input class="need-price" data-persist-key="desejo-1-preco" placeholder="R$..." /></div></div>
-                    <div class="need-item"><input type="checkbox" data-persist-key="desejo-2-cb" /><div class="need-item-inputs"><input class="need-input" data-persist-key="desejo-2-nome" placeholder="Item que desejo..." /><input class="need-price" data-persist-key="desejo-2-preco" placeholder="R$..." /></div></div>
-                    <div class="need-item"><input type="checkbox" data-persist-key="desejo-3-cb" /><div class="need-item-inputs"><input class="need-input" data-persist-key="desejo-3-nome" placeholder="Item que desejo..." /><input class="need-price" data-persist-key="desejo-3-preco" placeholder="R$..." /></div></div>
-                    <div class="need-item"><input type="checkbox" data-persist-key="desejo-4-cb" /><div class="need-item-inputs"><input class="need-input" data-persist-key="desejo-4-nome" placeholder="Item que desejo..." /><input class="need-price" data-persist-key="desejo-4-preco" placeholder="R$..." /></div></div>
-                    <div class="need-item"><input type="checkbox" data-persist-key="desejo-5-cb" /><div class="need-item-inputs"><input class="need-input" data-persist-key="desejo-5-nome" placeholder="Item que desejo..." /><input class="need-price" data-persist-key="desejo-5-preco" placeholder="R$..." /></div></div>
-                  </div>
-                </div>
-              </div>
-            </section>
-
-            <!-- Tab: Minha paleta -->
-            <section class="tab-panel" data-tab-panel="img-paleta">
-              <div class="paleta-card">
-                <div class="paleta-header"><i class="ti ti-palette" aria-hidden="true"></i><span>Paleta pessoal de cores</span></div>
-                <div class="paleta-sub">Suas cores harmonizadas para criar looks incríveis</div>
-                <div class="paleta-section">
-                  <div class="paleta-section-title">Cores base</div>
-                  <div class="paleta-swatches">
-                    <div class="swatch" style="background:#2a1f28;"></div>
-                    <div class="swatch" style="background:#fff;border:1px solid rgba(255,255,255,.2);"></div>
-                    <div class="swatch" style="background:#f8f0e8;"></div>
-                    <div class="swatch" style="background:#3060b0;"></div>
-                  </div>
-                </div>
-                <div class="paleta-section">
-                  <div class="paleta-section-title">Cores de acento</div>
-                  <div class="paleta-swatches">
-                    <div class="swatch" style="background:#c9395f;"></div>
-                    <div class="swatch" style="background:#c9853f;"></div>
-                    <div class="swatch" style="background:#4a9a6a;"></div>
-                    <div class="swatch" style="background:#7040c0;"></div>
-                  </div>
-                </div>
-                <div class="paleta-tips">
-                  <div class="paleta-tip"><div class="pt-label">Tipo de pele</div><div class="pt-value">Neutra quente</div></div>
-                  <div class="paleta-tip"><div class="pt-label">Estação cromática</div><div class="pt-value">Outono/Verão</div></div>
-                </div>
-              </div>
-            </section>
-
-            <!-- Hidden compat for wardrobe JS -->
-            <div style="display:none" aria-hidden="true">
-              <ul id="wardrobe-preview-list" class="mini-list module-preview-list"></ul>
-            </div>
-          </div><!-- /module-content imagem -->
+            <ul id="wardrobe-preview-list" class="mini-list module-preview-list"></ul>
+            <ul class="mini-list">
+              <li>Catalogar pecas favoritas e combinar por ocasiao</li>
+              <li>Mapear o que falta antes de comprar</li>
+              <li>Separar lista de desejo e lista de necessidade</li>
+            </ul>
+          </article>
         </section>
 
         <section class="page-view" data-page-view="casa" id="casa">
           <div class="page-return-bar">
             <button class="ghost-button page-return-button" type="button" data-go-home>← Voltar</button>
           </div>
-          <div class="module-hero">
-            <div class="hero-deco">✦</div>
-            <div class="hero-icon"><i class="ti ti-home" aria-hidden="true"></i></div>
-            <div>
-              <div class="hero-eye">Alimentação e Lar</div>
-              <div class="hero-title">Planejamento da casa e refeições</div>
-            </div>
-          </div>
-
           <article class="panel module-card home-card">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">Alimentação e Lar</p>
+                <h3>Planejamento da casa e refeições</h3>
+              </div>
+            </div>
+
             <!-- Abas da Casa -->
             <div class="tab-shell casa-tab-shell" data-tab-group="casa">
-              <div class="casa-tab-ribbon tabs-row" role="tablist" aria-label="Abas da casa">
-                <button class="casa-tab tab is-active" type="button" data-tab-target="casa-refeição"><i class="ti ti-tools-kitchen-2" aria-hidden="true"></i>Planner de Refeição</button>
-                <button class="casa-tab tab" type="button" data-tab-target="casa-mercado"><i class="ti ti-shopping-cart" aria-hidden="true"></i>Lista do Mercado</button>
-                <button class="casa-tab tab" type="button" data-tab-target="casa-limpeza"><i class="ti ti-sparkles" aria-hidden="true"></i>Cronograma de Limpeza</button>
-                <button class="casa-tab tab" type="button" data-tab-target="casa-cômodos"><i class="ti ti-home-check" aria-hidden="true"></i>Checklist Cômodos</button>
-                <button class="casa-tab tab" type="button" data-tab-target="casa-reforma"><i class="ti ti-hammer" aria-hidden="true"></i>Reforma da Casa</button>
+              <div class="casa-tab-ribbon" role="tablist" aria-label="Abas da casa">
+                <button class="casa-tab is-active" type="button" data-tab-target="casa-refeição">🍽️ Planner de Refeição</button>
+                <button class="casa-tab" type="button" data-tab-target="casa-mercado">🛒 Lista do Mercado</button>
+                <button class="casa-tab" type="button" data-tab-target="casa-limpeza">🧹 Cronograma de Limpeza</button>
+                <button class="casa-tab" type="button" data-tab-target="casa-cômodos">🏠 Checklist Cômodos</button>
+                <button class="casa-tab" type="button" data-tab-target="casa-reforma">🔨 Reforma da Casa</button>
               </div>
 
               <!-- ABA 1: Planner de Refeição -->
@@ -1869,22 +1483,19 @@
           <div class="page-return-bar">
             <button class="ghost-button page-return-button" type="button" data-go-home>← Voltar</button>
           </div>
-          <!-- corpo-card: Saúde & Beleza (hidden — ciclo is primary) -->
-          <article class="panel module-card body-card" style="display:none">
-            <div class="module-hero">
-              <div class="hero-deco">✦</div>
-              <div class="hero-icon"><i class="ti ti-heart" aria-hidden="true"></i></div>
+          <article class="panel module-card body-card">
+            <div class="panel-heading">
               <div>
-                <div class="hero-eye">Corpo e autocuidado</div>
-                <div class="hero-title">Gestão completa do autocuidado</div>
+                <p class="eyebrow">Corpo e autocuidado</p>
+                <h3>Gestão completa do autocuidado</h3>
               </div>
             </div>
             <div class="tab-shell" data-tab-group="autocuidado">
-              <div class="tab-buttons tabs-row">
-                <button class="tab ghost-button is-active" type="button" data-tab-target="medidas">Progresso de medidas</button>
-                <button class="tab ghost-button" type="button" data-tab-target="exercicios">Cronograma de exercícios</button>
-                <button class="tab ghost-button" type="button" data-tab-target="saúde">Cuidados de saúde</button>
-                <button class="tab ghost-button" type="button" data-tab-target="beleza">Rituais de beleza</button>
+              <div class="tab-buttons">
+                <button class="ghost-button is-active" type="button" data-tab-target="medidas">Progresso de medidas</button>
+                <button class="ghost-button" type="button" data-tab-target="exercicios">Cronograma de exercicios</button>
+                <button class="ghost-button" type="button" data-tab-target="saúde">Cuidados de saúde</button>
+                <button class="ghost-button" type="button" data-tab-target="beleza">Rituais de beleza</button>
               </div>
               <!-- MEDIDAS -->
               <section class="tab-panel is-active" data-tab-panel="medidas">
@@ -2219,264 +1830,11 @@
             </div>
             <ul id="body-preview-list" class="mini-list module-preview-list" style="display:none"></ul>
           </article>
-
-          <!-- ═══ CICLO MENSTRUAL ═══ -->
-          <article class="panel" id="ciclo-module">
-            <div class="module-hero ciclo-hero">
-              <div class="hero-deco">☽</div>
-              <div class="hero-icon ciclo-hero-icon"><i class="ti ti-moon" aria-hidden="true"></i></div>
-              <div>
-                <div class="hero-eye ciclo-hero-eye">Saúde feminina</div>
-                <div class="hero-title ciclo-hero-title">Calendário do ciclo menstrual</div>
-              </div>
-            </div>
-
-            <!-- Abas -->
-            <div class="ciclo-tabs tabs-row">
-              <div class="ciclo-tab tab active" data-ciclo-tab="calendario"><i class="ti ti-calendar" aria-hidden="true"></i>Calendário</div>
-              <div class="ciclo-tab tab" data-ciclo-tab="fases"><i class="ti ti-activity" aria-hidden="true"></i>Fases do ciclo</div>
-              <div class="ciclo-tab tab" data-ciclo-tab="registro"><i class="ti ti-pencil" aria-hidden="true"></i>Registro diário</div>
-              <div class="ciclo-tab tab" data-ciclo-tab="tpm"><i class="ti ti-brain" aria-hidden="true"></i>TPM tracker</div>
-              <div class="ciclo-tab tab" data-ciclo-tab="historico"><i class="ti ti-history" aria-hidden="true"></i>Histórico</div>
-            </div>
-
-            <!-- PAINEL: Calendário -->
-            <div class="ciclo-panel active" data-ciclo-panel="calendario">
-              <div class="ciclo-sec-title">Resumo do meu ciclo</div>
-              <div class="ciclo-summary">
-                <div class="ciclo-stat">
-                  <div class="ciclo-stat-icon rose">🩸</div>
-                  <input type="number" data-persist-key="ciclo-duracao" placeholder="28" min="20" max="45" />
-                  <div class="ciclo-stat-label">Duração do ciclo (dias)</div>
-                </div>
-                <div class="ciclo-stat">
-                  <div class="ciclo-stat-icon purple">📅</div>
-                  <input type="number" data-persist-key="ciclo-fluxo-duracao" placeholder="5" min="2" max="10" />
-                  <div class="ciclo-stat-label">Duração do fluxo (dias)</div>
-                </div>
-                <div class="ciclo-stat">
-                  <div class="ciclo-stat-icon sage">✅</div>
-                  <input type="date" data-persist-key="ciclo-ultimo-inicio" style="font-size:13px !important;" />
-                  <div class="ciclo-stat-label">Último início</div>
-                </div>
-                <div class="ciclo-stat">
-                  <div class="ciclo-stat-icon amber">🎯</div>
-                  <div class="ciclo-stat-value" id="ciclo-proxima-previsao">—</div>
-                  <div class="ciclo-stat-label">Próxima menstruação</div>
-                </div>
-              </div>
-
-              <!-- Fase atual -->
-              <div class="ciclo-sec-title">Fase atual</div>
-              <div class="ciclo-fase-atual" id="ciclo-fase-atual-card">
-                <div>
-                  <div class="cfa-label">Fase</div>
-                  <div class="cfa-value" id="cfa-fase">—</div>
-                  <div class="cfa-sub" id="cfa-desc">Configure suas datas acima</div>
-                  <div class="cfa-bar-wrap"><div class="cfa-bar" id="cfa-bar" style="width:0%"></div></div>
-                </div>
-                <div>
-                  <div class="cfa-label">Próxima ovulação</div>
-                  <div class="cfa-value" id="cfa-ovulacao">—</div>
-                  <div class="cfa-sub">Período de maior fertilidade</div>
-                </div>
-                <div>
-                  <div class="cfa-label">Próxima menstruação</div>
-                  <div class="cfa-value" id="cfa-prox-mens">—</div>
-                  <div class="cfa-sub" id="cfa-prox-data">—</div>
-                </div>
-              </div>
-
-              <!-- Calendário visual -->
-              <div class="ciclo-sec-title">Calendário</div>
-              <div class="ciclo-cal-card">
-                <div class="ciclo-cal-header">
-                  <div class="ciclo-cal-nav">
-                    <button class="ciclo-cal-arrow" id="ciclo-prev-month" type="button">‹</button>
-                    <div class="ciclo-cal-month" id="ciclo-cal-month-title">—</div>
-                    <button class="ciclo-cal-arrow" id="ciclo-next-month" type="button">›</button>
-                  </div>
-                  <div class="ciclo-cal-legend">
-                    <div class="ciclo-leg-item"><div class="ciclo-leg-dot mens"></div>Menstruação</div>
-                    <div class="ciclo-leg-item"><div class="ciclo-leg-dot fertil"></div>Fértil</div>
-                    <div class="ciclo-leg-item"><div class="ciclo-leg-dot ovul"></div>Ovulação</div>
-                    <div class="ciclo-leg-item"><div class="ciclo-leg-dot tpm"></div>TPM</div>
-                  </div>
-                </div>
-                <div class="ciclo-cal-days-header">
-                  <div class="ciclo-cal-day-name">Dom</div><div class="ciclo-cal-day-name">Seg</div>
-                  <div class="ciclo-cal-day-name">Ter</div><div class="ciclo-cal-day-name">Qua</div>
-                  <div class="ciclo-cal-day-name">Qui</div><div class="ciclo-cal-day-name">Sex</div>
-                  <div class="ciclo-cal-day-name">Sáb</div>
-                </div>
-                <div class="ciclo-cal-grid" id="ciclo-cal-grid"></div>
-              </div>
-            </div>
-
-            <!-- PAINEL: Fases do ciclo -->
-            <div class="ciclo-panel" data-ciclo-panel="fases">
-              <div class="ciclo-sec-title">As 4 fases do seu ciclo</div>
-              <div class="ciclo-fases-grid">
-                <div class="ciclo-fase-card">
-                  <div class="ciclo-fase-header mens">
-                    <div class="cfh-icon mens">🩸</div>
-                    <div><div class="cfh-title">Menstrual</div><div class="cfh-days">Dias 1–5</div></div>
-                  </div>
-                  <div class="ciclo-fase-body">
-                    <div class="ciclo-fase-section"><div class="cfs-label">Energia</div><div class="cfs-chips"><span class="cfs-chip energy">Baixa</span><span class="cfs-chip energy">Introspectiva</span></div></div>
-                    <div class="ciclo-fase-section"><div class="cfs-label">Humor</div><div class="cfs-chips"><span class="cfs-chip mood">Sensível</span><span class="cfs-chip mood">Intuitiva</span></div></div>
-                    <div class="ciclo-fase-section"><div class="cfs-label">Cuidados</div><div class="cfs-chips"><span class="cfs-chip body">Descanse</span><span class="cfs-chip body">Calor local</span></div></div>
-                    <div class="ciclo-fase-section"><div class="cfs-label">Dica</div><div class="cfs-chips"><span class="cfs-chip tip">Não se cobre tanto. Seu corpo está trabalhando.</span></div></div>
-                  </div>
-                </div>
-                <div class="ciclo-fase-card">
-                  <div class="ciclo-fase-header folicular">
-                    <div class="cfh-icon folicular">🌱</div>
-                    <div><div class="cfh-title">Folicular</div><div class="cfh-days">Dias 6–13</div></div>
-                  </div>
-                  <div class="ciclo-fase-body">
-                    <div class="ciclo-fase-section"><div class="cfs-label">Energia</div><div class="cfs-chips"><span class="cfs-chip energy">Crescente</span><span class="cfs-chip energy">Criativa</span></div></div>
-                    <div class="ciclo-fase-section"><div class="cfs-label">Humor</div><div class="cfs-chips"><span class="cfs-chip mood">Animada</span><span class="cfs-chip mood">Focada</span></div></div>
-                    <div class="ciclo-fase-section"><div class="cfs-label">Cuidados</div><div class="cfs-chips"><span class="cfs-chip body">Treinos fortes</span><span class="cfs-chip body">Novos projetos</span></div></div>
-                    <div class="ciclo-fase-section"><div class="cfs-label">Dica</div><div class="cfs-chips"><span class="cfs-chip tip">Aproveite sua energia. Comece coisas novas!</span></div></div>
-                  </div>
-                </div>
-                <div class="ciclo-fase-card">
-                  <div class="ciclo-fase-header ovulacao">
-                    <div class="cfh-icon ovulacao">☀️</div>
-                    <div><div class="cfh-title">Ovulatória</div><div class="cfh-days">Dias 14–16</div></div>
-                  </div>
-                  <div class="ciclo-fase-body">
-                    <div class="ciclo-fase-section"><div class="cfs-label">Energia</div><div class="cfs-chips"><span class="cfs-chip energy">Máxima</span><span class="cfs-chip energy">Magnética</span></div></div>
-                    <div class="ciclo-fase-section"><div class="cfs-label">Humor</div><div class="cfs-chips"><span class="cfs-chip mood">Confiante</span><span class="cfs-chip mood">Social</span></div></div>
-                    <div class="ciclo-fase-section"><div class="cfs-label">Cuidados</div><div class="cfs-chips"><span class="cfs-chip body">Pico de força</span><span class="cfs-chip body">Apresentações</span></div></div>
-                    <div class="ciclo-fase-section"><div class="cfs-label">Dica</div><div class="cfs-chips"><span class="cfs-chip tip">Você está no seu melhor! Faça reuniões importantes.</span></div></div>
-                  </div>
-                </div>
-                <div class="ciclo-fase-card">
-                  <div class="ciclo-fase-header lutea">
-                    <div class="cfh-icon lutea">🌙</div>
-                    <div><div class="cfh-title">Lútea / TPM</div><div class="cfh-days">Dias 17–28</div></div>
-                  </div>
-                  <div class="ciclo-fase-body">
-                    <div class="ciclo-fase-section"><div class="cfs-label">Energia</div><div class="cfs-chips"><span class="cfs-chip energy">Decrescente</span><span class="cfs-chip energy">Analítica</span></div></div>
-                    <div class="ciclo-fase-section"><div class="cfs-label">Humor</div><div class="cfs-chips"><span class="cfs-chip mood">Irritável</span><span class="cfs-chip mood">Sensível</span></div></div>
-                    <div class="ciclo-fase-section"><div class="cfs-label">Cuidados</div><div class="cfs-chips"><span class="cfs-chip body">Yoga</span><span class="cfs-chip body">Menos café</span></div></div>
-                    <div class="ciclo-fase-section"><div class="cfs-label">Dica</div><div class="cfs-chips"><span class="cfs-chip tip">Seja gentil com você. Seus sentimentos são válidos.</span></div></div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- PAINEL: Registro diário -->
-            <div class="ciclo-panel" data-ciclo-panel="registro">
-              <div class="ciclo-sec-title">Registro de hoje</div>
-              <div class="ciclo-registro-grid">
-                <div class="ciclo-reg-card">
-                  <div class="creg-header"><div class="creg-icon rose">🩸</div><span class="creg-title">Fluxo menstrual</span></div>
-                  <div class="ciclo-chips-sel">
-                    <div class="ciclo-chip-sel" data-group="fluxo">Sem fluxo</div>
-                    <div class="ciclo-chip-sel" data-group="fluxo">Leve</div>
-                    <div class="ciclo-chip-sel s-rose" data-group="fluxo">Moderado</div>
-                    <div class="ciclo-chip-sel" data-group="fluxo">Intenso</div>
-                    <div class="ciclo-chip-sel" data-group="fluxo">Coágulos</div>
-                  </div>
-                </div>
-                <div class="ciclo-reg-card">
-                  <div class="creg-header"><div class="creg-icon purple">😊</div><span class="creg-title">Humor do dia</span></div>
-                  <div class="ciclo-chips-sel">
-                    <div class="ciclo-chip-sel s-purple" data-group="humor">Ótima</div>
-                    <div class="ciclo-chip-sel" data-group="humor">Bem</div>
-                    <div class="ciclo-chip-sel" data-group="humor">Ansiosa</div>
-                    <div class="ciclo-chip-sel" data-group="humor">Irritada</div>
-                    <div class="ciclo-chip-sel" data-group="humor">Triste</div>
-                    <div class="ciclo-chip-sel" data-group="humor">Chorosa</div>
-                    <div class="ciclo-chip-sel" data-group="humor">Cansada</div>
-                    <div class="ciclo-chip-sel" data-group="humor">Feliz</div>
-                  </div>
-                </div>
-                <div class="ciclo-reg-card">
-                  <div class="creg-header"><div class="creg-icon amber">⚡</div><span class="creg-title">Sintomas físicos</span></div>
-                  <div class="ciclo-chips-sel">
-                    <div class="ciclo-chip-sel" data-group="sintomas">Cólica</div>
-                    <div class="ciclo-chip-sel s-amber" data-group="sintomas">Dor de cabeça</div>
-                    <div class="ciclo-chip-sel" data-group="sintomas">Inchaço</div>
-                    <div class="ciclo-chip-sel" data-group="sintomas">Náusea</div>
-                    <div class="ciclo-chip-sel" data-group="sintomas">Dor nas costas</div>
-                    <div class="ciclo-chip-sel" data-group="sintomas">Fadiga</div>
-                    <div class="ciclo-chip-sel" data-group="sintomas">Acne</div>
-                    <div class="ciclo-chip-sel" data-group="sintomas">Insônia</div>
-                  </div>
-                </div>
-                <div class="ciclo-reg-card">
-                  <div class="creg-header"><div class="creg-icon sage">⚡</div><span class="creg-title">Nível de energia</span></div>
-                  <div class="ciclo-slider-row">
-                    <div class="ciclo-sl-label"><span>Energia física</span><span id="ciclo-ef-val">6</span></div>
-                    <input type="range" style="width:100%;accent-color:#c9395f;" min="1" max="10" value="6" oninput="document.getElementById('ciclo-ef-val').textContent=this.value" data-persist-key="ciclo-energia-fisica" />
-                  </div>
-                  <div class="ciclo-slider-row">
-                    <div class="ciclo-sl-label"><span>Energia emocional</span><span id="ciclo-ee-val">5</span></div>
-                    <input type="range" style="width:100%;accent-color:#c9395f;" min="1" max="10" value="5" oninput="document.getElementById('ciclo-ee-val').textContent=this.value" data-persist-key="ciclo-energia-emocional" />
-                  </div>
-                  <div class="ciclo-slider-row">
-                    <div class="ciclo-sl-label"><span>Qualidade do sono</span><span id="ciclo-es-val">7</span></div>
-                    <input type="range" style="width:100%;accent-color:#c9395f;" min="1" max="10" value="7" oninput="document.getElementById('ciclo-es-val').textContent=this.value" data-persist-key="ciclo-sono" />
-                  </div>
-                </div>
-              </div>
-              <div class="panel" style="padding:16px 18px;">
-                <label style="font-size:9px;font-weight:500;letter-spacing:.09em;text-transform:uppercase;color:#b09aa8;display:block;margin-bottom:6px;">Como você está se sentindo hoje?</label>
-                <textarea data-persist-key="ciclo-nota-diaria" placeholder="Escreva livremente sobre como está sendo este dia do ciclo..." style="width:100%;min-height:80px;border:0.5px solid #f0dce6;border-radius:10px;padding:10px 12px;font-family:'DM Sans',sans-serif;font-size:13px;resize:none;outline:none;background:#fdf8f9;"></textarea>
-              </div>
-            </div>
-
-            <!-- PAINEL: TPM Tracker -->
-            <div class="ciclo-panel" data-ciclo-panel="tpm">
-              <div class="ciclo-sec-title">TPM Tracker</div>
-              <div class="ciclo-tpm-card">
-                <div class="ciclo-tpm-header">🧠 Intensidade dos sintomas — marque de 1 a 5</div>
-                <div class="ciclo-tpm-grid">
-                  <div class="ciclo-tpm-item"><div class="ciclo-tpm-label">😡 Irritabilidade</div><div class="ciclo-tpm-scale" data-tpm="irritabilidade"><div class="ciclo-tpm-dot active">1</div><div class="ciclo-tpm-dot active">2</div><div class="ciclo-tpm-dot">3</div><div class="ciclo-tpm-dot">4</div><div class="ciclo-tpm-dot">5</div></div></div>
-                  <div class="ciclo-tpm-item"><div class="ciclo-tpm-label">😢 Choro fácil</div><div class="ciclo-tpm-scale" data-tpm="choro"><div class="ciclo-tpm-dot active">1</div><div class="ciclo-tpm-dot active">2</div><div class="ciclo-tpm-dot active">3</div><div class="ciclo-tpm-dot">4</div><div class="ciclo-tpm-dot">5</div></div></div>
-                  <div class="ciclo-tpm-item"><div class="ciclo-tpm-label">🍕 Compulsão alimentar</div><div class="ciclo-tpm-scale" data-tpm="compulsao"><div class="ciclo-tpm-dot active">1</div><div class="ciclo-tpm-dot">2</div><div class="ciclo-tpm-dot">3</div><div class="ciclo-tpm-dot">4</div><div class="ciclo-tpm-dot">5</div></div></div>
-                  <div class="ciclo-tpm-item"><div class="ciclo-tpm-label">🤕 Dor de cabeça</div><div class="ciclo-tpm-scale" data-tpm="dor-cabeca"><div class="ciclo-tpm-dot">1</div><div class="ciclo-tpm-dot">2</div><div class="ciclo-tpm-dot">3</div><div class="ciclo-tpm-dot">4</div><div class="ciclo-tpm-dot">5</div></div></div>
-                  <div class="ciclo-tpm-item"><div class="ciclo-tpm-label">🫃 Inchaço abdominal</div><div class="ciclo-tpm-scale" data-tpm="inchaco"><div class="ciclo-tpm-dot active">1</div><div class="ciclo-tpm-dot active">2</div><div class="ciclo-tpm-dot">3</div><div class="ciclo-tpm-dot">4</div><div class="ciclo-tpm-dot">5</div></div></div>
-                  <div class="ciclo-tpm-item"><div class="ciclo-tpm-label">🪫 Fadiga intensa</div><div class="ciclo-tpm-scale" data-tpm="fadiga"><div class="ciclo-tpm-dot active">1</div><div class="ciclo-tpm-dot active">2</div><div class="ciclo-tpm-dot active">3</div><div class="ciclo-tpm-dot active">4</div><div class="ciclo-tpm-dot">5</div></div></div>
-                  <div class="ciclo-tpm-item"><div class="ciclo-tpm-label">💗 Sensibilidade nos seios</div><div class="ciclo-tpm-scale" data-tpm="seios"><div class="ciclo-tpm-dot active">1</div><div class="ciclo-tpm-dot">2</div><div class="ciclo-tpm-dot">3</div><div class="ciclo-tpm-dot">4</div><div class="ciclo-tpm-dot">5</div></div></div>
-                  <div class="ciclo-tpm-item"><div class="ciclo-tpm-label">🌙 Insônia</div><div class="ciclo-tpm-scale" data-tpm="insonia"><div class="ciclo-tpm-dot">1</div><div class="ciclo-tpm-dot">2</div><div class="ciclo-tpm-dot">3</div><div class="ciclo-tpm-dot">4</div><div class="ciclo-tpm-dot">5</div></div></div>
-                  <div class="ciclo-tpm-item"><div class="ciclo-tpm-label">😰 Ansiedade</div><div class="ciclo-tpm-scale" data-tpm="ansiedade"><div class="ciclo-tpm-dot active">1</div><div class="ciclo-tpm-dot active">2</div><div class="ciclo-tpm-dot">3</div><div class="ciclo-tpm-dot">4</div><div class="ciclo-tpm-dot">5</div></div></div>
-                </div>
-              </div>
-            </div>
-
-            <!-- PAINEL: Histórico -->
-            <div class="ciclo-panel" data-ciclo-panel="historico">
-              <div class="ciclo-sec-title">Histórico de ciclos</div>
-              <div class="ciclo-hist-card">
-                <div class="ciclo-hist-header">
-                  <span class="ciclo-hist-title">📊 Últimos ciclos registrados</span>
-                  <button class="ciclo-hist-btn" type="button" id="ciclo-add-hist">+ Novo registro</button>
-                </div>
-                <table class="ciclo-hist-table">
-                  <thead><tr>
-                    <th>Início</th><th>Duração ciclo</th><th>Duração fluxo</th><th>Fluxo</th><th>Sintomas</th><th>Regularidade</th>
-                  </tr></thead>
-                  <tbody id="ciclo-hist-body">
-                    <tr><td colspan="6" style="text-align:center;color:#b09aa8;padding:20px;">Nenhum ciclo registrado ainda. Clique em "Novo registro" para começar.</td></tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-
-          </article>
-          <!-- ═══ FIM CICLO MENSTRUAL ═══ -->
-
         </section>
 
         <section class="page-view" data-page-view="viagens" id="viagens">
           <div class="page-return-bar">
             <button class="ghost-button page-return-button" type="button" data-go-home>← Voltar</button>
-
           </div>
           <article class="panel module-card travel-card">
             <div class="panel-heading">
@@ -2542,55 +1900,19 @@
           <div class="page-return-bar">
             <button class="ghost-button page-return-button" type="button" data-go-home>← Voltar</button>
           </div>
-          <div class="vn-page vn-community">
-
-            <!-- ── Hero ─────────────────────────────────────── -->
-            <section class="vn-comm-hero">
-              <div class="vn-comm-hero__inner">
-                <div>
-                  <p class="vn-eyebrow">Comunidade Vida Nova</p>
-                  <h1 class="vn-comm-hero__title">
-                    <span>Juntas somos <em>mais fortes</em></span>
-                    <span class="vn-comm-hero__heart" aria-hidden="true">
-                      <svg viewBox="0 0 24 24" width="28" height="28" fill="var(--vn-pink)" stroke="var(--vn-pink)" stroke-width="1.5" stroke-linecap="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-                    </span>
-                  </h1>
-                  <p class="vn-comm-hero__sub">1.247 mulheres compartilhando fé, conquistas e jornadas reais.</p>
-                  <div class="vn-comm-hero__stats">
-                    <div><strong>1.247</strong><span>Membros</span></div>
-                    <div><strong>482</strong><span>Posts hoje</span></div>
-                    <div><strong>6</strong><span>Grupos</span></div>
-                  </div>
-                </div>
-                <div class="vn-comm-hero__decor" aria-hidden="true">
-                  <div class="vn-pile-stack">
-                    <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&q=80" alt="" class="vn-avatar vn-avatar--md" style="left:0" />
-                    <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=200&q=80" alt="" class="vn-avatar vn-avatar--md" style="left:22px" />
-                    <img src="https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=200&q=80" alt="" class="vn-avatar vn-avatar--md" style="left:44px" />
-                    <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=200&q=80" alt="" class="vn-avatar vn-avatar--md" style="left:66px" />
-                    <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=200&q=80" alt="" class="vn-avatar vn-avatar--md" style="left:88px" />
-                  </div>
-                </div>
-              </div>
-            </section>
-
-            <!-- ── Toolbar ───────────────────────────────────── -->
-            <div class="vn-comm-toolbar">
-              <label class="vn-search">
-                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="var(--vn-ink-3)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-                <input type="search" id="community-search-input" placeholder="Buscar posts..." aria-label="Buscar" />
-              </label>
-              <button class="vn-btn vn-btn--primary vn-comm-toolbar__post" type="button" id="community-new-post-btn">
-                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
-                <span>Novo post</span>
-              </button>
+          <div class="community-shell">
+            <!-- Header fixo da comunidade -->
+            <div class="community-header">
+              <h2 class="community-header-title">Comunidade</h2>
+              <span class="community-header-dot"></span>
+              <span class="community-header-live">ao vivo</span>
             </div>
 
-            <!-- ── Composer (hidden by default) ─────────────── -->
-            <div class="vn-composer-wrap" id="vn-composer-wrap" hidden>
-              <div class="vn-card" style="display:flex;gap:14px;align-items:flex-start;padding:18px 20px;">
-                <div class="vn-composer-avatar community-composer-avatar" id="community-composer-avatar">V</div>
-                <form id="community-post-form" class="community-post-form vn-composer-form">
+            <!-- Box de nova publicação -->
+            <div class="community-composer">
+              <div class="community-composer-top">
+                <div class="community-composer-avatar" id="community-composer-avatar">V</div>
+                <form id="community-post-form" class="community-post-form">
                   <textarea id="community-post-input" maxlength="600" placeholder="Compartilhe algo com a comunidade…"></textarea>
                   <div id="community-photo-preview" class="community-photo-preview" hidden>
                     <img id="community-photo-preview-img" src="" alt="Prévia" />
@@ -2616,129 +1938,8 @@
               </div>
             </div>
 
-            <!-- ── Filter pills ──────────────────────────────── -->
-            <div class="vn-pills" role="tablist" aria-label="Filtrar feed" id="vn-filter-pills">
-              <button class="vn-pill is-active" data-filter="all" role="tab" aria-selected="true">Tudo</button>
-              <button class="vn-pill" data-filter="oracao" role="tab" aria-selected="false">Oração</button>
-              <button class="vn-pill" data-filter="vitorias" role="tab" aria-selected="false">Vitórias</button>
-              <button class="vn-pill" data-filter="duvidas" role="tab" aria-selected="false">Dúvidas</button>
-              <button class="vn-pill" data-filter="recentes" role="tab" aria-selected="false">Recentes</button>
-            </div>
-
-            <!-- ── Two-column grid ───────────────────────────── -->
-            <div class="vn-comm-grid">
-
-              <!-- Feed -->
-              <div class="vn-feed">
-                <section id="community-feed" class="community-feed" aria-live="polite"></section>
-              </div>
-
-              <!-- Sidebar -->
-              <aside class="vn-comm-side" aria-label="Recursos da comunidade">
-
-                <!-- Grupos -->
-                <div class="vn-card vn-side-card">
-                  <div class="vn-side-card__head">
-                    <h3>Grupos para você</h3>
-                  </div>
-                  <ul class="vn-groups">
-                    <li>
-                      <button class="vn-group" type="button">
-                        <span class="vn-group__icon" style="background:#F4B6CD"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#7C2649" stroke-width="1.8" stroke-linecap="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></span>
-                        <span class="vn-group__body"><span class="vn-group__name">Círculo de Oração</span><span class="vn-group__meta">348 membros · Compartilhe pedidos</span></span>
-                        <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="var(--vn-ink-3)" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
-                      </button>
-                    </li>
-                    <li>
-                      <button class="vn-group" type="button">
-                        <span class="vn-group__icon" style="background:#FBCFE0"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#7C2649" stroke-width="1.8" stroke-linecap="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></span>
-                        <span class="vn-group__body"><span class="vn-group__name">Mães em Jornada</span><span class="vn-group__meta">412 membros · Maternidade e fé</span></span>
-                        <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="var(--vn-ink-3)" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
-                      </button>
-                    </li>
-                    <li>
-                      <button class="vn-group" type="button">
-                        <span class="vn-group__icon" style="background:#F8D5C2"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#7C2649" stroke-width="1.8" stroke-linecap="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></span>
-                        <span class="vn-group__body"><span class="vn-group__name">Mulheres & Finanças</span><span class="vn-group__meta">287 membros · Liberdade financeira</span></span>
-                        <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="var(--vn-ink-3)" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
-                      </button>
-                    </li>
-                    <li>
-                      <button class="vn-group" type="button">
-                        <span class="vn-group__icon" style="background:#F9CFD8"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#7C2649" stroke-width="1.8" stroke-linecap="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></span>
-                        <span class="vn-group__body"><span class="vn-group__name">Vida Saudável</span><span class="vn-group__meta">521 membros · Hábitos e nutrição</span></span>
-                        <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="var(--vn-ink-3)" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
-                      </button>
-                    </li>
-                  </ul>
-                </div>
-
-                <!-- Próximos encontros -->
-                <div class="vn-card vn-side-card">
-                  <div class="vn-side-card__head">
-                    <h3>Próximos encontros</h3>
-                  </div>
-                  <ul class="vn-events">
-                    <li class="vn-event">
-                      <div class="vn-event__date" style="background:#FBCFE0"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#7C2649" stroke-width="1.8"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></div>
-                      <div class="vn-event__body">
-                        <p class="vn-event__title">Live: Mulher virtuosa</p>
-                        <p class="vn-event__meta">Pra. Joana Ribeiro · Hoje · 20h</p>
-                        <p class="vn-event__attend">142 confirmadas</p>
-                      </div>
-                      <button class="vn-btn vn-btn--soft" type="button">Entrar</button>
-                    </li>
-                    <li class="vn-event">
-                      <div class="vn-event__date" style="background:#F8D5C2"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#7C2649" stroke-width="1.8"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></div>
-                      <div class="vn-event__body">
-                        <p class="vn-event__title">Workshop: 90 dias</p>
-                        <p class="vn-event__meta">Camila Rocha · Sáb · 10h</p>
-                        <p class="vn-event__attend">89 confirmadas</p>
-                      </div>
-                      <button class="vn-btn vn-btn--soft" type="button">Entrar</button>
-                    </li>
-                    <li class="vn-event">
-                      <div class="vn-event__date" style="background:#F4B6CD"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#7C2649" stroke-width="1.8"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></div>
-                      <div class="vn-event__body">
-                        <p class="vn-event__title">Roda de oração</p>
-                        <p class="vn-event__meta">Comunidade · Dom · 19h30</p>
-                        <p class="vn-event__attend">234 confirmadas</p>
-                      </div>
-                      <button class="vn-btn vn-btn--soft" type="button">Entrar</button>
-                    </li>
-                  </ul>
-                </div>
-
-                <!-- Inspirações da semana -->
-                <div class="vn-card vn-side-card">
-                  <div class="vn-side-card__head">
-                    <h3>Inspirações da semana</h3>
-                  </div>
-                  <ul class="vn-top">
-                    <li class="vn-top__row">
-                      <span class="vn-top__rank">1</span>
-                      <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=200&q=80" alt="" class="vn-avatar vn-avatar--sm" />
-                      <div><p>Júlia Castro</p><p class="vn-top__meta">47 posts inspiradores</p></div>
-                      <button class="vn-btn vn-btn--soft" type="button" style="font-size:12px;padding:6px 10px;">Seguir</button>
-                    </li>
-                    <li class="vn-top__row">
-                      <span class="vn-top__rank">2</span>
-                      <img src="https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=200&q=80" alt="" class="vn-avatar vn-avatar--sm" />
-                      <div><p>Mariana Lopes</p><p class="vn-top__meta">38 posts inspiradores</p></div>
-                      <button class="vn-btn vn-btn--soft" type="button" style="font-size:12px;padding:6px 10px;">Seguir</button>
-                    </li>
-                    <li class="vn-top__row">
-                      <span class="vn-top__rank">3</span>
-                      <img src="https://images.unsplash.com/photo-1554151228-14d9def656e4?w=200&q=80" alt="" class="vn-avatar vn-avatar--sm" />
-                      <div><p>Renata Souza</p><p class="vn-top__meta">31 posts inspiradores</p></div>
-                      <button class="vn-btn vn-btn--soft" type="button" style="font-size:12px;padding:6px 10px;">Seguir</button>
-                    </li>
-                  </ul>
-                </div>
-
-              </aside>
-            </div>
-
+            <!-- Feed -->
+            <section id="community-feed" class="community-feed" aria-live="polite"></section>
           </div>
         </section>
 
@@ -3595,195 +2796,6 @@
 
     <script src="script.js"></script>
     <script type="module" src="agenda-firebase.js"></script>
-    <script>
-    /* ═══ CICLO MENSTRUAL — JavaScript ═══ */
-    (function() {
-      // Abas do ciclo
-      document.querySelectorAll('.ciclo-tab').forEach(tab => {
-        tab.addEventListener('click', function() {
-          document.querySelectorAll('.ciclo-tab').forEach(t => t.classList.remove('active'));
-          document.querySelectorAll('.ciclo-panel').forEach(p => p.classList.remove('active'));
-          this.classList.add('active');
-          const target = this.dataset.cicloTab;
-          const panel = document.querySelector('[data-ciclo-panel="' + target + '"]');
-          if (panel) panel.classList.add('active');
-        });
-      });
-
-      // TPM tracker
-      document.querySelectorAll('.ciclo-tpm-scale').forEach(scale => {
-        const dots = scale.querySelectorAll('.ciclo-tpm-dot');
-        dots.forEach((dot, idx) => {
-          dot.addEventListener('click', function() {
-            dots.forEach((d, i) => {
-              d.classList.toggle('active', i <= idx);
-            });
-          });
-        });
-      });
-
-      // Chips de seleção
-      document.querySelectorAll('.ciclo-chip-sel').forEach(chip => {
-        chip.addEventListener('click', function() {
-          const group = this.dataset.group;
-          if (group) {
-            document.querySelectorAll('.ciclo-chip-sel[data-group="' + group + '"]').forEach(c => {
-              c.classList.remove('s-rose','s-purple','s-amber','s-sage');
-            });
-          }
-          const classes = ['s-rose','s-purple','s-amber','s-sage'];
-          const hasClass = classes.some(c => this.classList.contains(c));
-          if (!hasClass) {
-            if (group === 'fluxo' || group === 'sintomas') this.classList.add('s-rose');
-            else if (group === 'humor') this.classList.add('s-purple');
-            else this.classList.add('s-rose');
-          }
-        });
-      });
-
-      // Calendário do ciclo
-      let cicloCurrentDate = new Date();
-
-      function calcularFase(diaAtual, duracao) {
-        const d = parseInt(duracao) || 28;
-        if (diaAtual <= 5) return { fase: 'Menstrual', class: 'c-mens' };
-        if (diaAtual <= Math.floor(d * 0.46)) return { fase: 'Folicular', class: '' };
-        if (diaAtual <= Math.floor(d * 0.57)) return { fase: 'Fértil', class: 'c-fertil' };
-        if (diaAtual === Math.floor(d * 0.5) + 1) return { fase: 'Ovulação', class: 'c-ovul' };
-        if (diaAtual >= Math.floor(d * 0.75)) return { fase: 'TPM', class: 'c-tpm' };
-        return { fase: 'Lútea', class: '' };
-      }
-
-      function renderCicloCal() {
-        const grid = document.getElementById('ciclo-cal-grid');
-        const title = document.getElementById('ciclo-cal-month-title');
-        if (!grid || !title) return;
-
-        const year = cicloCurrentDate.getFullYear();
-        const month = cicloCurrentDate.getMonth();
-        const meses = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
-        title.textContent = meses[month] + ' de ' + year;
-
-        const ultimoInicio = document.querySelector('[data-persist-key="ciclo-ultimo-inicio"]');
-        const duracaoInput = document.querySelector('[data-persist-key="ciclo-duracao"]');
-        const fluxoInput = document.querySelector('[data-persist-key="ciclo-fluxo-duracao"]');
-        const duracao = parseInt(duracaoInput?.value) || 28;
-        const fluxo = parseInt(fluxoInput?.value) || 5;
-        const inicioData = ultimoInicio?.value ? new Date(ultimoInicio.value + 'T00:00:00') : null;
-
-        const firstDay = new Date(year, month, 1).getDay();
-        const daysInMonth = new Date(year, month + 1, 0).getDate();
-        const today = new Date();
-
-        let html = '';
-        for (let i = 0; i < firstDay; i++) html += '<div class="ciclo-cal-cell"></div>';
-
-        for (let day = 1; day <= daysInMonth; day++) {
-          const cellDate = new Date(year, month, day);
-          let classes = 'ciclo-cal-cell';
-          let phaseLabel = '';
-
-          if (inicioData) {
-            const diff = Math.floor((cellDate - inicioData) / 86400000);
-            if (diff >= 0) {
-              const diaNoAtual = (diff % duracao) + 1;
-              const fase = calcularFase(diaNoAtual, duracao);
-              if (fase.class) { classes += ' ' + fase.class; phaseLabel = fase.fase; }
-            }
-          }
-
-          if (cellDate.toDateString() === today.toDateString()) classes += ' c-today';
-
-          html += '<div class="' + classes + '"><div class="ciclo-cal-num">' + day + '</div>';
-          if (phaseLabel) html += '<div class="ciclo-cal-phase">' + phaseLabel.substring(0,4).toLowerCase() + '.</div>';
-          html += '</div>';
-        }
-
-        grid.innerHTML = html;
-      }
-
-      function atualizarFaseAtual() {
-        const ultimoInicio = document.querySelector('[data-persist-key="ciclo-ultimo-inicio"]');
-        const duracaoInput = document.querySelector('[data-persist-key="ciclo-duracao"]');
-        if (!ultimoInicio?.value) return;
-
-        const duracao = parseInt(duracaoInput?.value) || 28;
-        const inicio = new Date(ultimoInicio.value + 'T00:00:00');
-        const hoje = new Date();
-        const diff = Math.floor((hoje - inicio) / 86400000);
-        const diaAtual = (diff % duracao) + 1;
-
-        // Fase atual
-        const fases = [
-          { max: 5, nome: 'Menstrual', desc: 'Descanse, seu corpo está trabalhando' },
-          { max: Math.floor(duracao * 0.46), nome: 'Folicular', desc: 'Energia crescente, foco e criatividade' },
-          { max: Math.floor(duracao * 0.57), nome: 'Ovulatória', desc: 'Pico de energia e magnetismo' },
-          { max: duracao, nome: 'Lútea / TPM', desc: 'Seja gentil com você' },
-        ];
-        let faseAtual = fases[fases.length - 1];
-        for (const f of fases) { if (diaAtual <= f.max) { faseAtual = f; break; } }
-
-        const faseEl = document.getElementById('cfa-fase');
-        const descEl = document.getElementById('cfa-desc');
-        const barEl = document.getElementById('cfa-bar');
-        const ovulEl = document.getElementById('cfa-ovulacao');
-        const proxMensEl = document.getElementById('cfa-prox-mens');
-        const proxDataEl = document.getElementById('cfa-prox-data');
-
-        if (faseEl) faseEl.textContent = faseAtual.nome;
-        if (descEl) descEl.textContent = faseAtual.desc;
-        if (barEl) barEl.style.width = Math.min(100, Math.round(diaAtual / duracao * 100)) + '%';
-
-        const diaOvul = Math.floor(duracao / 2);
-        const diasAteOvul = diaOvul - diaAtual;
-        if (ovulEl) ovulEl.textContent = diasAteOvul > 0 ? 'Em ' + diasAteOvul + ' dias' : (diasAteOvul === 0 ? 'Hoje!' : 'Passou');
-
-        const diasAteMens = duracao - diaAtual;
-        const proxMens = new Date(hoje);
-        proxMens.setDate(proxMens.getDate() + diasAteMens);
-        if (proxMensEl) proxMensEl.textContent = 'Em ' + diasAteMens + ' dias';
-        if (proxDataEl) proxDataEl.textContent = proxMens.toLocaleDateString('pt-BR', { day:'2-digit', month:'long', year:'numeric' });
-
-        // Card sumário
-        const prevEl = document.getElementById('ciclo-proxima-previsao');
-        if (prevEl) prevEl.textContent = proxMens.toLocaleDateString('pt-BR', { day:'2-digit', month:'short' });
-      }
-
-      // Navegação do calendário
-      const prevBtn = document.getElementById('ciclo-prev-month');
-      const nextBtn = document.getElementById('ciclo-next-month');
-      if (prevBtn) prevBtn.addEventListener('click', () => { cicloCurrentDate.setMonth(cicloCurrentDate.getMonth() - 1); renderCicloCal(); });
-      if (nextBtn) nextBtn.addEventListener('click', () => { cicloCurrentDate.setMonth(cicloCurrentDate.getMonth() + 1); renderCicloCal(); });
-
-      // Observar mudanças nas datas
-      ['ciclo-ultimo-inicio','ciclo-duracao','ciclo-fluxo-duracao'].forEach(key => {
-        const el = document.querySelector('[data-persist-key="' + key + '"]');
-        if (el) el.addEventListener('change', () => { renderCicloCal(); atualizarFaseAtual(); });
-      });
-
-      // Adicionar ao histórico
-      const addHistBtn = document.getElementById('ciclo-add-hist');
-      if (addHistBtn) {
-        addHistBtn.addEventListener('click', () => {
-          const body = document.getElementById('ciclo-hist-body');
-          if (!body) return;
-          const row = body.querySelector('td[colspan]');
-          if (row) row.closest('tr').remove();
-          const tr = document.createElement('tr');
-          const hoje = new Date().toLocaleDateString('pt-BR');
-          tr.innerHTML = '<td><input type="date" style="border:none;background:none;font-size:12px;" value="' + new Date().toISOString().split('T')[0] + '" /></td><td><input type="text" placeholder="28 dias" style="border:none;background:none;font-size:12px;width:80px;" /></td><td><input type="text" placeholder="5 dias" style="border:none;background:none;font-size:12px;width:70px;" /></td><td><select style="border:none;background:none;font-size:12px;"><option>Leve</option><option selected>Moderado</option><option>Intenso</option></select></td><td><input type="text" placeholder="Sintomas..." style="border:none;background:none;font-size:12px;width:120px;" /></td><td><span class="ciclo-hist-badge normal">Regular</span></td>';
-          body.prepend(tr);
-        });
-      }
-
-      // Inicializar
-      setTimeout(() => {
-        renderCicloCal();
-        atualizarFaseAtual();
-      }, 500);
-
-    })();
-    </script>
 
 </body>
 </html>

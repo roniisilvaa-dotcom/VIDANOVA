@@ -2,16 +2,15 @@
   "version": 2,
   "buildCommand": "npm run build",
   "installCommand": "npm ci --omit=dev",
-  "outputDirectory": ".",
   "functions": {
-    "api/server.js": {
+    "server.js": {
       "maxDuration": 30,
       "memory": 256
     }
   },
   "routes": [
-    { "src": "/api/(.*)",     "dest": "/api/server.js" },
-    { "src": "/version.json", "dest": "/api/server.js" },
+    { "src": "/api/(.*)",     "dest": "/server.js" },
+    { "src": "/version.json", "dest": "/server.js" },
     { "src": "/(.*)",         "dest": "/$1" }
   ]
 }
