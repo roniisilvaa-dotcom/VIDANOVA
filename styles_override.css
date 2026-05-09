@@ -884,3 +884,556 @@ body:not(.agenda-tab-active) .workspace-card::after {
     font-size: 13px !important;
   }
 }
+
+/* Identidade visual global: mesma linguagem elegante da tela inicial */
+:root {
+  --vn-ink: #1f2035;
+  --vn-muted: #727891;
+  --vn-pink: #d13f82;
+  --vn-pink-soft: #fae7f0;
+  --vn-pink-wash: #fff7fb;
+  --vn-border: rgba(209, 63, 130, 0.14);
+  --vn-shadow: 0 22px 70px rgba(122, 82, 103, 0.09);
+  --vn-soft-shadow: 0 14px 34px rgba(122, 82, 103, 0.07);
+}
+
+body {
+  color: var(--vn-ink) !important;
+  background:
+    radial-gradient(circle at 12% 8%, rgba(250, 218, 230, 0.48), transparent 30%),
+    radial-gradient(circle at 88% 18%, rgba(255, 244, 249, 0.95), transparent 34%),
+    linear-gradient(180deg, #fffafb 0%, #fff7fa 48%, #ffffff 100%) !important;
+}
+
+.main-content {
+  background: transparent !important;
+}
+
+.page-view {
+  color: var(--vn-ink) !important;
+}
+
+.page-view.is-active {
+  animation: vnSoftIn 0.24s ease both;
+}
+
+@keyframes vnSoftIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.page-return-bar {
+  margin-bottom: 18px !important;
+}
+
+.page-return-button,
+.ghost-button,
+.primary-button,
+.module-open-button,
+.fin-add-row-btn,
+.fin-add-meta-btn,
+.fin-cc-add-main-btn,
+.community-action-button,
+.community-publish-btn,
+.community-upload-button,
+.community-comment-form button,
+[data-dyntable-add] {
+  border-radius: 999px !important;
+  font-weight: 500 !important;
+  letter-spacing: 0 !important;
+}
+
+.primary-button,
+.community-publish-btn,
+.fin-add-meta-btn,
+.fin-cc-add-main-btn {
+  border: 0 !important;
+  background: linear-gradient(135deg, #cf2d76, #ee6f9a) !important;
+  color: #fff !important;
+  box-shadow: 0 16px 36px rgba(209, 63, 130, 0.22) !important;
+}
+
+.ghost-button,
+.page-return-button,
+.module-open-button,
+.fin-add-row-btn,
+.community-action-button,
+.community-upload-button,
+[data-dyntable-add] {
+  border: 1px solid var(--vn-border) !important;
+  background: rgba(255, 255, 255, 0.74) !important;
+  color: var(--vn-pink) !important;
+  box-shadow: none !important;
+}
+
+.panel,
+.module-card,
+.agenda-events-card,
+.agenda-summary-card,
+.detail-card,
+.project-card,
+.finance-card,
+.fin-summary-card,
+.fin-section-block,
+.calculator-card,
+.fin-desejo-col,
+.fin-mensal-section,
+.fin-balanco-card,
+.fin-meta-modal-box,
+.fin-cc-modal-box,
+.settings-panel,
+.settings-card,
+.community-composer,
+.community-post-card,
+.home-card,
+.study-books-card,
+.dream-board,
+.planner-spotlight-card,
+.planner-week-card,
+.planner-summary-band,
+.planner-goal-card,
+.planner-dreams-panel,
+.planner-goals-panel {
+  border: 1px solid var(--vn-border) !important;
+  border-radius: 26px !important;
+  background: rgba(255, 255, 255, 0.84) !important;
+  box-shadow: var(--vn-soft-shadow) !important;
+  color: var(--vn-ink) !important;
+}
+
+.module-card,
+.settings-panel,
+.planner-page-shell,
+.finance-card,
+.home-card {
+  box-shadow: var(--vn-shadow) !important;
+}
+
+.panel-heading {
+  align-items: flex-start !important;
+  gap: 16px !important;
+  border-color: rgba(209, 63, 130, 0.10) !important;
+}
+
+.panel-heading h2,
+.panel-heading h3,
+.study-section-title,
+.fin-section-title,
+.fin-desejo-col-title,
+.fin-mensal-title,
+.settings-card h4,
+.community-header-title,
+.planner-hero-copy h2,
+.planner-card-header strong,
+.agenda-summary-card h4,
+.project-card h4 {
+  color: var(--vn-ink) !important;
+  font-weight: 500 !important;
+  letter-spacing: 0 !important;
+}
+
+.eyebrow,
+.metric-label,
+.fin-card-label,
+.field-label,
+.settings-card p,
+.panel-heading p,
+.community-header-live,
+.community-post-time,
+.community-comment-time,
+.mini-list,
+.workspace-hidden-metrics small {
+  color: var(--vn-muted) !important;
+  font-weight: 400 !important;
+  letter-spacing: 0.02em !important;
+}
+
+input,
+textarea,
+select,
+.summary-input,
+.compact-area,
+.finance-notes-input,
+.fin-card-input,
+.fin-mensal-notes,
+.planner-input,
+.planner-task-input,
+.settings-form input,
+.settings-form textarea,
+.settings-form select,
+.community-composer textarea,
+.community-comment-form input {
+  min-width: 0 !important;
+  border: 1px solid rgba(209, 63, 130, 0.13) !important;
+  border-radius: 18px !important;
+  background: rgba(255, 255, 255, 0.82) !important;
+  color: var(--vn-ink) !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.55) !important;
+  font-weight: 400 !important;
+}
+
+input:focus,
+textarea:focus,
+select:focus,
+.summary-input:focus,
+.compact-area:focus {
+  border-color: rgba(209, 63, 130, 0.42) !important;
+  box-shadow: 0 0 0 4px rgba(209, 63, 130, 0.08) !important;
+  outline: 0 !important;
+}
+
+.tab-buttons,
+.planner-tab-ribbon,
+.casa-tab-ribbon,
+.finance-chip-row {
+  gap: 10px !important;
+}
+
+.tab-buttons .ghost-button,
+.planner-tab,
+.casa-tab,
+.finance-chip,
+.agenda-view-tab {
+  border: 1px solid var(--vn-border) !important;
+  border-radius: 999px !important;
+  background: rgba(255, 255, 255, 0.76) !important;
+  color: #7d7284 !important;
+  font-weight: 400 !important;
+  box-shadow: none !important;
+}
+
+.tab-buttons .ghost-button.is-active,
+.planner-tab.is-active,
+.casa-tab.is-active,
+.finance-chip.is-active,
+.agenda-view-tab.is-active {
+  border-color: transparent !important;
+  background: linear-gradient(135deg, #cf2d76, #ee6f9a) !important;
+  color: #fff !important;
+  box-shadow: 0 12px 26px rgba(209, 63, 130, 0.18) !important;
+}
+
+.planner-hero-banner,
+.fin-saldo-banner,
+.profile-hero,
+.community-header,
+.verse-banner {
+  border: 1px solid var(--vn-border) !important;
+  border-radius: 28px !important;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.86), rgba(255, 246, 250, 0.92)),
+    radial-gradient(circle at 92% 0%, rgba(250, 218, 230, 0.5), transparent 34%) !important;
+  box-shadow: var(--vn-soft-shadow) !important;
+}
+
+.planner-card-header,
+.cursos-card-header,
+.casa-tab-ribbon,
+.fin-mensal-header,
+.hist-header,
+.casa-market-cat-header,
+.casa-clean-card-header,
+.casa-room-card-header,
+.corpo-workout-day-header,
+.corpo-beleza-card-header,
+.corpo-routine-period,
+.module-hero {
+  border: 1px solid rgba(209, 63, 130, 0.10) !important;
+  background: linear-gradient(135deg, rgba(255, 239, 246, 0.94), rgba(255, 250, 252, 0.98)) !important;
+  color: var(--vn-pink) !important;
+  box-shadow: none !important;
+}
+
+.planner-card-header span,
+.cursos-item-icon,
+.rc-icon,
+.cs-icon,
+.community-avatar,
+.community-composer-avatar,
+.mobile-verse-card > span {
+  background: var(--vn-pink-soft) !important;
+  color: var(--vn-pink) !important;
+}
+
+.fin-summary-cards,
+.finance-form-grid,
+.finance-detail-grid,
+.study-books-grid,
+.postit-grid,
+.project-grid,
+.structured-card-grid,
+.planner-top-grid,
+.planner-week-grid,
+.goal-horizon-grid,
+.corpo-before-after,
+.corpo-workout-grid,
+.corpo-saude-grid,
+.corpo-beleza-grid,
+.cursos-grid,
+.fin-desejos-columns,
+.fin-balanco-grid,
+.settings-grid {
+  width: 100% !important;
+  min-width: 0 !important;
+}
+
+.home-table-shell,
+.study-table-shell,
+.finance-table-shell,
+.fin-table-scroll,
+.corpo-measures-table-shell {
+  max-width: 100% !important;
+  overflow-x: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+}
+
+.home-table,
+.finance-table,
+.fin-annual-table,
+.fin-desejos-table,
+.fin-mensal-table,
+.corpo-measures-table,
+.corpo-exercise-table,
+.corpo-saude-table,
+.study-books-table {
+  border-collapse: separate !important;
+  border-spacing: 0 !important;
+  color: var(--vn-ink) !important;
+}
+
+.home-table th,
+.finance-table th,
+.fin-annual-table th,
+.fin-desejos-table th,
+.fin-mensal-table th,
+.corpo-measures-table th,
+.corpo-exercise-table th,
+.corpo-saude-table th,
+.study-books-table th {
+  background: var(--vn-pink-wash) !important;
+  color: #8b7f90 !important;
+  font-weight: 500 !important;
+  border-color: rgba(209, 63, 130, 0.10) !important;
+}
+
+.home-table td,
+.finance-table td,
+.fin-annual-table td,
+.fin-desejos-table td,
+.fin-mensal-table td,
+.corpo-measures-table td,
+.corpo-exercise-table td,
+.corpo-saude-table td,
+.study-books-table td {
+  border-color: rgba(209, 63, 130, 0.08) !important;
+}
+
+.fin-card-value,
+.fin-balanco-item strong,
+.detail-card strong,
+.planner-dream-board-copy strong,
+.community-post-author,
+.settings-profile-name,
+.mobile-user-name,
+.desktop-user-info strong {
+  color: var(--vn-ink) !important;
+  font-weight: 500 !important;
+}
+
+.fin-card-entradas,
+.fin-card-custos,
+.fin-card-dividas,
+.fin-card-invest,
+.corpo-before-card,
+.corpo-after-card,
+.corpo-feeling-block,
+.corpo-challenge-block,
+.corpo-saude-card,
+.corpo-beleza-card,
+.cursos-card,
+.casa-market-cat,
+.casa-clean-card,
+.casa-room-card,
+.reforma-card {
+  border: 1px solid var(--vn-border) !important;
+  background: rgba(255, 255, 255, 0.84) !important;
+  color: var(--vn-ink) !important;
+}
+
+.fin-color-entradas,
+.fin-color-fixos,
+.fin-color-variaveis,
+.fin-color-dividas,
+.fin-color-investimentos,
+.fin-color-desejos,
+.fin-color-metas {
+  color: var(--vn-pink) !important;
+}
+
+.calculator-grid .calc-key,
+.tpm-dot,
+.rchip {
+  border: 1px solid var(--vn-border) !important;
+  background: rgba(255, 255, 255, 0.86) !important;
+  color: var(--vn-ink) !important;
+  font-weight: 400 !important;
+}
+
+.calculator-grid .calc-operator,
+.calculator-grid .calc-equals,
+.tpm-dot.active,
+.rchip.sel,
+.rchip.sel-purple,
+.rchip.sel-amber,
+.rchip.sel-sage {
+  background: linear-gradient(135deg, #cf2d76, #ee6f9a) !important;
+  color: #fff !important;
+  border-color: transparent !important;
+}
+
+.community-shell {
+  max-width: 760px !important;
+}
+
+.community-post-photo,
+.community-post-photo-wrap img,
+.planner-dream-board-grid img,
+.project-attachments img {
+  border-radius: 22px !important;
+}
+
+.app-bottom-nav {
+  border-top: 1px solid rgba(209, 63, 130, 0.10) !important;
+  background: rgba(255, 250, 252, 0.92) !important;
+  backdrop-filter: blur(18px) !important;
+}
+
+.app-bottom-nav button,
+.mobile-bottom-nav button {
+  color: #6f7388 !important;
+  font-weight: 400 !important;
+}
+
+.app-bottom-nav button.is-active,
+.mobile-bottom-nav button.is-active {
+  color: var(--vn-pink) !important;
+}
+
+@media (max-width: 900px) {
+  .page-view.is-active {
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow-x: hidden !important;
+  }
+
+  .panel,
+  .module-card,
+  .settings-panel,
+  .planner-page-shell,
+  .finance-card,
+  .home-card {
+    border-radius: 24px !important;
+    padding: 18px !important;
+  }
+
+  .panel-heading h2,
+  .panel-heading h3 {
+    font-size: clamp(1.18rem, 6vw, 1.65rem) !important;
+    line-height: 1.1 !important;
+  }
+
+  .fin-summary-cards,
+  .study-books-grid,
+  .postit-grid,
+  .project-grid,
+  .structured-card-grid,
+  .planner-top-grid,
+  .planner-week-grid,
+  .goal-horizon-grid,
+  .corpo-before-after,
+  .corpo-workout-grid,
+  .corpo-saude-grid,
+  .corpo-beleza-grid,
+  .cursos-grid,
+  .fin-desejos-columns,
+  .fin-balanco-grid,
+  .settings-grid {
+    grid-template-columns: 1fr !important;
+    gap: 14px !important;
+  }
+
+  .tab-buttons,
+  .planner-tab-ribbon,
+  .casa-tab-ribbon,
+  .finance-chip-row {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+    margin-left: -4px !important;
+    margin-right: -4px !important;
+    padding: 2px 4px 10px !important;
+    scrollbar-width: none !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+
+  .tab-buttons::-webkit-scrollbar,
+  .planner-tab-ribbon::-webkit-scrollbar,
+  .casa-tab-ribbon::-webkit-scrollbar,
+  .finance-chip-row::-webkit-scrollbar {
+    display: none !important;
+  }
+
+  .tab-buttons .ghost-button,
+  .planner-tab,
+  .casa-tab,
+  .finance-chip,
+  .agenda-view-tab {
+    flex: 0 0 auto !important;
+    white-space: nowrap !important;
+  }
+
+  input,
+  textarea,
+  select,
+  button {
+    max-width: 100% !important;
+  }
+
+  .community-shell {
+    max-width: 100% !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .main-content {
+    padding-left: 14px !important;
+    padding-right: 14px !important;
+  }
+
+  .panel,
+  .module-card,
+  .settings-panel,
+  .planner-page-shell,
+  .finance-card,
+  .home-card {
+    padding: 16px 14px !important;
+    border-radius: 22px !important;
+  }
+
+  .page-return-button {
+    min-height: 42px !important;
+    padding: 10px 15px !important;
+  }
+
+  .home-table,
+  .finance-table,
+  .fin-annual-table,
+  .fin-desejos-table,
+  .fin-mensal-table,
+  .corpo-measures-table,
+  .corpo-exercise-table,
+  .corpo-saude-table,
+  .study-books-table {
+    min-width: 680px !important;
+  }
+}

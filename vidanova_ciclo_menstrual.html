@@ -235,6 +235,131 @@ body{padding:14px 12px 28px;overflow-x:hidden;}
 .registro-grid{grid-template-columns:1fr;}
 .tpm-grid,.config-grid{grid-template-columns:repeat(2,1fr);}
 }
+
+/* Acabamento Vida Nova: mesma identidade visual da tela inicial */
+:root{
+  --vn-ink:#1f2035;
+  --vn-muted:#727891;
+  --vn-pink:#d13f82;
+  --vn-border:rgba(209,63,130,.14);
+  --vn-wash:#fff7fb;
+  --vn-shadow:0 18px 48px rgba(122,82,103,.08);
+}
+body{
+  color:var(--vn-ink);
+  background:
+    radial-gradient(circle at 12% 8%, rgba(250,218,230,.48), transparent 30%),
+    linear-gradient(180deg,#fffafb 0%,#fff7fa 48%,#fff 100%);
+}
+.module-hero,
+.fase-atual{
+  border:1px solid var(--vn-border);
+  background:linear-gradient(135deg,rgba(255,255,255,.88),rgba(255,246,250,.94)) !important;
+  box-shadow:var(--vn-shadow);
+}
+.hero-eye,
+.fa-label,
+.fa-sub{
+  color:var(--vn-muted) !important;
+}
+.hero-title,
+.fa-value{
+  color:var(--vn-ink) !important;
+  font-weight:500;
+}
+.hero-icon,
+.cal-arrow,
+.cs-icon,
+.fh-icon,
+.rc-icon,
+.cc-btn{
+  background:#fae7f0 !important;
+}
+.hero-icon i,
+.cal-arrow i,
+.cs-icon i,
+.fh-icon i,
+.rc-icon i,
+.cc-btn i,
+.sec-title,
+.hist-header-left i,
+.hist-header-left span,
+.tpm-header i{
+  color:var(--vn-pink) !important;
+}
+.tab,
+.cycle-stat,
+.cal-card,
+.fase-card,
+.reg-card,
+.config-card,
+.historico-card,
+.tpm-card,
+.tpm-item,
+.textarea-field,
+.input-field{
+  border:1px solid var(--vn-border) !important;
+  background:rgba(255,255,255,.84) !important;
+  box-shadow:var(--vn-shadow);
+}
+.tab{
+  box-shadow:none;
+  font-weight:400;
+}
+.tab.active,
+.rchip.sel,
+.rchip.sel-purple,
+.rchip.sel-amber,
+.rchip.sel-sage,
+.tpm-dot.active,
+.hist-header button{
+  border-color:transparent !important;
+  background:linear-gradient(135deg,#cf2d76,#ee6f9a) !important;
+  color:#fff !important;
+}
+.sec-title::after,
+.cal-header,
+.hist-header,
+.hist-table th,
+.hist-table td{
+  border-color:rgba(209,63,130,.10) !important;
+  background-color:transparent;
+}
+.cal-cell.menstruacao,
+.cal-cell.fertil,
+.cal-cell.ovulacao,
+.cal-cell.tpm,
+.fase-header,
+.hist-header{
+  background:var(--vn-wash) !important;
+}
+.cal-num,
+.fh-title,
+.rc-title,
+.cc-num,
+.tpm-header span,
+.hist-table td{
+  color:var(--vn-ink) !important;
+  font-weight:500;
+}
+.cs-label,
+.fh-days,
+.fs-label,
+.field-label,
+.cc-label,
+.cc-sub,
+.hist-table th,
+.leg-item,
+.cal-day-name{
+  color:var(--vn-muted) !important;
+  font-weight:400;
+}
+.textarea-field:focus,
+.input-field:focus,
+.cs-input:focus{
+  border-color:rgba(209,63,130,.42) !important;
+  box-shadow:0 0 0 4px rgba(209,63,130,.08) !important;
+}
 </style>
 </head>
 <body>
