@@ -45,10 +45,9 @@
     
     <!-- Stylesheets -->
     <link rel="stylesheet" href="styles.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@300;400;500;600&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@300;400;500;600&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles_override.css" />
   <link rel="stylesheet" href="styles_redesign.css" />
-  <link rel="stylesheet" href="styles_community.css" />
   </head>
   <body>
     <div id="vn-splash" style="position:fixed;inset:0;z-index:9999;background:linear-gradient(135deg,#c55b84,#e8829a);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;transition:opacity .5s ease">
@@ -1832,11 +1831,265 @@
             </div>
             <ul id="body-preview-list" class="mini-list module-preview-list" style="display:none"></ul>
           </article>
+
+          <!-- ═══ CICLO MENSTRUAL ═══ -->
+          <article class="panel" id="ciclo-module" style="margin-top:24px;">
+            <div class="ciclo-hero">
+              <div class="ciclo-hero-icon">
+                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+              </div>
+              <div>
+                <div class="ciclo-hero-eye">Saúde feminina</div>
+                <div class="ciclo-hero-title">Calendário do ciclo menstrual</div>
+              </div>
+            </div>
+
+            <!-- Abas -->
+            <div class="ciclo-tabs">
+              <div class="ciclo-tab active" data-ciclo-tab="calendario">📅 Calendário</div>
+              <div class="ciclo-tab" data-ciclo-tab="fases">🌸 Fases do ciclo</div>
+              <div class="ciclo-tab" data-ciclo-tab="registro">✏️ Registro diário</div>
+              <div class="ciclo-tab" data-ciclo-tab="tpm">🧠 TPM tracker</div>
+              <div class="ciclo-tab" data-ciclo-tab="historico">📊 Histórico</div>
+            </div>
+
+            <!-- PAINEL: Calendário -->
+            <div class="ciclo-panel active" data-ciclo-panel="calendario">
+              <div class="ciclo-sec-title">Resumo do meu ciclo</div>
+              <div class="ciclo-summary">
+                <div class="ciclo-stat">
+                  <div class="ciclo-stat-icon rose">🩸</div>
+                  <input type="number" data-persist-key="ciclo-duracao" placeholder="28" min="20" max="45" />
+                  <div class="ciclo-stat-label">Duração do ciclo (dias)</div>
+                </div>
+                <div class="ciclo-stat">
+                  <div class="ciclo-stat-icon purple">📅</div>
+                  <input type="number" data-persist-key="ciclo-fluxo-duracao" placeholder="5" min="2" max="10" />
+                  <div class="ciclo-stat-label">Duração do fluxo (dias)</div>
+                </div>
+                <div class="ciclo-stat">
+                  <div class="ciclo-stat-icon sage">✅</div>
+                  <input type="date" data-persist-key="ciclo-ultimo-inicio" style="font-size:13px !important;" />
+                  <div class="ciclo-stat-label">Último início</div>
+                </div>
+                <div class="ciclo-stat">
+                  <div class="ciclo-stat-icon amber">🎯</div>
+                  <div class="ciclo-stat-value" id="ciclo-proxima-previsao">—</div>
+                  <div class="ciclo-stat-label">Próxima menstruação</div>
+                </div>
+              </div>
+
+              <!-- Fase atual -->
+              <div class="ciclo-sec-title">Fase atual</div>
+              <div class="ciclo-fase-atual" id="ciclo-fase-atual-card">
+                <div>
+                  <div class="cfa-label">Fase</div>
+                  <div class="cfa-value" id="cfa-fase">—</div>
+                  <div class="cfa-sub" id="cfa-desc">Configure suas datas acima</div>
+                  <div class="cfa-bar-wrap"><div class="cfa-bar" id="cfa-bar" style="width:0%"></div></div>
+                </div>
+                <div>
+                  <div class="cfa-label">Próxima ovulação</div>
+                  <div class="cfa-value" id="cfa-ovulacao">—</div>
+                  <div class="cfa-sub">Período de maior fertilidade</div>
+                </div>
+                <div>
+                  <div class="cfa-label">Próxima menstruação</div>
+                  <div class="cfa-value" id="cfa-prox-mens">—</div>
+                  <div class="cfa-sub" id="cfa-prox-data">—</div>
+                </div>
+              </div>
+
+              <!-- Calendário visual -->
+              <div class="ciclo-sec-title">Calendário</div>
+              <div class="ciclo-cal-card">
+                <div class="ciclo-cal-header">
+                  <div class="ciclo-cal-nav">
+                    <button class="ciclo-cal-arrow" id="ciclo-prev-month" type="button">‹</button>
+                    <div class="ciclo-cal-month" id="ciclo-cal-month-title">—</div>
+                    <button class="ciclo-cal-arrow" id="ciclo-next-month" type="button">›</button>
+                  </div>
+                  <div class="ciclo-cal-legend">
+                    <div class="ciclo-leg-item"><div class="ciclo-leg-dot mens"></div>Menstruação</div>
+                    <div class="ciclo-leg-item"><div class="ciclo-leg-dot fertil"></div>Fértil</div>
+                    <div class="ciclo-leg-item"><div class="ciclo-leg-dot ovul"></div>Ovulação</div>
+                    <div class="ciclo-leg-item"><div class="ciclo-leg-dot tpm"></div>TPM</div>
+                  </div>
+                </div>
+                <div class="ciclo-cal-days-header">
+                  <div class="ciclo-cal-day-name">Dom</div><div class="ciclo-cal-day-name">Seg</div>
+                  <div class="ciclo-cal-day-name">Ter</div><div class="ciclo-cal-day-name">Qua</div>
+                  <div class="ciclo-cal-day-name">Qui</div><div class="ciclo-cal-day-name">Sex</div>
+                  <div class="ciclo-cal-day-name">Sáb</div>
+                </div>
+                <div class="ciclo-cal-grid" id="ciclo-cal-grid"></div>
+              </div>
+            </div>
+
+            <!-- PAINEL: Fases do ciclo -->
+            <div class="ciclo-panel" data-ciclo-panel="fases">
+              <div class="ciclo-sec-title">As 4 fases do seu ciclo</div>
+              <div class="ciclo-fases-grid">
+                <div class="ciclo-fase-card">
+                  <div class="ciclo-fase-header mens">
+                    <div class="cfh-icon mens">🩸</div>
+                    <div><div class="cfh-title">Menstrual</div><div class="cfh-days">Dias 1–5</div></div>
+                  </div>
+                  <div class="ciclo-fase-body">
+                    <div class="ciclo-fase-section"><div class="cfs-label">Energia</div><div class="cfs-chips"><span class="cfs-chip energy">Baixa</span><span class="cfs-chip energy">Introspectiva</span></div></div>
+                    <div class="ciclo-fase-section"><div class="cfs-label">Humor</div><div class="cfs-chips"><span class="cfs-chip mood">Sensível</span><span class="cfs-chip mood">Intuitiva</span></div></div>
+                    <div class="ciclo-fase-section"><div class="cfs-label">Cuidados</div><div class="cfs-chips"><span class="cfs-chip body">Descanse</span><span class="cfs-chip body">Calor local</span></div></div>
+                    <div class="ciclo-fase-section"><div class="cfs-label">Dica</div><div class="cfs-chips"><span class="cfs-chip tip">Não se cobre tanto. Seu corpo está trabalhando.</span></div></div>
+                  </div>
+                </div>
+                <div class="ciclo-fase-card">
+                  <div class="ciclo-fase-header folicular">
+                    <div class="cfh-icon folicular">🌱</div>
+                    <div><div class="cfh-title">Folicular</div><div class="cfh-days">Dias 6–13</div></div>
+                  </div>
+                  <div class="ciclo-fase-body">
+                    <div class="ciclo-fase-section"><div class="cfs-label">Energia</div><div class="cfs-chips"><span class="cfs-chip energy">Crescente</span><span class="cfs-chip energy">Criativa</span></div></div>
+                    <div class="ciclo-fase-section"><div class="cfs-label">Humor</div><div class="cfs-chips"><span class="cfs-chip mood">Animada</span><span class="cfs-chip mood">Focada</span></div></div>
+                    <div class="ciclo-fase-section"><div class="cfs-label">Cuidados</div><div class="cfs-chips"><span class="cfs-chip body">Treinos fortes</span><span class="cfs-chip body">Novos projetos</span></div></div>
+                    <div class="ciclo-fase-section"><div class="cfs-label">Dica</div><div class="cfs-chips"><span class="cfs-chip tip">Aproveite sua energia. Comece coisas novas!</span></div></div>
+                  </div>
+                </div>
+                <div class="ciclo-fase-card">
+                  <div class="ciclo-fase-header ovulacao">
+                    <div class="cfh-icon ovulacao">☀️</div>
+                    <div><div class="cfh-title">Ovulatória</div><div class="cfh-days">Dias 14–16</div></div>
+                  </div>
+                  <div class="ciclo-fase-body">
+                    <div class="ciclo-fase-section"><div class="cfs-label">Energia</div><div class="cfs-chips"><span class="cfs-chip energy">Máxima</span><span class="cfs-chip energy">Magnética</span></div></div>
+                    <div class="ciclo-fase-section"><div class="cfs-label">Humor</div><div class="cfs-chips"><span class="cfs-chip mood">Confiante</span><span class="cfs-chip mood">Social</span></div></div>
+                    <div class="ciclo-fase-section"><div class="cfs-label">Cuidados</div><div class="cfs-chips"><span class="cfs-chip body">Pico de força</span><span class="cfs-chip body">Apresentações</span></div></div>
+                    <div class="ciclo-fase-section"><div class="cfs-label">Dica</div><div class="cfs-chips"><span class="cfs-chip tip">Você está no seu melhor! Faça reuniões importantes.</span></div></div>
+                  </div>
+                </div>
+                <div class="ciclo-fase-card">
+                  <div class="ciclo-fase-header lutea">
+                    <div class="cfh-icon lutea">🌙</div>
+                    <div><div class="cfh-title">Lútea / TPM</div><div class="cfh-days">Dias 17–28</div></div>
+                  </div>
+                  <div class="ciclo-fase-body">
+                    <div class="ciclo-fase-section"><div class="cfs-label">Energia</div><div class="cfs-chips"><span class="cfs-chip energy">Decrescente</span><span class="cfs-chip energy">Analítica</span></div></div>
+                    <div class="ciclo-fase-section"><div class="cfs-label">Humor</div><div class="cfs-chips"><span class="cfs-chip mood">Irritável</span><span class="cfs-chip mood">Sensível</span></div></div>
+                    <div class="ciclo-fase-section"><div class="cfs-label">Cuidados</div><div class="cfs-chips"><span class="cfs-chip body">Yoga</span><span class="cfs-chip body">Menos café</span></div></div>
+                    <div class="ciclo-fase-section"><div class="cfs-label">Dica</div><div class="cfs-chips"><span class="cfs-chip tip">Seja gentil com você. Seus sentimentos são válidos.</span></div></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- PAINEL: Registro diário -->
+            <div class="ciclo-panel" data-ciclo-panel="registro">
+              <div class="ciclo-sec-title">Registro de hoje</div>
+              <div class="ciclo-registro-grid">
+                <div class="ciclo-reg-card">
+                  <div class="creg-header"><div class="creg-icon rose">🩸</div><span class="creg-title">Fluxo menstrual</span></div>
+                  <div class="ciclo-chips-sel">
+                    <div class="ciclo-chip-sel" data-group="fluxo">Sem fluxo</div>
+                    <div class="ciclo-chip-sel" data-group="fluxo">Leve</div>
+                    <div class="ciclo-chip-sel s-rose" data-group="fluxo">Moderado</div>
+                    <div class="ciclo-chip-sel" data-group="fluxo">Intenso</div>
+                    <div class="ciclo-chip-sel" data-group="fluxo">Coágulos</div>
+                  </div>
+                </div>
+                <div class="ciclo-reg-card">
+                  <div class="creg-header"><div class="creg-icon purple">😊</div><span class="creg-title">Humor do dia</span></div>
+                  <div class="ciclo-chips-sel">
+                    <div class="ciclo-chip-sel s-purple" data-group="humor">Ótima</div>
+                    <div class="ciclo-chip-sel" data-group="humor">Bem</div>
+                    <div class="ciclo-chip-sel" data-group="humor">Ansiosa</div>
+                    <div class="ciclo-chip-sel" data-group="humor">Irritada</div>
+                    <div class="ciclo-chip-sel" data-group="humor">Triste</div>
+                    <div class="ciclo-chip-sel" data-group="humor">Chorosa</div>
+                    <div class="ciclo-chip-sel" data-group="humor">Cansada</div>
+                    <div class="ciclo-chip-sel" data-group="humor">Feliz</div>
+                  </div>
+                </div>
+                <div class="ciclo-reg-card">
+                  <div class="creg-header"><div class="creg-icon amber">⚡</div><span class="creg-title">Sintomas físicos</span></div>
+                  <div class="ciclo-chips-sel">
+                    <div class="ciclo-chip-sel" data-group="sintomas">Cólica</div>
+                    <div class="ciclo-chip-sel s-amber" data-group="sintomas">Dor de cabeça</div>
+                    <div class="ciclo-chip-sel" data-group="sintomas">Inchaço</div>
+                    <div class="ciclo-chip-sel" data-group="sintomas">Náusea</div>
+                    <div class="ciclo-chip-sel" data-group="sintomas">Dor nas costas</div>
+                    <div class="ciclo-chip-sel" data-group="sintomas">Fadiga</div>
+                    <div class="ciclo-chip-sel" data-group="sintomas">Acne</div>
+                    <div class="ciclo-chip-sel" data-group="sintomas">Insônia</div>
+                  </div>
+                </div>
+                <div class="ciclo-reg-card">
+                  <div class="creg-header"><div class="creg-icon sage">⚡</div><span class="creg-title">Nível de energia</span></div>
+                  <div class="ciclo-slider-row">
+                    <div class="ciclo-sl-label"><span>Energia física</span><span id="ciclo-ef-val">6</span></div>
+                    <input type="range" style="width:100%;accent-color:#c9395f;" min="1" max="10" value="6" oninput="document.getElementById('ciclo-ef-val').textContent=this.value" data-persist-key="ciclo-energia-fisica" />
+                  </div>
+                  <div class="ciclo-slider-row">
+                    <div class="ciclo-sl-label"><span>Energia emocional</span><span id="ciclo-ee-val">5</span></div>
+                    <input type="range" style="width:100%;accent-color:#c9395f;" min="1" max="10" value="5" oninput="document.getElementById('ciclo-ee-val').textContent=this.value" data-persist-key="ciclo-energia-emocional" />
+                  </div>
+                  <div class="ciclo-slider-row">
+                    <div class="ciclo-sl-label"><span>Qualidade do sono</span><span id="ciclo-es-val">7</span></div>
+                    <input type="range" style="width:100%;accent-color:#c9395f;" min="1" max="10" value="7" oninput="document.getElementById('ciclo-es-val').textContent=this.value" data-persist-key="ciclo-sono" />
+                  </div>
+                </div>
+              </div>
+              <div class="panel" style="padding:16px 18px;">
+                <label style="font-size:9px;font-weight:500;letter-spacing:.09em;text-transform:uppercase;color:#b09aa8;display:block;margin-bottom:6px;">Como você está se sentindo hoje?</label>
+                <textarea data-persist-key="ciclo-nota-diaria" placeholder="Escreva livremente sobre como está sendo este dia do ciclo..." style="width:100%;min-height:80px;border:0.5px solid #f0dce6;border-radius:10px;padding:10px 12px;font-family:'DM Sans',sans-serif;font-size:13px;resize:none;outline:none;background:#fdf8f9;"></textarea>
+              </div>
+            </div>
+
+            <!-- PAINEL: TPM Tracker -->
+            <div class="ciclo-panel" data-ciclo-panel="tpm">
+              <div class="ciclo-sec-title">TPM Tracker</div>
+              <div class="ciclo-tpm-card">
+                <div class="ciclo-tpm-header">🧠 Intensidade dos sintomas — marque de 1 a 5</div>
+                <div class="ciclo-tpm-grid">
+                  <div class="ciclo-tpm-item"><div class="ciclo-tpm-label">😡 Irritabilidade</div><div class="ciclo-tpm-scale" data-tpm="irritabilidade"><div class="ciclo-tpm-dot active">1</div><div class="ciclo-tpm-dot active">2</div><div class="ciclo-tpm-dot">3</div><div class="ciclo-tpm-dot">4</div><div class="ciclo-tpm-dot">5</div></div></div>
+                  <div class="ciclo-tpm-item"><div class="ciclo-tpm-label">😢 Choro fácil</div><div class="ciclo-tpm-scale" data-tpm="choro"><div class="ciclo-tpm-dot active">1</div><div class="ciclo-tpm-dot active">2</div><div class="ciclo-tpm-dot active">3</div><div class="ciclo-tpm-dot">4</div><div class="ciclo-tpm-dot">5</div></div></div>
+                  <div class="ciclo-tpm-item"><div class="ciclo-tpm-label">🍕 Compulsão alimentar</div><div class="ciclo-tpm-scale" data-tpm="compulsao"><div class="ciclo-tpm-dot active">1</div><div class="ciclo-tpm-dot">2</div><div class="ciclo-tpm-dot">3</div><div class="ciclo-tpm-dot">4</div><div class="ciclo-tpm-dot">5</div></div></div>
+                  <div class="ciclo-tpm-item"><div class="ciclo-tpm-label">🤕 Dor de cabeça</div><div class="ciclo-tpm-scale" data-tpm="dor-cabeca"><div class="ciclo-tpm-dot">1</div><div class="ciclo-tpm-dot">2</div><div class="ciclo-tpm-dot">3</div><div class="ciclo-tpm-dot">4</div><div class="ciclo-tpm-dot">5</div></div></div>
+                  <div class="ciclo-tpm-item"><div class="ciclo-tpm-label">🫃 Inchaço abdominal</div><div class="ciclo-tpm-scale" data-tpm="inchaco"><div class="ciclo-tpm-dot active">1</div><div class="ciclo-tpm-dot active">2</div><div class="ciclo-tpm-dot">3</div><div class="ciclo-tpm-dot">4</div><div class="ciclo-tpm-dot">5</div></div></div>
+                  <div class="ciclo-tpm-item"><div class="ciclo-tpm-label">🪫 Fadiga intensa</div><div class="ciclo-tpm-scale" data-tpm="fadiga"><div class="ciclo-tpm-dot active">1</div><div class="ciclo-tpm-dot active">2</div><div class="ciclo-tpm-dot active">3</div><div class="ciclo-tpm-dot active">4</div><div class="ciclo-tpm-dot">5</div></div></div>
+                  <div class="ciclo-tpm-item"><div class="ciclo-tpm-label">💗 Sensibilidade nos seios</div><div class="ciclo-tpm-scale" data-tpm="seios"><div class="ciclo-tpm-dot active">1</div><div class="ciclo-tpm-dot">2</div><div class="ciclo-tpm-dot">3</div><div class="ciclo-tpm-dot">4</div><div class="ciclo-tpm-dot">5</div></div></div>
+                  <div class="ciclo-tpm-item"><div class="ciclo-tpm-label">🌙 Insônia</div><div class="ciclo-tpm-scale" data-tpm="insonia"><div class="ciclo-tpm-dot">1</div><div class="ciclo-tpm-dot">2</div><div class="ciclo-tpm-dot">3</div><div class="ciclo-tpm-dot">4</div><div class="ciclo-tpm-dot">5</div></div></div>
+                  <div class="ciclo-tpm-item"><div class="ciclo-tpm-label">😰 Ansiedade</div><div class="ciclo-tpm-scale" data-tpm="ansiedade"><div class="ciclo-tpm-dot active">1</div><div class="ciclo-tpm-dot active">2</div><div class="ciclo-tpm-dot">3</div><div class="ciclo-tpm-dot">4</div><div class="ciclo-tpm-dot">5</div></div></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- PAINEL: Histórico -->
+            <div class="ciclo-panel" data-ciclo-panel="historico">
+              <div class="ciclo-sec-title">Histórico de ciclos</div>
+              <div class="ciclo-hist-card">
+                <div class="ciclo-hist-header">
+                  <span class="ciclo-hist-title">📊 Últimos ciclos registrados</span>
+                  <button class="ciclo-hist-btn" type="button" id="ciclo-add-hist">+ Novo registro</button>
+                </div>
+                <table class="ciclo-hist-table">
+                  <thead><tr>
+                    <th>Início</th><th>Duração ciclo</th><th>Duração fluxo</th><th>Fluxo</th><th>Sintomas</th><th>Regularidade</th>
+                  </tr></thead>
+                  <tbody id="ciclo-hist-body">
+                    <tr><td colspan="6" style="text-align:center;color:#b09aa8;padding:20px;">Nenhum ciclo registrado ainda. Clique em "Novo registro" para começar.</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+          </article>
+          <!-- ═══ FIM CICLO MENSTRUAL ═══ -->
+
         </section>
 
         <section class="page-view" data-page-view="viagens" id="viagens">
           <div class="page-return-bar">
             <button class="ghost-button page-return-button" type="button" data-go-home>← Voltar</button>
+
           </div>
           <article class="panel module-card travel-card">
             <div class="panel-heading">
@@ -2955,7 +3208,195 @@
 
     <script src="script.js"></script>
     <script type="module" src="agenda-firebase.js"></script>
-    <script src="yt-notify.js" defer></script>
+    <script>
+    /* ═══ CICLO MENSTRUAL — JavaScript ═══ */
+    (function() {
+      // Abas do ciclo
+      document.querySelectorAll('.ciclo-tab').forEach(tab => {
+        tab.addEventListener('click', function() {
+          document.querySelectorAll('.ciclo-tab').forEach(t => t.classList.remove('active'));
+          document.querySelectorAll('.ciclo-panel').forEach(p => p.classList.remove('active'));
+          this.classList.add('active');
+          const target = this.dataset.cicloTab;
+          const panel = document.querySelector('[data-ciclo-panel="' + target + '"]');
+          if (panel) panel.classList.add('active');
+        });
+      });
+
+      // TPM tracker
+      document.querySelectorAll('.ciclo-tpm-scale').forEach(scale => {
+        const dots = scale.querySelectorAll('.ciclo-tpm-dot');
+        dots.forEach((dot, idx) => {
+          dot.addEventListener('click', function() {
+            dots.forEach((d, i) => {
+              d.classList.toggle('active', i <= idx);
+            });
+          });
+        });
+      });
+
+      // Chips de seleção
+      document.querySelectorAll('.ciclo-chip-sel').forEach(chip => {
+        chip.addEventListener('click', function() {
+          const group = this.dataset.group;
+          if (group) {
+            document.querySelectorAll('.ciclo-chip-sel[data-group="' + group + '"]').forEach(c => {
+              c.classList.remove('s-rose','s-purple','s-amber','s-sage');
+            });
+          }
+          const classes = ['s-rose','s-purple','s-amber','s-sage'];
+          const hasClass = classes.some(c => this.classList.contains(c));
+          if (!hasClass) {
+            if (group === 'fluxo' || group === 'sintomas') this.classList.add('s-rose');
+            else if (group === 'humor') this.classList.add('s-purple');
+            else this.classList.add('s-rose');
+          }
+        });
+      });
+
+      // Calendário do ciclo
+      let cicloCurrentDate = new Date();
+
+      function calcularFase(diaAtual, duracao) {
+        const d = parseInt(duracao) || 28;
+        if (diaAtual <= 5) return { fase: 'Menstrual', class: 'c-mens' };
+        if (diaAtual <= Math.floor(d * 0.46)) return { fase: 'Folicular', class: '' };
+        if (diaAtual <= Math.floor(d * 0.57)) return { fase: 'Fértil', class: 'c-fertil' };
+        if (diaAtual === Math.floor(d * 0.5) + 1) return { fase: 'Ovulação', class: 'c-ovul' };
+        if (diaAtual >= Math.floor(d * 0.75)) return { fase: 'TPM', class: 'c-tpm' };
+        return { fase: 'Lútea', class: '' };
+      }
+
+      function renderCicloCal() {
+        const grid = document.getElementById('ciclo-cal-grid');
+        const title = document.getElementById('ciclo-cal-month-title');
+        if (!grid || !title) return;
+
+        const year = cicloCurrentDate.getFullYear();
+        const month = cicloCurrentDate.getMonth();
+        const meses = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+        title.textContent = meses[month] + ' de ' + year;
+
+        const ultimoInicio = document.querySelector('[data-persist-key="ciclo-ultimo-inicio"]');
+        const duracaoInput = document.querySelector('[data-persist-key="ciclo-duracao"]');
+        const fluxoInput = document.querySelector('[data-persist-key="ciclo-fluxo-duracao"]');
+        const duracao = parseInt(duracaoInput?.value) || 28;
+        const fluxo = parseInt(fluxoInput?.value) || 5;
+        const inicioData = ultimoInicio?.value ? new Date(ultimoInicio.value + 'T00:00:00') : null;
+
+        const firstDay = new Date(year, month, 1).getDay();
+        const daysInMonth = new Date(year, month + 1, 0).getDate();
+        const today = new Date();
+
+        let html = '';
+        for (let i = 0; i < firstDay; i++) html += '<div class="ciclo-cal-cell"></div>';
+
+        for (let day = 1; day <= daysInMonth; day++) {
+          const cellDate = new Date(year, month, day);
+          let classes = 'ciclo-cal-cell';
+          let phaseLabel = '';
+
+          if (inicioData) {
+            const diff = Math.floor((cellDate - inicioData) / 86400000);
+            if (diff >= 0) {
+              const diaNoAtual = (diff % duracao) + 1;
+              const fase = calcularFase(diaNoAtual, duracao);
+              if (fase.class) { classes += ' ' + fase.class; phaseLabel = fase.fase; }
+            }
+          }
+
+          if (cellDate.toDateString() === today.toDateString()) classes += ' c-today';
+
+          html += '<div class="' + classes + '"><div class="ciclo-cal-num">' + day + '</div>';
+          if (phaseLabel) html += '<div class="ciclo-cal-phase">' + phaseLabel.substring(0,4).toLowerCase() + '.</div>';
+          html += '</div>';
+        }
+
+        grid.innerHTML = html;
+      }
+
+      function atualizarFaseAtual() {
+        const ultimoInicio = document.querySelector('[data-persist-key="ciclo-ultimo-inicio"]');
+        const duracaoInput = document.querySelector('[data-persist-key="ciclo-duracao"]');
+        if (!ultimoInicio?.value) return;
+
+        const duracao = parseInt(duracaoInput?.value) || 28;
+        const inicio = new Date(ultimoInicio.value + 'T00:00:00');
+        const hoje = new Date();
+        const diff = Math.floor((hoje - inicio) / 86400000);
+        const diaAtual = (diff % duracao) + 1;
+
+        // Fase atual
+        const fases = [
+          { max: 5, nome: 'Menstrual', desc: 'Descanse, seu corpo está trabalhando' },
+          { max: Math.floor(duracao * 0.46), nome: 'Folicular', desc: 'Energia crescente, foco e criatividade' },
+          { max: Math.floor(duracao * 0.57), nome: 'Ovulatória', desc: 'Pico de energia e magnetismo' },
+          { max: duracao, nome: 'Lútea / TPM', desc: 'Seja gentil com você' },
+        ];
+        let faseAtual = fases[fases.length - 1];
+        for (const f of fases) { if (diaAtual <= f.max) { faseAtual = f; break; } }
+
+        const faseEl = document.getElementById('cfa-fase');
+        const descEl = document.getElementById('cfa-desc');
+        const barEl = document.getElementById('cfa-bar');
+        const ovulEl = document.getElementById('cfa-ovulacao');
+        const proxMensEl = document.getElementById('cfa-prox-mens');
+        const proxDataEl = document.getElementById('cfa-prox-data');
+
+        if (faseEl) faseEl.textContent = faseAtual.nome;
+        if (descEl) descEl.textContent = faseAtual.desc;
+        if (barEl) barEl.style.width = Math.min(100, Math.round(diaAtual / duracao * 100)) + '%';
+
+        const diaOvul = Math.floor(duracao / 2);
+        const diasAteOvul = diaOvul - diaAtual;
+        if (ovulEl) ovulEl.textContent = diasAteOvul > 0 ? 'Em ' + diasAteOvul + ' dias' : (diasAteOvul === 0 ? 'Hoje!' : 'Passou');
+
+        const diasAteMens = duracao - diaAtual;
+        const proxMens = new Date(hoje);
+        proxMens.setDate(proxMens.getDate() + diasAteMens);
+        if (proxMensEl) proxMensEl.textContent = 'Em ' + diasAteMens + ' dias';
+        if (proxDataEl) proxDataEl.textContent = proxMens.toLocaleDateString('pt-BR', { day:'2-digit', month:'long', year:'numeric' });
+
+        // Card sumário
+        const prevEl = document.getElementById('ciclo-proxima-previsao');
+        if (prevEl) prevEl.textContent = proxMens.toLocaleDateString('pt-BR', { day:'2-digit', month:'short' });
+      }
+
+      // Navegação do calendário
+      const prevBtn = document.getElementById('ciclo-prev-month');
+      const nextBtn = document.getElementById('ciclo-next-month');
+      if (prevBtn) prevBtn.addEventListener('click', () => { cicloCurrentDate.setMonth(cicloCurrentDate.getMonth() - 1); renderCicloCal(); });
+      if (nextBtn) nextBtn.addEventListener('click', () => { cicloCurrentDate.setMonth(cicloCurrentDate.getMonth() + 1); renderCicloCal(); });
+
+      // Observar mudanças nas datas
+      ['ciclo-ultimo-inicio','ciclo-duracao','ciclo-fluxo-duracao'].forEach(key => {
+        const el = document.querySelector('[data-persist-key="' + key + '"]');
+        if (el) el.addEventListener('change', () => { renderCicloCal(); atualizarFaseAtual(); });
+      });
+
+      // Adicionar ao histórico
+      const addHistBtn = document.getElementById('ciclo-add-hist');
+      if (addHistBtn) {
+        addHistBtn.addEventListener('click', () => {
+          const body = document.getElementById('ciclo-hist-body');
+          if (!body) return;
+          const row = body.querySelector('td[colspan]');
+          if (row) row.closest('tr').remove();
+          const tr = document.createElement('tr');
+          const hoje = new Date().toLocaleDateString('pt-BR');
+          tr.innerHTML = '<td><input type="date" style="border:none;background:none;font-size:12px;" value="' + new Date().toISOString().split('T')[0] + '" /></td><td><input type="text" placeholder="28 dias" style="border:none;background:none;font-size:12px;width:80px;" /></td><td><input type="text" placeholder="5 dias" style="border:none;background:none;font-size:12px;width:70px;" /></td><td><select style="border:none;background:none;font-size:12px;"><option>Leve</option><option selected>Moderado</option><option>Intenso</option></select></td><td><input type="text" placeholder="Sintomas..." style="border:none;background:none;font-size:12px;width:120px;" /></td><td><span class="ciclo-hist-badge normal">Regular</span></td>';
+          body.prepend(tr);
+        });
+      }
+
+      // Inicializar
+      setTimeout(() => {
+        renderCicloCal();
+        atualizarFaseAtual();
+      }, 500);
+
+    })();
+    </script>
 
 </body>
 </html>

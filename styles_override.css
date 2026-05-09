@@ -723,3 +723,26 @@
   font-weight: 700; font-size: 11px; display: grid; place-items: center; flex-shrink: 0;
 }
 .vn-top__meta { font-size: 11px; color: var(--vn-ink-3); }
+
+/* === VERSÍCULO — reforço de visibilidade === */
+.verse-banner {
+  background: #c9395f !important;
+  border: none !important;
+}
+#headline-verse-text {
+  color: #ffffff !important;
+  font-style: italic !important;
+}
+#headline-verse-reference {
+  color: rgba(255,255,255,0.65) !important;
+}
+.verse-banner .eyebrow {
+  color: rgba(255,255,255,0.55) !important;
+}
+.verse-banner .panel-heading h3 {
+  color: rgba(255,255,255,0.9) !important;
+}
+#change-verse-button {
+  color: rgba(255,255,255,0.75) !important;
+  border-color: rgba(255,255,255,0.3) !important;
+}
