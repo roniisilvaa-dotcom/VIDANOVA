@@ -763,6 +763,46 @@ body:not(.agenda-tab-active) .workspace-card-cover {
   background-position: center !important;
 }
 
+body:not(.agenda-tab-active) .workspace-card-planner .workspace-card-cover {
+  background-image: url('assets/covers/planner.png') !important;
+}
+
+body:not(.agenda-tab-active) .workspace-card-dreams .workspace-card-cover {
+  background-image: url('assets/covers/sonhos.png') !important;
+}
+
+body:not(.agenda-tab-active) .workspace-card-body .workspace-card-cover {
+  background-image: url('assets/covers/corpo.png') !important;
+}
+
+body:not(.agenda-tab-active) .workspace-card-cycle .workspace-card-cover {
+  background-image: url('assets/covers/ciclo-menstrual.png') !important;
+}
+
+body:not(.agenda-tab-active) .workspace-card-finance .workspace-card-cover {
+  background-image: url('assets/covers/financas.png') !important;
+}
+
+body:not(.agenda-tab-active) .workspace-card-study .workspace-card-cover {
+  background-image: url('assets/covers/estudos.png') !important;
+}
+
+body:not(.agenda-tab-active) .workspace-card-image .workspace-card-cover {
+  background-image: url('assets/covers/imagem.png') !important;
+}
+
+body:not(.agenda-tab-active) .workspace-card-home .workspace-card-cover {
+  background-image: url('assets/covers/casa.png') !important;
+}
+
+body:not(.agenda-tab-active) .workspace-card-spiritual .workspace-card-cover {
+  background-image: url('assets/covers/espiritual.png') !important;
+}
+
+body:not(.agenda-tab-active) .workspace-card-community .workspace-card-cover {
+  background-image: url('assets/covers/comunidade.png') !important;
+}
+
 body:not(.agenda-tab-active) .workspace-card strong {
   padding: 16px 18px 7px !important;
   color: #231f28 !important;
