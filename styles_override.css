@@ -1606,3 +1606,8 @@ body:not(.agenda-tab-active) .workspace-card-cover::after {
   background: rgba(143, 178, 244, 0.10) !important;
   color: #7163ad !important;
 }
+
+/* O versiculo do dia deve aparecer somente na pagina inicial. */
+body.page-not-dashboard .verse-banner {
+  display: none !important;
+}
