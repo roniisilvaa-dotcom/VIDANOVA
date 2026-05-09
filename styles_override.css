@@ -709,3 +709,138 @@ body:not(.agenda-tab-active) .home-community-cta {
     max-width: 100%;
   }
 }
+
+/* Tela inicial com fotos nos blocos exatamente no estilo tela_inicial_com_capas.html */
+body:not(.agenda-tab-active) .desktop-modules-heading {
+  align-items: flex-end !important;
+  gap: 16px !important;
+  padding: 0 4px !important;
+}
+
+body:not(.agenda-tab-active) .desktop-modules-heading h2 {
+  margin: 0 !important;
+  font-size: 28px !important;
+  line-height: 1 !important;
+  font-weight: 700 !important;
+}
+
+body:not(.agenda-tab-active) .desktop-modules-heading p {
+  display: block !important;
+  margin: 6px 0 0 !important;
+  color: #7c7386 !important;
+  font-size: 14px !important;
+  line-height: 1.35 !important;
+}
+
+body:not(.agenda-tab-active) .workspace-card-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  gap: 22px !important;
+}
+
+body:not(.agenda-tab-active) .workspace-card {
+  display: grid !important;
+  grid-template-rows: auto auto auto 1fr;
+  min-height: 0 !important;
+  overflow: hidden !important;
+  border-radius: 28px !important;
+  border: 1px solid rgba(255, 255, 255, 0.8) !important;
+  background: rgba(255, 255, 255, 0.82) !important;
+  box-shadow: 0 18px 44px rgba(120, 93, 154, 0.08) !important;
+  text-align: left !important;
+}
+
+body:not(.agenda-tab-active) .workspace-card::before,
+body:not(.agenda-tab-active) .workspace-card-cover::after {
+  display: none !important;
+}
+
+body:not(.agenda-tab-active) .workspace-card-cover {
+  height: 220px !important;
+  aspect-ratio: auto !important;
+  margin: 14px 14px 0 !important;
+  border-radius: 22px !important;
+  background-size: cover !important;
+  background-position: center !important;
+}
+
+body:not(.agenda-tab-active) .workspace-card strong {
+  padding: 16px 18px 7px !important;
+  color: #231f28 !important;
+  font-size: 18px !important;
+  line-height: 1.2 !important;
+  font-weight: 700 !important;
+}
+
+body:not(.agenda-tab-active) .workspace-card small {
+  min-height: 34px !important;
+  padding: 0 18px 16px !important;
+  color: #7c7386 !important;
+  font-size: 13px !important;
+  line-height: 1.35 !important;
+}
+
+body:not(.agenda-tab-active) .workspace-card::after {
+  content: "Abrir" !important;
+  position: static !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  justify-self: start !important;
+  width: auto !important;
+  height: auto !important;
+  margin: 0 18px 18px !important;
+  padding: 11px 16px !important;
+  border-radius: 999px !important;
+  background: linear-gradient(135deg, rgba(157, 122, 245, 0.12), rgba(255, 191, 211, 0.18)) !important;
+  color: #8b63f5 !important;
+  box-shadow: none !important;
+  font-size: 14px !important;
+  line-height: 1 !important;
+  font-weight: 700 !important;
+}
+
+@media (max-width: 1320px) {
+  body:not(.agenda-tab-active) .workspace-card-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+}
+
+@media (max-width: 640px) {
+  body:not(.agenda-tab-active) .workspace-card-grid {
+    grid-template-columns: 1fr !important;
+    gap: 18px !important;
+  }
+
+  body:not(.agenda-tab-active) .desktop-modules-heading {
+    display: none !important;
+  }
+
+  body:not(.agenda-tab-active) .mobile-modules-heading {
+    display: flex !important;
+    align-items: flex-end !important;
+    justify-content: space-between !important;
+    gap: 14px !important;
+    padding: 0 4px !important;
+  }
+
+  body:not(.agenda-tab-active) .mobile-modules-heading h2 {
+    margin: 0 !important;
+    font-size: 26px !important;
+    line-height: 1 !important;
+    font-weight: 700 !important;
+  }
+
+  body:not(.agenda-tab-active) .workspace-card-cover {
+    height: 210px !important;
+  }
+
+  body:not(.agenda-tab-active) .workspace-card strong {
+    padding: 16px 18px 7px !important;
+    font-size: 18px !important;
+  }
+
+  body:not(.agenda-tab-active) .workspace-card small {
+    padding: 0 18px 16px !important;
+    font-size: 13px !important;
+  }
+}
