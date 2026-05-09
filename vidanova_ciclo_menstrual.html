@@ -360,6 +360,92 @@ body{
   border-color:rgba(209,63,130,.42) !important;
   box-shadow:0 0 0 4px rgba(209,63,130,.08) !important;
 }
+
+/* Identidade padrão final: degradê azul, lavanda e rosa */
+:root{
+  --vn-blue:#8fb2f4;
+  --vn-lavender:#b8a5f2;
+  --vn-blush:#f4b8d5;
+  --vn-pink:#cf5f96;
+  --vn-border:rgba(163,137,222,.22);
+  --vn-gradient:linear-gradient(135deg,#8fb2f4 0%,#b8a5f2 48%,#f4b8d5 100%);
+  --vn-gradient-soft:linear-gradient(135deg,rgba(143,178,244,.16),rgba(184,165,242,.13) 48%,rgba(244,184,213,.18));
+  --vn-shadow:0 22px 58px rgba(135,118,183,.13);
+}
+body{
+  background:
+    radial-gradient(circle at 9% 8%,rgba(143,178,244,.20),transparent 28%),
+    radial-gradient(circle at 91% 12%,rgba(244,184,213,.25),transparent 30%),
+    linear-gradient(180deg,#fffaff 0%,#fbf7ff 46%,#fff 100%) !important;
+}
+.module-hero,
+.fase-atual{
+  background:var(--vn-gradient) !important;
+  border:0 !important;
+  box-shadow:0 22px 52px rgba(143,178,244,.24),0 16px 44px rgba(244,184,213,.18) !important;
+}
+.hero-eye,
+.hero-title,
+.fa-label,
+.fa-value,
+.fa-sub{
+  color:#fff !important;
+  text-shadow:0 1px 12px rgba(88,76,142,.16);
+}
+.tab.active,
+.rchip.sel,
+.rchip.sel-purple,
+.rchip.sel-amber,
+.rchip.sel-sage,
+.tpm-dot.active,
+.hist-header button{
+  background:var(--vn-gradient) !important;
+  border-color:transparent !important;
+  color:#fff !important;
+  box-shadow:0 14px 32px rgba(143,178,244,.20),0 10px 24px rgba(244,184,213,.17) !important;
+}
+.tab,
+.cycle-stat,
+.cal-card,
+.fase-card,
+.reg-card,
+.config-card,
+.historico-card,
+.tpm-card,
+.tpm-item,
+.textarea-field,
+.input-field{
+  border-color:var(--vn-border) !important;
+  box-shadow:0 16px 42px rgba(135,118,183,.10) !important;
+}
+.fase-header,
+.hist-header,
+.cal-cell.menstruacao,
+.cal-cell.fertil,
+.cal-cell.ovulacao,
+.cal-cell.tpm{
+  background:var(--vn-gradient-soft) !important;
+}
+.hero-icon,
+.cal-arrow,
+.cs-icon,
+.fh-icon,
+.rc-icon,
+.cc-btn{
+  background:rgba(247,228,241,.92) !important;
+}
+.hero-icon i,
+.cal-arrow i,
+.cs-icon i,
+.fh-icon i,
+.rc-icon i,
+.cc-btn i,
+.sec-title,
+.hist-header-left i,
+.hist-header-left span,
+.tpm-header i{
+  color:var(--vn-pink) !important;
+}
 </style>
 </head>
 <body>

@@ -1437,3 +1437,172 @@ select:focus,
     min-width: 680px !important;
   }
 }
+
+/* Identidade padrão final: degradê azul, lavanda e rosa */
+:root {
+  --vn-blue: #8fb2f4;
+  --vn-lavender: #b8a5f2;
+  --vn-blush: #f4b8d5;
+  --vn-gradient: linear-gradient(135deg, #8fb2f4 0%, #b8a5f2 48%, #f4b8d5 100%);
+  --vn-gradient-soft: linear-gradient(135deg, rgba(143, 178, 244, 0.16), rgba(184, 165, 242, 0.13) 48%, rgba(244, 184, 213, 0.18));
+  --vn-pink: #cf5f96;
+  --vn-pink-soft: #f7e4f1;
+  --vn-pink-wash: #fbf6ff;
+  --vn-border: rgba(163, 137, 222, 0.22);
+  --vn-shadow: 0 24px 72px rgba(135, 118, 183, 0.14);
+  --vn-soft-shadow: 0 16px 42px rgba(135, 118, 183, 0.10);
+}
+
+body {
+  background:
+    radial-gradient(circle at 9% 8%, rgba(143, 178, 244, 0.20), transparent 28%),
+    radial-gradient(circle at 91% 12%, rgba(244, 184, 213, 0.25), transparent 30%),
+    linear-gradient(180deg, #fffaff 0%, #fbf7ff 46%, #ffffff 100%) !important;
+}
+
+body:not(.agenda-tab-active) .verse-banner,
+.verse-banner {
+  background: var(--vn-gradient) !important;
+  border: 0 !important;
+  box-shadow: 0 22px 52px rgba(143, 178, 244, 0.24), 0 16px 44px rgba(244, 184, 213, 0.18) !important;
+}
+
+body:not(.agenda-tab-active) .verse-banner::before,
+.verse-banner::before {
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cg fill='none' stroke='%23cf5f96' stroke-width='1.35' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 5.5A2.5 2.5 0 0 1 6.5 3H20v17H6.5A2.5 2.5 0 0 0 4 22V5.5Z'/%3E%3Cpath d='M4 5.5A2.5 2.5 0 0 1 6.5 8H20'/%3E%3C/g%3E%3C/svg%3E") center / 34px 34px no-repeat,
+    rgba(255, 245, 251, 0.88) !important;
+}
+
+body:not(.agenda-tab-active) .verse-banner .eyebrow,
+body:not(.agenda-tab-active) .verse-banner-copy strong,
+body:not(.agenda-tab-active) .verse-banner-copy small,
+.verse-banner .eyebrow,
+.verse-banner-copy strong,
+.verse-banner-copy small {
+  color: #fff !important;
+  text-shadow: 0 1px 12px rgba(88, 76, 142, 0.16) !important;
+}
+
+.primary-button,
+.community-publish-btn,
+.fin-add-meta-btn,
+.fin-cc-add-main-btn,
+.tab-buttons .ghost-button.is-active,
+.planner-tab.is-active,
+.casa-tab.is-active,
+.finance-chip.is-active,
+.agenda-view-tab.is-active,
+.calculator-grid .calc-operator,
+.calculator-grid .calc-equals,
+.tpm-dot.active,
+.rchip.sel,
+.rchip.sel-purple,
+.rchip.sel-amber,
+.rchip.sel-sage,
+body:not(.agenda-tab-active) .workspace-card::after,
+.home-community-cta {
+  background: var(--vn-gradient) !important;
+  border-color: transparent !important;
+  color: #fff !important;
+  box-shadow: 0 15px 36px rgba(143, 178, 244, 0.20), 0 12px 28px rgba(244, 184, 213, 0.18) !important;
+}
+
+.ghost-button,
+.page-return-button,
+.module-open-button,
+.fin-add-row-btn,
+.community-action-button,
+.community-upload-button,
+[data-dyntable-add],
+.tab-buttons .ghost-button,
+.planner-tab,
+.casa-tab,
+.finance-chip,
+.agenda-view-tab {
+  border-color: var(--vn-border) !important;
+  background: rgba(255, 255, 255, 0.78) !important;
+  color: #7d6fb0 !important;
+}
+
+.panel,
+.module-card,
+.agenda-events-card,
+.agenda-summary-card,
+.detail-card,
+.project-card,
+.finance-card,
+.fin-summary-card,
+.fin-section-block,
+.calculator-card,
+.fin-desejo-col,
+.fin-mensal-section,
+.fin-balanco-card,
+.settings-panel,
+.settings-card,
+.community-composer,
+.community-post-card,
+.home-card,
+.planner-spotlight-card,
+.planner-week-card,
+.planner-summary-band,
+.planner-goal-card {
+  border-color: var(--vn-border) !important;
+  box-shadow: var(--vn-soft-shadow) !important;
+}
+
+.planner-hero-banner,
+.fin-saldo-banner,
+.profile-hero,
+.community-header {
+  background:
+    var(--vn-gradient-soft),
+    rgba(255, 255, 255, 0.86) !important;
+  border-color: var(--vn-border) !important;
+}
+
+.planner-card-header,
+.cursos-card-header,
+.fin-mensal-header,
+.hist-header,
+.casa-market-cat-header,
+.casa-clean-card-header,
+.casa-room-card-header,
+.corpo-workout-day-header,
+.corpo-beleza-card-header,
+.corpo-routine-period,
+.module-hero {
+  background: var(--vn-gradient-soft) !important;
+  color: #7163ad !important;
+}
+
+.planner-card-header span,
+.cursos-item-icon,
+.rc-icon,
+.cs-icon,
+.community-avatar,
+.community-composer-avatar,
+.mobile-verse-card > span,
+.workspace-card::before,
+body:not(.agenda-tab-active) .workspace-card::before {
+  background: rgba(247, 228, 241, 0.92) !important;
+  color: #cf5f96 !important;
+}
+
+.workspace-card-cover::after,
+body:not(.agenda-tab-active) .workspace-card-cover::after {
+  background: #cf5f96 !important;
+}
+
+.home-table th,
+.finance-table th,
+.fin-annual-table th,
+.fin-desejos-table th,
+.fin-mensal-table th,
+.corpo-measures-table th,
+.corpo-exercise-table th,
+.corpo-saude-table th,
+.study-books-table th {
+  background: rgba(143, 178, 244, 0.10) !important;
+  color: #7163ad !important;
+}

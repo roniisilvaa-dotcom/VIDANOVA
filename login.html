@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>Vida Nova — Entrar</title>
-  <meta name="theme-color" content="#E8547A" />
+  <meta name="theme-color" content="#8fb2f4" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="Vida Nova" />
@@ -391,6 +391,85 @@
 
       .form-title { font-size: 22px; }
       .logo-circle { width: 36px; height: 36px; }
+    }
+    /* Identidade padrão final: degradê azul, lavanda e rosa */
+    :root {
+      --pink: #cf5f96;
+      --pink-hover: #b8a5f2;
+      --pink-pale: #F7E4F1;
+      --pink-bg: #FBF7FF;
+      --border: rgba(163, 137, 222, 0.22);
+      --vn-gradient: linear-gradient(135deg, #8fb2f4 0%, #b8a5f2 48%, #f4b8d5 100%);
+      --vn-gradient-soft: linear-gradient(135deg, rgba(143, 178, 244, 0.16), rgba(184, 165, 242, 0.13) 48%, rgba(244, 184, 213, 0.18));
+      --vn-shadow: 0 22px 58px rgba(135, 118, 183, 0.13);
+    }
+
+    body {
+      background:
+        radial-gradient(circle at 9% 8%, rgba(143, 178, 244, 0.20), transparent 28%),
+        radial-gradient(circle at 91% 12%, rgba(244, 184, 213, 0.25), transparent 30%),
+        linear-gradient(180deg, #fffaff 0%, #fbf7ff 46%, #fff 100%) !important;
+    }
+
+    .left,
+    .card,
+    .login-card,
+    .form-card,
+    .form-wrap {
+      background: rgba(255, 255, 255, 0.82);
+    }
+
+    .auth-tab.is-active,
+    .submit-btn,
+    .primary-btn,
+    .login-btn {
+      background: var(--vn-gradient) !important;
+      border-color: transparent !important;
+      color: #fff !important;
+      box-shadow: 0 16px 38px rgba(143, 178, 244, 0.22), 0 12px 30px rgba(244, 184, 213, 0.18) !important;
+    }
+
+    .social-btn,
+    .field,
+    .input-wrap,
+    .signup-card,
+    .verse-card {
+      border-color: var(--border) !important;
+      box-shadow: var(--vn-shadow) !important;
+    }
+
+    .verse-card {
+      background: var(--vn-gradient) !important;
+      color: #fff !important;
+    }
+
+    .verse-card *,
+    .verse-tag,
+    .verse-text,
+    .verse-ref {
+      color: #fff !important;
+    }
+
+    .logo-circle,
+    .mob-logo .logo-circle,
+    .input-icon {
+      background: rgba(247, 228, 241, 0.92) !important;
+      border-color: rgba(207, 95, 150, 0.35) !important;
+    }
+
+    .logo-circle svg,
+    .mob-logo .logo-circle svg,
+    .input-icon svg,
+    .verse-tag svg {
+      stroke: #cf5f96 !important;
+    }
+
+    .signup-link,
+    .forgot-link,
+    .top-signup-bar button,
+    .logo-name,
+    .mob-logo-name {
+      color: #cf5f96 !important;
     }
   </style>
 </head>
