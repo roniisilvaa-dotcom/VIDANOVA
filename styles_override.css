@@ -5501,4 +5501,380 @@ body:not(.agenda-tab-active) .verse-btn {
   #agenda-form .gcal-form-footer .ghost-button.hidden {
     display: none !important;
   }
+
+  /* Lista do Mercado: layout mobile compacto e legivel. */
+  [data-page-view="casa"] [data-tab-panel="casa-mercado"].is-active {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow: visible !important;
+  }
+
+  [data-page-view="casa"] [data-tab-panel="casa-mercado"] .home-market-grid {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    overflow: visible !important;
+  }
+
+  [data-page-view="casa"] [data-tab-panel="casa-mercado"] .home-market-card {
+    display: grid !important;
+    gap: 9px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    padding: 12px !important;
+    border: 1px solid rgba(143, 178, 244, .13) !important;
+    border-radius: 18px !important;
+    background: rgba(255, 255, 255, .90) !important;
+    box-shadow: 0 10px 22px rgba(104, 86, 132, .06) !important;
+    overflow: hidden !important;
+  }
+
+  [data-page-view="casa"] [data-tab-panel="casa-mercado"] .home-market-card h5 {
+    display: flex !important;
+    align-items: center !important;
+    min-height: 38px !important;
+    margin: 0 !important;
+    padding: 8px 11px !important;
+    border-radius: 14px !important;
+    background: linear-gradient(135deg, rgba(143, 178, 244, .92), rgba(184, 165, 242, .78), rgba(244, 184, 213, .82)) !important;
+    color: #fff !important;
+    font-size: 13px !important;
+    font-weight: 500 !important;
+    letter-spacing: 0 !important;
+    line-height: 1.2 !important;
+    white-space: normal !important;
+    overflow-wrap: anywhere !important;
+  }
+
+  [data-page-view="casa"] [data-tab-panel="casa-mercado"] .home-market-items {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  [data-page-view="casa"] [data-tab-panel="casa-mercado"] .home-market-item {
+    position: relative !important;
+    z-index: 20 !important;
+    display: grid !important;
+    grid-template-columns: 24px minmax(0, 1fr) !important;
+    align-items: center !important;
+    gap: 9px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    min-height: 40px !important;
+    margin: 0 !important;
+    padding: 8px 2px !important;
+    border-bottom: 1px solid rgba(143, 178, 244, .09) !important;
+    color: #303449 !important;
+    cursor: pointer !important;
+    pointer-events: auto !important;
+    touch-action: manipulation !important;
+  }
+
+  [data-page-view="casa"] [data-tab-panel="casa-mercado"] .home-market-item:last-child {
+    border-bottom: 0 !important;
+  }
+
+  [data-page-view="casa"] [data-tab-panel="casa-mercado"] .home-market-item input {
+    position: absolute !important;
+    inset: 0 auto auto 0 !important;
+    width: 24px !important;
+    height: 100% !important;
+    min-width: 24px !important;
+    min-height: 40px !important;
+    margin: 0 !important;
+    opacity: 0 !important;
+    pointer-events: auto !important;
+  }
+
+  [data-page-view="casa"] [data-tab-panel="casa-mercado"] .home-market-item span {
+    grid-column: 1 !important;
+    width: 21px !important;
+    height: 21px !important;
+    min-width: 21px !important;
+    min-height: 21px !important;
+    border: 1.3px solid rgba(143, 178, 244, .45) !important;
+    border-radius: 8px !important;
+    background: rgba(255, 255, 255, .95) !important;
+  }
+
+  [data-page-view="casa"] [data-tab-panel="casa-mercado"] .home-market-item input:checked + span {
+    border-color: transparent !important;
+    background: linear-gradient(135deg, #8fb2f4, #b8a5f2) !important;
+  }
+
+  [data-page-view="casa"] [data-tab-panel="casa-mercado"] .home-market-item input:checked + span::after {
+    left: 6px !important;
+    top: 2px !important;
+    width: 6px !important;
+    height: 11px !important;
+    border-right: 2px solid #fff !important;
+    border-bottom: 2px solid #fff !important;
+  }
+
+  [data-page-view="casa"] [data-tab-panel="casa-mercado"] .home-market-item em {
+    grid-column: 2 !important;
+    display: block !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    color: #303449 !important;
+    font-size: 13px !important;
+    font-style: normal !important;
+    font-weight: 400 !important;
+    line-height: 1.35 !important;
+    white-space: normal !important;
+    overflow-wrap: anywhere !important;
+    word-break: normal !important;
+  }
+
+  [data-page-view="casa"] [data-tab-panel="casa-mercado"] .home-market-item input:checked ~ em {
+    color: #8a91a6 !important;
+    text-decoration: line-through !important;
+    text-decoration-thickness: 1px !important;
+  }
+}
+
+/* Home web: remove o titulo/frase dos modulos, mantendo o mobile intacto. */
+@media (min-width: 768px) {
+  .desktop-modules-heading {
+    justify-content: flex-end !important;
+    margin-top: 8px !important;
+  }
+
+  .desktop-modules-heading > div {
+    display: none !important;
+  }
+}
+
+/* Agenda web mais ampla e confortavel, sem afetar a experiencia mobile. */
+@media (min-width: 900px) {
+  body.agenda-tab-active .main-content,
+  body.agenda-tab-active .page-stack,
+  body.agenda-tab-active [data-page-view="planner"],
+  body.agenda-tab-active [data-tab-panel="planner-agenda"] {
+    width: 100% !important;
+    max-width: none !important;
+  }
+
+  body.agenda-tab-active .planner-page-shell {
+    width: min(100%, 1480px) !important;
+    max-width: 1480px !important;
+    margin: 0 auto !important;
+    padding: 24px 30px 34px !important;
+  }
+
+  body.agenda-tab-active .agenda-mobile-panel {
+    width: 100% !important;
+    max-width: none !important;
+    min-height: calc(100vh - 150px) !important;
+    height: auto !important;
+    padding: 22px !important;
+    border-radius: 30px !important;
+    overflow: visible !important;
+  }
+
+  body.agenda-tab-active #week-view-shell.agenda-timeline-shell:not(.hidden) {
+    height: min(74vh, 820px) !important;
+    max-height: 820px !important;
+    overflow-y: auto !important;
+    border-radius: 24px !important;
+  }
+
+  body.agenda-tab-active .agenda-timeline-body {
+    grid-template-columns: 68px minmax(0, 1fr) !important;
+  }
+
+  body.agenda-tab-active .agenda-mob-header,
+  body.agenda-tab-active .agenda-view-tabs,
+  body.agenda-tab-active .agenda-week-strip-scroll,
+  body.agenda-tab-active .agenda-day-notes {
+    max-width: 100% !important;
+  }
+}
+
+/* Comunidade mobile: foto, formatos e publicar alinhados como controles reais. */
+@media (max-width: 767px) {
+  [data-page-view="comunidade"] .community-composer-actions {
+    display: grid !important;
+    grid-template-columns: 42px auto minmax(86px, 1fr) !important;
+    grid-template-areas:
+      "media formats publish"
+      "feedback feedback feedback" !important;
+    align-items: center !important;
+    gap: 8px !important;
+    width: 100% !important;
+  }
+
+  [data-page-view="comunidade"] .community-composer-media-btn {
+    grid-area: media !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 40px !important;
+    height: 40px !important;
+    min-width: 40px !important;
+    min-height: 40px !important;
+    border-radius: 14px !important;
+  }
+
+  [data-page-view="comunidade"] #community-photo-input {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    opacity: 0 !important;
+    overflow: hidden !important;
+    pointer-events: none !important;
+  }
+
+  [data-page-view="comunidade"] .community-format-toggle {
+    grid-area: formats !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    min-width: max-content !important;
+    max-width: 132px !important;
+    overflow: visible !important;
+  }
+
+  [data-page-view="comunidade"] .community-format-toggle[hidden] {
+    display: none !important;
+  }
+
+  [data-page-view="comunidade"] .community-format-btn {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 4px !important;
+    min-width: 48px !important;
+    height: 34px !important;
+    padding: 0 8px !important;
+    border-radius: 12px !important;
+    font-size: 11px !important;
+    font-weight: 500 !important;
+    color: #66708c !important;
+    white-space: nowrap !important;
+  }
+
+  [data-page-view="comunidade"] .community-format-btn[data-format="square"]::after {
+    content: "1:1";
+  }
+
+  [data-page-view="comunidade"] .community-format-btn[data-format="story"]::after {
+    content: "9:16";
+  }
+
+  [data-page-view="comunidade"] .community-format-btn.is-active {
+    color: #fff !important;
+    background: linear-gradient(135deg, #8fb2f4, #b8a5f2, #f4b8d5) !important;
+    border-color: transparent !important;
+  }
+
+  [data-page-view="comunidade"] .community-publish-btn {
+    grid-area: publish !important;
+    justify-self: end !important;
+    min-width: 84px !important;
+    max-width: 118px !important;
+    min-height: 40px !important;
+    padding: 9px 14px !important;
+    border-radius: 14px !important;
+  }
+
+  [data-page-view="comunidade"] #community-post-feedback {
+    grid-area: feedback !important;
+    grid-column: auto !important;
+    width: 100% !important;
+  }
+}
+
+/* Modo noturno mobile: aplica a identidade escura aos cards e formularios. */
+@media (max-width: 767px) {
+  body[data-theme="dark"] {
+    --ink: #edf1ff;
+    --muted: #b8c0d7;
+    --surface: #141b2d;
+    --surface-soft: #101827;
+    background:
+      radial-gradient(circle at top left, rgba(143, 178, 244, .18), transparent 34%),
+      linear-gradient(180deg, #0f1524 0%, #111827 100%) !important;
+    color: #edf1ff !important;
+  }
+
+  body[data-theme="dark"] :is(.main-content, .page-stack, .mobile-home-shell, .workspace-home, .planner-page-shell) {
+    background: transparent !important;
+    color: #edf1ff !important;
+  }
+
+  body[data-theme="dark"] :is(
+    .mobile-verse-card,
+    .workspace-card,
+    .panel,
+    .module-card,
+    .agenda-mobile-panel,
+    .agenda-form-drawer,
+    .finance-card,
+    .home-card,
+    .body-card,
+    .community-shell,
+    .community-composer,
+    .community-post-card,
+    .settings-card,
+    .preferences-card,
+    .membership-card,
+    .home-market-card,
+    .limpeza-col,
+    .refeicao-col,
+    .reforma-card,
+    .planner-week-card,
+    .planner-spotlight-card
+  ) {
+    background: rgba(20, 27, 45, .92) !important;
+    border-color: rgba(143, 178, 244, .18) !important;
+    color: #edf1ff !important;
+    box-shadow: 0 18px 44px rgba(0, 0, 0, .22) !important;
+  }
+
+  body[data-theme="dark"] :is(h1, h2, h3, h4, h5, strong, p, span, small, label, em, li) {
+    color: inherit;
+  }
+
+  body[data-theme="dark"] :is(input, textarea, select, .summary-input, .module-input, .notes-input, .gcal-input, .gcal-select, .gcal-textarea, .gcal-title-input) {
+    background: rgba(10, 16, 28, .88) !important;
+    border-color: rgba(143, 178, 244, .24) !important;
+    color: #edf1ff !important;
+  }
+
+  body[data-theme="dark"] :is(input, textarea)::placeholder {
+    color: rgba(237, 241, 255, .58) !important;
+  }
+
+  body[data-theme="dark"] .mobile-bottom-nav {
+    background: rgba(16, 22, 36, .90) !important;
+    border-color: rgba(143, 178, 244, .18) !important;
+    box-shadow: 0 -16px 36px rgba(0, 0, 0, .24) !important;
+  }
+
+  body[data-theme="dark"] .mobile-bottom-nav button:not(.is-home) {
+    color: #dbe3f7 !important;
+  }
+
+  body[data-theme="dark"] :is(.agenda-view-tab, .casa-tab, .preference-button, .ghost-button, .community-format-btn) {
+    background: rgba(255, 255, 255, .07) !important;
+    border-color: rgba(143, 178, 244, .20) !important;
+    color: #dfe6fa !important;
+  }
+
+  body[data-theme="dark"] :is(.agenda-view-tab.is-active, .casa-tab.is-active, .preference-button.is-active, .community-format-btn.is-active) {
+    color: #fff !important;
+    background: linear-gradient(135deg, #8fb2f4, #b8a5f2, #f4b8d5) !important;
+  }
 }
