@@ -2360,3 +2360,724 @@ body:not(.agenda-tab-active) .home-community-cta {
     font-size: 22px !important;
   }
 }
+
+/* Desktop: agenda maior e com respiro quando aberta pela web. */
+@media (min-width: 768px) {
+  body.agenda-tab-active .main-content {
+    padding: 28px 32px !important;
+  }
+
+  body.agenda-tab-active [data-page-view="planner"].is-active {
+    max-width: min(1680px, calc(100vw - 64px)) !important;
+    width: 100% !important;
+    margin: 0 auto !important;
+  }
+
+  body.agenda-tab-active .planner-page-shell,
+  body.agenda-tab-active .agenda-mobile-panel {
+    width: 100% !important;
+    max-width: none !important;
+  }
+
+  body.agenda-tab-active .agenda-mobile-panel {
+    min-height: calc(100vh - 170px) !important;
+    padding: 22px !important;
+    border-radius: 28px !important;
+  }
+
+  body.agenda-tab-active .agenda-mob-header {
+    padding: 16px 18px 14px !important;
+  }
+
+  body.agenda-tab-active .agenda-timeline-shell {
+    min-height: 620px !important;
+  }
+
+  body.agenda-tab-active .agenda-month-shell {
+    min-height: 620px !important;
+  }
+}
+
+/* Versao mobile baseada no modelo enviado: mantém os cards como botoes reais. */
+@media (max-width: 767px) {
+  body .app-topbar,
+  body .sidebar {
+    display: none !important;
+  }
+
+  body .app-shell {
+    display: block !important;
+  }
+
+  body .main-content {
+    width: 100% !important;
+    margin: 0 !important;
+    padding-top: 0 !important;
+  }
+
+  body:not(.agenda-tab-active) {
+    background:
+      radial-gradient(circle at 8% 0%, rgba(250, 225, 229, .88), transparent 30%),
+      radial-gradient(circle at 100% 5%, rgba(223, 219, 246, .78), transparent 34%),
+      linear-gradient(180deg, #f8efee 0%, #f4eef4 44%, #f1edf5 100%) !important;
+    color: #312c40 !important;
+    font-family: 'Inter', 'DM Sans', sans-serif !important;
+  }
+
+  body:not(.agenda-tab-active) .app-shell,
+  body:not(.agenda-tab-active) .main-content,
+  body:not(.agenda-tab-active) .page-stack,
+  body:not(.agenda-tab-active) #dashboard {
+    background: transparent !important;
+  }
+
+  body:not(.agenda-tab-active) .main-content {
+    min-height: 100dvh !important;
+    padding: 0 !important;
+    overflow: visible !important;
+  }
+
+  body:not(.agenda-tab-active) #dashboard {
+    padding: 0 0 112px !important;
+    overflow: visible !important;
+  }
+
+  body:not(.agenda-tab-active) .mobile-home-hero {
+    display: block !important;
+    margin: 0 !important;
+    padding: max(18px, env(safe-area-inset-top)) 0 0 !important;
+    background: transparent !important;
+    border: 0 !important;
+    box-shadow: none !important;
+  }
+
+  body:not(.agenda-tab-active) .mobile-home-top {
+    display: none !important;
+  }
+
+  body:not(.agenda-tab-active) .mobile-home-greeting {
+    display: block !important;
+    margin: 0 !important;
+    padding: 8px 22px 0 !important;
+    text-align: left !important;
+  }
+
+  body:not(.agenda-tab-active) .mobile-home-greeting span {
+    display: block !important;
+    margin: 0 0 4px !important;
+    color: #9d93af !important;
+    font-size: 11px !important;
+    font-weight: 700 !important;
+    letter-spacing: .08em !important;
+    line-height: 1.3 !important;
+    text-transform: uppercase !important;
+  }
+
+  body:not(.agenda-tab-active) .mobile-home-greeting strong {
+    display: block !important;
+    margin: 0 0 16px !important;
+    color: #5c4b85 !important;
+    font-family: 'Cormorant Garamond', Georgia, serif !important;
+    font-size: 31px !important;
+    font-weight: 600 !important;
+    letter-spacing: 0 !important;
+    line-height: 1.04 !important;
+    text-transform: none !important;
+  }
+
+  body:not(.agenda-tab-active) .mobile-verse-card {
+    display: grid !important;
+    grid-template-columns: 42px minmax(0, 1fr) !important;
+    gap: 14px !important;
+    align-items: flex-start !important;
+    margin: 0 22px 18px !important;
+    padding: 18px !important;
+    min-height: 0 !important;
+    border: 1px solid rgba(255, 255, 255, .78) !important;
+    border-radius: 28px !important;
+    background:
+      radial-gradient(circle at top right, rgba(255,255,255,.35), transparent 28%),
+      linear-gradient(120deg, #95b4f4 0%, #b79df0 48%, #e7a9d0 100%) !important;
+    color: #fff !important;
+    box-shadow: 0 18px 34px rgba(113, 97, 165, .18) !important;
+  }
+
+  body:not(.agenda-tab-active) .mobile-verse-card > span {
+    display: grid !important;
+    place-items: center !important;
+    width: 42px !important;
+    height: 42px !important;
+    margin: 0 !important;
+    border-radius: 16px !important;
+    background: rgba(255, 255, 255, .30) !important;
+    color: #fff !important;
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,.16) !important;
+  }
+
+  body:not(.agenda-tab-active) .mobile-verse-card > span svg {
+    width: 22px !important;
+    height: 22px !important;
+  }
+
+  body:not(.agenda-tab-active) .mobile-verse-header {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 10px !important;
+    margin: 0 0 10px !important;
+  }
+
+  body:not(.agenda-tab-active) .mobile-verse-header h2 {
+    margin: 0 !important;
+    color: rgba(255,255,255,.9) !important;
+    font-family: 'Inter', 'DM Sans', sans-serif !important;
+    font-size: 10px !important;
+    font-weight: 700 !important;
+    letter-spacing: .11em !important;
+    line-height: 1.2 !important;
+    text-transform: uppercase !important;
+  }
+
+  body:not(.agenda-tab-active) .mobile-verse-action-btn {
+    flex: 0 0 auto !important;
+    padding: 9px 12px !important;
+    border: 0 !important;
+    border-radius: 999px !important;
+    background: rgba(255,255,255,.86) !important;
+    color: #7e6aae !important;
+    font-size: 11px !important;
+    font-weight: 700 !important;
+    box-shadow: 0 8px 18px rgba(92,75,133,.12) !important;
+  }
+
+  body:not(.agenda-tab-active) .mobile-verse-card p {
+    margin: 0 0 8px !important;
+    color: #fff !important;
+    font-family: 'Cormorant Garamond', Georgia, serif !important;
+    font-size: 24px !important;
+    font-weight: 600 !important;
+    letter-spacing: 0 !important;
+    line-height: 1.08 !important;
+  }
+
+  body:not(.agenda-tab-active) .mobile-verse-card strong {
+    color: rgba(255,255,255,.9) !important;
+    font-size: 11px !important;
+    font-weight: 800 !important;
+    letter-spacing: .08em !important;
+    text-transform: uppercase !important;
+  }
+
+  body:not(.agenda-tab-active) .workspace-home {
+    margin: 0 !important;
+    padding: 0 !important;
+    background: transparent !important;
+    border: 0 !important;
+    box-shadow: none !important;
+  }
+
+  body:not(.agenda-tab-active) .desktop-modules-heading {
+    display: none !important;
+  }
+
+  body:not(.agenda-tab-active) .mobile-modules-heading {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) auto !important;
+    align-items: end !important;
+    gap: 12px !important;
+    margin: 0 !important;
+    padding: 0 22px 12px !important;
+  }
+
+  body:not(.agenda-tab-active) .mobile-modules-heading::before {
+    content: "Sua jornada" !important;
+    display: block !important;
+    grid-column: 1 / -1 !important;
+    margin-bottom: -8px !important;
+    color: #9d93af !important;
+    font-size: 10px !important;
+    font-weight: 700 !important;
+    letter-spacing: .11em !important;
+    text-transform: uppercase !important;
+  }
+
+  body:not(.agenda-tab-active) .mobile-modules-heading h2 {
+    margin: 0 !important;
+    color: #3b334d !important;
+    font-family: 'Cormorant Garamond', Georgia, serif !important;
+    font-size: 29px !important;
+    font-weight: 600 !important;
+    letter-spacing: 0 !important;
+    line-height: 1 !important;
+  }
+
+  body:not(.agenda-tab-active) .mobile-modules-heading button {
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    background: transparent !important;
+    color: #8e79bd !important;
+    font-size: 13px !important;
+    font-weight: 700 !important;
+    white-space: nowrap !important;
+  }
+
+  body:not(.agenda-tab-active) .workspace-card-grid {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 14px !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 22px !important;
+  }
+
+  body:not(.agenda-tab-active) .workspace-card {
+    display: flex !important;
+    position: relative !important;
+    flex-direction: column !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+    padding: 10px !important;
+    overflow: hidden !important;
+    text-align: left !important;
+    border: 1px solid rgba(255,255,255,.85) !important;
+    border-radius: 24px !important;
+    box-shadow: 0 14px 28px rgba(117, 99, 153, .07) !important;
+    transform: none !important;
+  }
+
+  body:not(.agenda-tab-active) .workspace-card-planner {
+    background: linear-gradient(180deg, rgba(239,246,255,.95), rgba(255,255,255,.90)) !important;
+  }
+
+  body:not(.agenda-tab-active) .workspace-card-dreams {
+    background: linear-gradient(180deg, rgba(255,243,238,.96), rgba(255,255,255,.90)) !important;
+  }
+
+  body:not(.agenda-tab-active) .workspace-card-body {
+    background: linear-gradient(180deg, rgba(252,241,250,.96), rgba(255,255,255,.90)) !important;
+  }
+
+  body:not(.agenda-tab-active) .workspace-card-cycle {
+    background: linear-gradient(180deg, rgba(250,245,239,.96), rgba(255,255,255,.90)) !important;
+  }
+
+  body:not(.agenda-tab-active) .workspace-card-finance {
+    background: linear-gradient(180deg, rgba(245,248,231,.96), rgba(255,255,255,.90)) !important;
+  }
+
+  body:not(.agenda-tab-active) .workspace-card-study {
+    background: linear-gradient(180deg, rgba(247,239,231,.96), rgba(255,255,255,.90)) !important;
+  }
+
+  body:not(.agenda-tab-active) .workspace-card-image {
+    background: linear-gradient(180deg, rgba(252,239,243,.96), rgba(255,255,255,.90)) !important;
+  }
+
+  body:not(.agenda-tab-active) .workspace-card-home {
+    background: linear-gradient(180deg, rgba(253,247,226,.96), rgba(255,255,255,.90)) !important;
+  }
+
+  body:not(.agenda-tab-active) .workspace-card:hover {
+    transform: none !important;
+    box-shadow: 0 14px 28px rgba(117, 99, 153, .07) !important;
+  }
+
+  body:not(.agenda-tab-active) .workspace-card-spiritual,
+  body:not(.agenda-tab-active) .workspace-card-community,
+  body:not(.agenda-tab-active) #admin-dashboard-card {
+    display: none !important;
+  }
+
+  body:not(.agenda-tab-active) .workspace-card::before,
+  body:not(.agenda-tab-active) .workspace-card-cover::before,
+  body:not(.agenda-tab-active) .workspace-card-cover::after,
+  body:not(.agenda-tab-active) .workspace-card-tools,
+  body:not(.agenda-tab-active) .workspace-card-badge {
+    display: none !important;
+    content: none !important;
+  }
+
+  body:not(.agenda-tab-active) .workspace-card-cover {
+    display: block !important;
+    flex: 0 0 auto !important;
+    width: 100% !important;
+    height: 132px !important;
+    min-height: 132px !important;
+    margin: 0 0 12px !important;
+    border: 0 !important;
+    border-radius: 18px !important;
+    background-color: #f8eef3 !important;
+    background-size: cover !important;
+    background-position: center !important;
+    box-shadow: none !important;
+    overflow: hidden !important;
+  }
+
+  body:not(.agenda-tab-active) .workspace-card strong {
+    display: block !important;
+    min-height: 33px !important;
+    margin: 0 0 7px !important;
+    padding: 0 !important;
+    color: #312c40 !important;
+    font-family: 'Inter', 'DM Sans', sans-serif !important;
+    font-size: 13px !important;
+    font-weight: 700 !important;
+    letter-spacing: 0 !important;
+    line-height: 1.25 !important;
+    text-transform: none !important;
+  }
+
+  body:not(.agenda-tab-active) .workspace-card small {
+    display: block !important;
+    min-height: 32px !important;
+    margin: 0 0 12px !important;
+    padding: 0 !important;
+    color: #7f778f !important;
+    font-size: 11px !important;
+    font-weight: 400 !important;
+    letter-spacing: 0 !important;
+    line-height: 1.45 !important;
+  }
+
+  body:not(.agenda-tab-active) .workspace-card::after {
+    content: "Abrir" !important;
+    display: inline-flex !important;
+    position: static !important;
+    z-index: 1 !important;
+    align-items: center !important;
+    justify-content: center !important;
+    align-self: flex-start !important;
+    width: auto !important;
+    height: auto !important;
+    margin: auto 0 0 !important;
+    padding: 9px 14px !important;
+    border: 0 !important;
+    border-radius: 999px !important;
+    color: #fff !important;
+    font-size: 12px !important;
+    font-weight: 700 !important;
+    line-height: 1 !important;
+    background: linear-gradient(90deg, #9eb7ff 0%, #b39df0 48%, #e3a2cc 100%) !important;
+    box-shadow: 0 10px 20px rgba(160, 136, 213, .15) !important;
+    pointer-events: none !important;
+  }
+
+  body:not(.agenda-tab-active) .mobile-motivational {
+    display: none !important;
+  }
+
+  body:not(.agenda-tab-active) .home-community-banner {
+    display: block !important;
+    margin: 18px 22px 0 !important;
+    padding: 18px !important;
+    overflow: hidden !important;
+    border: 1px solid rgba(255,255,255,.78) !important;
+    border-radius: 26px !important;
+    background:
+      radial-gradient(circle at top right, rgba(255,255,255,.82), transparent 35%),
+      linear-gradient(135deg, rgba(236,242,255,.82), rgba(250,239,248,.92)) !important;
+    box-shadow: 0 16px 30px rgba(117,99,153,.08) !important;
+  }
+
+  body:not(.agenda-tab-active) .home-community-left {
+    display: flex !important;
+    align-items: center !important;
+    gap: 14px !important;
+    margin-bottom: 14px !important;
+  }
+
+  body:not(.agenda-tab-active) .home-community-icon {
+    flex: 0 0 auto !important;
+    width: 54px !important;
+    height: 54px !important;
+    border: 0 !important;
+    border-radius: 20px !important;
+    background: rgba(255,255,255,.62) !important;
+    color: #806bb2 !important;
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,.7) !important;
+  }
+
+  body:not(.agenda-tab-active) .home-community-text h2 {
+    margin: 0 0 3px !important;
+    color: #4d3f70 !important;
+    font-family: 'Cormorant Garamond', Georgia, serif !important;
+    font-size: 25px !important;
+    font-weight: 600 !important;
+    letter-spacing: 0 !important;
+    line-height: 1 !important;
+  }
+
+  body:not(.agenda-tab-active) .home-community-text p {
+    margin: 0 !important;
+    max-width: none !important;
+    color: #7f778f !important;
+    font-size: 13px !important;
+    line-height: 1.45 !important;
+  }
+
+  body:not(.agenda-tab-active) .home-community-center {
+    margin: 0 0 14px !important;
+  }
+
+  body:not(.agenda-tab-active) .home-community-avatars {
+    justify-content: flex-start !important;
+  }
+
+  body:not(.agenda-tab-active) .home-community-avatar,
+  body:not(.agenda-tab-active) .home-community-plus {
+    width: 36px !important;
+    height: 36px !important;
+  }
+
+  body:not(.agenda-tab-active) .home-community-members-text {
+    margin: 8px 0 0 !important;
+    max-width: none !important;
+    color: #8a8198 !important;
+    font-size: 12px !important;
+  }
+
+  body:not(.agenda-tab-active) .home-community-right {
+    display: block !important;
+  }
+
+  body:not(.agenda-tab-active) .home-community-cta {
+    display: inline-flex !important;
+    width: 100% !important;
+    justify-content: center !important;
+    margin: 0 !important;
+    padding: 14px 18px !important;
+    border: 0 !important;
+    border-radius: 999px !important;
+    background: linear-gradient(90deg, #9eb7ff 0%, #b39df0 48%, #e3a2cc 100%) !important;
+    color: #fff !important;
+    font-size: 13px !important;
+    font-weight: 700 !important;
+    box-shadow: 0 12px 24px rgba(160,136,213,.18) !important;
+  }
+
+  body:not(.agenda-tab-active) .home-community-deco {
+    display: none !important;
+  }
+
+  .mobile-bottom-nav {
+    position: fixed !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    z-index: 160 !important;
+    display: grid !important;
+    grid-template-columns: 1fr 1.2fr 1fr !important;
+    align-items: end !important;
+    gap: 8px !important;
+    padding: 12px 18px calc(18px + env(safe-area-inset-bottom)) !important;
+    border-top: 1px solid rgba(141, 121, 177, .12) !important;
+    background: rgba(255, 255, 255, .86) !important;
+    box-shadow: 0 -18px 36px rgba(117, 99, 153, .08) !important;
+    backdrop-filter: blur(18px) !important;
+  }
+
+  .mobile-bottom-nav button {
+    display: grid !important;
+    place-items: center !important;
+    gap: 4px !important;
+    min-width: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    background: transparent !important;
+    color: #5f5a6f !important;
+    font-size: 11px !important;
+    font-weight: 500 !important;
+    letter-spacing: 0 !important;
+  }
+
+  .mobile-bottom-nav button span {
+    display: grid !important;
+    place-items: center !important;
+    width: 28px !important;
+    height: 28px !important;
+    color: currentColor !important;
+  }
+
+  .mobile-bottom-nav button svg {
+    width: 26px !important;
+    height: 26px !important;
+    stroke-width: 1.6 !important;
+  }
+
+  .mobile-bottom-nav .is-home {
+    align-self: center !important;
+    width: 92px !important;
+    height: 92px !important;
+    margin: -46px auto 0 !important;
+    border-radius: 999px !important;
+    background: linear-gradient(180deg, #f06aa9 0%, #cc2d76 100%) !important;
+    color: #fff !important;
+    font-size: 12px !important;
+    font-weight: 700 !important;
+    box-shadow: 0 16px 30px rgba(204,45,118,.24) !important;
+  }
+
+  .mobile-bottom-nav .is-home span {
+    width: 34px !important;
+    height: 34px !important;
+  }
+
+  .mobile-bottom-nav .is-home svg {
+    width: 33px !important;
+    height: 33px !important;
+    stroke-width: 1.8 !important;
+  }
+}
+
+@media (max-width: 370px) {
+  body:not(.agenda-tab-active) .workspace-card-grid {
+    padding: 0 16px !important;
+    gap: 12px !important;
+  }
+
+  body:not(.agenda-tab-active) .workspace-card {
+    padding: 8px !important;
+    border-radius: 21px !important;
+  }
+
+  body:not(.agenda-tab-active) .workspace-card-cover {
+    height: 116px !important;
+    min-height: 116px !important;
+  }
+
+  body:not(.agenda-tab-active) .mobile-verse-card,
+  body:not(.agenda-tab-active) .home-community-banner {
+    margin-left: 16px !important;
+    margin-right: 16px !important;
+  }
+
+  body:not(.agenda-tab-active) .mobile-modules-heading {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
+}
+
+/* Tiles coloridos dentro dos blocos, sem alterar os controles. */
+.page-view:not([data-page-view="dashboard"]) :is(
+  .planner-spotlight-card,
+  .planner-week-card,
+  .planner-summary-band,
+  .planner-goal-card,
+  .module-card,
+  .finance-card,
+  .fin-summary-card,
+  .agenda-events-card,
+  .agenda-summary-card,
+  .detail-card,
+  .project-card,
+  .home-card,
+  .home-market-card,
+  .casa-clean-card,
+  .casa-room-card,
+  .reforma-card,
+  .corpo-saude-card,
+  .corpo-beleza-card,
+  .corpo-workout-day,
+  .cursos-card,
+  .study-books-card,
+  .settings-card,
+  .community-post-card
+) {
+  position: relative !important;
+  overflow: hidden !important;
+  border: 1px solid rgba(255,255,255,.78) !important;
+  background:
+    radial-gradient(circle at 100% 0%, rgba(255,255,255,.62), transparent 34%),
+    linear-gradient(145deg, rgba(239,246,255,.92), rgba(255,255,255,.88)) !important;
+}
+
+.page-view:not([data-page-view="dashboard"]) :is(
+  .planner-spotlight-card,
+  .planner-week-card,
+  .planner-summary-band,
+  .planner-goal-card,
+  .module-card,
+  .finance-card,
+  .fin-summary-card,
+  .agenda-events-card,
+  .agenda-summary-card,
+  .detail-card,
+  .project-card,
+  .home-card,
+  .home-market-card,
+  .casa-clean-card,
+  .casa-room-card,
+  .reforma-card,
+  .corpo-saude-card,
+  .corpo-beleza-card,
+  .corpo-workout-day,
+  .cursos-card,
+  .study-books-card,
+  .settings-card,
+  .community-post-card
+)::before {
+  content: "" !important;
+  position: absolute !important;
+  inset: 0 !important;
+  z-index: 0 !important;
+  background: linear-gradient(135deg, rgba(143,178,244,.10), rgba(184,165,242,.08) 48%, rgba(244,184,213,.12)) !important;
+  pointer-events: none !important;
+}
+
+.page-view:not([data-page-view="dashboard"]) :is(
+  .planner-spotlight-card,
+  .planner-week-card,
+  .planner-summary-band,
+  .planner-goal-card,
+  .module-card,
+  .finance-card,
+  .fin-summary-card,
+  .agenda-events-card,
+  .agenda-summary-card,
+  .detail-card,
+  .project-card,
+  .home-card,
+  .home-market-card,
+  .casa-clean-card,
+  .casa-room-card,
+  .reforma-card,
+  .corpo-saude-card,
+  .corpo-beleza-card,
+  .corpo-workout-day,
+  .cursos-card,
+  .study-books-card,
+  .settings-card,
+  .community-post-card
+) > * {
+  position: relative !important;
+  z-index: 1 !important;
+}
+
+.page-view:not([data-page-view="dashboard"]) :is(
+  .planner-week-card,
+  .project-card,
+  .fin-summary-card,
+  .home-market-card,
+  .casa-clean-card,
+  .corpo-beleza-card,
+  .cursos-card
+):nth-of-type(2n) {
+  background:
+    radial-gradient(circle at 100% 0%, rgba(255,255,255,.62), transparent 34%),
+    linear-gradient(145deg, rgba(255,243,248,.96), rgba(255,255,255,.88)) !important;
+}
+
+.page-view:not([data-page-view="dashboard"]) :is(
+  .planner-week-card,
+  .project-card,
+  .fin-summary-card,
+  .home-market-card,
+  .casa-clean-card,
+  .corpo-beleza-card,
+  .cursos-card
+):nth-of-type(3n) {
+  background:
+    radial-gradient(circle at 100% 0%, rgba(255,255,255,.62), transparent 34%),
+    linear-gradient(145deg, rgba(248,244,255,.96), rgba(255,255,255,.88)) !important;
+}

@@ -37,16 +37,19 @@ body{font-family:'DM Sans',sans-serif;background:#fdf7f9;padding:24px 20px 48px;
 .hero-title{font-family:'Cormorant Garamond',serif;font-size:22px;font-style:italic;color:#fff;}
 
 .tabs-row{display:flex;gap:6px;margin-bottom:24px;flex-wrap:wrap;}
-.tab{font-size:12px;font-weight:500;padding:8px 16px;border-radius:60px;border:0.5px solid #e8d0da;background:#fff;color:#9a7a8a;cursor:pointer;display:flex;align-items:center;gap:6px;}
+.tab{font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;padding:8px 16px;border-radius:60px;border:0.5px solid #e8d0da;background:#fff;color:#9a7a8a;cursor:pointer;display:flex;align-items:center;gap:6px;}
 .tab i{font-size:14px;}
 .tab.active{background:#8fb2f4;color:#fff;border-color:#8fb2f4;}
+.cycle-panel{display:none;animation:panelIn .22s ease both;}
+.cycle-panel.active{display:block;}
+@keyframes panelIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
 
 .sec-title{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:500;color:#2a1f28;margin-bottom:16px;display:flex;align-items:center;gap:10px;}
 .sec-title::after{content:'';flex:1;height:0.5px;background:#dfe8ff;}
 
 /* RESUMO DO CICLO */
 .cycle-summary{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:24px;}
-.cycle-stat{background:#fff;border:0.5px solid #dfe8ff;border-radius:14px;padding:14px 16px;text-align:center;}
+.cycle-stat{background:#fff;border:0.5px solid #dfe8ff;border-radius:14px;padding:12px 14px;text-align:center;min-height:118px;display:flex;flex-direction:column;align-items:center;justify-content:center;}
 .cs-icon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;margin:0 auto 8px;}
 .cs-icon.rose{background:#eef3ff;} .cs-icon.rose i{color:#8fb2f4;font-size:18px;}
 .cs-icon.purple{background:#f6f1ff;} .cs-icon.purple i{color:#b8a5f2;font-size:18px;}
@@ -205,7 +208,8 @@ body{padding:14px 12px 28px;overflow-x:hidden;}
 .sec-title{font-size:19px;margin-bottom:12px;}
 .fase-atual{grid-template-columns:1fr;padding:16px;border-radius:16px;gap:13px;margin-bottom:18px;}
 .fa-value{font-size:19px;}
-.cycle-summary,.fases-grid,.registro-grid,.config-grid,.tpm-grid{grid-template-columns:1fr;gap:12px;}
+.cycle-summary,.config-grid{grid-template-columns:repeat(2,1fr);gap:10px;}
+.fases-grid,.registro-grid,.tpm-grid{grid-template-columns:1fr;gap:12px;}
 .cycle-stat,.reg-card,.config-card,.tpm-card{border-radius:16px;}
 .cs-icon{width:36px;height:36px;}
 .cal-card{border-radius:16px;overflow:hidden;margin-bottom:18px;}
@@ -228,6 +232,13 @@ body{padding:14px 12px 28px;overflow-x:hidden;}
 .hist-table{min-width:720px;}
 .tpm-card{padding:14px;}
 .tpm-item{padding:10px;}
+}
+
+@media (max-width: 520px) {
+.cycle-stat{min-height:104px;padding:11px 10px;}
+.cs-icon{width:34px;height:34px;margin-bottom:6px;}
+.cs-value,.cs-input{font-size:20px;}
+.cs-label{font-size:9px;line-height:1.25;}
 }
 
 @media (min-width: 761px) and (max-width: 1100px) {
@@ -461,14 +472,15 @@ body{
   </div>
 </div>
 
-<div class="tabs-row">
-  <div class="tab active"><i class="ti ti-calendar" aria-hidden="true"></i>Calendário</div>
-  <div class="tab"><i class="ti ti-activity" aria-hidden="true"></i>Fases do ciclo</div>
-  <div class="tab"><i class="ti ti-pencil" aria-hidden="true"></i>Registro diário</div>
-  <div class="tab"><i class="ti ti-brain" aria-hidden="true"></i>TPM tracker</div>
-  <div class="tab"><i class="ti ti-history" aria-hidden="true"></i>Histórico</div>
+<div class="tabs-row" role="tablist" aria-label="Funções do ciclo menstrual">
+  <button class="tab active" type="button" role="tab" aria-selected="true" data-cycle-tab="calendario"><i class="ti ti-calendar" aria-hidden="true"></i>Calendário</button>
+  <button class="tab" type="button" role="tab" aria-selected="false" data-cycle-tab="fases"><i class="ti ti-activity" aria-hidden="true"></i>Fases do ciclo</button>
+  <button class="tab" type="button" role="tab" aria-selected="false" data-cycle-tab="registro"><i class="ti ti-pencil" aria-hidden="true"></i>Registro diário</button>
+  <button class="tab" type="button" role="tab" aria-selected="false" data-cycle-tab="tpm"><i class="ti ti-brain" aria-hidden="true"></i>TPM tracker</button>
+  <button class="tab" type="button" role="tab" aria-selected="false" data-cycle-tab="historico"><i class="ti ti-history" aria-hidden="true"></i>Histórico</button>
 </div>
 
+<section class="cycle-panel active" data-cycle-panel="calendario">
 <div class="sec-title">Meu ciclo agora</div>
 <div class="fase-atual">
   <div class="fa-item">
@@ -494,12 +506,12 @@ body{
 <div class="cycle-summary">
   <div class="cycle-stat">
     <div class="cs-icon rose"><i class="ti ti-drop" aria-hidden="true"></i></div>
-    <div><input class="cs-input" type="number" placeholder="28" min="20" max="45"/></div>
+    <div><input class="cs-input" type="number" value="28" min="20" max="45" aria-label="Duração do ciclo em dias"/></div>
     <div class="cs-label">Duração do ciclo (dias)</div>
   </div>
   <div class="cycle-stat">
     <div class="cs-icon purple"><i class="ti ti-calendar-event" aria-hidden="true"></i></div>
-    <div><input class="cs-input" type="number" placeholder="5" min="2" max="10"/></div>
+    <div><input class="cs-input" type="number" value="5" min="2" max="10" aria-label="Duração da menstruação em dias"/></div>
     <div class="cs-label">Duração da menstruação</div>
   </div>
   <div class="cycle-stat">
@@ -577,7 +589,9 @@ body{
     <div class="cal-cell menstruacao"><div class="cal-num">31</div><div class="cal-phase-label">prev.</div></div>
   </div>
 </div>
+</section>
 
+<section class="cycle-panel" data-cycle-panel="fases">
 <div class="sec-title">As 4 fases do seu ciclo</div>
 <div class="fases-grid" style="margin-bottom:24px;">
   <div class="fase-card">
@@ -677,7 +691,9 @@ body{
     </div>
   </div>
 </div>
+</section>
 
+<section class="cycle-panel" data-cycle-panel="registro">
 <div class="sec-title">Registro do dia de hoje</div>
 <div class="registro-grid" style="margin-bottom:24px;">
   <div class="reg-card">
@@ -744,7 +760,9 @@ body{
   <span class="field-label">Notas do dia — como você está se sentindo?</span>
   <textarea class="textarea-field" placeholder="Escreva livremente sobre como está sendo este dia do ciclo..."></textarea>
 </div>
+</section>
 
+<section class="cycle-panel" data-cycle-panel="tpm">
 <div class="sec-title">TPM tracker</div>
 <div class="tpm-card">
   <div class="tpm-header"><i class="ti ti-brain" aria-hidden="true"></i><span>Intensidade dos sintomas de TPM — marque de 1 a 5</span></div>
@@ -841,7 +859,9 @@ body{
     </div>
   </div>
 </div>
+</section>
 
+<section class="cycle-panel" data-cycle-panel="historico">
 <div class="sec-title">Histórico de ciclos</div>
 <div class="historico-card">
   <div class="hist-header">
@@ -906,6 +926,7 @@ body{
     </tbody>
   </table>
 </div>
+</section>
 
 </div>
 <script>
@@ -921,6 +942,19 @@ function setScale(el){
     else d.classList.remove('active');
   });
 }
+document.querySelectorAll('[data-cycle-tab]').forEach((tab) => {
+  tab.addEventListener('click', () => {
+    const target = tab.dataset.cycleTab;
+    document.querySelectorAll('[data-cycle-tab]').forEach((item) => {
+      const active = item === tab;
+      item.classList.toggle('active', active);
+      item.setAttribute('aria-selected', active ? 'true' : 'false');
+    });
+    document.querySelectorAll('[data-cycle-panel]').forEach((panel) => {
+      panel.classList.toggle('active', panel.dataset.cyclePanel === target);
+    });
+  });
+});
 </script>
 </body>
 </html>
