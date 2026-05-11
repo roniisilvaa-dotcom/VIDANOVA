@@ -3084,42 +3084,45 @@ body:not(.agenda-tab-active) .home-community-cta {
 
 /* Ajuste fino do bloco de versiculo: fonte maior, bloco mais baixo. */
 body:not(.agenda-tab-active) .verse-banner {
-  min-height: 58px !important;
-  margin: 0 26px 12px !important;
-  padding: 10px 16px !important;
-  border-radius: 18px !important;
+  min-height: 118px !important;
+  margin: 0 26px 18px !important;
+  padding: 24px 32px !important;
+  border-radius: 24px !important;
 }
 
 body:not(.agenda-tab-active) .verse-banner-icon,
 body:not(.agenda-tab-active) .verse-icon,
 body:not(.agenda-tab-active) .verse-banner .verse-icon-wrap {
-  width: 34px !important;
-  height: 34px !important;
-  min-width: 34px !important;
+  width: 56px !important;
+  height: 56px !important;
+  min-width: 56px !important;
 }
 
 body:not(.agenda-tab-active) .verse-banner .eyebrow,
 body:not(.agenda-tab-active) .verse-eyebrow {
-  margin-bottom: 3px !important;
-  font-size: 8px !important;
+  margin-bottom: 8px !important;
+  font-size: 14px !important;
+  letter-spacing: .18em !important;
 }
 
 body:not(.agenda-tab-active) .verse-banner-copy strong,
 body:not(.agenda-tab-active) .verse-text {
-  font-size: 17px !important;
-  line-height: 1.12 !important;
+  font-size: 26px !important;
+  line-height: 1.16 !important;
+  color: #fff !important;
 }
 
 body:not(.agenda-tab-active) .verse-banner-copy small,
 body:not(.agenda-tab-active) .verse-ref {
-  margin-top: 2px !important;
-  font-size: 9px !important;
+  margin-top: 8px !important;
+  font-size: 14px !important;
+  letter-spacing: .10em !important;
 }
 
 body:not(.agenda-tab-active) .verse-banner button,
 body:not(.agenda-tab-active) .verse-btn {
-  padding: 6px 10px !important;
-  font-size: 10px !important;
+  padding: 12px 24px !important;
+  font-size: 14px !important;
 }
 
 @media (max-width: 767px) {
