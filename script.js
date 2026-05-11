@@ -2204,6 +2204,7 @@ function setActivePage(pageName, syncHash = true) {
   // Remove classe de agenda full-screen ao sair da página planner
   if (nextPage !== "planner") {
     document.body.classList.remove("agenda-tab-active");
+    document.body.classList.remove("planner-dreams-active");
   }
 
   if (syncHash && window.location.hash !== `#${nextPage}`) {
@@ -6148,6 +6149,7 @@ function setPlannerTab(target) {
   const buttons = plannerShell.querySelectorAll("[data-tab-target]");
   const panels = plannerShell.querySelectorAll("[data-tab-panel]");
   currentPlannerTab = target;
+  document.body.classList.toggle("planner-dreams-active", target === "planner-dreams");
 
   buttons.forEach((button) => {
     button.classList.toggle("is-active", button.dataset.tabTarget === target);
