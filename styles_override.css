@@ -3266,11 +3266,11 @@ body:not(.agenda-tab-active) .verse-btn {
     margin: -25px auto 0 !important;
     border-radius: 999px !important;
     background:
-      radial-gradient(circle at 35% 22%, rgba(255,255,255,.26), transparent 30%),
-      linear-gradient(180deg, #e879b1 0%, #c93a82 100%) !important;
+      radial-gradient(circle at 35% 22%, rgba(255,255,255,.30), transparent 31%),
+      linear-gradient(135deg, #8fb2f4 0%, #b8a5f2 52%, #f4b8d5 100%) !important;
     font-size: 9px !important;
     letter-spacing: .04em !important;
-    box-shadow: 0 10px 22px rgba(201, 58, 130, .16) !important;
+    box-shadow: 0 10px 22px rgba(143, 178, 244, .18), 0 8px 18px rgba(184, 165, 242, .14) !important;
   }
 
   .mobile-bottom-nav .is-home span {
