@@ -1928,44 +1928,45 @@ body:not(.agenda-tab-active) .sidebar-nav a:hover {
 
 body:not(.agenda-tab-active) .sidebar-footer-inspire {
   margin-top: auto !important;
-  padding: 16px 14px 20px !important;
-  border-top: 1px solid var(--capa-line) !important;
+  padding: 14px 14px 18px !important;
+  border-top: 1px solid rgba(117, 99, 153, 0.08) !important;
 }
 
 body:not(.agenda-tab-active) .side-inspire-card {
-  border-radius: 22px !important;
-  padding: 20px 18px !important;
-  color: #fff !important;
+  border-radius: 20px !important;
+  padding: 18px 16px !important;
+  color: #675d7e !important;
   background:
-    radial-gradient(circle at top right, rgba(255,255,255,.14), transparent 28%),
-    linear-gradient(160deg, #917cc4 0%, #7c67ad 52%, #6d5a9d 100%) !important;
-  box-shadow: 0 18px 40px rgba(105,80,150,.24) !important;
+    radial-gradient(circle at top right, rgba(255,255,255,.86), transparent 34%),
+    linear-gradient(160deg, rgba(255,255,255,.68) 0%, rgba(244,239,249,.72) 52%, rgba(232,223,245,.68) 100%) !important;
+  border: 1px solid rgba(141,120,184,.12) !important;
+  box-shadow: 0 14px 28px rgba(105,80,150,.10) !important;
 }
 
 body:not(.agenda-tab-active) .side-inspire-card span {
   display: block !important;
-  margin-bottom: 10px !important;
-  color: rgba(255,255,255,.68) !important;
-  font-size: 10px !important;
+  margin-bottom: 8px !important;
+  color: #9e92ba !important;
+  font-size: 9px !important;
   font-weight: 600 !important;
   letter-spacing: .18em !important;
   text-transform: uppercase !important;
 }
 
 body:not(.agenda-tab-active) .side-inspire-card h3 {
-  margin: 0 0 10px !important;
+  margin: 0 0 8px !important;
   font-family: 'Cormorant Garamond', Georgia, serif !important;
-  font-size: 22px !important;
-  line-height: 1.08 !important;
-  font-weight: 600 !important;
-  color: #fff !important;
+  font-size: 20px !important;
+  line-height: 1.12 !important;
+  font-weight: 500 !important;
+  color: #5d4a88 !important;
 }
 
 body:not(.agenda-tab-active) .side-inspire-card p {
   margin: 0 !important;
-  color: rgba(255,255,255,.82) !important;
-  font-size: 13px !important;
-  line-height: 1.6 !important;
+  color: #7f7694 !important;
+  font-size: 12px !important;
+  line-height: 1.52 !important;
 }
 
 body:not(.agenda-tab-active) .app-topbar {
@@ -1987,23 +1988,23 @@ body:not(.agenda-tab-active) .workspace-home {
 }
 
 body:not(.agenda-tab-active) .verse-banner {
-  min-height: 96px !important;
-  margin: 0 26px 18px !important;
-  padding: 18px 22px !important;
-  border-radius: 24px !important;
-  border: 1px solid rgba(141, 121, 177, .12) !important;
+  min-height: 74px !important;
+  margin: 0 26px 16px !important;
+  padding: 12px 18px !important;
+  border-radius: 20px !important;
+  border: 1px solid rgba(141, 121, 177, .10) !important;
   background:
-    radial-gradient(circle at 92% 42%, rgba(246, 222, 235, .32), transparent 28%),
-    linear-gradient(90deg, rgba(157, 186, 245, .88) 0%, rgba(183, 168, 240, .86) 50%, rgba(230, 176, 209, .82) 100%) !important;
-  box-shadow: 0 16px 34px rgba(152,126,196,.12) !important;
+    radial-gradient(circle at 92% 42%, rgba(246, 222, 235, .22), transparent 28%),
+    linear-gradient(90deg, rgba(157, 186, 245, .74) 0%, rgba(183, 168, 240, .70) 50%, rgba(230, 176, 209, .66) 100%) !important;
+  box-shadow: 0 10px 24px rgba(152,126,196,.10) !important;
 }
 
 body:not(.agenda-tab-active) .verse-banner-icon,
 body:not(.agenda-tab-active) .verse-icon,
 body:not(.agenda-tab-active) .verse-banner .verse-icon-wrap {
-  width: 46px !important;
-  height: 46px !important;
-  min-width: 46px !important;
+  width: 38px !important;
+  height: 38px !important;
+  min-width: 38px !important;
   border-radius: 50% !important;
   background: rgba(255,255,255,.8) !important;
 }
@@ -2011,28 +2012,28 @@ body:not(.agenda-tab-active) .verse-banner .verse-icon-wrap {
 body:not(.agenda-tab-active) .verse-banner .eyebrow,
 body:not(.agenda-tab-active) .verse-eyebrow {
   margin-bottom: 6px !important;
-  font-size: 10px !important;
-  letter-spacing: .18em !important;
+  font-size: 9px !important;
+  letter-spacing: .16em !important;
   color: rgba(255,255,255,.82) !important;
 }
 
 body:not(.agenda-tab-active) .verse-banner-copy strong,
 body:not(.agenda-tab-active) .verse-text {
-  font-size: 18px !important;
-  line-height: 1.22 !important;
+  font-size: 15px !important;
+  line-height: 1.18 !important;
   font-weight: 500 !important;
 }
 
 body:not(.agenda-tab-active) .verse-banner-copy small,
 body:not(.agenda-tab-active) .verse-ref {
-  margin-top: 6px !important;
-  font-size: 11px !important;
+  margin-top: 4px !important;
+  font-size: 10px !important;
 }
 
 body:not(.agenda-tab-active) .verse-banner button,
 body:not(.agenda-tab-active) .verse-btn {
-  padding: 9px 14px !important;
-  font-size: 12px !important;
+  padding: 7px 12px !important;
+  font-size: 11px !important;
   box-shadow: none !important;
 }
 
@@ -2330,10 +2331,10 @@ body:not(.agenda-tab-active) .home-community-cta {
     display: none !important;
   }
   body:not(.agenda-tab-active) .verse-banner {
-    margin: 0 16px 16px !important;
-    min-height: 86px !important;
-    padding: 16px !important;
-    border-radius: 22px !important;
+    margin: 0 16px 14px !important;
+    min-height: 70px !important;
+    padding: 12px 14px !important;
+    border-radius: 18px !important;
   }
   body:not(.agenda-tab-active) .workspace-home {
     padding: 16px !important;
