@@ -4208,3 +4208,1021 @@ body:not(.agenda-tab-active) .verse-btn {
     z-index: 180 !important;
   }
 }
+
+/* Ajuste final mobile: Saúde/Beleza e Finanças com a mesma usabilidade do Ciclo. */
+@media (max-width: 767px) {
+  body.page-not-dashboard {
+    padding-bottom: 0 !important;
+  }
+
+  body.page-not-dashboard .main-content {
+    padding-bottom: calc(74px + env(safe-area-inset-bottom)) !important;
+  }
+
+  [data-page-view="corpo"],
+  [data-page-view="finanças"] {
+    width: 100% !important;
+    max-width: 100vw !important;
+    overflow: visible !important;
+    touch-action: pan-y !important;
+  }
+
+  [data-page-view="corpo"] .body-card,
+  [data-page-view="finanças"] .finance-card {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    padding: 12px !important;
+    overflow: visible !important;
+    border-radius: 20px !important;
+    pointer-events: auto !important;
+    touch-action: pan-y !important;
+  }
+
+  [data-page-view="corpo"] .tab-shell,
+  [data-page-view="corpo"] .tab-panel,
+  [data-page-view="corpo"] .corpo-tab-content,
+  [data-page-view="finanças"] .tab-shell,
+  [data-page-view="finanças"] .tab-panel {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    overflow: visible !important;
+    pointer-events: auto !important;
+  }
+
+  [data-page-view="corpo"] .tab-panel:not(.is-active),
+  [data-page-view="finanças"] .tab-panel:not(.is-active) {
+    display: none !important;
+  }
+
+  [data-page-view="corpo"] .tab-panel.is-active,
+  [data-page-view="finanças"] .tab-panel.is-active {
+    display: block !important;
+  }
+
+  [data-page-view="corpo"] .tab-buttons,
+  [data-page-view="finanças"] .tab-buttons-scroll,
+  [data-page-view="finanças"] .fin-cc-tabs {
+    position: relative !important;
+    z-index: 30 !important;
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    gap: 7px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 0 10px !important;
+    padding: 2px 0 8px !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    pointer-events: auto !important;
+    touch-action: pan-x !important;
+    scrollbar-width: none !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+
+  [data-page-view="corpo"] .tab-buttons::-webkit-scrollbar,
+  [data-page-view="finanças"] .tab-buttons-scroll::-webkit-scrollbar,
+  [data-page-view="finanças"] .fin-cc-tabs::-webkit-scrollbar {
+    display: none !important;
+  }
+
+  [data-page-view="corpo"] .tab-buttons .ghost-button,
+  [data-page-view="finanças"] .tab-buttons-scroll .ghost-button,
+  [data-page-view="finanças"] .fin-cc-tab-btn {
+    flex: 0 0 auto !important;
+    min-width: max-content !important;
+    min-height: 36px !important;
+    padding: 8px 12px !important;
+    border-radius: 999px !important;
+    font-size: 11.5px !important;
+    font-weight: 400 !important;
+    white-space: nowrap !important;
+    pointer-events: auto !important;
+    touch-action: manipulation !important;
+  }
+
+  [data-page-view="corpo"] :is(
+    .corpo-before-after,
+    .corpo-workout-grid,
+    .corpo-saude-grid,
+    .corpo-saúde-grid,
+    .corpo-beleza-grid,
+    .corpo-library-grid
+  ),
+  [data-page-view="finanças"] :is(
+    .fin-summary-cards,
+    .fin-desejos-columns,
+    .fin-balanco-grid,
+    .fin-metas-grid
+  ) {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  [data-page-view="finanças"] .fin-summary-cards {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  [data-page-view="corpo"] :is(
+    .corpo-before-card,
+    .corpo-after-card,
+    .corpo-workout-day,
+    .corpo-saude-card,
+    .corpo-saúde-card,
+    .corpo-beleza-card,
+    .corpo-library-item
+  ),
+  [data-page-view="finanças"] :is(
+    .fin-summary-card,
+    .fin-section-block,
+    .calculator-card,
+    .fin-desejo-col,
+    .fin-mensal-section,
+    .fin-balanco-card,
+    .fin-meta-card,
+    .fin-cc-card
+  ) {
+    position: relative !important;
+    z-index: 1 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    margin: 0 0 10px !important;
+    padding: 11px !important;
+    overflow: visible !important;
+    border-radius: 16px !important;
+    pointer-events: auto !important;
+    touch-action: pan-y !important;
+  }
+
+  [data-page-view="corpo"] :is(
+    .corpo-before-card,
+    .corpo-after-card,
+    .corpo-workout-day,
+    .corpo-saude-card,
+    .corpo-saúde-card,
+    .corpo-beleza-card,
+    .corpo-library-item
+  )::before,
+  [data-page-view="corpo"] :is(
+    .corpo-before-card,
+    .corpo-after-card,
+    .corpo-workout-day,
+    .corpo-saude-card,
+    .corpo-saúde-card,
+    .corpo-beleza-card,
+    .corpo-library-item
+  )::after,
+  [data-page-view="finanças"] :is(
+    .fin-summary-card,
+    .fin-section-block,
+    .calculator-card,
+    .fin-desejo-col,
+    .fin-mensal-section,
+    .fin-balanco-card
+  )::before,
+  [data-page-view="finanças"] :is(
+    .fin-summary-card,
+    .fin-section-block,
+    .calculator-card,
+    .fin-desejo-col,
+    .fin-mensal-section,
+    .fin-balanco-card
+  )::after {
+    pointer-events: none !important;
+  }
+
+  [data-page-view="corpo"] :is(
+    button,
+    input,
+    textarea,
+    select,
+    label,
+    .corpo-photo-area,
+    .corpo-checklist-item,
+    .corpo-beleza-check,
+    .corpo-beleza-link-item
+  ),
+  [data-page-view="finanças"] :is(
+    button,
+    input,
+    textarea,
+    select,
+    label,
+    .fin-add-row-btn,
+    .fin-add-meta-btn,
+    .fin-cc-add-main-btn,
+    .calc-key
+  ) {
+    position: relative !important;
+    z-index: 35 !important;
+    pointer-events: auto !important;
+    touch-action: manipulation !important;
+    -webkit-user-select: auto !important;
+    user-select: auto !important;
+  }
+
+  [data-page-view="corpo"] :is(input, textarea, select),
+  [data-page-view="finanças"] :is(input, textarea, select) {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    min-height: 38px !important;
+    font-size: 13px !important;
+  }
+
+  [data-page-view="corpo"] :is(textarea, .compact-area),
+  [data-page-view="finanças"] textarea {
+    min-height: 86px !important;
+  }
+
+  [data-page-view="corpo"] :is(.corpo-checklist-item, .corpo-beleza-check, .corpo-beleza-link-item) {
+    display: grid !important;
+    grid-template-columns: auto minmax(0, 1fr) !important;
+    align-items: center !important;
+    gap: 8px !important;
+    width: 100% !important;
+  }
+
+  [data-page-view="corpo"] input[type="checkbox"],
+  [data-page-view="finanças"] input[type="checkbox"] {
+    width: 20px !important;
+    min-width: 20px !important;
+    height: 20px !important;
+    min-height: 20px !important;
+  }
+
+  [data-page-view="corpo"] :is(
+    .corpo-measures-table-shell,
+    .corpo-saude-table-shell,
+    .corpo-saúde-table-shell,
+    .corpo-workout-day-body,
+    .corpo-saúde-card > div[style*="overflow-x"],
+    .corpo-saude-card > div[style*="overflow-x"]
+  ),
+  [data-page-view="finanças"] :is(
+    .fin-table-scroll,
+    .finance-table-shell
+  ) {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    border-radius: 13px !important;
+    touch-action: pan-x !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+
+  [data-page-view="corpo"] table,
+  [data-page-view="finanças"] table {
+    width: max-content !important;
+    min-width: 520px !important;
+    max-width: none !important;
+  }
+
+  [data-page-view="corpo"] th,
+  [data-page-view="corpo"] td,
+  [data-page-view="finanças"] th,
+  [data-page-view="finanças"] td {
+    padding: 7px !important;
+    font-size: 11px !important;
+    white-space: nowrap !important;
+  }
+
+  [data-page-view="corpo"] td input,
+  [data-page-view="finanças"] td input {
+    min-width: 104px !important;
+  }
+
+  [data-page-view="finanças"] .calculator-grid {
+    display: grid !important;
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+    gap: 6px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    pointer-events: auto !important;
+  }
+
+  [data-page-view="finanças"] .calculator-grid .calc-key {
+    min-width: 0 !important;
+    min-height: 42px !important;
+    border-radius: 12px !important;
+  }
+
+  .mobile-bottom-nav {
+    position: fixed !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    z-index: 300 !important;
+    display: grid !important;
+    grid-template-columns: 1fr auto 1fr !important;
+    align-items: center !important;
+    width: 100% !important;
+    min-height: 58px !important;
+    padding: 5px 22px calc(5px + env(safe-area-inset-bottom)) !important;
+    border: 1px solid rgba(143, 178, 244, 0.13) !important;
+    border-width: 1px 0 0 !important;
+    background: rgba(255, 255, 255, 0.92) !important;
+    box-shadow: 0 -12px 28px rgba(104, 86, 132, 0.10) !important;
+    backdrop-filter: blur(18px) !important;
+    -webkit-backdrop-filter: blur(18px) !important;
+  }
+
+  .mobile-bottom-nav button {
+    display: inline-flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 2px !important;
+    min-width: 58px !important;
+    min-height: 46px !important;
+    padding: 3px 6px !important;
+    border: 0 !important;
+    background: transparent !important;
+    color: #6f7489 !important;
+    font-size: 10.5px !important;
+    font-weight: 400 !important;
+    line-height: 1.05 !important;
+  }
+
+  .mobile-bottom-nav button span {
+    width: 24px !important;
+    height: 24px !important;
+    display: grid !important;
+    place-items: center !important;
+  }
+
+  .mobile-bottom-nav button svg {
+    width: 21px !important;
+    height: 21px !important;
+    stroke: currentColor !important;
+  }
+
+  .mobile-bottom-nav .is-home {
+    width: 68px !important;
+    height: 68px !important;
+    min-width: 68px !important;
+    min-height: 68px !important;
+    margin-top: -28px !important;
+    padding: 8px 6px !important;
+    border-radius: 999px !important;
+    background: linear-gradient(135deg, #8fb2f4 0%, #b8a5f2 52%, #f4b8d5 100%) !important;
+    color: #fff !important;
+    box-shadow: 0 14px 28px rgba(143, 178, 244, 0.30) !important;
+    transform: none !important;
+    justify-self: center !important;
+  }
+
+  .mobile-bottom-nav .is-home span {
+    width: 26px !important;
+    height: 26px !important;
+    color: #fff !important;
+  }
+
+  .mobile-bottom-nav .is-home svg {
+    width: 25px !important;
+    height: 25px !important;
+    color: #fff !important;
+    stroke: #fff !important;
+  }
+
+  .mobile-bottom-nav .is-home,
+  .mobile-bottom-nav .is-home strong,
+  .mobile-bottom-nav .is-home span,
+  .mobile-bottom-nav .is-home svg {
+    color: #fff !important;
+  }
+
+  /* Perfil/Configurações com aspecto de app e leitura mobile. */
+  [data-page-view="configuracoes"] {
+    background:
+      radial-gradient(circle at 12% 0%, rgba(143, 178, 244, 0.16), transparent 30%),
+      linear-gradient(180deg, rgba(251, 247, 255, 0.96), rgba(255, 250, 252, 0.98)) !important;
+    padding-bottom: calc(76px + env(safe-area-inset-bottom)) !important;
+  }
+
+  [data-page-view="configuracoes"] .settings-panel {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    overflow: visible !important;
+  }
+
+  [data-page-view="configuracoes"] .settings-panel > .panel-heading {
+    margin: 0 0 12px !important;
+    padding: 16px 14px !important;
+    border: 1px solid rgba(143, 178, 244, 0.16) !important;
+    border-radius: 24px !important;
+    background: linear-gradient(135deg, rgba(143, 178, 244, 0.92), rgba(184, 165, 242, 0.80), rgba(244, 184, 213, 0.82)) !important;
+    color: #fff !important;
+    box-shadow: 0 18px 34px rgba(143, 178, 244, 0.20) !important;
+  }
+
+  [data-page-view="configuracoes"] .settings-panel > .panel-heading .eyebrow,
+  [data-page-view="configuracoes"] .settings-panel > .panel-heading h3,
+  [data-page-view="configuracoes"] .settings-panel > .panel-heading .tag {
+    color: #fff !important;
+  }
+
+  [data-page-view="configuracoes"] .settings-panel > .panel-heading h3 {
+    font-size: 1.55rem !important;
+    font-weight: 500 !important;
+  }
+
+  [data-page-view="configuracoes"] .settings-grid {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
+    width: 100% !important;
+  }
+
+  [data-page-view="configuracoes"] .settings-card {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    padding: 14px !important;
+    border: 1px solid rgba(143, 178, 244, 0.12) !important;
+    border-radius: 22px !important;
+    background: rgba(255, 255, 255, 0.82) !important;
+    box-shadow: 0 14px 30px rgba(104, 86, 132, 0.08) !important;
+    backdrop-filter: blur(16px) !important;
+    -webkit-backdrop-filter: blur(16px) !important;
+    overflow: visible !important;
+  }
+
+  [data-page-view="configuracoes"] .settings-card .panel-heading {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 10px !important;
+    margin: 0 0 12px !important;
+    padding: 0 !important;
+  }
+
+  [data-page-view="configuracoes"] .settings-card .panel-heading h3 {
+    font-size: 1rem !important;
+    font-weight: 500 !important;
+    color: #22253a !important;
+  }
+
+  [data-page-view="configuracoes"] .settings-card .panel-heading .eyebrow {
+    font-size: 10px !important;
+    font-weight: 500 !important;
+    letter-spacing: .12em !important;
+    color: #8fb2f4 !important;
+  }
+
+  [data-page-view="configuracoes"] .profile-hero {
+    display: grid !important;
+    grid-template-columns: auto minmax(0, 1fr) !important;
+    align-items: center !important;
+    gap: 12px !important;
+    margin: 0 0 14px !important;
+    padding: 12px !important;
+    border: 1px solid rgba(244, 184, 213, 0.25) !important;
+    border-radius: 20px !important;
+    background: linear-gradient(135deg, rgba(255,255,255,.92), rgba(251,247,255,.86)) !important;
+  }
+
+  [data-page-view="configuracoes"] .profile-avatar {
+    width: 58px !important;
+    height: 58px !important;
+    border-radius: 20px !important;
+    background: linear-gradient(135deg, #8fb2f4, #b8a5f2, #f4b8d5) !important;
+    color: #fff !important;
+    font-weight: 500 !important;
+    box-shadow: 0 10px 22px rgba(143, 178, 244, 0.22) !important;
+  }
+
+  [data-page-view="configuracoes"] .profile-copy strong {
+    display: block !important;
+    font-size: 1rem !important;
+    font-weight: 500 !important;
+    color: #22253a !important;
+  }
+
+  [data-page-view="configuracoes"] .profile-copy small {
+    font-size: 12px !important;
+    color: #737a92 !important;
+  }
+
+  [data-page-view="configuracoes"] .settings-form {
+    display: grid !important;
+    gap: 10px !important;
+  }
+
+  [data-page-view="configuracoes"] .settings-form label,
+  [data-page-view="configuracoes"] .preference-label {
+    display: grid !important;
+    gap: 6px !important;
+    font-size: 12px !important;
+    font-weight: 400 !important;
+    color: #68708a !important;
+  }
+
+  [data-page-view="configuracoes"] .settings-form input,
+  [data-page-view="configuracoes"] .settings-form textarea,
+  [data-page-view="configuracoes"] .settings-form select {
+    min-height: 44px !important;
+    border: 1px solid rgba(143, 178, 244, 0.18) !important;
+    border-radius: 16px !important;
+    background: rgba(255,255,255,.92) !important;
+    font-size: 13px !important;
+  }
+
+  [data-page-view="configuracoes"] .settings-inline-actions {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 8px !important;
+    width: 100% !important;
+  }
+
+  [data-page-view="configuracoes"] .settings-inline-actions :is(button, a),
+  [data-page-view="configuracoes"] .preference-button {
+    width: 100% !important;
+    min-height: 42px !important;
+    justify-content: center !important;
+    border-radius: 16px !important;
+    font-weight: 400 !important;
+  }
+
+  [data-page-view="configuracoes"] .subscription-summary {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 8px !important;
+  }
+
+  [data-page-view="configuracoes"] .subscription-summary .detail-card {
+    min-width: 0 !important;
+    padding: 11px !important;
+    border-radius: 16px !important;
+  }
+
+  [data-page-view="configuracoes"] .settings-status-pills {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 6px !important;
+  }
+
+  [data-page-view="configuracoes"] .settings-guide-list {
+    display: grid !important;
+    gap: 8px !important;
+    padding-left: 0 !important;
+    list-style: none !important;
+  }
+
+  [data-page-view="configuracoes"] .settings-guide-list li {
+    padding: 10px 12px !important;
+    border: 1px solid rgba(143, 178, 244, 0.12) !important;
+    border-radius: 14px !important;
+    background: rgba(255,255,255,.72) !important;
+    font-size: 12px !important;
+    line-height: 1.45 !important;
+  }
+
+  /* Comunidade: seletor de imagem sem sobreposição no composer. */
+  [data-page-view="comunidade"] .community-shell {
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow: visible !important;
+  }
+
+  [data-page-view="comunidade"] .community-composer {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 12px !important;
+    overflow: visible !important;
+  }
+
+  [data-page-view="comunidade"] .community-composer-top {
+    display: grid !important;
+    grid-template-columns: 36px minmax(0, 1fr) !important;
+    align-items: start !important;
+    gap: 10px !important;
+  }
+
+  [data-page-view="comunidade"] .community-post-form {
+    display: grid !important;
+    gap: 9px !important;
+    width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  [data-page-view="comunidade"] .community-post-form textarea {
+    width: 100% !important;
+    min-height: 86px !important;
+    margin: 0 !important;
+  }
+
+  [data-page-view="comunidade"] .community-photo-preview {
+    position: relative !important;
+    display: block !important;
+    width: 100% !important;
+    margin: 0 !important;
+    border-radius: 16px !important;
+    overflow: hidden !important;
+  }
+
+  [data-page-view="comunidade"] .community-photo-preview[hidden] {
+    display: none !important;
+  }
+
+  [data-page-view="comunidade"] .community-photo-preview img {
+    display: block !important;
+    width: 100% !important;
+    max-height: 280px !important;
+    object-fit: cover !important;
+  }
+
+  [data-page-view="comunidade"] .community-photo-remove {
+    position: absolute !important;
+    top: 8px !important;
+    right: 8px !important;
+    z-index: 5 !important;
+    width: 30px !important;
+    height: 30px !important;
+    min-width: 30px !important;
+    min-height: 30px !important;
+    border-radius: 999px !important;
+  }
+
+  [data-page-view="comunidade"] .community-composer-actions {
+    position: relative !important;
+    z-index: 2 !important;
+    display: grid !important;
+    grid-template-columns: auto 1fr auto !important;
+    align-items: center !important;
+    gap: 8px !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+  }
+
+  [data-page-view="comunidade"] .community-composer-media-btn {
+    position: relative !important;
+    z-index: 4 !important;
+    width: 40px !important;
+    height: 40px !important;
+    min-width: 40px !important;
+    min-height: 40px !important;
+    margin: 0 !important;
+    border-radius: 14px !important;
+    pointer-events: auto !important;
+  }
+
+  [data-page-view="comunidade"] .community-format-toggle {
+    display: flex !important;
+    justify-content: flex-start !important;
+    gap: 6px !important;
+    min-width: 0 !important;
+    overflow-x: auto !important;
+  }
+
+  [data-page-view="comunidade"] .community-format-toggle[hidden] {
+    display: none !important;
+  }
+
+  [data-page-view="comunidade"] #community-post-feedback {
+    grid-column: 1 / -1 !important;
+    min-height: 0 !important;
+    font-size: 11px !important;
+  }
+
+  [data-page-view="comunidade"] .community-publish-btn {
+    min-height: 40px !important;
+    padding: 9px 14px !important;
+    border-radius: 14px !important;
+    white-space: nowrap !important;
+  }
+}
+
+/* Agenda e Casa mobile: rolagem real e controles usaveis. */
+@media (max-width: 767px) {
+  body.agenda-tab-active,
+  body.agenda-tab-active html {
+    height: auto !important;
+    min-height: 100dvh !important;
+    overflow: auto !important;
+  }
+
+  body.agenda-tab-active .app-shell,
+  body.agenda-tab-active .main-content,
+  body.agenda-tab-active .page-stack,
+  body.agenda-tab-active [data-page-view="planner"],
+  body.agenda-tab-active [data-tab-panel="planner-agenda"] {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100vw !important;
+    min-width: 0 !important;
+    height: auto !important;
+    min-height: 100dvh !important;
+    overflow: visible !important;
+  }
+
+  body.agenda-tab-active .planner-page-shell {
+    width: 100% !important;
+    max-width: 100vw !important;
+    min-height: 100dvh !important;
+    padding: 0 !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    background: #fff !important;
+    box-shadow: none !important;
+    overflow: visible !important;
+  }
+
+  body.agenda-tab-active .agenda-mobile-panel {
+    display: flex !important;
+    flex-direction: column !important;
+    width: 100% !important;
+    max-width: 100vw !important;
+    height: 100dvh !important;
+    max-height: none !important;
+    min-height: 100dvh !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    overflow: hidden !important;
+  }
+
+  body.agenda-tab-active .agenda-mob-header,
+  body.agenda-tab-active .agenda-view-tabs,
+  body.agenda-tab-active .agenda-week-strip-scroll {
+    flex: 0 0 auto !important;
+    position: relative !important;
+    z-index: 25 !important;
+  }
+
+  body.agenda-tab-active .agenda-week-strip-scroll {
+    display: block !important;
+    width: 100% !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    touch-action: pan-x !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+
+  body.agenda-tab-active #mob-week-strip,
+  body.agenda-tab-active .agenda-week-strip {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    width: max-content !important;
+    min-width: 100% !important;
+    gap: 6px !important;
+  }
+
+  body.agenda-tab-active .mob-day-btn {
+    flex: 0 0 auto !important;
+    min-width: 44px !important;
+    pointer-events: auto !important;
+    touch-action: manipulation !important;
+  }
+
+  body.agenda-tab-active #week-view-shell.agenda-timeline-shell:not(.hidden),
+  body.agenda-tab-active #mob-schedule-shell:not(.hidden),
+  body.agenda-tab-active #mob-day-list-shell:not(.hidden),
+  body.agenda-tab-active #calendar-month-shell:not(.hidden),
+  body.agenda-tab-active #year-view-shell:not(.hidden) {
+    flex: 1 1 auto !important;
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-height: 0 !important;
+    height: auto !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    overscroll-behavior-y: contain !important;
+    touch-action: pan-y !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+
+  body.agenda-tab-active #calendar-month-shell:not(.hidden),
+  body.agenda-tab-active #year-view-shell:not(.hidden) {
+    display: grid !important;
+  }
+
+  body.agenda-tab-active #week-view-shell.agenda-timeline-shell:not(.hidden) {
+    height: calc(100dvh - 136px) !important;
+    max-height: calc(100dvh - 136px) !important;
+    overflow-y: scroll !important;
+  }
+
+  body.agenda-tab-active .agenda-timeline-body {
+    display: grid !important;
+    grid-template-columns: 50px minmax(0, 1fr) !important;
+    min-height: 1440px !important;
+    height: 1440px !important;
+  }
+
+  body.agenda-tab-active .week-hours-column,
+  body.agenda-tab-active .week-day-column,
+  body.agenda-tab-active .week-columns {
+    min-height: 1440px !important;
+  }
+
+  body.agenda-tab-active .week-hours-column {
+    display: grid !important;
+    grid-template-rows: repeat(24, 60px) !important;
+  }
+
+  body.agenda-tab-active .agenda-fab {
+    bottom: max(74px, calc(56px + env(safe-area-inset-bottom))) !important;
+  }
+
+  [data-page-view="casa"],
+  [data-page-view="casa"] .home-card,
+  [data-page-view="casa"] .casa-tab-shell,
+  [data-page-view="casa"] .casa-tab-panel {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    overflow: visible !important;
+    pointer-events: auto !important;
+    touch-action: pan-y !important;
+  }
+
+  [data-page-view="casa"] .home-card {
+    padding: 12px !important;
+    border-radius: 20px !important;
+  }
+
+  [data-page-view="casa"] .casa-tab-ribbon {
+    position: relative !important;
+    z-index: 30 !important;
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    gap: 7px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 0 10px !important;
+    padding: 2px 0 8px !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    pointer-events: auto !important;
+    touch-action: pan-x !important;
+    scrollbar-width: none !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+
+  [data-page-view="casa"] .casa-tab-ribbon::-webkit-scrollbar {
+    display: none !important;
+  }
+
+  [data-page-view="casa"] .casa-tab {
+    flex: 0 0 auto !important;
+    min-width: max-content !important;
+    min-height: 36px !important;
+    padding: 8px 12px !important;
+    border-radius: 999px !important;
+    font-size: 11.5px !important;
+    font-weight: 400 !important;
+    white-space: nowrap !important;
+    pointer-events: auto !important;
+    touch-action: manipulation !important;
+  }
+
+  [data-page-view="casa"] .casa-tab-panel:not(.is-active) {
+    display: none !important;
+  }
+
+  [data-page-view="casa"] .casa-tab-panel.is-active {
+    display: block !important;
+  }
+
+  [data-page-view="casa"] :is(
+    .refeicao-cols,
+    .refeição-cols,
+    .home-market-grid,
+    .limpeza-cols,
+    .comodos-grid,
+    .cômodos-grid,
+    .reforma-grid
+  ) {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    overflow: visible !important;
+  }
+
+  [data-page-view="casa"] :is(
+    .refeicao-col,
+    .refeição-col,
+    .home-market-card,
+    .limpeza-col,
+    .comodo-card,
+    .cômodo-card,
+    .reforma-card
+  ) {
+    position: relative !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    padding: 11px !important;
+    border-radius: 16px !important;
+    overflow: visible !important;
+    pointer-events: auto !important;
+    touch-action: pan-y !important;
+  }
+
+  [data-page-view="casa"] :is(
+    .home-market-items,
+    .limpeza-col-tasks,
+    .comodo-card-body,
+    .cômodo-card-body,
+    .reforma-card-body
+  ) {
+    display: grid !important;
+    gap: 8px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  [data-page-view="casa"] :is(
+    .home-market-item,
+    .limpeza-task,
+    .limpeza-custom,
+    .reforma-dates label
+  ) {
+    display: grid !important;
+    grid-template-columns: auto minmax(0, 1fr) !important;
+    align-items: center !important;
+    gap: 8px !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    min-height: 38px !important;
+    padding: 8px 0 !important;
+    pointer-events: auto !important;
+    touch-action: manipulation !important;
+  }
+
+  [data-page-view="casa"] .limpeza-custom,
+  [data-page-view="casa"] .reforma-dates label {
+    grid-template-columns: 1fr !important;
+  }
+
+  [data-page-view="casa"] :is(.home-market-item em, .limpeza-task span) {
+    min-width: 0 !important;
+    overflow-wrap: anywhere !important;
+    font-size: 13px !important;
+    line-height: 1.35 !important;
+  }
+
+  [data-page-view="casa"] :is(input, textarea, select, button, label) {
+    position: relative !important;
+    z-index: 20 !important;
+    pointer-events: auto !important;
+    touch-action: manipulation !important;
+  }
+
+  [data-page-view="casa"] input[type="checkbox"] {
+    width: 20px !important;
+    min-width: 20px !important;
+    height: 20px !important;
+    min-height: 20px !important;
+  }
+
+  [data-page-view="casa"] :is(input[type="text"], input[type="date"], textarea, select) {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    min-height: 40px !important;
+    font-size: 13px !important;
+  }
+
+  [data-page-view="casa"] :is(.refeicao-area, .refeição-area, .comodo-note, .cômodo-note) {
+    min-height: 82px !important;
+    resize: vertical !important;
+  }
+
+  [data-page-view="casa"] .reforma-dates {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 8px !important;
+  }
+
+  [data-page-view="casa"] :is(.limpeza-col-photo, .comodo-photo, .cômodo-photo, .reforma-photo) {
+    height: 92px !important;
+    border-radius: 14px !important;
+  }
+
+  [data-page-view="casa"] :is(.limpeza-photo-icon, .comodo-photo-icon, .cômodo-photo-icon, .reforma-photo-icon) {
+    font-size: 2rem !important;
+  }
+}
