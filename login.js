@@ -24,6 +24,11 @@ const createAccountButtons = document.querySelectorAll("[data-create-account]");
 const togglePasswordButton = document.querySelector("#toggle-password");
 const googleLoginButton = document.querySelector("#google-login-button");
 const appleLoginButton = document.querySelector("#apple-login-button");
+const socialLoginButtons = document.querySelectorAll("[data-social-login]");
+const signupForm = document.querySelector("#signupForm");
+const signupEmail = document.querySelector("#email2");
+const signupPassword = document.querySelector("#senha2");
+const signupTerms = document.querySelector("#terms");
 
 const AUTH_TOKEN_KEY = "vida-nova:auth-token";
 const AUTH_USER_KEY = "vida-nova:auth-user";
@@ -36,6 +41,9 @@ let _paywallVisible = true;
 
 function showPaywall() {
   _paywallVisible = false;
+  if (typeof window.switchTab === "function") {
+    window.switchTab(null, "assinar");
+  }
 }
 
 function showLoginSection() {
@@ -92,12 +100,16 @@ function clearLegacyAuthCache() {
 }
 
 function setFeedback(message, type = "neutral") {
-  if (!authFeedback) {
+  const feedbackTargets = document.querySelectorAll("[data-auth-feedback]");
+  if (!authFeedback && !feedbackTargets.length) {
     return;
   }
 
-  authFeedback.textContent = message;
-  authFeedback.dataset.state = type;
+  const targets = feedbackTargets.length ? feedbackTargets : [authFeedback];
+  targets.forEach((target) => {
+    target.textContent = message;
+    target.dataset.state = type;
+  });
 }
 
 function setMode(mode) {
@@ -105,16 +117,28 @@ function setMode(mode) {
 
   const isRegister = mode === "register";
   document.body.classList.toggle("auth-register-mode", isRegister);
-  authTitle.textContent = isRegister ? "Criar minha conta" : "Bem-vinda de volta!";
-  authSubmit.textContent = isRegister ? "Criar minha conta" : "Entrar agora";
-  nameField.classList.add("hidden-field");
-  confirmPasswordField.classList.add("hidden-field");
-  loginName.required = false;
-  loginConfirmPassword.required = false;
-  loginName.value = "";
-  loginConfirmPassword.value = "";
-  modeLoginButton.classList.toggle("is-active", !isRegister);
-  modeRegisterButton.classList.toggle("is-active", isRegister);
+  if (authTitle) authTitle.innerHTML = isRegister ? "Comece sua <em>jornada</em>." : "Bem-vinda de <em>volta</em>.";
+  const submitText = authSubmit?.querySelector(".btn-text") || authSubmit;
+  if (submitText) submitText.textContent = isRegister ? "Criar minha conta" : "Entrar agora";
+  nameField?.classList.add("hidden-field");
+  confirmPasswordField?.classList.add("hidden-field");
+  if (loginName) {
+    loginName.required = false;
+    loginName.value = "";
+  }
+  if (loginConfirmPassword) {
+    loginConfirmPassword.required = false;
+    loginConfirmPassword.value = "";
+  }
+  modeLoginButton?.classList.toggle("is-active", !isRegister);
+  modeLoginButton?.classList.toggle("active", !isRegister);
+  modeLoginButton?.setAttribute("aria-selected", String(!isRegister));
+  modeRegisterButton?.classList.toggle("is-active", isRegister);
+  modeRegisterButton?.classList.toggle("active", isRegister);
+  modeRegisterButton?.setAttribute("aria-selected", String(isRegister));
+  if (typeof window.switchTab === "function") {
+    window.switchTab(null, isRegister ? "criar" : "entrar");
+  }
   setFeedback("");
 }
 
@@ -378,7 +402,10 @@ if (togglePasswordButton && loginPassword) {
   togglePasswordButton.addEventListener("click", () => {
     const showPassword = loginPassword.type === "password";
     loginPassword.type = showPassword ? "text" : "password";
-    togglePasswordButton.textContent = showPassword ? "●" : "◌";
+    togglePasswordButton.classList.toggle("is-visible", showPassword);
+    if (!togglePasswordButton.querySelector("svg")) {
+      togglePasswordButton.textContent = showPassword ? "●" : "◌";
+    }
     togglePasswordButton.setAttribute("aria-label", showPassword ? "Ocultar senha" : "Mostrar senha");
   });
 }
@@ -389,12 +416,18 @@ function handleSocialLogin(provider) {
   window.location.href = getApiUrl(`/api/auth/${providerSlug}/start`);
 }
 
-if (googleLoginButton) {
-  googleLoginButton.addEventListener("click", () => handleSocialLogin("Google"));
-}
+if (socialLoginButtons.length) {
+  socialLoginButtons.forEach((button) => {
+    button.addEventListener("click", () => handleSocialLogin(button.dataset.socialLogin));
+  });
+} else {
+  if (googleLoginButton) {
+    googleLoginButton.addEventListener("click", () => handleSocialLogin("Google"));
+  }
 
-if (appleLoginButton) {
-  appleLoginButton.addEventListener("click", () => handleSocialLogin("Apple"));
+  if (appleLoginButton) {
+    appleLoginButton.addEventListener("click", () => handleSocialLogin("Apple"));
+  }
 }
 
 if (loginForm) {
@@ -410,8 +443,11 @@ if (loginForm) {
       return;
     }
 
-    authSubmit.disabled = true;
-    demoAccess.disabled = true;
+    if (authSubmit) {
+      authSubmit.disabled = true;
+      authSubmit.classList.add("loading");
+    }
+    if (demoAccess) demoAccess.disabled = true;
     setFeedback(isRegister ? "Criando sua conta..." : "Entrando na sua conta...");
 
     try {
@@ -460,8 +496,11 @@ if (loginForm) {
           paywallSubscribeBtn.href = subscriptionUrl;
         }
         showPaywall();
-        authSubmit.disabled = false;
-        demoAccess.disabled = false;
+        if (authSubmit) {
+          authSubmit.disabled = false;
+          authSubmit.classList.remove("loading");
+        }
+        if (demoAccess) demoAccess.disabled = false;
         return;
       }
 
@@ -470,9 +509,28 @@ if (loginForm) {
     } catch (error) {
       setFeedback(error.message, "error");
     } finally {
-      authSubmit.disabled = false;
-      demoAccess.disabled = false;
+      if (authSubmit) {
+        authSubmit.disabled = false;
+        authSubmit.classList.remove("loading");
+      }
+      if (demoAccess) demoAccess.disabled = false;
     }
+  });
+}
+
+if (signupForm && loginForm && signupEmail && signupPassword && loginEmail && loginPassword) {
+  signupForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+
+    if (signupTerms && !signupTerms.checked) {
+      setFeedback("Aceite os termos para criar sua conta.", "error");
+      return;
+    }
+
+    setMode("register");
+    loginEmail.value = signupEmail.value;
+    loginPassword.value = signupPassword.value;
+    loginForm.requestSubmit();
   });
 }
 
