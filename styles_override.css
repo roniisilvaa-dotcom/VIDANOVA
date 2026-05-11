@@ -6235,9 +6235,9 @@ body:not(.agenda-tab-active) .verse-banner::before {
   height: 42px;
   padding: 0 20px;
   background: transparent;
-  border: 1.5px solid #e8b4c0;
+  border: 1.5px solid var(--border, #dfe8ff);
   border-radius: 10px;
-  color: #c0394f;
+  color: var(--pink, #8fb2f4);
   font-family: 'DM Sans', sans-serif;
   font-size: 14px;
   font-weight: 500;
@@ -6246,6 +6246,6 @@ body:not(.agenda-tab-active) .verse-banner::before {
 }
 
 .settings-logout-btn:hover {
-  background: #fff0f3;
-  border-color: #c0394f;
+  background: var(--pink-bg, #fbf7ff);
+  border-color: var(--pink, #8fb2f4);
 }
