@@ -33,7 +33,7 @@
     
     <!-- Security Headers -->
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://accounts.google.com; img-src 'self' data: blob: https://*.googleusercontent.com; font-src 'self'; manifest-src 'self'; connect-src 'self' https://firestore.googleapis.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://www.googleapis.com; frame-src 'self' https://accounts.google.com;" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://accounts.google.com https://fonts.googleapis.com; img-src 'self' data: blob: https://*.googleusercontent.com; font-src 'self' https://fonts.gstatic.com; manifest-src 'self'; connect-src 'self' https://firestore.googleapis.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://www.googleapis.com; frame-src 'self' https://accounts.google.com;" />
     
     <!-- Preload critical resources -->
     <link rel="preload" href="script.js" as="script" />
@@ -45,7 +45,7 @@
     
     <!-- Stylesheets -->
     <link rel="stylesheet" href="styles.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles_override.css" />
   </head>
   <body>
@@ -279,7 +279,7 @@
           <div class="desktop-modules-heading">
             <div>
               <h2>Seus módulos</h2>
-              <p>Capas inseridas na tela inicial, seguindo a identidade visual aprovada.</p>
+              <p>Mantive o layout original do app e apliquei as capas coloridas dos blocos, preservando a identidade visual suave e feminina do projeto.</p>
             </div>
             <button type="button" data-mobile-show-all>Ver todos</button>
           </div>
@@ -347,7 +347,7 @@
                 </div>
               </div>
               <strong>Finanças | Controle</strong>
-              <small id="finance-caption">Planejamento financeiro</small>
+              <small id="finance-caption">Planejamento base: entradas R$ 0,00 | saídas R$ 0,00</small>
             </button>
 
             <button class="workspace-card workspace-card-study" type="button" data-dashboard-open="estudos" data-cover-key="estudos">
@@ -452,7 +452,7 @@
               </div>
               <div class="home-community-text">
                 <h2>Comunidade Vida Nova <span class="home-community-heart">&#10084;&#65039;</span></h2>
-                <p>Compartilhe, inspire e cresça juntas</p>
+                <p>Um espaço delicado para compartilhar jornada, inspiração e encorajamento com mulheres que desejam viver com graça e propósito.</p>
               </div>
             </div>
             <div class="home-community-center">
@@ -463,7 +463,7 @@
                 <img class="home-community-avatar" src="assets/login-hero-woman.png" alt="" />
                 <span class="home-community-plus">+1.2k</span>
               </div>
-              <p class="home-community-members-text">Mais de 1.200 mulheres fazendo parte</p>
+              <p class="home-community-members-text">Mais de 1.200 mulheres em conexão</p>
             </div>
             <div class="home-community-right">
               <button class="home-community-cta" type="button" data-page-link="comunidade">
