@@ -11,18 +11,19 @@
   <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon-180.png?v=nv3" />
   <link rel="manifest" href="manifest.webmanifest?v=nv3" />
   <link rel="icon" href="icon.svg?v=nv3" type="image/svg+xml" />
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --pink: #8fb2f4;
-      --pink-hover: #b8a5f2;
-      --pink-pale: #eef3ff;
-      --pink-bg: #fbf7ff;
-      --navy: #1f2035;
-      --gray: #888;
-      --border: #dfe8ff;
+      --pink: #c9395f;
+      --pink-hover: #a02548;
+      --pink-pale: #fbeef3;
+      --pink-bg: #fdf7f9;
+      --navy: #2a1f28;
+      --gray: #8a7080;
+      --border: #f0dce6;
       --error: #c0392b;
       --success: #27ae60;
     }
@@ -213,13 +214,13 @@
     /* Botão principal */
     #auth-submit {
       width: 100%; height: 54px;
-      background: linear-gradient(135deg, #8fb2f4, #b8a5f2);
+      background: #c9395f;
       border: none; border-radius: 28px;
       color: #fff; font-family: 'DM Sans', sans-serif;
       font-size: 16px; font-weight: 600;
       cursor: pointer;
       display: flex; align-items: center; justify-content: center; gap: 10px;
-      box-shadow: 0 8px 24px rgba(143,178,244,.35);
+      box-shadow: 0 8px 24px rgba(201,57,95,.30);
       transition: opacity .2s, transform .15s;
       margin-bottom: 16px;
     }
@@ -394,21 +395,21 @@
     }
     /* Identidade padrão final: degradê azul, lavanda e rosa */
     :root {
-      --pink: #8fb2f4;
-      --pink-hover: #b8a5f2;
-      --pink-pale: #F7E4F1;
-      --pink-bg: #FBF7FF;
-      --border: rgba(163, 137, 222, 0.22);
-      --vn-gradient: linear-gradient(135deg, #8fb2f4 0%, #b8a5f2 48%, #f4b8d5 100%);
-      --vn-gradient-soft: linear-gradient(135deg, rgba(143, 178, 244, 0.16), rgba(184, 165, 242, 0.13) 48%, rgba(244, 184, 213, 0.18));
-      --vn-shadow: 0 22px 58px rgba(135, 118, 183, 0.13);
+      --pink: #c9395f;
+      --pink-hover: #a02548;
+      --pink-pale: #fbeef3;
+      --pink-bg: #fdf7f9;
+      --border: #f0dce6;
+      --vn-gradient: linear-gradient(135deg, #c9395f 0%, #e05070 50%, #f4a0c0 100%);
+      --vn-gradient-soft: linear-gradient(135deg, rgba(201,57,95,.10), rgba(224,80,112,.08) 50%, rgba(244,160,192,.10));
+      --vn-shadow: 0 22px 58px rgba(91,57,78,.10);
     }
 
     body {
       background:
-        radial-gradient(circle at 9% 8%, rgba(143, 178, 244, 0.20), transparent 28%),
-        radial-gradient(circle at 91% 12%, rgba(244, 184, 213, 0.25), transparent 30%),
-        linear-gradient(180deg, #fffaff 0%, #fbf7ff 46%, #fff 100%) !important;
+        radial-gradient(circle at 9% 8%, rgba(201, 57, 95, 0.10), transparent 28%),
+        radial-gradient(circle at 91% 12%, rgba(244, 160, 192, 0.18), transparent 30%),
+        linear-gradient(180deg, #fffafd 0%, #fdf7f9 46%, #fff 100%) !important;
     }
 
     .left,
@@ -471,6 +472,80 @@
     .mob-logo-name {
       color: #8fb2f4 !important;
     }
+
+
+    /* Update logo circle override for new color */
+    .logo-circle svg { filter: brightness(0) invert(1); }
+
+    /* ===== PAINEL DE ASSINATURA ===== */
+    #subscribe-panel { padding: 4px 0; }
+
+    .subscribe-hero {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    .subscribe-logo-mark {
+      width: 48px; height: 48px; border-radius: 14px;
+      background: var(--pink); margin: 0 auto 12px;
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    .subscribe-logo-mark i { font-size: 24px; color: #fff; }
+
+    .subscribe-heading {
+      font-family: 'Cormorant Garamond', 'Playfair Display', Georgia, serif;
+      font-size: 32px; font-weight: 600; color: var(--navy);
+      letter-spacing: -.01em; margin-bottom: 8px; line-height: 1.1;
+    }
+
+    .subscribe-tagline {
+      font-size: 13px; color: var(--gray); font-weight: 300; line-height: 1.6;
+    }
+
+    .subscribe-features {
+      list-style: none; padding: 0; margin: 0 0 24px;
+      display: grid; gap: 10px;
+    }
+
+    .subscribe-features li {
+      display: flex; align-items: center; gap: 10px;
+      font-size: 13px; color: var(--navy); font-weight: 400;
+    }
+
+    .subscribe-features li i {
+      width: 20px; height: 20px; border-radius: 6px;
+      background: var(--pink-pale); color: var(--pink);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px; flex-shrink: 0;
+    }
+
+    .subscribe-cta-btn {
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      width: 100%; height: 52px;
+      background: var(--pink);
+      border: none; border-radius: 28px;
+      color: #fff; font-family: 'DM Sans', sans-serif;
+      font-size: 15px; font-weight: 600;
+      cursor: pointer; text-decoration: none;
+      box-shadow: 0 8px 24px rgba(201,57,95,.28);
+      transition: opacity .2s, transform .15s;
+      margin-bottom: 16px;
+    }
+
+    .subscribe-cta-btn:hover { opacity: .92; transform: translateY(-1px); }
+    .subscribe-cta-btn i { font-size: 16px; }
+
+    .subscribe-login-hint {
+      text-align: center; font-size: 13px; color: var(--gray);
+    }
+
+    .subscribe-login-hint button {
+      background: none; border: none; color: var(--pink);
+      font-weight: 600; cursor: pointer; font-size: 13px;
+      font-family: 'DM Sans', sans-serif; padding: 0;
+    }
+
   </style>
 </head>
 <body>
@@ -483,7 +558,7 @@
     <!-- Logo desktop -->
     <div class="logo-row">
       <div class="logo-circle">
-        <svg viewBox="0 0 40 40" fill="none" stroke="#8fb2f4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" width="22" height="22">
+        <svg viewBox="0 0 40 40" fill="none" stroke="#c9395f" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" width="22" height="22">
           <path d="M20 22 C20 22 15 16 15 12 C15 9 17.2 7 20 7 C22.8 7 25 9 25 12 C25 16 20 22 20 22Z"/>
           <path d="M16 21 C16 21 9 19 7 15 C6 12.5 7.5 10 10 10 C12.5 10 14.5 12 15.5 15 C17 18.5 16 21 16 21Z"/>
           <path d="M24 21 C24 21 31 19 33 15 C34 12.5 32.5 10 30 10 C27.5 10 25.5 12 24.5 15 C23 18.5 24 21 24 21Z"/>
@@ -499,6 +574,7 @@
       <div class="auth-tabs">
         <button class="auth-tab is-active" id="mode-login" type="button">Entrar</button>
         <button class="auth-tab" id="mode-register" type="button">Criar conta</button>
+        <button class="auth-tab" id="mode-subscribe" type="button">Assinar</button>
       </div>
 
       <h1 class="form-title" id="auth-title">Bem-vinda de <span>volta!</span></h1>
@@ -612,13 +688,37 @@
       <div id="login-note" style="display:none;"></div>
       <div id="show-login-form" style="display:none;"></div>
       <div id="back-to-paywall" style="display:none;"></div>
-      <div id="paywall-block" style="display:none;">
-        <div id="paywall-subscribe-btn"></div>
-      </div>
+      <div id="paywall-block" style="display:none;"><a id="paywall-subscribe-btn" href="#"></a></div>
       <button id="demo-access" type="button" style="display:none;">Demo</button>
       <a id="login-live-link" href="#" style="display:none;"></a>
       <button id="login-install-button" type="button" style="display:none;"></button>
       <span id="login-install-status" style="display:none;"></span>
+
+      <!-- Painel de assinatura -->
+      <div id="subscribe-panel" style="display:none;">
+        <div class="subscribe-hero">
+          <div class="subscribe-logo-mark"><i class="ti ti-leaf" aria-hidden="true"></i></div>
+          <h2 class="subscribe-heading">Vida Nova</h2>
+          <p class="subscribe-tagline">Seu planner feminino completo — tudo o que você precisa para viver com intenção.</p>
+        </div>
+
+        <ul class="subscribe-features">
+          <li><i class="ti ti-check" aria-hidden="true"></i> Planner semanal e mensal personalizado</li>
+          <li><i class="ti ti-check" aria-hidden="true"></i> Controle financeiro completo</li>
+          <li><i class="ti ti-check" aria-hidden="true"></i> Acompanhamento do ciclo menstrual</li>
+          <li><i class="ti ti-check" aria-hidden="true"></i> Módulos de estudos e projetos</li>
+          <li><i class="ti ti-check" aria-hidden="true"></i> Guarda-roupa e estilo pessoal</li>
+          <li><i class="ti ti-check" aria-hidden="true"></i> Comunidade exclusiva de mulheres</li>
+          <li><i class="ti ti-check" aria-hidden="true"></i> Acesso ao canal da Camila Rocha</li>
+        </ul>
+
+        <a id="subscribe-cta-btn" href="#" class="subscribe-cta-btn" target="_blank" rel="noopener">
+          <i class="ti ti-sparkles" aria-hidden="true"></i>
+          Quero começar agora
+        </a>
+
+        <p class="subscribe-login-hint">Já tem conta? <button type="button" id="go-to-login">Entrar</button></p>
+      </div>
 
     </div>
   </div>
@@ -679,6 +779,58 @@
 
 <!-- login.js do seu projeto — mantém toda a lógica de auth -->
 <script src="login.js"></script>
+
+<script>
+(function () {
+  var subscribeTab = document.getElementById('mode-subscribe');
+  var loginTab = document.getElementById('mode-login');
+  var registerTab = document.getElementById('mode-register');
+  var subscribePanel = document.getElementById('subscribe-panel');
+  var loginForm = document.getElementById('login-form');
+  var divider = document.querySelector('.divider');
+  var socialRow = document.querySelector('.social-row');
+  var signupCard = document.querySelector('.signup-card');
+  var authTitle = document.getElementById('auth-title');
+  var formSub = document.querySelector('.form-sub');
+  var authTabs = document.querySelector('.auth-tabs');
+  var goToLogin = document.getElementById('go-to-login');
+  var subscribeCta = document.getElementById('subscribe-cta-btn');
+  var paywallBtn = document.getElementById('paywall-subscribe-btn');
+
+  function showSubscribe() {
+    subscribePanel.style.display = '';
+    if (loginForm) loginForm.style.display = 'none';
+    if (divider) divider.style.display = 'none';
+    if (socialRow) socialRow.style.display = 'none';
+    if (signupCard) signupCard.style.display = 'none';
+    if (authTitle) authTitle.style.display = 'none';
+    if (formSub) formSub.style.display = 'none';
+    document.querySelectorAll('.auth-tab').forEach(function(t){t.classList.remove('is-active');});
+    subscribeTab.classList.add('is-active');
+    // Copy href from paywall btn if available
+    if (paywallBtn && paywallBtn.href && paywallBtn.href !== window.location.href) {
+      subscribeCta.href = paywallBtn.href;
+      subscribeCta.target = '_blank';
+    }
+  }
+
+  function hideSubscribe() {
+    subscribePanel.style.display = 'none';
+    if (loginForm) loginForm.style.display = '';
+    if (divider) divider.style.display = '';
+    if (socialRow) socialRow.style.display = '';
+    if (signupCard) signupCard.style.display = '';
+    if (authTitle) authTitle.style.display = '';
+    if (formSub) formSub.style.display = '';
+  }
+
+  if (subscribeTab) subscribeTab.addEventListener('click', showSubscribe);
+  if (goToLogin) goToLogin.addEventListener('click', function() {
+    hideSubscribe();
+    if (loginTab) loginTab.click();
+  });
+})();
+</script>
 
 </body>
 </html>
