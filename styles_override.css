@@ -5644,6 +5644,20 @@ body:not(.agenda-tab-active) .verse-btn {
   }
 }
 
+/* Sonhos e Metas deve abrir como modulo proprio, sem Agenda/Planejamento semanal. */
+body.planner-dreams-active .planner-tab-ribbon {
+  display: none !important;
+}
+
+body.planner-dreams-active [data-tab-panel="planner-weekly"],
+body.planner-dreams-active [data-tab-panel="planner-agenda"] {
+  display: none !important;
+}
+
+body.planner-dreams-active [data-tab-panel="planner-dreams"] {
+  display: block !important;
+}
+
 /* Home web: remove o titulo/frase dos modulos, mantendo o mobile intacto. */
 @media (min-width: 768px) {
   .desktop-modules-heading {
