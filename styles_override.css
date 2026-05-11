@@ -3554,3 +3554,237 @@ body:not(.agenda-tab-active) .verse-btn {
     min-height: 92px !important;
   }
 }
+
+/* Correção de uso mobile: voltar sem sobrepor e finanças com toque livre. */
+@media (max-width: 767px) {
+  body.page-not-dashboard .page-return-bar,
+  body.agenda-tab-active .page-return-bar {
+    position: relative !important;
+    top: auto !important;
+    z-index: 12 !important;
+    min-height: auto !important;
+    margin: max(10px, env(safe-area-inset-top)) 0 14px !important;
+    padding: 0 !important;
+    background: transparent !important;
+    backdrop-filter: none !important;
+  }
+
+  body.page-not-dashboard .page-return-button,
+  body.agenda-tab-active .page-return-button {
+    position: relative !important;
+    z-index: 13 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    min-height: 42px !important;
+    height: auto !important;
+    margin: 0 !important;
+    padding: 10px 16px !important;
+    border-radius: 999px !important;
+    touch-action: manipulation !important;
+  }
+
+  [data-page-view="finanças"] {
+    overflow: visible !important;
+    touch-action: pan-y !important;
+  }
+
+  [data-page-view="finanças"].is-active {
+    display: block !important;
+  }
+
+  [data-page-view="finanças"] .finance-card,
+  [data-page-view="finanças"] .tab-shell,
+  [data-page-view="finanças"] .tab-panel,
+  [data-page-view="finanças"] .fin-section-block,
+  [data-page-view="finanças"] .calculator-card,
+  [data-page-view="finanças"] .fin-desejo-col,
+  [data-page-view="finanças"] .fin-mensal-section,
+  [data-page-view="finanças"] .fin-balanco-card {
+    position: relative !important;
+    overflow: visible !important;
+    pointer-events: auto !important;
+    touch-action: pan-y !important;
+  }
+
+  [data-page-view="finanças"] .tab-panel:not(.is-active) {
+    display: none !important;
+  }
+
+  [data-page-view="finanças"] .tab-panel.is-active {
+    display: block !important;
+  }
+
+  [data-page-view="finanças"] :is(
+    button,
+    input,
+    select,
+    textarea,
+    label,
+    .ghost-button,
+    .primary-button,
+    .fin-add-row-btn,
+    .fin-add-meta-btn,
+    .fin-cc-add-main-btn,
+    .fin-cc-tab-btn,
+    .calc-key
+  ) {
+    position: relative !important;
+    z-index: 6 !important;
+    pointer-events: auto !important;
+    touch-action: manipulation !important;
+    -webkit-user-select: auto !important;
+    user-select: auto !important;
+  }
+
+  [data-page-view="finanças"] :is(.tab-buttons-scroll, .fin-cc-tabs, .fin-table-scroll) {
+    position: relative !important;
+    z-index: 5 !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    pointer-events: auto !important;
+    touch-action: pan-x !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+
+  [data-page-view="finanças"] .finance-card::before,
+  [data-page-view="finanças"] .fin-summary-card::before,
+  [data-page-view="finanças"] .calculator-card::before,
+  [data-page-view="finanças"] .fin-section-block::before,
+  [data-page-view="finanças"] .fin-desejo-col::before,
+  [data-page-view="finanças"] .fin-mensal-section::before,
+  [data-page-view="finanças"] .fin-balanco-card::before {
+    pointer-events: none !important;
+  }
+
+  [data-page-view="finanças"] .calculator-grid {
+    position: relative !important;
+    z-index: 7 !important;
+    pointer-events: auto !important;
+    touch-action: manipulation !important;
+  }
+
+  [data-page-view="finanças"] .calculator-grid .calc-key {
+    min-height: 48px !important;
+  }
+}
+
+/* Finanças mobile compacto. */
+@media (max-width: 767px) {
+  [data-page-view="finanças"] .finance-card {
+    padding: 12px !important;
+    border-radius: 20px !important;
+  }
+
+  [data-page-view="finanças"] .panel-heading {
+    margin-bottom: 8px !important;
+  }
+
+  [data-page-view="finanças"] .panel-heading h3 {
+    font-size: 1.35rem !important;
+  }
+
+  [data-page-view="finanças"] .tab-buttons-scroll {
+    gap: 6px !important;
+    margin-bottom: 8px !important;
+    padding-bottom: 6px !important;
+  }
+
+  [data-page-view="finanças"] .tab-buttons-scroll .ghost-button {
+    min-height: 34px !important;
+    padding: 8px 11px !important;
+    font-size: 11px !important;
+  }
+
+  [data-page-view="finanças"] .fin-summary-cards {
+    gap: 8px !important;
+    margin-bottom: 10px !important;
+  }
+
+  [data-page-view="finanças"] .fin-summary-card {
+    min-height: 84px !important;
+    padding: 10px !important;
+    border-radius: 16px !important;
+  }
+
+  [data-page-view="finanças"] .fin-card-label {
+    font-size: 9px !important;
+  }
+
+  [data-page-view="finanças"] .fin-card-value,
+  [data-page-view="finanças"] .fin-card-input {
+    font-size: .94rem !important;
+  }
+
+  [data-page-view="finanças"] .fin-saldo-banner {
+    min-height: 46px !important;
+    margin: 0 0 10px !important;
+    padding: 10px 12px !important;
+    border-radius: 16px !important;
+    font-size: 13px !important;
+  }
+
+  [data-page-view="finanças"] .fin-section-block,
+  [data-page-view="finanças"] .calculator-card,
+  [data-page-view="finanças"] .fin-desejo-col,
+  [data-page-view="finanças"] .fin-mensal-section,
+  [data-page-view="finanças"] .fin-balanco-card {
+    margin-bottom: 10px !important;
+    padding: 11px !important;
+    border-radius: 16px !important;
+  }
+
+  [data-page-view="finanças"] .fin-section-title,
+  [data-page-view="finanças"] .fin-desejo-col-title,
+  [data-page-view="finanças"] .fin-mensal-title,
+  [data-page-view="finanças"] .fin-balanco-card h4 {
+    margin-bottom: 8px !important;
+    font-size: 14px !important;
+  }
+
+  [data-page-view="finanças"] .fin-table-scroll {
+    border-radius: 13px !important;
+  }
+
+  [data-page-view="finanças"] .fin-add-row-btn,
+  [data-page-view="finanças"] .fin-add-meta-btn,
+  [data-page-view="finanças"] .fin-cc-add-main-btn {
+    min-height: 36px !important;
+    margin-top: 8px !important;
+    padding: 9px 12px !important;
+    font-size: 12px !important;
+  }
+
+  [data-page-view="finanças"] .calculator-card .eyebrow {
+    margin-bottom: 6px !important;
+    font-size: 9px !important;
+  }
+
+  [data-page-view="finanças"] .calculator-display {
+    min-height: 42px !important;
+    margin-bottom: 8px !important;
+    padding: 9px 11px !important;
+    border-radius: 13px !important;
+    font-size: 1.22rem !important;
+  }
+
+  [data-page-view="finanças"] .calculator-grid {
+    gap: 6px !important;
+  }
+
+  [data-page-view="finanças"] .calculator-grid .calc-key {
+    min-height: 39px !important;
+    border-radius: 12px !important;
+    font-size: .92rem !important;
+  }
+
+  [data-page-view="finanças"] table {
+    min-width: 540px !important;
+  }
+
+  [data-page-view="finanças"] th,
+  [data-page-view="finanças"] td {
+    padding: 8px !important;
+    font-size: 11px !important;
+  }
+}
