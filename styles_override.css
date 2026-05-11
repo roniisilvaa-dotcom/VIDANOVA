@@ -6178,8 +6178,21 @@ body:not(.agenda-tab-active) .verse-banner::before {
   flex-shrink: 0;
 }
 
+.vn-yt-strip-mobile {
+  display: none;
+}
+
+body.page-not-dashboard .vn-yt-strip,
+body.agenda-tab-active .vn-yt-strip {
+  display: none !important;
+}
+
 @media (max-width: 767px) {
-  body:not(.agenda-tab-active) .vn-yt-strip {
+  .vn-yt-strip-desktop {
+    display: none !important;
+  }
+
+  body:not(.agenda-tab-active) .vn-yt-strip-mobile {
     display: grid !important;
     grid-template-columns: 34px minmax(0, 1fr) auto !important;
     align-items: center !important;
@@ -6195,28 +6208,28 @@ body:not(.agenda-tab-active) .verse-banner::before {
     -webkit-backdrop-filter: blur(14px) !important;
   }
 
-  body:not(.agenda-tab-active) .vn-yt-icon {
+  body:not(.agenda-tab-active) .vn-yt-strip-mobile .vn-yt-icon {
     width: 34px !important;
     height: 34px !important;
     border-radius: 12px !important;
     background: linear-gradient(135deg, #8fb2f4, #b8a5f2, #f4b8d5) !important;
   }
 
-  body:not(.agenda-tab-active) .vn-yt-body strong {
+  body:not(.agenda-tab-active) .vn-yt-strip-mobile .vn-yt-body strong {
     color: #24283d !important;
     font-size: 12.5px !important;
     font-weight: 500 !important;
     line-height: 1.2 !important;
   }
 
-  body:not(.agenda-tab-active) .vn-yt-body span {
+  body:not(.agenda-tab-active) .vn-yt-strip-mobile .vn-yt-body span {
     display: block !important;
     color: #7f879d !important;
     font-size: 10.5px !important;
     line-height: 1.25 !important;
   }
 
-  body:not(.agenda-tab-active) .vn-yt-cta {
+  body:not(.agenda-tab-active) .vn-yt-strip-mobile .vn-yt-cta {
     color: #8fb2f4 !important;
     font-size: 10.5px !important;
     font-weight: 500 !important;
@@ -6224,6 +6237,16 @@ body:not(.agenda-tab-active) .verse-banner::before {
 
   body.agenda-tab-active .vn-yt-strip {
     display: none !important;
+  }
+}
+
+@media (min-width: 768px) {
+  .vn-yt-strip-mobile {
+    display: none !important;
+  }
+
+  body:not(.page-not-dashboard) .vn-yt-strip-desktop {
+    display: flex !important;
   }
 }
 
