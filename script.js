@@ -830,6 +830,7 @@ function renderCommunityFeed(posts = []) {
       const isOwn = currentSession && Number(post.user_id) === Number(currentSession.id);
       const canManage = isOwn || isAdminSession();
       const photoFormat = post.image_format === "story" ? "story" : "square";
+      const communityType = post.image_data ? "photos" : "text";
       const photoHtml = post.image_data
         ? `<div class="community-post-photo-wrap community-post-photo-${photoFormat}"><img class="community-post-photo" src="${post.image_data}" alt="Foto do post" loading="lazy" /></div>`
         : "";
@@ -850,7 +851,7 @@ function renderCommunityFeed(posts = []) {
         : escapeHtml(initials);
 
       return `
-        <article class="community-post-card" data-post-id="${post.id}">
+        <article class="community-post-card" data-post-id="${post.id}" data-community-type="${communityType}">
 
           <!-- Cabeçalho do post -->
           <div class="community-post-header">
@@ -985,6 +986,7 @@ function renderCommunityFeed(posts = []) {
       if (previewWrap) previewWrap.innerHTML = "";
     });
   });
+  applyCommunityFilter(document.querySelector("[data-community-filter].is-active")?.dataset.communityFilter || "all");
 }
 
 function enterEditMode(postId) {
@@ -1247,6 +1249,46 @@ function setupCommunityPhotoInput() {
       btn.classList.add("is-active");
       applyPreviewFormat(_communityPhotoFormat);
     });
+  });
+}
+
+function applyCommunityFilter(filter = "all") {
+  const normalizedFilter = ["all", "photos", "text"].includes(filter) ? filter : "all";
+  document.querySelectorAll("[data-community-filter]").forEach((button) => {
+    button.classList.toggle("is-active", button.dataset.communityFilter === normalizedFilter);
+  });
+  document.querySelectorAll(".community-post-card").forEach((card) => {
+    const type = card.dataset.communityType || "text";
+    card.hidden = normalizedFilter !== "all" && type !== normalizedFilter;
+  });
+}
+
+function setupCommunityUiEnhancements() {
+  if (document._communityUiEnhancementsSet) return;
+  document._communityUiEnhancementsSet = true;
+
+  document.addEventListener("click", (event) => {
+    const focusPostTrigger = event.target.closest("[data-community-focus-post]");
+    if (focusPostTrigger) {
+      event.preventDefault();
+      const input = document.querySelector("#community-post-input");
+      input?.focus({ preventScroll: true });
+      input?.scrollIntoView({ behavior: "smooth", block: "center" });
+      return;
+    }
+
+    const filterButton = event.target.closest("[data-community-filter]");
+    if (filterButton) {
+      event.preventDefault();
+      applyCommunityFilter(filterButton.dataset.communityFilter);
+      return;
+    }
+
+    const shortcut = event.target.closest("[data-community-filter-shortcut]");
+    if (shortcut) {
+      event.preventDefault();
+      applyCommunityFilter(shortcut.dataset.communityFilterShortcut);
+    }
   });
 }
 
@@ -2228,6 +2270,8 @@ function setActivePage(pageName, syncHash = true) {
     }
     loadCommunityFeed();
     setupCommunityPhotoInput();
+    setupCommunityUiEnhancements();
+    applyCommunityFilter(document.querySelector("[data-community-filter].is-active")?.dataset.communityFilter || "all");
     if (!document._communityDropdownListenerSet) {
       document._communityDropdownListenerSet = true;
       document.addEventListener("click", (e) => {
