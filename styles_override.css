@@ -5892,3 +5892,115 @@ body.planner-dreams-active [data-tab-panel="planner-dreams"] {
     background: linear-gradient(135deg, #8fb2f4, #b8a5f2, #f4b8d5) !important;
   }
 }
+
+/* Correcao global de rolagem: libera o scroll vertical dos modulos no mobile. */
+@media (max-width: 767px) {
+  html,
+  body {
+    height: auto !important;
+    min-height: 100% !important;
+    max-height: none !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    touch-action: pan-y !important;
+    overscroll-behavior-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+
+  body:not(.agenda-tab-active),
+  body:not(.agenda-tab-active) .app-shell,
+  body:not(.agenda-tab-active) .main-content,
+  body:not(.agenda-tab-active) .page-stack,
+  body:not(.agenda-tab-active) .page-view,
+  body:not(.agenda-tab-active) .page-view.is-active {
+    height: auto !important;
+    min-height: 100dvh !important;
+    max-height: none !important;
+    overflow-x: hidden !important;
+    overflow-y: visible !important;
+    touch-action: pan-y !important;
+    overscroll-behavior-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+
+  body:not(.agenda-tab-active) .main-content {
+    position: relative !important;
+    display: block !important;
+    padding-bottom: calc(96px + env(safe-area-inset-bottom)) !important;
+  }
+
+  body:not(.agenda-tab-active) .page-view:not(.is-active) {
+    display: none !important;
+  }
+
+  body:not(.agenda-tab-active) .page-view.is-active {
+    display: block !important;
+    padding-bottom: calc(24px + env(safe-area-inset-bottom)) !important;
+  }
+
+  body:not(.agenda-tab-active) .page-view.is-active :is(
+    .panel,
+    .module-card,
+    .planner-page-shell,
+    .planner-tab-shell,
+    .planner-tab-panel.is-active,
+    .planner-summary-band,
+    .planner-dreams-panel,
+    .planner-goals-panel,
+    .finance-card,
+    .home-card,
+    .body-card,
+    .study-books-card,
+    .study-cursos-card,
+    .agenda-summary-card,
+    .agenda-events-card,
+    .detail-card,
+    .project-card,
+    .community-shell,
+    .community-feed,
+    .settings-panel,
+    .settings-card,
+    .tab-shell,
+    .tab-panel.is-active,
+    .casa-tab-panel.is-active
+  ) {
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    overflow-y: visible !important;
+    touch-action: pan-y !important;
+    overscroll-behavior-y: auto !important;
+  }
+
+  body:not(.agenda-tab-active) .page-view.is-active :is(
+    .tab-buttons-scroll,
+    .finance-chip-row,
+    .fin-cc-tabs,
+    .casa-tab-ribbon,
+    .corpo-tab-ribbon,
+    .agenda-week-strip-scroll,
+    .home-table-shell,
+    .study-table-shell,
+    .finance-table-shell,
+    .fin-table-scroll,
+    .casa-table-shell
+  ) {
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    touch-action: pan-x !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+
+  body:not(.agenda-tab-active) .page-view.is-active :is(input, textarea, select) {
+    touch-action: auto !important;
+  }
+
+  body:not(.agenda-tab-active) .page-view.is-active :is(button, label, a, .home-market-item, .limpeza-task) {
+    touch-action: manipulation !important;
+  }
+
+  body.agenda-tab-active {
+    height: 100dvh !important;
+    overflow: hidden !important;
+  }
+}
