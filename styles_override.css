@@ -6179,5 +6179,73 @@ body:not(.agenda-tab-active) .verse-banner::before {
 }
 
 @media (max-width: 767px) {
-  .vn-yt-strip { display: none; }
+  body:not(.agenda-tab-active) .vn-yt-strip {
+    display: grid !important;
+    grid-template-columns: 34px minmax(0, 1fr) auto !important;
+    align-items: center !important;
+    gap: 10px !important;
+    width: calc(100% - 28px) !important;
+    margin: 0 auto 12px !important;
+    padding: 10px 12px !important;
+    border-radius: 18px !important;
+    border: 1px solid rgba(143, 178, 244, .16) !important;
+    background: rgba(255, 255, 255, .86) !important;
+    box-shadow: 0 12px 28px rgba(104, 86, 132, .08) !important;
+    backdrop-filter: blur(14px) !important;
+    -webkit-backdrop-filter: blur(14px) !important;
+  }
+
+  body:not(.agenda-tab-active) .vn-yt-icon {
+    width: 34px !important;
+    height: 34px !important;
+    border-radius: 12px !important;
+    background: linear-gradient(135deg, #8fb2f4, #b8a5f2, #f4b8d5) !important;
+  }
+
+  body:not(.agenda-tab-active) .vn-yt-body strong {
+    color: #24283d !important;
+    font-size: 12.5px !important;
+    font-weight: 500 !important;
+    line-height: 1.2 !important;
+  }
+
+  body:not(.agenda-tab-active) .vn-yt-body span {
+    display: block !important;
+    color: #7f879d !important;
+    font-size: 10.5px !important;
+    line-height: 1.25 !important;
+  }
+
+  body:not(.agenda-tab-active) .vn-yt-cta {
+    color: #8fb2f4 !important;
+    font-size: 10.5px !important;
+    font-weight: 500 !important;
+  }
+
+  body.agenda-tab-active .vn-yt-strip {
+    display: none !important;
+  }
+}
+
+/* ===== Botão Sair nas configurações ===== */
+.settings-logout-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 42px;
+  padding: 0 20px;
+  background: transparent;
+  border: 1.5px solid #e8b4c0;
+  border-radius: 10px;
+  color: #c0394f;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background .15s, border-color .15s;
+}
+
+.settings-logout-btn:hover {
+  background: #fff0f3;
+  border-color: #c0394f;
 }
