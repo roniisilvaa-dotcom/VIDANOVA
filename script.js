@@ -6149,14 +6149,25 @@ function setPlannerTab(target) {
   const buttons = plannerShell.querySelectorAll("[data-tab-target]");
   const panels = plannerShell.querySelectorAll("[data-tab-panel]");
   currentPlannerTab = target;
-  document.body.classList.toggle("planner-dreams-active", target === "planner-dreams");
+  const dreamsOnly = target === "planner-dreams";
+  document.body.classList.toggle("planner-dreams-active", dreamsOnly);
+  plannerShell.classList.toggle("is-dreams-only", dreamsOnly);
+  plannerShell.dataset.plannerMode = dreamsOnly ? "dreams" : "planner";
+
+  const ribbon = plannerShell.querySelector(".planner-tab-ribbon");
+  if (ribbon) {
+    ribbon.hidden = dreamsOnly;
+    ribbon.setAttribute("aria-hidden", dreamsOnly ? "true" : "false");
+  }
 
   buttons.forEach((button) => {
     button.classList.toggle("is-active", button.dataset.tabTarget === target);
   });
 
   panels.forEach((panel) => {
-    panel.classList.toggle("is-active", panel.dataset.tabPanel === target);
+    const isActive = panel.dataset.tabPanel === target;
+    panel.classList.toggle("is-active", isActive);
+    panel.hidden = dreamsOnly ? panel.dataset.tabPanel !== "planner-dreams" : false;
   });
 
   // No mobile: agenda ocupa tela cheia (bloqueia scroll da página)

@@ -5658,6 +5658,23 @@ body.planner-dreams-active [data-tab-panel="planner-dreams"] {
   display: block !important;
 }
 
+.planner-tab-shell.is-dreams-only .planner-tab-ribbon,
+.planner-tab-shell[data-planner-mode="dreams"] .planner-tab-ribbon {
+  display: none !important;
+}
+
+.planner-tab-shell.is-dreams-only [data-tab-panel="planner-weekly"],
+.planner-tab-shell.is-dreams-only [data-tab-panel="planner-agenda"],
+.planner-tab-shell[data-planner-mode="dreams"] [data-tab-panel="planner-weekly"],
+.planner-tab-shell[data-planner-mode="dreams"] [data-tab-panel="planner-agenda"] {
+  display: none !important;
+}
+
+.planner-tab-shell.is-dreams-only [data-tab-panel="planner-dreams"],
+.planner-tab-shell[data-planner-mode="dreams"] [data-tab-panel="planner-dreams"] {
+  display: block !important;
+}
+
 /* Home web: remove o titulo/frase dos modulos, mantendo o mobile intacto. */
 @media (min-width: 768px) {
   .desktop-modules-heading {
@@ -5672,6 +5689,35 @@ body.planner-dreams-active [data-tab-panel="planner-dreams"] {
 
 /* Agenda web mais ampla e confortavel, sem afetar a experiencia mobile. */
 @media (min-width: 900px) {
+  .planner-tab-panel[data-tab-panel="planner-agenda"].is-active {
+    width: 100% !important;
+    max-width: none !important;
+  }
+
+  .planner-tab-panel[data-tab-panel="planner-agenda"].is-active .agenda-mobile-panel {
+    width: 100% !important;
+    max-width: none !important;
+    min-height: calc(100vh - 164px) !important;
+    padding: 24px !important;
+    border-radius: 30px !important;
+    overflow: visible !important;
+  }
+
+  .planner-tab-panel[data-tab-panel="planner-agenda"].is-active #week-view-shell.agenda-timeline-shell:not(.hidden) {
+    height: min(76vh, 860px) !important;
+    max-height: 860px !important;
+    overflow: auto !important;
+    border-radius: 24px !important;
+  }
+
+  .planner-tab-panel[data-tab-panel="planner-agenda"].is-active .agenda-timeline-body {
+    grid-template-columns: 76px minmax(0, 1fr) !important;
+  }
+
+  .planner-tab-panel[data-tab-panel="planner-agenda"].is-active .week-columns {
+    grid-template-columns: repeat(7, minmax(132px, 1fr)) !important;
+  }
+
   body.agenda-tab-active .main-content,
   body.agenda-tab-active .page-stack,
   body.agenda-tab-active [data-page-view="planner"],
@@ -5714,6 +5760,14 @@ body.planner-dreams-active [data-tab-panel="planner-dreams"] {
   body.agenda-tab-active .agenda-day-notes {
     max-width: 100% !important;
   }
+}
+
+/* Icone do versiculo: Biblia, sem simbolos antigos. */
+.verse-banner::before,
+body:not(.agenda-tab-active) .verse-banner::before {
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cg fill='none' stroke='%238fb2f4' stroke-width='1.45' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4.5 4.75A2.75 2.75 0 0 1 7.25 2H20v18.5H7.25A2.75 2.75 0 0 0 4.5 23V4.75Z'/%3E%3Cpath d='M4.5 4.75A2.75 2.75 0 0 1 7.25 7.5H20'/%3E%3Cpath d='M9 11.25h6.5'/%3E%3Cpath d='M9 15h5'/%3E%3Cpath d='M17.25 2v6l-1.75-1.15L13.75 8V2'/%3E%3C/g%3E%3C/svg%3E") center / 34px 34px no-repeat,
+    rgba(255, 255, 255, .84) !important;
 }
 
 /* Comunidade mobile: foto, formatos e publicar alinhados como controles reais. */
@@ -6002,5 +6056,62 @@ body.planner-dreams-active [data-tab-panel="planner-dreams"] {
   body.agenda-tab-active {
     height: 100dvh !important;
     overflow: hidden !important;
+  }
+}
+
+/* Agenda mobile: permite acessar e cadastrar compromissos ate 23:00 em Dia/Semana. */
+@media (max-width: 767px) {
+  body.agenda-tab-active #week-view-shell.agenda-timeline-shell:not(.hidden) {
+    height: calc(100dvh - 118px) !important;
+    max-height: calc(100dvh - 118px) !important;
+    min-height: 0 !important;
+    padding-bottom: calc(160px + env(safe-area-inset-bottom)) !important;
+    overflow-y: scroll !important;
+    overflow-x: auto !important;
+    scroll-padding-bottom: calc(180px + env(safe-area-inset-bottom)) !important;
+    touch-action: pan-x pan-y !important;
+    overscroll-behavior: contain !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+
+  body.agenda-tab-active #week-view-shell.agenda-timeline-shell[data-agenda-view="day"]:not(.hidden) .agenda-timeline-body,
+  body.agenda-tab-active #week-view-shell.agenda-timeline-shell[data-agenda-view="week"]:not(.hidden) .agenda-timeline-body,
+  body.agenda-tab-active #week-view-shell.agenda-timeline-shell[data-agenda-view="custom"]:not(.hidden) .agenda-timeline-body,
+  body.agenda-tab-active #week-view-shell.agenda-timeline-shell[data-agenda-view="day"]:not(.hidden) .week-hours-column,
+  body.agenda-tab-active #week-view-shell.agenda-timeline-shell[data-agenda-view="week"]:not(.hidden) .week-hours-column,
+  body.agenda-tab-active #week-view-shell.agenda-timeline-shell[data-agenda-view="custom"]:not(.hidden) .week-hours-column,
+  body.agenda-tab-active #week-view-shell.agenda-timeline-shell[data-agenda-view="day"]:not(.hidden) .week-columns,
+  body.agenda-tab-active #week-view-shell.agenda-timeline-shell[data-agenda-view="week"]:not(.hidden) .week-columns,
+  body.agenda-tab-active #week-view-shell.agenda-timeline-shell[data-agenda-view="custom"]:not(.hidden) .week-columns,
+  body.agenda-tab-active #week-view-shell.agenda-timeline-shell[data-agenda-view="day"]:not(.hidden) .week-day-column,
+  body.agenda-tab-active #week-view-shell.agenda-timeline-shell[data-agenda-view="week"]:not(.hidden) .week-day-column,
+  body.agenda-tab-active #week-view-shell.agenda-timeline-shell[data-agenda-view="custom"]:not(.hidden) .week-day-column {
+    min-height: 1536px !important;
+    height: 1536px !important;
+  }
+
+  body.agenda-tab-active #week-view-shell.agenda-timeline-shell:not(.hidden) .agenda-timeline-body {
+    grid-template-columns: 52px minmax(0, 1fr) !important;
+    background-size: 100% 56px !important;
+  }
+
+  body.agenda-tab-active #week-view-shell.agenda-timeline-shell:not(.hidden) .week-hours-column {
+    display: grid !important;
+    grid-template-rows: repeat(24, 56px) 192px !important;
+  }
+
+  body.agenda-tab-active #week-view-shell.agenda-timeline-shell:not(.hidden) .week-column-hit {
+    position: absolute !important;
+    inset: 0 !important;
+    height: 1536px !important;
+    min-height: 1536px !important;
+    z-index: 0 !important;
+    pointer-events: auto !important;
+    touch-action: manipulation !important;
+  }
+
+  body.agenda-tab-active #week-view-shell.agenda-timeline-shell:not(.hidden) .week-event-block,
+  body.agenda-tab-active #week-view-shell.agenda-timeline-shell:not(.hidden) .current-time-indicator {
+    z-index: 2 !important;
   }
 }
