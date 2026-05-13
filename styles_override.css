@@ -7572,3 +7572,122 @@ body.agenda-tab-active .vn-yt-strip {
     padding: 8px 12px;
   }
 }
+
+/* Community final polish: remove dark inherited borders and stabilize composer actions. */
+[data-page-view="comunidade"] :is(
+  .community-app-shell,
+  .community-topbar,
+  .community-back-button,
+  .community-icon-button,
+  .community-hero-card,
+  .community-story,
+  .community-story-ring,
+  .community-story-avatar,
+  .community-composer,
+  .community-composer-media-btn,
+  .community-format-btn,
+  .community-photo-preview,
+  .community-feed-tabs,
+  .community-feed-tab,
+  .community-empty,
+  .community-post-card,
+  .community-edit-btn,
+  .community-post-dropdown,
+  .community-dropdown-item,
+  .community-comment-form,
+  .community-comment-body,
+  .community-edit-form,
+  .community-edit-textarea
+) {
+  outline: 0 !important;
+  border-color: rgba(86, 75, 170, 0.10) !important;
+}
+
+[data-page-view="comunidade"] .community-composer,
+[data-page-view="comunidade"] .community-post-card,
+[data-page-view="comunidade"] .community-empty {
+  border-color: rgba(86, 75, 170, 0.10) !important;
+}
+
+[data-page-view="comunidade"] .community-composer-top {
+  display: grid !important;
+  grid-template-columns: 44px minmax(0, 1fr);
+  align-items: start;
+}
+
+[data-page-view="comunidade"] .community-composer-actions {
+  display: grid !important;
+  grid-template-columns: max-content max-content minmax(92px, 1fr) auto;
+  align-items: center;
+  gap: 10px;
+}
+
+[data-page-view="comunidade"] #community-format-toggle {
+  justify-self: start;
+}
+
+[data-page-view="comunidade"] #community-post-feedback {
+  min-height: 18px;
+  align-self: center;
+  text-align: left;
+}
+
+[data-page-view="comunidade"] .community-publish-btn {
+  justify-self: end;
+  min-width: 136px;
+  min-height: 44px;
+  border: 0 !important;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+[data-page-view="comunidade"] .community-publish-btn:disabled {
+  opacity: 0.62;
+  cursor: wait;
+  transform: none !important;
+}
+
+[data-page-view="comunidade"] .community-publish-btn.is-loading::after {
+  content: "";
+  width: 14px;
+  height: 14px;
+  border: 2px solid rgba(255,255,255,.45);
+  border-top-color: #fff;
+  border-radius: 999px;
+  animation: communitySpin .7s linear infinite;
+}
+
+@keyframes communitySpin {
+  to { transform: rotate(360deg); }
+}
+
+@media (max-width: 680px) {
+  [data-page-view="comunidade"] .community-composer-top {
+    grid-template-columns: 40px minmax(0, 1fr);
+  }
+  [data-page-view="comunidade"] .community-composer-actions {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  [data-page-view="comunidade"] .community-composer-media-btn,
+  [data-page-view="comunidade"] .community-publish-btn {
+    width: 100%;
+    justify-content: center;
+  }
+  [data-page-view="comunidade"] #community-format-toggle,
+  [data-page-view="comunidade"] #community-post-feedback,
+  [data-page-view="comunidade"] .community-publish-btn {
+    grid-column: 1 / -1;
+  }
+  [data-page-view="comunidade"] #community-format-toggle {
+    justify-content: center;
+  }
+  [data-page-view="comunidade"] #community-post-feedback {
+    order: initial;
+    text-align: center;
+  }
+  [data-page-view="comunidade"] .community-publish-btn {
+    min-height: 48px;
+    min-width: 0;
+    justify-self: stretch;
+  }
+}

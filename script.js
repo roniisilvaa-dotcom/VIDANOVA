@@ -1199,6 +1199,8 @@ function setupCommunityPhotoInput() {
   const removeBtn = document.querySelector("#community-photo-remove");
 
   if (!photoInput) return;
+  if (photoInput.dataset.communityPhotoBound === "true") return;
+  photoInput.dataset.communityPhotoBound = "true";
 
   function applyPreviewFormat(fmt) {
     if (!previewImg) return;
@@ -1294,12 +1296,24 @@ function setupCommunityUiEnhancements() {
 
 async function publishCommunityPost(content) {
   if (!communityPostFeedback) return;
+  const cleanedContent = String(content || "").trim();
+  const publishButton = document.querySelector(".community-publish-btn");
 
+  if (!cleanedContent && !_communityPhotoData) {
+    setFeedback(communityPostFeedback, "Escreva uma mensagem ou adicione uma foto.", "error");
+    communityPostInput?.focus();
+    return;
+  }
+
+  if (publishButton) {
+    publishButton.disabled = true;
+    publishButton.classList.add("is-loading");
+  }
   setFeedback(communityPostFeedback, "Publicando...");
   try {
     const response = await apiPost("/api/community/post", {
       token: getAuthToken(),
-      content,
+      content: cleanedContent,
       image_data: _communityPhotoData || null,
       image_format: _communityPhotoFormat,
     });
@@ -1313,8 +1327,14 @@ async function publishCommunityPost(content) {
     document.querySelectorAll(".community-format-btn").forEach((b) => { b.classList.toggle("is-active", b.dataset.format === "square"); });
     setFeedback(communityPostFeedback, "Publicado!", "success");
     renderCommunityFeed(response.posts || []);
+    applyCommunityFilter(document.querySelector("[data-community-filter].is-active")?.dataset.communityFilter || "all");
   } catch (error) {
     setFeedback(communityPostFeedback, error.message, "error");
+  } finally {
+    if (publishButton) {
+      publishButton.disabled = false;
+      publishButton.classList.remove("is-loading");
+    }
   }
 }
 

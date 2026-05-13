@@ -2123,8 +2123,8 @@
 #configuracoes .file-btn{background:var(--grad-pale);color:var(--lav-800);font-size:12.5px;font-weight:600;padding:8px 12px;border-radius:10px;}
 #configuracoes .file-nm{font-size:13px;color:var(--ink-500);}
 #configuracoes .file-input-wrap input[type="file"]{display:none;}
-#configuracoes .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;width:100%;height:48px;border-radius:var(--radius-md);font-size:14px;font-weight:600;letter-spacing:.01em;transition:transform .15s,box-shadow .2s,background .2s,border-color .2s;text-decoration:none;cursor:pointer;border:none;font-family:inherit;}
-#configuracoes .btn svg{width:16px;height:16px;}
+#configuracoes .btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;width:100%;min-height:58px;padding:0 22px;border-radius:18px;font-size:15.5px;font-weight:650;letter-spacing:.01em;transition:transform .15s,box-shadow .2s,background .2s,border-color .2s;text-decoration:none;cursor:pointer;border:none;font-family:inherit;line-height:1.15;}
+#configuracoes .btn svg{width:18px;height:18px;flex-shrink:0;}
 #configuracoes .btn-grad{background:var(--grad);color:#fff;box-shadow:var(--shadow-grad);}
 #configuracoes .btn-grad:hover{transform:translateY(-1px);box-shadow:0 14px 30px -10px rgba(178,153,224,.65);}
 #configuracoes .btn-soft{background:var(--grad-pale);color:var(--lav-800);border:1px solid var(--hairline);}
@@ -2192,6 +2192,8 @@
   #configuracoes .cfg-card{padding:18px;border-radius:var(--radius-lg);}
   #configuracoes .card-title{font-size:22px;}
   #configuracoes .btn-row.inline{flex-direction:column;}
+  #configuracoes .btn{min-height:62px;font-size:16px;border-radius:20px;}
+  #configuracoes .btn svg{width:20px;height:20px;}
   #configuracoes .cfg-topbar-user span{display:none;}
 }
 @media(max-width:380px){
@@ -2322,7 +2324,9 @@
             </div>
           </div>
           <div class="btn-row">
-            <button class="btn btn-grad" type="button">Gerenciar assinatura</button>
+            <button class="btn btn-grad" type="button" onclick="document.getElementById('settings-open-renewal')?.click()">
+              Gerenciar assinatura
+            </button>
           </div>
         </section>
 
@@ -2461,9 +2465,9 @@
 
   <!-- Bottom nav (mobile) -->
   <nav class="cfg-bottom-nav" aria-label="Navegação principal">
-    <button class="bn-item" type="button" data-go-home>
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m3 11 9-8 9 8"/><path d="M5 10v10h14V10"/></svg>
-      Início
+    <button class="bn-item" type="button" data-page-link="comunidade">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 11h-6M19 8v6"/></svg>
+      Comunidade
     </button>
     <button class="bn-fab" type="button" data-go-home aria-label="Início">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 11 9-8 9 8"/><path d="M5 10v10h14V10"/></svg>
