@@ -1,20 +1,19 @@
 :root {
-  --cream: #fffaff;
+  --cream: #fffaf4;
   --paper: rgba(255, 255, 255, 0.72);
-  --ink: #1f2035;
-  --muted: #727891;
-  --line: rgba(163, 137, 222, 0.22);
-  --peach: #f4b8d5;
-  --apricot: #f4b8d5;
-  --rose: #f4b8d5;
-  --berry: #8fb2f4;
-  --mint: #b8a5f2;
-  --sage: #8fb2f4;
-  --sky: #8fb2f4;
-  --lavender: #b8a5f2;
-  --gold: #f4b8d5;
-  --accent: #8fb2f4;
-  --shadow: 0 24px 72px rgba(135, 118, 183, 0.14);
+  --ink: #2b2232;
+  --muted: #776d7f;
+  --line: rgba(89, 62, 87, 0.14);
+  --peach: #ffd5c8;
+  --apricot: #ffc885;
+  --rose: #f8bfd3;
+  --berry: #c55b84;
+  --mint: #bfe8d6;
+  --sage: #95c4aa;
+  --sky: #cfe6ff;
+  --lavender: #ddd2ff;
+  --gold: #f3dfa6;
+  --shadow: 0 20px 55px rgba(83, 53, 79, 0.12);
   --radius-lg: 28px;
   --radius-md: 20px;
   --radius-sm: 14px;
@@ -39,7 +38,7 @@ body {
   font-family: "Avenir Next", "Segoe UI", "Trebuchet MS", sans-serif;
   background:
     radial-gradient(circle at top left, rgba(255, 201, 149, 0.45), transparent 24%),
-    radial-gradient(circle at bottom right, rgba(143, 178, 244, 0.18), transparent 22%),
+    radial-gradient(circle at bottom right, rgba(197, 91, 132, 0.18), transparent 22%),
     linear-gradient(135deg, #fff9f1 0%, #fff5fb 48%, #f7fbff 100%);
 }
 
@@ -51,7 +50,7 @@ body[data-theme="dark"] {
   --shadow: 0 24px 65px rgba(0, 0, 0, 0.34);
   background:
     radial-gradient(circle at top left, rgba(171, 120, 89, 0.22), transparent 24%),
-    radial-gradient(circle at bottom right, rgba(143, 178, 244, 0.18), transparent 22%),
+    radial-gradient(circle at bottom right, rgba(197, 91, 132, 0.18), transparent 22%),
     linear-gradient(135deg, #17111b 0%, #231927 50%, #121a24 100%);
 }
 
@@ -95,7 +94,7 @@ a {
   width: 52px;
   height: 52px;
   border-radius: 18px;
-  background: linear-gradient(135deg, var(--berry), #f4b8d5);
+  background: linear-gradient(135deg, var(--berry), #ef8da9);
   color: white;
   font-weight: 700;
   letter-spacing: 0.08em;
@@ -199,7 +198,7 @@ a {
 }
 
 .preference-button.is-active {
-  background: linear-gradient(135deg, var(--berry), #f4b8d5);
+  background: linear-gradient(135deg, var(--berry), #dd7ea2);
   color: white;
   border-color: transparent;
 }
@@ -220,7 +219,7 @@ a {
 .pill {
   padding: 8px 12px;
   border-radius: 999px;
-  background: rgba(143, 178, 244, 0.12);
+  background: rgba(197, 91, 132, 0.12);
   font-size: 0.86rem;
 }
 
@@ -382,7 +381,7 @@ a {
   height: 100%;
   width: 12%;
   border-radius: inherit;
-  background: linear-gradient(135deg, #f4b8d5, #f4b8d5);
+  background: linear-gradient(135deg, #ef8da9, #ffc885);
 }
 
 .hidden {
@@ -408,7 +407,7 @@ a {
 .interactive-stat:hover {
   transform: translateY(-3px);
   box-shadow: 0 26px 60px rgba(83, 53, 79, 0.16);
-  border-color: rgba(143, 178, 244, 0.22);
+  border-color: rgba(197, 91, 132, 0.22);
 }
 
 .editable-card {
@@ -458,7 +457,7 @@ a {
 }
 
 .customizable-grid.drag-over {
-  outline: 2px dashed rgba(143, 178, 244, 0.36);
+  outline: 2px dashed rgba(197, 91, 132, 0.36);
   outline-offset: 6px;
   border-radius: 28px;
 }
@@ -616,7 +615,7 @@ a {
 }
 
 .calendar-view-switcher .ghost-button.is-active {
-  background: linear-gradient(135deg, var(--berry), #f4b8d5);
+  background: linear-gradient(135deg, var(--berry), #dd7ea2);
   color: white;
 }
 
@@ -680,14 +679,14 @@ a {
 }
 
 .calendar-mini-day.is-selected {
-  background: linear-gradient(135deg, rgba(143, 178, 244, 0.16), rgba(255, 212, 226, 0.74));
-  border-color: rgba(143, 178, 244, 0.22);
+  background: linear-gradient(135deg, rgba(197, 91, 132, 0.16), rgba(255, 212, 226, 0.74));
+  border-color: rgba(197, 91, 132, 0.22);
   color: var(--berry);
   font-weight: 700;
 }
 
 .calendar-mini-day.is-today {
-  border-color: rgba(143, 178, 244, 0.4);
+  border-color: rgba(197, 91, 132, 0.4);
 }
 
 .calendar-mini-note {
@@ -744,8 +743,8 @@ a {
 }
 
 .calendar-day.is-today {
-  border-color: rgba(143, 178, 244, 0.58);
-  box-shadow: inset 0 0 0 1px rgba(143, 178, 244, 0.24);
+  border-color: rgba(197, 91, 132, 0.58);
+  box-shadow: inset 0 0 0 1px rgba(197, 91, 132, 0.24);
 }
 
 .calendar-day.is-selected {
@@ -828,7 +827,7 @@ a {
   padding: 14px 18px;
   border: none;
   border-radius: 14px;
-  background: linear-gradient(135deg, var(--berry), #f4b8d5);
+  background: linear-gradient(135deg, var(--berry), #dd7ea2);
   color: white;
   cursor: pointer;
   box-shadow: var(--shadow);
@@ -1100,7 +1099,7 @@ a {
   padding: 0 18px;
   border: none;
   border-radius: 14px;
-  background: linear-gradient(135deg, var(--berry), #f4b8d5);
+  background: linear-gradient(135deg, var(--berry), #dd7ea2);
   color: white;
   font: inherit;
   cursor: pointer;
@@ -1436,7 +1435,7 @@ a {
 .task-form button {
   padding: 14px 18px;
   border-radius: 14px;
-  background: linear-gradient(135deg, var(--berry), #f4b8d5);
+  background: linear-gradient(135deg, var(--berry), #dd7ea2);
   color: white;
   box-shadow: var(--shadow);
 }
@@ -1508,7 +1507,7 @@ a {
   padding: 8px 12px;
   border: none;
   border-radius: 10px;
-  background: rgba(143, 178, 244, 0.1);
+  background: rgba(197, 91, 132, 0.1);
   color: var(--berry);
   cursor: pointer;
 }
@@ -1754,7 +1753,7 @@ body[data-layout="magazine"] .module-grid .spiritual-card {
   padding: 14px 18px;
   border: none;
   border-radius: 14px;
-  background: linear-gradient(135deg, var(--berry), #f4b8d5);
+  background: linear-gradient(135deg, var(--berry), #dd7ea2);
   color: white;
   cursor: pointer;
   box-shadow: var(--shadow);
@@ -1936,7 +1935,7 @@ select {
 .mobile-card .full-button {
   border: none;
   border-radius: 16px;
-  background: linear-gradient(135deg, var(--berry), #f4b8d5);
+  background: linear-gradient(135deg, var(--berry), #dd7ea2);
   color: white;
   font: inherit;
   cursor: pointer;
@@ -1958,7 +1957,7 @@ select {
 .mobile-pill {
   padding: 8px 12px;
   border-radius: 999px;
-  background: rgba(143, 178, 244, 0.12);
+  background: rgba(197, 91, 132, 0.12);
   color: var(--ink);
   font-size: 0.84rem;
 }
@@ -2005,7 +2004,7 @@ select {
   padding: 8px 10px;
   border: none;
   border-radius: 10px;
-  background: rgba(143, 178, 244, 0.1);
+  background: rgba(197, 91, 132, 0.1);
   color: var(--berry);
   font: inherit;
 }
