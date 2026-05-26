@@ -6,8 +6,8 @@
     <title>Vida Nova</title>
     
     <!-- Theme Colors -->
-    <meta name="theme-color" content="#8fb2f4" />
-    <meta name="msapplication-TileColor" content="#8fb2f4" />
+    <meta name="theme-color" content="#c55b84" />
+    <meta name="msapplication-TileColor" content="#c55b84" />
     <meta name="msapplication-TileImage" content="mstile-150.png?v=nv3" />
     
     <!-- iOS Web App Meta Tags -->
@@ -33,7 +33,7 @@
     
     <!-- Security Headers -->
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://accounts.google.com https://fonts.googleapis.com; img-src 'self' data: blob: https://*.googleusercontent.com; font-src 'self' https://fonts.gstatic.com; manifest-src 'self'; connect-src 'self' https://firestore.googleapis.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://www.googleapis.com; frame-src 'self' https://accounts.google.com;" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; manifest-src 'self';" />
     
     <!-- Preload critical resources -->
     <link rel="preload" href="script.js" as="script" />
@@ -44,14 +44,12 @@
     <link rel="icon" href="icon-192.png?v=nv3" sizes="192x192" type="image/png" />
     
     <!-- Stylesheets -->
-    <link rel="stylesheet" href="styles.css?v=nv4" />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles_override.css" />
+    <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <div id="vn-splash" style="position:fixed;inset:0;z-index:9999;background:linear-gradient(135deg,#8fb2f4,#b8a5f2 48%,#f4b8d5);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;transition:opacity .5s ease">
+    <div id="vn-splash" style="position:fixed;inset:0;z-index:9999;background:linear-gradient(135deg,#c55b84,#e8829a);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;transition:opacity .5s ease">
       <div style="width:80px;height:80px;border-radius:50%;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:2.4rem">🌸</div>
-      <div style="color:#fff;font-size:1.8rem;font-weight:500;letter-spacing:.02em">Vida Nova</div>
+      <div style="color:#fff;font-size:1.8rem;font-weight:900;letter-spacing:.04em">Vida Nova</div>
       <div id="vn-splash-sub" style="color:rgba(255,255,255,.8);font-size:.9rem;text-align:center;padding:0 24px;transition:opacity .3s">Abrindo seu planner...</div>
       <div style="width:44px;height:4px;background:rgba(255,255,255,.3);border-radius:4px;overflow:hidden;margin-top:8px">
         <div style="height:100%;background:#fff;border-radius:4px;animation:vnload 1.6s ease-in-out infinite alternate"></div>
@@ -79,50 +77,38 @@
     <div class="app-shell">
       <aside class="sidebar">
         <div class="brand">
-          <div class="brand-mark">
-            <svg viewBox="0 0 64 64" aria-hidden="true">
-              <path d="M32 55V29" />
-              <path d="M32 29C18 24 13 13 16 6c10 1 18 9 16 23Z" />
-              <path d="M32 29C46 24 51 13 48 6c-10 1-18 9-16 23Z" />
-              <path d="M32 39C20 39 10 32 8 22c12-1 22 5 24 17Z" />
-              <path d="M32 39c12 0 22-7 24-17-12-1-22 5-24 17Z" />
-            </svg>
-          </div>
+          <div class="brand-mark">VN</div>
           <div>
+            <p class="eyebrow">Planner Premium</p>
             <h1>Vida Nova</h1>
           </div>
         </div>
 
         <nav class="sidebar-nav">
-          <a href="#dashboard" data-page-link="dashboard">
-            <span class="sidebar-nav-icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24"><path d="m3 11 9-8 9 8v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1V11Z"/></svg>
-            </span>
-            Início
-          </a>
-          <a href="#comunidade" data-page-link="comunidade">
-            <span class="sidebar-nav-icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2m7-10a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm13 10v-2a4 4 0 0 0-3-3.87m-3-12a4 4 0 0 1 0 7.75"/></svg>
-            </span>
-            Comunidade
-          </a>
-          <a href="#configuracoes" data-page-link="configuracoes">
-            <span class="sidebar-nav-icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>
-            </span>
-            Perfil
-          </a>
+          <a href="#dashboard" data-page-link="dashboard">Dashboard</a>
+          <a href="#planner" data-page-link="planner" data-planner-open="planner-agenda">Agenda</a>
+          <a href="#planner" data-page-link="planner" data-planner-open="planner-dreams">Sonhos e Metas</a>
+          <a href="#estudos" data-page-link="estudos">Estudos e Projetos</a>
+          <a href="#finanças" data-page-link="finanças">Finanças</a>
+          <a href="#imagem" data-page-link="imagem">Imagem</a>
+          <a href="#casa" data-page-link="casa">Alimentação e Lar</a>
+          <a href="#corpo" data-page-link="corpo">Autocuidado</a>
+          <a href="#viagens" data-page-link="viagens">Viagens</a>
+          <a href="#espiritual" data-page-link="espiritual">Espiritual</a>
           <a href="#admin" data-page-link="admin" id="sidebar-admin-link" class="hidden">Admin</a>
+          <a href="#configuracoes" data-page-link="configuracoes">Configurações</a>
         </nav>
 
-        <div class="sidebar-footer-inspire" aria-hidden="true">
-          <div class="side-inspire-card">
-            <span>Inspiração do dia</span>
-            <h3>Vista sua rotina com graça</h3>
-            <p>Cultive uma presença delicada, organizada e cheia de propósito em cada detalhe do seu dia.</p>
+        <section class="membership-card">
+          <p class="eyebrow">Visao do dia</p>
+          <h2>Prioridade principal</h2>
+          <p>Se cuidar sem abandonar a rotina, a casa e as metas.</p>
+          <div class="pill-row">
+            <span class="pill">Agenda</span>
+            <span class="pill">Rotina</span>
+            <span class="pill">Paz</span>
           </div>
-        </div>
-
+        </section>
       </aside>
 
       <main class="main-content">
@@ -139,38 +125,18 @@
               <button id="admin-return-button" class="primary-button" type="button">Voltar para o admin</button>
             </div>
           </div>
-          <div class="topbar-brand">
-            <span class="topbar-brand-mark" aria-hidden="true">
-              <svg viewBox="0 0 64 64">
-                <path d="M32 55V29" />
-                <path d="M32 29C18 24 13 13 16 6c10 1 18 9 16 23Z" />
-                <path d="M32 29C46 24 51 13 48 6c-10 1-18 9-16 23Z" />
-                <path d="M32 39C20 39 10 32 8 22c12-1 22 5 24 17Z" />
-                <path d="M32 39c12 0 22-7 24-17-12-1-22 5-24 17Z" />
-              </svg>
-            </span>
-            <button id="home-button" class="home-link-button" type="button">Vida Nova</button>
-          </div>
-          <div class="topbar-profile-copy">
-            <h3 id="user-greeting">Bem-vinda</h3>
+          <div class="topbar-profile">
+            <div class="topbar-avatar topbar-avatar-large" id="topbar-avatar" aria-hidden="true">VN</div>
+            <div class="topbar-profile-copy">
+              <button id="home-button" class="home-link-button" type="button">Vida Nova</button>
+              <h3 id="user-greeting">Bem-vinda</h3>
+            </div>
           </div>
           <div class="topbar-actions">
-            <span id="sync-status-pill" class="topbar-status-pill is-pending" title="Sincronização com Neon">Sincronizando</span>
-            <button class="desktop-notification-button" type="button" aria-label="Notificações">
-              <svg viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M15 17H9m9-1v-5a6 6 0 1 0-12 0v5l-2 2h16l-2-2Zm-4 4a2 2 0 0 1-4 0" />
-              </svg>
+            <span id="topbar-plan" class="topbar-status-pill is-pending">Conta pendente</span>
+            <button id="settings-button" class="ghost-button icon-only-button settings-gear-button" type="button" aria-label="Abrir configurações" title="Configurações">
+              <span aria-hidden="true">⚙</span>
             </button>
-            <div class="topbar-account-card">
-              <div class="topbar-avatar topbar-avatar-large" id="topbar-avatar" aria-hidden="true">VN</div>
-              <div>
-                <strong id="topbar-account-name">Vida Nova</strong>
-                <span id="topbar-plan" class="topbar-status-pill is-pending">Conta pendente</span>
-              </div>
-              <button id="settings-button" class="ghost-button icon-only-button settings-gear-button" type="button" aria-label="Abrir configurações" title="Configurações">
-                <span aria-hidden="true">⌄</span>
-              </button>
-            </div>
             <button id="logout-button" class="ghost-button topbar-action-button" type="button">Sair</button>
           </div>
         </section>
@@ -189,32 +155,16 @@
         <section class="panel verse-banner">
           <div class="panel-heading">
             <div>
-              <p class="eyebrow">Versículo do dia</p>
+              <p class="eyebrow">Versiculo do dia</p>
               <h3>Palavra para hoje</h3>
             </div>
-            <button id="change-verse-button" class="ghost-button" type="button">Trocar versículo</button>
+            <button id="change-verse-button" class="ghost-button" type="button">Trocar versiculo</button>
           </div>
           <div class="verse-banner-copy">
             <strong id="headline-verse-text">Entrega o teu caminho ao Senhor; confia nele, e ele o fara.</strong>
             <small id="headline-verse-reference">Salmos 37:5</small>
           </div>
         </section>
-
-        <a class="vn-yt-strip vn-yt-strip-desktop" href="https://www.youtube.com/@eusoucamilarocha" target="_blank" rel="noopener noreferrer" aria-label="Canal da Camila Rocha no YouTube">
-          <div class="vn-yt-icon">
-            <svg viewBox="0 0 24 24" width="20" height="20" fill="white" aria-hidden="true">
-              <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
-            </svg>
-          </div>
-          <div class="vn-yt-body">
-            <strong>Canal da Camila Rocha</strong>
-            <span>Conteúdo novo toda semana · @eusoucamilarocha</span>
-          </div>
-          <span class="vn-yt-cta">
-            Ver canal
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
-          </span>
-        </a>
 
         <section id="subscription-gate" class="panel subscription-gate hidden" aria-hidden="true">
           <div class="panel-heading">
@@ -253,81 +203,9 @@
 
         <div class="page-stack">
         <section class="page-view is-active" data-page-view="dashboard" id="dashboard">
-        <section class="mobile-home-hero" aria-label="Início">
-          <div class="mobile-home-top">
-            <div class="mobile-home-logo" aria-hidden="true">
-              <svg viewBox="0 0 64 64">
-                <path d="M32 55V29" />
-                <path d="M32 29C18 24 13 13 16 6c10 1 18 9 16 23Z" />
-                <path d="M32 29C46 24 51 13 48 6c-10 1-18 9-16 23Z" />
-                <path d="M32 39C20 39 10 32 8 22c12-1 22 5 24 17Z" />
-                <path d="M32 39c12 0 22-7 24-17-12-1-22 5-24 17Z" />
-              </svg>
-            </div>
-            <div class="mobile-home-top-actions">
-              <button class="mobile-notification-button" type="button" aria-label="Notificações">
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M15 17H9m9-1v-5a6 6 0 1 0-12 0v5l-2 2h16l-2-2Zm-4 4a2 2 0 0 1-4 0" />
-                </svg>
-              </button>
-              <button class="mobile-profile-button" type="button" data-dashboard-open="configuracoes" aria-label="Perfil">
-                <span id="mobile-home-avatar">VN</span>
-              </button>
-            </div>
-          </div>
-          <div class="mobile-home-greeting">
-            <span>Bem-vinda de volta</span>
-            <strong id="mobile-home-name">Vida Nova</strong>
-          </div>
-          <article class="mobile-verse-card">
-            <span aria-hidden="true">
-              <svg viewBox="0 0 24 24">
-                <path d="M4.5 4.75A2.75 2.75 0 0 1 7.25 2H20v18.5H7.25A2.75 2.75 0 0 0 4.5 23V4.75Z" />
-                <path d="M4.5 4.75A2.75 2.75 0 0 1 7.25 7.5H20" />
-                <path d="M9 11.25h6.5" />
-                <path d="M9 15h5" />
-                <path d="M17.25 2v6l-1.75-1.15L13.75 8V2" />
-              </svg>
-            </span>
-            <div>
-              <div class="mobile-verse-header">
-                <h2>Versículo do dia</h2>
-                <button class="mobile-verse-action-btn" id="mobile-change-verse-btn" type="button">Trocar versículo</button>
-              </div>
-              <p id="mobile-verse-text">Entrega o teu caminho ao Senhor; confia nele, e ele o fará.</p>
-              <strong id="mobile-verse-ref">Salmos 37:5</strong>
-            </div>
-          </article>
-          <a class="vn-yt-strip vn-yt-strip-mobile" href="https://www.youtube.com/@eusoucamilarocha" target="_blank" rel="noopener noreferrer" aria-label="Canal da Camila Rocha no YouTube">
-            <div class="vn-yt-icon">
-              <svg viewBox="0 0 24 24" width="20" height="20" fill="white" aria-hidden="true">
-                <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
-              </svg>
-            </div>
-            <div class="vn-yt-body">
-              <strong>Canal da Camila Rocha</strong>
-              <span>Conteúdo novo toda semana · @eusoucamilarocha</span>
-            </div>
-            <span class="vn-yt-cta">
-              Ver canal
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
-            </span>
-          </a>
-        </section>
         <section class="workspace-home">
-          <div class="mobile-modules-heading">
-            <h2>Seus módulos</h2>
-            <button type="button" data-mobile-show-all>Ver todos</button>
-          </div>
-          <div class="desktop-modules-heading">
-            <div>
-              <h2>Seus módulos</h2>
-              <p>Mantive o layout original do app e apliquei as capas coloridas dos blocos, preservando a identidade visual suave e feminina do projeto.</p>
-            </div>
-            <button type="button" data-mobile-show-all>Ver todos</button>
-          </div>
           <section class="workspace-card-grid">
-            <button class="workspace-card workspace-card-planner is-featured" type="button" data-dashboard-open="planner" data-planner-open="planner-weekly" data-cover-key="planner">
+            <button class="workspace-card workspace-card-planner is-featured" type="button" data-dashboard-open="planner" data-cover-key="planner">
               <div class="workspace-card-cover">
                 <div class="workspace-card-tools">
                   <label class="workspace-cover-upload">
@@ -337,21 +215,8 @@
                 </div>
                 <span class="workspace-card-badge">Meu planner</span>
               </div>
-              <strong>Meu Planner</strong>
-              <small>Organize seu dia</small>
-            </button>
-
-            <button class="workspace-card workspace-card-dreams" type="button" data-dashboard-open="sonhos" data-planner-open="planner-dreams" data-cover-key="sonhos">
-              <div class="workspace-card-cover">
-                <div class="workspace-card-tools">
-                  <label class="workspace-cover-upload">
-                    <input type="file" accept="image/*" data-cover-upload="sonhos" />
-                    Trocar capa
-                  </label>
-                </div>
-              </div>
-              <strong>Sonhos e Metas</strong>
-              <small>Metas por prazo e mural dos sonhos</small>
+              <strong>My Planner</strong>
+              <small>Abra e edite sua planner pessoal</small>
             </button>
 
             <button class="workspace-card workspace-card-body" type="button" data-dashboard-open="corpo" data-cover-key="corpo">
@@ -363,21 +228,8 @@
                   </label>
                 </div>
               </div>
-              <strong>Saúde | Beleza</strong>
+              <strong>Saúde | Beleza | Bem-estar</strong>
               <small>Autocuidado e rituais</small>
-            </button>
-
-            <button class="workspace-card workspace-card-cycle" type="button" data-dashboard-open="ciclo" data-cover-key="ciclo">
-              <div class="workspace-card-cover">
-                <div class="workspace-card-tools">
-                  <label class="workspace-cover-upload">
-                    <input type="file" accept="image/*" data-cover-upload="ciclo" />
-                    Trocar capa
-                  </label>
-                </div>
-              </div>
-              <strong>Ciclo Menstrual</strong>
-              <small>Calendário, fases e cuidados</small>
             </button>
 
             <button class="workspace-card workspace-card-finance" type="button" data-dashboard-open="finanças" data-cover-key="finanças">
@@ -390,7 +242,7 @@
                 </div>
               </div>
               <strong>Finanças | Controle</strong>
-              <small id="finance-caption">Planejamento base: entradas R$ 0,00 | saídas R$ 0,00</small>
+              <small id="finance-caption">Sem movimentacao registrada</small>
             </button>
 
             <button class="workspace-card workspace-card-study" type="button" data-dashboard-open="estudos" data-cover-key="estudos">
@@ -416,7 +268,7 @@
                 </div>
               </div>
               <strong>Imagem | Estilo</strong>
-              <small>Guarda-roupa e composição visual</small>
+              <small>Guarda-roupa e composicao visual</small>
             </button>
 
             <button class="workspace-card workspace-card-home" type="button" data-dashboard-open="casa" data-cover-key="casa">
@@ -428,8 +280,21 @@
                   </label>
                 </div>
               </div>
-              <strong>Alimentação | Mercado | Lar</strong>
-              <small>Casa, refeições e reparos</small>
+              <strong>Alimentacao | Mercado | Lar</strong>
+              <small>Casa, refeicoes e reparos</small>
+            </button>
+
+            <button class="workspace-card workspace-card-travel" type="button" data-dashboard-open="viagens" data-cover-key="viagens">
+              <div class="workspace-card-cover">
+                <div class="workspace-card-tools">
+                  <label class="workspace-cover-upload">
+                    <input type="file" accept="image/*" data-cover-upload="viagens" />
+                    Trocar capa
+                  </label>
+                </div>
+              </div>
+              <strong>Viagens</strong>
+              <small>Planejamento, documentos e roteiro</small>
             </button>
 
             <button class="workspace-card workspace-card-spiritual" type="button" data-dashboard-open="espiritual" data-cover-key="espiritual">
@@ -445,27 +310,12 @@
               <small>Metas com Deus e vida devocional</small>
             </button>
 
-            <button class="workspace-card workspace-card-community" type="button" data-dashboard-open="comunidade" data-cover-key="comunidade">
-              <div class="workspace-card-cover">
-                <div class="workspace-card-tools">
-                  <label class="workspace-cover-upload">
-                    <input type="file" accept="image/*" data-cover-upload="comunidade" />
-                    Trocar capa
-                  </label>
-                </div>
-              </div>
-              <strong>Comunidade</strong>
-              <small>Conecte-se com mulheres</small>
-            </button>
-
             <button id="admin-dashboard-card" class="workspace-card workspace-card-finance hidden" type="button" data-dashboard-open="admin" aria-hidden="true">
               <div class="workspace-card-cover"></div>
               <strong>Painel Admin</strong>
               <small>Controle de usuarias, acesso e assinatura</small>
             </button>
           </section>
-
-          <p class="mobile-motivational">Pequenos passos todos os dias te levam a grandes conquistas.</p>
 
           <div class="workspace-hidden-metrics" aria-hidden="true">
             <strong id="focus-count">0 tarefas</strong>
@@ -484,49 +334,7 @@
             <span id="task-progress"></span>
             <textarea id="notes-input"></textarea>
           </div>
-
-          <!-- Community banner -->
-          <section class="home-community-banner" aria-label="Comunidade Vida Nova">
-            <div class="home-community-left">
-              <div class="home-community-icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
-                </svg>
-              </div>
-              <div class="home-community-text">
-                <h2>Comunidade Vida Nova <span class="home-community-heart">&#10084;&#65039;</span></h2>
-                <p>Um espaço delicado para compartilhar jornada, inspiração e encorajamento com mulheres que desejam viver com graça e propósito.</p>
-              </div>
-            </div>
-            <div class="home-community-center">
-              <div class="home-community-avatars">
-                <img class="home-community-avatar" src="assets/login-hero-woman.png" alt="" />
-                <img class="home-community-avatar" src="assets/login-hero-woman.png" alt="" />
-                <img class="home-community-avatar" src="assets/login-hero-woman.png" alt="" />
-                <img class="home-community-avatar" src="assets/login-hero-woman.png" alt="" />
-                <span class="home-community-plus">+1.2k</span>
-              </div>
-              <p class="home-community-members-text">Mais de 1.200 mulheres em conexão</p>
-            </div>
-            <div class="home-community-right">
-              <button class="home-community-cta" type="button" data-page-link="comunidade">
-                Acessar comunidade
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="m9 18 6-6-6-6"/></svg>
-              </button>
-              <div class="home-community-deco" aria-hidden="true">
-                <svg class="home-community-deco-heart" viewBox="0 0 40 40" fill="none"><path d="M20 34s-14-9-14-19a8 8 0 0 1 14-5.3A8 8 0 0 1 34 15c0 10-14 19-14 19Z" fill="#8fb2f4" opacity=".18"/><path d="M20 32s-12-8-12-17a7 7 0 0 1 12-4.9A7 7 0 0 1 32 15c0 9-12 17-12 17Z" stroke="#8fb2f4" stroke-width="1.5" fill="none" opacity=".5"/></svg>
-                <svg class="home-community-deco-chat" viewBox="0 0 40 40" fill="none"><path d="M6 8h28a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H13l-7 6V10a2 2 0 0 1 2-2Z" fill="#8fb2f4" opacity=".1" stroke="#8fb2f4" stroke-width="1.5" opacity=".4"/></svg>
-              </div>
-            </div>
-          </section>
         </section>
-        </section>
-
-        <section class="page-view cycle-page-view" data-page-view="ciclo" id="ciclo">
-        <div class="page-return-bar">
-          <button class="ghost-button page-return-button" type="button" data-go-home>← Voltar</button>
-        </div>
-        <iframe class="cycle-module-frame" src="vidanova_ciclo_menstrual.html" title="Ciclo Menstrual"></iframe>
         </section>
 
         <section class="page-view" data-page-view="planner" id="planner">
@@ -538,6 +346,7 @@
             <div class="planner-tab-ribbon planner-tab-buttons" aria-label="Abas da planner">
               <button class="planner-tab planner-tab-weekly is-active" type="button" data-tab-target="planner-weekly">Planejamento semanal</button>
               <button class="planner-tab planner-tab-agenda" type="button" data-tab-target="planner-agenda">Agenda</button>
+              <button class="planner-tab planner-tab-dreams" type="button" data-tab-target="planner-dreams">Mural dos sonhos</button>
             </div>
 
             <section class="tab-panel planner-tab-panel is-active" data-tab-panel="planner-weekly">
@@ -766,12 +575,12 @@
               <article class="planner-summary-band planner-dreams-panel">
                 <div class="planner-card-header planner-card-header-green">
                   <span>✨</span>
-                  <strong>Sonhos</strong>
+                  <strong>Mural dos sonhos</strong>
                 </div>
                 <div class="dream-vision-shell planner-dream-vision-shell">
                   <div class="planner-dream-board-copy">
                     <strong>Meu quadro dos sonhos</strong>
-                    <p class="planner-dream-tip">Escolha imagens maiores do seu dispositivo e monte um mosaico com 10 objetivos visuais.</p>
+                    <p class="planner-dream-tip">Escolha imagens maiores do seu dispositivo e monte um mosaico com 12 objetivos visuais.</p>
                   </div>
                   <div id="planner-dream-board-grid" class="planner-dream-board-grid"></div>
                 </div>
@@ -780,7 +589,7 @@
               <article class="planner-summary-band planner-goals-panel">
                 <div class="planner-card-header planner-card-header-lilac">
                   <span>🎯</span>
-                  <strong>Metas</strong>
+                  <strong>Planejamento por prazo</strong>
                 </div>
                 <div class="planner-goals-shell">
                   <div class="goal-horizon-grid planner-goal-horizon-grid">
@@ -1001,12 +810,12 @@
                     <label>Cor do cartão
                       <select id="fin-cc-modal-color">
                         <option value="#2c3e50">Cinza / Preto</option>
-                        <option value="#b8a5f2">Lavanda</option>
+                        <option value="#8e44ad">Roxo</option>
                         <option value="#c0392b">Vermelho</option>
                         <option value="#16a085">Verde</option>
                         <option value="#2980b9">Azul</option>
                         <option value="#d35400">Laranja</option>
-                        <option value="#f4b8d5">Rosa suave</option>
+                        <option value="#c55b84">Rosa</option>
                       </select>
                     </label>
                     <div class="fin-cc-modal-footer">
@@ -1548,6 +1357,7 @@
                 <button class="ghost-button" type="button" data-tab-target="exercicios">Cronograma de exercicios</button>
                 <button class="ghost-button" type="button" data-tab-target="saúde">Cuidados de saúde</button>
                 <button class="ghost-button" type="button" data-tab-target="beleza">Rituais de beleza</button>
+                <button class="ghost-button" type="button" data-tab-target="ciclo">Ciclo menstrual</button>
               </div>
               <!-- MEDIDAS -->
               <section class="tab-panel is-active" data-tab-panel="medidas">
@@ -1879,6 +1689,368 @@
                   </div>
                 </div>
               </section>
+
+              <!-- CICLO MENSTRUAL -->
+              <section class="tab-panel" data-tab-panel="ciclo">
+                <div class="corpo-tab-content">
+                  
+                  <div class="tab-shell" data-tab-group="ciclo-menstrual" style="width: 100%;">
+                    <div class="tab-buttons cycle-subtabs" style="margin-bottom: 20px;">
+                      <button class="ghost-button is-active" type="button" data-tab-target="ciclo-cal">📅 Calendário</button>
+                      <button class="ghost-button" type="button" data-tab-target="ciclo-fases">🔄 Fases do ciclo</button>
+                      <button class="ghost-button" type="button" data-tab-target="ciclo-reg">📝 Registro diário</button>
+                      <button class="ghost-button" type="button" data-tab-target="ciclo-tpm">🧠 TPM tracker</button>
+                      <button class="ghost-button" type="button" data-tab-target="ciclo-hist">📜 Histórico</button>
+                    </div>
+
+                    <!-- SUB-TABS CONTENT -->
+
+                    <!-- 1. CALENDÁRIO -->
+                    <section class="tab-panel is-active" data-tab-panel="ciclo-cal">
+                      <div class="sec-title">Meu ciclo agora</div>
+                      <div class="fase-atual">
+                        <div class="fa-item">
+                          <div class="fa-label">Fase atual</div>
+                          <div class="fa-value" id="cycle-current-phase-val">-</div>
+                          <div class="fa-sub" id="cycle-current-phase-desc">-</div>
+                          <div class="fa-progress">
+                            <div class="fa-bar-wrap"><div class="fa-bar" id="cycle-current-phase-progress" style="width: 0%;"></div></div>
+                          </div>
+                        </div>
+                        <div class="fa-item">
+                          <div class="fa-label">Próxima ovulação</div>
+                          <div class="fa-value" id="cycle-next-ovulation-val">-</div>
+                          <div class="fa-sub">Período de maior fertilidade</div>
+                        </div>
+                        <div class="fa-item">
+                          <div class="fa-label">Próxima menstruação</div>
+                          <div class="fa-value" id="cycle-next-period-val">-</div>
+                          <div class="fa-sub" id="cycle-next-period-date-sub">-</div>
+                        </div>
+                      </div>
+
+                      <div class="cycle-summary">
+                        <div class="cycle-stat">
+                          <div class="cs-icon rose">🩸</div>
+                          <div><input class="cs-input" type="number" id="cycle-input-duration" data-persist-key="cycle-duration" placeholder="28" min="20" max="45" value="28" /></div>
+                          <div class="cs-label">Duração do ciclo (dias)</div>
+                        </div>
+                        <div class="cycle-stat">
+                          <div class="cs-icon purple">📅</div>
+                          <div><input class="cs-input" type="number" id="cycle-input-flow" data-persist-key="cycle-flow-duration" placeholder="5" min="2" max="10" value="5" /></div>
+                          <div class="cs-label">Duração da menstruação</div>
+                        </div>
+                        <div class="cycle-stat">
+                          <div class="cs-icon sage">🌱</div>
+                          <div><input class="cs-input" type="date" id="cycle-input-start" data-persist-key="cycle-last-start" /></div>
+                          <div class="cs-label">Último início</div>
+                        </div>
+                        <div class="cycle-stat">
+                          <div class="cs-icon amber">🎯</div>
+                          <div class="cs-value" id="cycle-fertile-window-val">-</div>
+                          <div class="cs-label">Janela fértil</div>
+                        </div>
+                      </div>
+
+                      <div class="sec-title">Calendário do ciclo</div>
+                      <div class="cal-card">
+                        <div class="cal-header">
+                          <div class="cal-nav">
+                            <button class="cal-arrow" id="cycle-cal-prev" type="button">◀</button>
+                            <div class="cal-month-title" id="cycle-cal-month-title">-</div>
+                            <button class="cal-arrow" id="cycle-cal-next" type="button">▶</button>
+                          </div>
+                          <div class="cal-legend">
+                            <div class="leg-item"><div class="leg-dot mens" style="background:#ff5fa2"></div>Menstruação</div>
+                            <div class="leg-item"><div class="leg-dot fertil" style="background:#43d9b8"></div>Fértil</div>
+                            <div class="leg-item"><div class="leg-dot ovul" style="background:#ffca57"></div>Ovulação</div>
+                            <div class="leg-item"><div class="leg-dot tpm" style="background:#8d62ff"></div>TPM</div>
+                          </div>
+                        </div>
+                        <div class="cal-days-header">
+                          <div class="cal-day-name">Dom</div>
+                          <div class="cal-day-name">Seg</div>
+                          <div class="cal-day-name">Ter</div>
+                          <div class="cal-day-name">Qua</div>
+                          <div class="cal-day-name">Qui</div>
+                          <div class="cal-day-name">Sex</div>
+                          <div class="cal-day-name">Sáb</div>
+                        </div>
+                        <div class="cal-grid" id="cycle-calendar-grid">
+                          <!-- Generated dynamically -->
+                        </div>
+                      </div>
+                    </section>
+
+                    <!-- 2. FASES DO CICLO -->
+                    <section class="tab-panel" data-tab-panel="ciclo-fases">
+                      <div class="sec-title">As 4 fases do seu ciclo</div>
+                      <div class="fases-grid">
+                        <div class="fase-card">
+                          <div class="fase-header mens">
+                            <div class="fh-icon mens">🩸</div>
+                            <div><div class="fh-title">Menstrual</div><div class="fh-days">Dias 1–5</div></div>
+                          </div>
+                          <div class="fase-body">
+                            <div class="fase-section">
+                              <div class="fs-label">Energia</div>
+                              <div class="fs-chips"><span class="fs-chip energy">Baixa</span><span class="fs-chip energy">Introspectiva</span></div>
+                            </div>
+                            <div class="fase-section">
+                              <div class="fs-label">Humor comum</div>
+                              <div class="fs-chips"><span class="fs-chip mood">Cansada</span><span class="fs-chip mood">Sensível</span><span class="fs-chip mood">Intuitiva</span></div>
+                            </div>
+                            <div class="fase-section">
+                              <div class="fs-label">Corpo &amp; cuidados</div>
+                              <div class="fs-chips"><span class="fs-chip body">Descanse mais</span><span class="fs-chip body">Calor local</span><span class="fs-chip body">Hidrate-se</span></div>
+                            </div>
+                            <div class="fase-section">
+                              <div class="fs-label">Dica de ouro</div>
+                              <div class="fs-chips"><span class="fs-chip tip">Não se cobre tanto. Seu corpo está trabalhando.</span></div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="fase-card">
+                          <div class="fase-header folicular">
+                            <div class="fh-icon folicular">🌱</div>
+                            <div><div class="fh-title">Folicular</div><div class="fh-days">Dias 6–13</div></div>
+                          </div>
+                          <div class="fase-body">
+                            <div class="fase-section">
+                              <div class="fs-label">Energia</div>
+                              <div class="fs-chips"><span class="fs-chip energy">Crescente</span><span class="fs-chip energy">Criativa</span></div>
+                            </div>
+                            <div class="fase-section">
+                              <div class="fs-label">Humor comum</div>
+                              <div class="fs-chips"><span class="fs-chip mood">Animada</span><span class="fs-chip mood">Focada</span><span class="fs-chip mood">Social</span></div>
+                            </div>
+                            <div class="fase-section">
+                              <div class="fs-label">Corpo &amp; cuidados</div>
+                              <div class="fs-chips"><span class="fs-chip body">Treinos fortes</span><span class="fs-chip body">Novos projetos</span></div>
+                            </div>
+                            <div class="fase-section">
+                              <div class="fs-label">Dica de ouro</div>
+                              <div class="fs-chips"><span class="fs-chip tip">Aproveite sua energia. Planeje e comece coisas novas!</span></div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="fase-card">
+                          <div class="fase-header ovulacao">
+                            <div class="fh-icon ovulacao">☀️</div>
+                            <div><div class="fh-title">Ovulatória</div><div class="fh-days">Dias 14–16</div></div>
+                          </div>
+                          <div class="fase-body">
+                            <div class="fase-section">
+                              <div class="fs-label">Energia</div>
+                              <div class="fs-chips"><span class="fs-chip energy">Máxima</span><span class="fs-chip energy">Magnética</span></div>
+                            </div>
+                            <div class="fase-section">
+                              <div class="fs-label">Humor comum</div>
+                              <div class="fs-chips"><span class="fs-chip mood">Confiante</span><span class="fs-chip mood">Comunicativa</span></div>
+                            </div>
+                            <div class="fase-section">
+                              <div class="fs-label">Corpo &amp; cuidados</div>
+                              <div class="fs-chips"><span class="fs-chip body">Pico de força</span><span class="fs-chip body">Apresentações</span></div>
+                            </div>
+                            <div class="fase-section">
+                              <div class="fs-label">Dica de ouro</div>
+                              <div class="fs-chips"><span class="fs-chip tip">Você está no seu melhor! Faça reuniões importantes agora.</span></div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="fase-card">
+                          <div class="fase-header lutea">
+                            <div class="fh-icon lutea">🌙</div>
+                            <div><div class="fh-title">Lútea / TPM</div><div class="fh-days">Dias 17–28</div></div>
+                          </div>
+                          <div class="fase-body">
+                            <div class="fase-section">
+                              <div class="fs-label">Energia</div>
+                              <div class="fs-chips"><span class="fs-chip energy">Decrescente</span><span class="fs-chip energy">Analítica</span></div>
+                            </div>
+                            <div class="fase-section">
+                              <div class="fs-label">Humor comum</div>
+                              <div class="fs-chips"><span class="fs-chip mood">Irritável</span><span class="fs-chip mood">Sensível</span><span class="fs-chip mood">Detalhista</span></div>
+                            </div>
+                            <div class="fase-section">
+                              <div class="fs-label">Corpo &amp; cuidados</div>
+                              <div class="fs-chips"><span class="fs-chip body">Yoga</span><span class="fs-chip body">Caminhada</span><span class="fs-chip body">Menos café</span></div>
+                            </div>
+                            <div class="fase-section">
+                              <div class="fs-label">Dica de ouro</div>
+                              <div class="fs-chips"><span class="fs-chip tip">Seja gentil com você. Seus sentimentos são válidos.</span></div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </section>
+
+                    <!-- 3. REGISTRO DIÁRIO -->
+                    <section class="tab-panel" data-tab-panel="ciclo-reg">
+                      <div class="sec-title" id="cycle-log-title-date">Registro do dia de hoje</div>
+                      <div class="registro-grid">
+                        <div class="reg-card">
+                          <div class="rc-header"><div class="rc-icon rose">🩸</div><span class="rc-title">Fluxo menstrual</span></div>
+                          <div class="reg-chips-select" id="cycle-flow-chips">
+                            <div class="rchip" data-val="Sem fluxo">Sem fluxo</div>
+                            <div class="rchip" data-val="Leve">Leve</div>
+                            <div class="rchip" data-val="Moderado">Moderado</div>
+                            <div class="rchip" data-val="Intenso">Intenso</div>
+                            <div class="rchip" data-val="Muito intenso">Muito intenso</div>
+                          </div>
+                        </div>
+                        <div class="reg-card">
+                          <div class="rc-header"><div class="rc-icon purple">😊</div><span class="rc-title">Humor do dia</span></div>
+                          <div class="reg-chips-select" id="cycle-mood-chips">
+                            <div class="rchip" data-val="Ótima">Ótima</div>
+                            <div class="rchip" data-val="Bem">Bem</div>
+                            <div class="rchip" data-val="Ansiosa">Ansiosa</div>
+                            <div class="rchip" data-val="Irritada">Irritada</div>
+                            <div class="rchip" data-val="Triste">Triste</div>
+                            <div class="rchip" data-val="Chorosa">Chorosa</div>
+                            <div class="rchip" data-val="Cansada">Cansada</div>
+                            <div class="rchip" data-val="Feliz">Feliz</div>
+                          </div>
+                        </div>
+                        <div class="reg-card" style="grid-column: 1 / -1;">
+                          <div class="rc-header"><div class="rc-icon amber">⚡</div><span class="rc-title">Sintomas físicos</span></div>
+                          <div class="reg-chips-select" id="cycle-symptom-chips">
+                            <div class="rchip" data-val="Cólica">Cólica</div>
+                            <div class="rchip" data-val="Dor de cabeça">Dor de cabeça</div>
+                            <div class="rchip" data-val="Inchaço">Inchaço</div>
+                            <div class="rchip" data-val="Náusea">Náusea</div>
+                            <div class="rchip" data-val="Dor nas costas">Dor nas costas</div>
+                            <div class="rchip" data-val="Sensibilidade nos seios">Sensibilidade nos seios</div>
+                            <div class="rchip" data-val="Acne">Acne</div>
+                            <div class="rchip" data-val="Fadiga">Fadiga</div>
+                            <div class="rchip" data-val="Insônia">Insônia</div>
+                            <div class="rchip" data-val="Compulsão alimentar">Compulsão alimentar</div>
+                          </div>
+                        </div>
+                        <div class="reg-card" style="grid-column: 1 / -1;">
+                          <div class="rc-header"><div class="rc-icon sage">🔋</div><span class="rc-title">Nível de energia &amp; outros</span></div>
+                          <div class="slider-row">
+                            <div class="sl-label"><span>Energia física</span><span id="cycle-slider-ef-val">6</span></div>
+                            <input type="range" id="cycle-slider-ef" class="range-input" min="1" max="10" value="6" />
+                          </div>
+                          <div class="slider-row">
+                            <div class="sl-label"><span>Energia emocional</span><span id="cycle-slider-ee-val">5</span></div>
+                            <input type="range" id="cycle-slider-ee" class="range-input" min="1" max="10" value="5" />
+                          </div>
+                          <div class="slider-row">
+                            <div class="sl-label"><span>Qualidade do sono</span><span id="cycle-slider-es-val">7</span></div>
+                            <input type="range" id="cycle-slider-es" class="range-input" min="1" max="10" value="7" />
+                          </div>
+                          <div class="slider-row">
+                            <div class="sl-label"><span>Libido</span><span id="cycle-slider-el-val">4</span></div>
+                            <input type="range" id="cycle-slider-el" class="range-input" min="1" max="10" value="4" />
+                          </div>
+                        </div>
+                      </div>
+
+                      <div style="background:#fff;border:0.5px solid #f0dce6;border-radius:16px;padding:16px 18px;margin-bottom:24px;">
+                        <span class="field-label">Notas do dia — como você está se sentindo?</span>
+                        <textarea id="cycle-log-notes" class="textarea-field" placeholder="Escreva livremente sobre como está sendo este dia do ciclo..."></textarea>
+                      </div>
+                    </section>
+
+                    <!-- 4. TPM TRACKER -->
+                    <section class="tab-panel" data-tab-panel="ciclo-tpm">
+                      <div class="sec-title">TPM tracker</div>
+                      <div class="tpm-card">
+                        <div class="tpm-header"><span>🧠 Intensidade dos sintomas de TPM — marque de 1 a 5</span></div>
+                        <div class="tpm-grid" id="cycle-tpm-grid">
+                          <div class="tpm-item" data-tpm-key="irritabilidade">
+                            <div class="tpm-item-label">😡 Irritabilidade</div>
+                            <div class="tpm-scale">
+                              <div class="tpm-dot">1</div><div class="tpm-dot">2</div><div class="tpm-dot">3</div><div class="tpm-dot">4</div><div class="tpm-dot">5</div>
+                            </div>
+                          </div>
+                          <div class="tpm-item" data-tpm-key="choro">
+                            <div class="tpm-item-label">😢 Choro fácil</div>
+                            <div class="tpm-scale">
+                              <div class="tpm-dot">1</div><div class="tpm-dot">2</div><div class="tpm-dot">3</div><div class="tpm-dot">4</div><div class="tpm-dot">5</div>
+                            </div>
+                          </div>
+                          <div class="tpm-item" data-tpm-key="compulsao">
+                            <div class="tpm-item-label">🍕 Compulsão alimentar</div>
+                            <div class="tpm-scale">
+                              <div class="tpm-dot">1</div><div class="tpm-dot">2</div><div class="tpm-dot">3</div><div class="tpm-dot">4</div><div class="tpm-dot">5</div>
+                            </div>
+                          </div>
+                          <div class="tpm-item" data-tpm-key="cabeca">
+                            <div class="tpm-item-label">🤕 Dor de cabeça</div>
+                            <div class="tpm-scale">
+                              <div class="tpm-dot">1</div><div class="tpm-dot">2</div><div class="tpm-dot">3</div><div class="tpm-dot">4</div><div class="tpm-dot">5</div>
+                            </div>
+                          </div>
+                          <div class="tpm-item" data-tpm-key="inchaco">
+                            <div class="tpm-item-label">🎈 Inchaço abdominal</div>
+                            <div class="tpm-scale">
+                              <div class="tpm-dot">1</div><div class="tpm-dot">2</div><div class="tpm-dot">3</div><div class="tpm-dot">4</div><div class="tpm-dot">5</div>
+                            </div>
+                          </div>
+                          <div class="tpm-item" data-tpm-key="fadiga">
+                            <div class="tpm-item-label">😫 Fadiga intensa</div>
+                            <div class="tpm-scale">
+                              <div class="tpm-dot">1</div><div class="tpm-dot">2</div><div class="tpm-dot">3</div><div class="tpm-dot">4</div><div class="tpm-dot">5</div>
+                            </div>
+                          </div>
+                          <div class="tpm-item" data-tpm-key="seios">
+                            <div class="tpm-item-label">🍒 Sensibilidade nos seios</div>
+                            <div class="tpm-scale">
+                              <div class="tpm-dot">1</div><div class="tpm-dot">2</div><div class="tpm-dot">3</div><div class="tpm-dot">4</div><div class="tpm-dot">5</div>
+                            </div>
+                          </div>
+                          <div class="tpm-item" data-tpm-key="insonia">
+                            <div class="tpm-item-label">😴 Insônia</div>
+                            <div class="tpm-scale">
+                              <div class="tpm-dot">1</div><div class="tpm-dot">2</div><div class="tpm-dot">3</div><div class="tpm-dot">4</div><div class="tpm-dot">5</div>
+                            </div>
+                          </div>
+                          <div class="tpm-item" data-tpm-key="ansiedade">
+                            <div class="tpm-item-label">😰 Ansiedade</div>
+                            <div class="tpm-scale">
+                              <div class="tpm-dot">1</div><div class="tpm-dot">2</div><div class="tpm-dot">3</div><div class="tpm-dot">4</div><div class="tpm-dot">5</div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </section>
+
+                    <!-- 5. HISTÓRICO -->
+                    <section class="tab-panel" data-tab-panel="ciclo-hist">
+                      <div class="sec-title">Histórico de ciclos</div>
+                      <div class="historico-card">
+                        <div class="hist-header">
+                          <div class="hist-header-left">
+                            <span>📜 Últimos ciclos registrados</span>
+                          </div>
+                          <button type="button" id="cycle-btn-new-hist" style="background:#ff5fa2;color:#fff;border:none;border-radius:60px;padding:6px 14px;font-size:11px;font-weight:500;cursor:pointer;">+ Novo registro</button>
+                        </div>
+                        <div style="overflow-x:auto;">
+                          <table class="hist-table" id="cycle-history-table">
+                            <thead>
+                              <tr>
+                                <th>Início</th>
+                                <th>Duração do ciclo</th>
+                                <th>Duração do fluxo</th>
+                                <th>Ações</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <!-- Generated dynamically -->
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </section>
+
+                  </div>
+
+                </div>
+              </section>
+            </section>
             </div>
             <ul id="body-preview-list" class="mini-list module-preview-list" style="display:none"></ul>
           </article>
@@ -1948,547 +2120,229 @@
           </article>
         </section>
 
-        <section class="page-view" data-page-view="comunidade" id="comunidade">
-          <div class="community-app-shell">
-            <div class="community-topbar">
-              <button class="community-back-button" type="button" data-go-home>
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>
-                Voltar
-              </button>
-              <div class="community-top-actions" aria-label="Ações da comunidade">
-                <button class="community-icon-button" type="button" data-community-focus-post aria-label="Criar publicação">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
-                </button>
-                <button class="community-icon-button" type="button" data-page-link="configuracoes" aria-label="Notificações">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 16v-5a6 6 0 1 0-12 0v5l-2 3h16z"/><path d="M9 19a3 3 0 0 0 6 0"/></svg>
-                </button>
+        <section class="page-view" data-page-view="configuracoes" id="configuracoes">
+          <div class="page-return-bar">
+            <button class="ghost-button page-return-button" type="button" data-go-home>← Voltar</button>
+          </div>
+          <section class="panel settings-panel">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">Conta e experiencia</p>
+                <h3>Configurações do app</h3>
               </div>
+              <span class="tag">Personalize do seu jeito</span>
             </div>
 
-            <section class="community-hero-card" aria-label="Comunidade Vida Nova">
-              <div class="community-hero-row">
-                <div>
-                  <p class="community-hero-eyebrow">Vida Nova</p>
-                  <h2 class="community-hero-title">Comunidade</h2>
-                </div>
-                <span class="community-live-pill"><span></span>ao vivo</span>
-              </div>
-              <p class="community-hero-sub">Compartilhe seus momentos, devocionais e vitórias com outras mulheres.</p>
-            </section>
-
-            <div class="community-story-strip" aria-label="Atalhos da comunidade">
-              <button class="community-story is-add" type="button" data-community-focus-post>
-                <span class="community-story-ring">
-                  <span class="community-story-avatar">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
-                  </span>
-                </span>
-                <span>Novo post</span>
-              </button>
-              <button class="community-story" type="button" data-community-filter-shortcut="all">
-                <span class="community-story-ring"><span class="community-story-avatar">VN</span></span>
-                <span>Todos</span>
-              </button>
-              <button class="community-story" type="button" data-community-filter-shortcut="photos">
-                <span class="community-story-ring is-viewed"><span class="community-story-avatar">FT</span></span>
-                <span>Fotos</span>
-              </button>
-              <button class="community-story" type="button" data-community-filter-shortcut="text">
-                <span class="community-story-ring is-viewed"><span class="community-story-avatar">DV</span></span>
-                <span>Devocional</span>
-              </button>
-            </div>
-
-            <section class="community-composer" aria-label="Nova publicação">
-              <div class="community-composer-top">
-                <div class="community-composer-avatar" id="community-composer-avatar">V</div>
-                <form id="community-post-form" class="community-post-form">
-                  <textarea id="community-post-input" maxlength="600" placeholder="Compartilhe algo com a comunidade…"></textarea>
-                  <div id="community-photo-preview" class="community-photo-preview" hidden>
-                    <img id="community-photo-preview-img" src="" alt="Prévia" />
-                    <button type="button" id="community-photo-remove" class="community-photo-remove" aria-label="Remover foto">×</button>
+            <div class="settings-grid">
+              <article class="settings-card">
+                <div class="panel-heading">
+                  <div>
+                    <p class="eyebrow">Perfil</p>
+                    <h3>Dados da usuária</h3>
                   </div>
-                  <div class="community-composer-actions">
-                    <label class="community-composer-media-btn" title="Adicionar foto">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
-                      <span>Foto</span>
-                      <input type="file" id="community-photo-input" accept="image/*" style="display:none" />
-                    </label>
-                    <button class="community-composer-media-btn" type="button" data-community-focus-post title="Escrever devocional">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h12a4 4 0 0 1 4 4v12"/><path d="M4 4v16h12a4 4 0 0 0 4-4"/><path d="M8 9h8M8 13h6"/></svg>
-                      <span>Versículo</span>
-                    </button>
-                    <div id="community-format-toggle" class="community-format-toggle" hidden>
-                      <button type="button" class="community-format-btn is-active" data-format="square" title="Quadrado 1:1">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/></svg>
+                </div>
+
+                <div class="profile-hero">
+                  <div class="profile-avatar profile-avatar-match-headline" id="settings-avatar-preview">VN</div>
+                  <div class="profile-copy">
+                    <strong id="settings-profile-name">Vida Nova</strong>
+                    <small id="settings-profile-email">Seu e-mail aparece aqui</small>
+                  </div>
+                </div>
+
+                <form id="settings-profile-form" class="settings-form">
+                  <label class="avatar-upload-field">
+                    Foto do perfil
+                    <input id="settings-avatar-input" type="file" accept="image/*" />
+                  </label>
+                  <label>
+                    Nome
+                    <input id="settings-name-input" type="text" placeholder="Seu nome" />
+                  </label>
+                  <label>
+                    Email
+                    <input id="settings-email-input" type="email" placeholder="seuemail@provedor.com" />
+                  </label>
+                  <label>
+                    Link de renovação do pacote
+                    <input id="settings-subscription-url" type="url" placeholder="https://..." />
+                  </label>
+                  <div class="settings-inline-actions">
+                    <button class="primary-button" type="submit">Salvar perfil</button>
+                    <button id="settings-renew-button" class="primary-button secondary-strong" type="button">Renovar pacote</button>
+                  </div>
+                  <p id="settings-profile-feedback" class="settings-feedback"></p>
+                </form>
+              </article>
+
+              <article class="settings-card">
+                <div class="panel-heading">
+                  <div>
+                    <p class="eyebrow">Segurança</p>
+                    <h3>Senha e acesso</h3>
+                  </div>
+                </div>
+
+                <form id="settings-password-form" class="settings-form">
+                  <label>
+                    Nova senha
+                    <input id="settings-password-input" type="password" placeholder="Mínimo de 6 caracteres" />
+                  </label>
+                  <label>
+                    Confirmar nova senha
+                    <input id="settings-password-confirm-input" type="password" placeholder="Repita a senha" />
+                  </label>
+                  <div class="settings-inline-actions">
+                    <button class="primary-button" type="submit">Atualizar senha</button>
+                  </div>
+                  <p id="settings-password-feedback" class="settings-feedback"></p>
+                </form>
+              </article>
+
+              <article class="settings-card">
+                <div class="panel-heading">
+                  <div>
+                    <p class="eyebrow">Aparência</p>
+                    <h3>Cor e tema</h3>
+                  </div>
+                </div>
+
+                <div class="settings-form settings-appearance">
+                  <div class="preference-group">
+                    <span class="preference-label">Tema</span>
+                    <div class="toggle-row">
+                      <button class="preference-button" type="button" data-theme-choice="light">Claro</button>
+                      <button class="preference-button" type="button" data-theme-choice="dark">Escuro</button>
+                    </div>
+                  </div>
+
+                  <div class="preference-group">
+                    <span class="preference-label">Paletas prontas</span>
+                    <div class="accent-preset-grid">
+                      <button class="accent-preset" type="button" data-accent-preset="#c55b84">
+                        <span class="accent-preset-swatch" style="background: linear-gradient(135deg, #c55b84, #ef8da9);"></span>
+                        Rose premium
                       </button>
-                      <button type="button" class="community-format-btn" data-format="story" title="Vertical 9:16">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2"/></svg>
+                      <button class="accent-preset" type="button" data-accent-preset="#8f6ad9">
+                        <span class="accent-preset-swatch" style="background: linear-gradient(135deg, #8f6ad9, #d7c7ff);"></span>
+                        Degradê lilás
+                      </button>
+                      <button class="accent-preset" type="button" data-accent-preset="#3e7f76">
+                        <span class="accent-preset-swatch" style="background: linear-gradient(135deg, #3e7f76, #9fe0d5);"></span>
+                        Verde elegante
                       </button>
                     </div>
-                    <small id="community-post-feedback"></small>
-                    <button class="community-publish-btn" type="submit">
-                      Publicar
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-                    </button>
                   </div>
-                </form>
-              </div>
-            </section>
 
-            <div class="community-feed-tabs" id="community-feed-tabs" aria-label="Filtros da comunidade">
-              <button class="community-feed-tab is-active" type="button" data-community-filter="all">Todos</button>
-              <button class="community-feed-tab" type="button" data-community-filter="photos">Fotos</button>
-              <button class="community-feed-tab" type="button" data-community-filter="text">Conversas</button>
+                  <label class="accent-color-field">
+                    Cor principal do app
+                    <input id="settings-accent-color" type="color" value="#c55b84" />
+                  </label>
+                  <p class="settings-feedback">Essas mudanças valem tanto para web quanto para mobile na mesma conta.</p>
+                </div>
+              </article>
+
+              <article class="settings-card">
+                <div class="panel-heading">
+                  <div>
+                    <p class="eyebrow">Assinatura</p>
+                    <h3>Pacote e renovação</h3>
+                  </div>
+                </div>
+
+                <div class="subscription-summary">
+                  <div class="detail-card">
+                    <span class="metric-label">Status</span>
+                    <strong id="settings-subscription-status">Conta ativa</strong>
+                  </div>
+                  <div class="detail-card">
+                    <span class="metric-label">Renovação</span>
+                    <strong id="settings-renewal-label">Configurar link</strong>
+                  </div>
+                </div>
+
+                <div class="settings-inline-actions">
+                  <button id="settings-open-renewal" class="primary-button" type="button">Abrir renovação</button>
+                  <button id="settings-open-install" class="primary-button secondary-strong" type="button">Instalar app</button>
+                </div>
+                <p class="settings-feedback">Use o link de renovação da Kiwify ou do seu checkout para que a cliente consiga renovar por aqui.</p>
+              </article>
+
+              <article class="settings-card">
+                <div class="panel-heading">
+                  <div>
+                    <p class="eyebrow">Notificações</p>
+                    <h3>Avisos e novos vídeos</h3>
+                  </div>
+                </div>
+                <p class="settings-feedback">
+                  Ative as notificações para receber avisos quando um novo vídeo for publicado no canal e quando houver novidades no app.
+                </p>
+                <div class="settings-inline-actions">
+                  <button id="push-subscribe-btn" class="primary-button" type="button">Ativar notificações</button>
+                </div>
+                <p id="push-subscribe-status" class="settings-feedback">Ative para receber avisos de novos vídeos e novidades.</p>
+              </article>
+
+              <article class="settings-card">
+                <div class="panel-heading">
+                  <div>
+                    <p class="eyebrow">App instalado</p>
+                    <h3>Instalação e atualizações</h3>
+                  </div>
+                </div>
+                <p class="settings-feedback">
+                  Use sempre a versão publicada. O app instalado passa a buscar atualizações automaticamente quando houver nova publicação.
+                </p>
+                <div class="status-pills settings-status-pills">
+                  <span class="status-pill">Web publicada</span>
+                  <span class="status-pill">Atualização automática</span>
+                  <span class="status-pill">Dados preservados</span>
+                </div>
+                <div class="settings-inline-actions">
+                  <a id="install-live-link" class="primary-button" href="https://vidanova-1.onrender.com" target="_blank" rel="noreferrer">Abrir app no navegador</a>
+                  <button id="install-chrome-button" class="ghost-button install-cta" type="button">Instalar app</button>
+                  <button id="install-help-button" class="primary-button secondary-strong" type="button">Como instalar</button>
+                  <button id="settings-force-update" class="ghost-button" type="button">Atualizar app</button>
+                </div>
+                <p class="settings-feedback">
+                  No iPhone, abra no Safari e use Compartilhar &gt; Adicionar à Tela de Início. Em navegadores dentro de outros apps essa opção pode não aparecer.
+                </p>
+                <p id="settings-update-feedback" class="settings-feedback"></p>
+              </article>
+
+              <article class="settings-card">
+                <div class="panel-heading">
+                  <div>
+                    <p class="eyebrow">Guia da usuaria</p>
+                    <h3>Como usar o app</h3>
+                  </div>
+                </div>
+                <ul class="settings-guide-list mini-list">
+                  <li>Entre sempre pela mesma conta para manter seus dados sincronizados.</li>
+                  <li>Use Agenda para compromissos, lembretes e notificações dos agendamentos.</li>
+                  <li>As capas, textos e organização dos blocos ficam salvos na sua conta.</li>
+                  <li>Se a assinatura ficar pendente, os dados continuam guardados e retornam após a reativação.</li>
+                  <li>Depois de publicar alterações novas, o app instalado busca a versão atual automaticamente e avisa quando houver atualização.</li>
+                </ul>
+              </article>
+
+              <article id="admin-shortcut-card" class="settings-card hidden" aria-hidden="true">
+                <div class="panel-heading">
+                  <div>
+                    <p class="eyebrow">Administracao</p>
+                    <h3>Painel administrativo</h3>
+                  </div>
+                  <span class="tag">ADM</span>
+                </div>
+                <p class="settings-feedback">Acesse a lista de usuarias, acompanhe a assinatura e ajuste status diretamente por aqui.</p>
+                <div class="settings-inline-actions">
+                  <button id="admin-open-panel" class="primary-button" type="button">Abrir painel admin</button>
+                </div>
+              </article>
             </div>
-
-            <section id="community-feed" class="community-feed" aria-live="polite"></section>
-          </div>
+          </section>
         </section>
-
-        <section class="page-view" data-page-view="configuracoes" id="configuracoes">
-<style>
-#configuracoes{
-  --lav-50:#F7F4FF;--lav-100:#EFEAFE;--lav-200:#DED5FC;--lav-300:#C4B5FD;
-  --lav-400:#A491F2;--lav-500:#8674E3;--lav-600:#6E5BD0;--lav-700:#564BAA;
-  --lav-800:#3D3580;--lav-900:#251F52;
-  --ink-900:#1B1735;--ink-700:#423E5E;--ink-500:#756F94;--ink-400:#9892B5;
-  --ink-300:#C7C1DD;--ink-200:#E5E0F2;
-  --bg-base:#FBFAFF;--surface:#FFFFFF;
-  --hairline:rgba(86,75,170,.10);
-  --grad:linear-gradient(110deg,#95A8E8 0%,#B299E0 50%,#D29CBC 100%);
-  --grad-soft:linear-gradient(110deg,#C5D2F3 0%,#D6CAF0 50%,#ECCFDC 100%);
-  --grad-pale:linear-gradient(110deg,#EFF3FD 0%,#F2EBFB 50%,#FAEDF3 100%);
-  --shadow-sm:0 1px 2px rgba(37,31,82,.04),0 1px 1px rgba(37,31,82,.03);
-  --shadow-md:0 8px 24px -8px rgba(56,45,130,.10),0 2px 6px rgba(56,45,130,.04);
-  --shadow-grad:0 10px 24px -10px rgba(178,153,224,.55),0 4px 8px -2px rgba(178,153,224,.30);
-  --radius-sm:10px;--radius-md:14px;--radius-lg:20px;--radius-xl:28px;
-  font-family:'Manrope',system-ui,-apple-system,sans-serif;
-  color:var(--ink-900);
-  background:radial-gradient(80% 50% at 100% 0%,rgba(210,156,188,.10),transparent 60%),radial-gradient(70% 50% at 0% 80%,rgba(149,168,232,.10),transparent 60%),var(--bg-base);
-  -webkit-font-smoothing:antialiased;
-}
-#configuracoes *,#configuracoes *::before,#configuracoes *::after{box-sizing:border-box;}
-#configuracoes button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit;}
-#configuracoes input,#configuracoes select,#configuracoes textarea{font-family:inherit;}
-#configuracoes a{color:inherit;}
-#configuracoes .cfg-shell{display:grid!important;grid-template-columns:260px 1fr!important;gap:32px;max-width:1280px;margin:0 auto;padding:24px 32px 48px;}
-#configuracoes .cfg-sidebar{display:block!important;position:sticky;top:32px;align-self:start;background:var(--surface);border:1px solid var(--hairline);border-radius:var(--radius-lg);padding:22px 18px;box-shadow:var(--shadow-sm);}
-#configuracoes .side-brand{display:flex;align-items:center;gap:12px;padding:0 6px 18px;margin-bottom:12px;border-bottom:1px solid var(--hairline);}
-#configuracoes .side-mark{width:40px;height:40px;border-radius:12px;background:var(--grad);display:grid;place-items:center;box-shadow:var(--shadow-grad);}
-#configuracoes .side-mark svg{width:20px;height:20px;color:#fff;}
-#configuracoes .side-name{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:600;font-size:22px;color:var(--lav-800);letter-spacing:.3px;}
-#configuracoes .side-nav{display:flex;flex-direction:column;gap:2px;margin-top:4px;}
-#configuracoes .side-link{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:var(--radius-sm);color:var(--ink-700);font-size:13.5px;font-weight:500;text-decoration:none;transition:background .18s,color .18s;cursor:pointer;background:none;border:none;width:100%;text-align:left;}
-#configuracoes .side-link:hover{background:var(--lav-50);color:var(--lav-700);}
-#configuracoes .side-link.active{background:var(--grad-pale);color:var(--lav-800);font-weight:600;}
-#configuracoes .side-link svg{width:16px;height:16px;flex-shrink:0;color:var(--lav-600);}
-#configuracoes .side-footer{margin-top:22px;padding-top:18px;border-top:1px solid var(--hairline);font-size:11.5px;color:var(--ink-400);line-height:1.6;padding-left:6px;}
-#configuracoes .cfg-content{min-width:0;max-width:920px;}
-#configuracoes .cfg-topbar{display:flex!important;align-items:center;justify-content:space-between;gap:12px;margin-bottom:22px;background:none!important;border:none!important;padding:0!important;}
-#configuracoes .cfg-back-btn{display:inline-flex;align-items:center;gap:8px;padding:9px 16px;background:var(--surface);border:1px solid var(--hairline);border-radius:999px;font-size:13.5px;font-weight:600;color:var(--ink-700);text-decoration:none;box-shadow:var(--shadow-sm);transition:all .18s;cursor:pointer;}
-#configuracoes .cfg-back-btn:hover{border-color:var(--lav-300);color:var(--lav-700);transform:translateY(-1px);}
-#configuracoes .cfg-back-btn svg{width:14px;height:14px;}
-#configuracoes .cfg-topbar-user{display:inline-flex;align-items:center;gap:10px;padding:4px 14px 4px 4px;background:var(--surface);border:1px solid var(--hairline);border-radius:999px;}
-#configuracoes .cfg-topbar-av{width:28px;height:28px;border-radius:50%;background:var(--grad-soft);display:grid;place-items:center;font-family:'Cormorant Garamond',serif;font-size:13px;font-weight:600;color:var(--lav-800);overflow:hidden;}
-#configuracoes .cfg-topbar-av img{width:100%;height:100%;object-fit:cover;border-radius:50%;}
-#configuracoes .cfg-topbar-user span{font-size:12.5px;font-weight:600;color:var(--ink-700);}
-#configuracoes .cfg-hero{display:block!important;position:relative;margin-bottom:24px;border-radius:var(--radius-xl);padding:34px 34px 30px;color:#fff;background:radial-gradient(120% 80% at 100% 0%,rgba(255,255,255,.40),transparent 60%),var(--grad)!important;box-shadow:var(--shadow-md);overflow:hidden;isolation:isolate;}
-#configuracoes .cfg-hero::after{content:'';position:absolute;width:320px;height:320px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.30),transparent 70%);filter:blur(40px);top:-120px;right:-60px;z-index:0;pointer-events:none;}
-#configuracoes .hero-eyebrow{position:relative;z-index:1;font-size:10.5px;font-weight:700;letter-spacing:.28em;text-transform:uppercase;color:rgba(255,255,255,.88);margin-bottom:10px;}
-#configuracoes .hero-title{position:relative;z-index:1;font-family:'Cormorant Garamond',serif;font-weight:500;font-size:clamp(32px,4vw,44px);line-height:1.05;letter-spacing:-.3px;margin:0 0 14px;}
-#configuracoes .hero-pill{position:relative;z-index:1;display:inline-block;padding:8px 16px;background:rgba(255,255,255,.22);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.35);border-radius:999px;font-size:13px;font-weight:500;color:#fff;}
-#configuracoes .cfg-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
-#configuracoes .col-span-2{grid-column:span 2;}
-#configuracoes .cfg-card{background:var(--surface);border:1px solid var(--hairline);border-radius:var(--radius-lg);padding:24px;box-shadow:var(--shadow-sm);transition:box-shadow .2s;}
-#configuracoes .cfg-card:hover{box-shadow:var(--shadow-md);}
-#configuracoes .card-eyebrow{font-size:10.5px;font-weight:700;letter-spacing:.24em;text-transform:uppercase;color:var(--lav-600);margin-bottom:6px;}
-#configuracoes .card-title{font-family:'Cormorant Garamond',serif;font-weight:500;font-size:24px;line-height:1.15;color:var(--ink-900);margin:0 0 16px;letter-spacing:-.2px;}
-#configuracoes .card-desc{font-size:13.5px;color:var(--ink-500);line-height:1.6;margin:0 0 16px;}
-#configuracoes .profile-id{display:flex;align-items:center;gap:14px;padding:14px;background:var(--grad-pale);border:1px solid var(--hairline);border-radius:var(--radius-md);margin-bottom:18px;}
-#configuracoes .cfg-avatar{width:56px;height:56px;border-radius:50%;background:var(--grad-soft);flex-shrink:0;border:2px solid #fff;box-shadow:var(--shadow-sm);display:grid;place-items:center;color:var(--lav-700);font-family:'Cormorant Garamond',serif;font-weight:600;font-size:22px;overflow:hidden;}
-#configuracoes .cfg-avatar img{width:100%;height:100%;object-fit:cover;border-radius:50%;}
-#configuracoes .profile-id-info{min-width:0;}
-#configuracoes .profile-name-txt{font-size:14.5px;font-weight:700;color:var(--ink-900);letter-spacing:.04em;}
-#configuracoes .profile-email-txt{font-size:12.5px;color:var(--ink-500);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
-#configuracoes .form-group{display:flex;flex-direction:column;gap:16px;}
-#configuracoes .field-row{display:flex;flex-direction:column;gap:6px;}
-#configuracoes .cfg-label{font-size:12.5px;font-weight:600;color:var(--ink-700);letter-spacing:.01em;}
-#configuracoes .cfg-input{width:100%;height:48px;padding:0 16px;background:#fff;border:1.5px solid var(--hairline);border-radius:var(--radius-md);font-size:14px;color:var(--ink-900);font-weight:500;outline:none;transition:border-color .2s,box-shadow .2s;font-family:inherit;}
-#configuracoes .cfg-input::placeholder{color:var(--ink-400);font-weight:400;}
-#configuracoes .cfg-input:hover{border-color:var(--lav-200);}
-#configuracoes .cfg-input:focus{border-color:var(--lav-400);box-shadow:0 0 0 4px rgba(164,145,242,.14);}
-#configuracoes .file-input-wrap{display:flex;align-items:center;gap:10px;padding:6px 12px 6px 6px;background:#fff;border:1.5px solid var(--hairline);border-radius:var(--radius-md);cursor:pointer;transition:border-color .2s;}
-#configuracoes .file-input-wrap:hover{border-color:var(--lav-300);}
-#configuracoes .file-btn{background:var(--grad-pale);color:var(--lav-800);font-size:12.5px;font-weight:600;padding:8px 12px;border-radius:10px;}
-#configuracoes .file-nm{font-size:13px;color:var(--ink-500);}
-#configuracoes .file-input-wrap input[type="file"]{display:none;}
-#configuracoes .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;width:100%;height:48px;border-radius:var(--radius-md);font-size:14px;font-weight:600;letter-spacing:.01em;transition:transform .15s,box-shadow .2s,background .2s,border-color .2s;text-decoration:none;cursor:pointer;border:none;font-family:inherit;}
-#configuracoes .btn svg{width:16px;height:16px;}
-#configuracoes .btn-grad{background:var(--grad);color:#fff;box-shadow:var(--shadow-grad);}
-#configuracoes .btn-grad:hover{transform:translateY(-1px);box-shadow:0 14px 30px -10px rgba(178,153,224,.65);}
-#configuracoes .btn-soft{background:var(--grad-pale);color:var(--lav-800);border:1px solid var(--hairline);}
-#configuracoes .btn-soft:hover{border-color:var(--lav-300);transform:translateY(-1px);}
-#configuracoes .btn-outline{background:#fff;color:var(--ink-700);border:1.5px solid var(--hairline);}
-#configuracoes .btn-outline:hover{border-color:var(--lav-300);color:var(--lav-700);transform:translateY(-1px);}
-#configuracoes .btn-danger{background:#fff;color:#C2547F;border:1.5px solid rgba(194,84,127,.20);}
-#configuracoes .btn-danger:hover{border-color:#C2547F;background:#FFF8FB;transform:translateY(-1px);}
-#configuracoes .btn-row{display:flex;flex-direction:column;gap:10px;margin-top:18px;}
-#configuracoes .btn-row.inline{flex-direction:row;}
-#configuracoes .btn-row.inline .btn{flex:1;}
-#configuracoes .caption{font-size:13px;color:var(--ink-500);line-height:1.6;margin:14px 0 0;}
-#configuracoes .status-row{display:flex;flex-direction:column;gap:10px;}
-#configuracoes .status-item{padding:14px 16px;background:var(--grad-pale);border:1px solid var(--hairline);border-radius:var(--radius-md);}
-#configuracoes .status-item .l1{font-size:12px;color:var(--ink-500);font-weight:500;margin-bottom:4px;}
-#configuracoes .status-item .l2{font-size:15px;color:var(--ink-900);font-weight:700;display:inline-flex;align-items:center;gap:8px;}
-#configuracoes .status-item .dot{width:8px;height:8px;border-radius:50%;background:#4CB783;box-shadow:0 0 0 4px rgba(76,183,131,.18);}
-#configuracoes .badges{display:flex;flex-wrap:wrap;gap:8px;margin:4px 0 18px;}
-#configuracoes .badge{padding:7px 14px;background:#fff;border:1px solid var(--hairline);border-radius:999px;font-size:12px;font-weight:600;color:var(--ink-700);display:inline-flex;align-items:center;gap:6px;}
-#configuracoes .badge::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--grad);}
-#configuracoes .guide-list{display:flex;flex-direction:column;gap:10px;margin-top:4px;}
-#configuracoes .guide-item{padding:14px 16px;background:var(--grad-pale);border:1px solid var(--hairline);border-radius:var(--radius-md);font-size:13.5px;color:var(--ink-700);line-height:1.55;display:flex;align-items:flex-start;gap:12px;}
-#configuracoes .guide-item .gnum{flex-shrink:0;width:24px;height:24px;border-radius:50%;background:var(--grad);color:#fff;display:grid;place-items:center;font-size:11.5px;font-weight:700;box-shadow:var(--shadow-grad);}
-#configuracoes .theme-toggle{position:relative;display:grid;grid-template-columns:1fr 1fr;background:var(--lav-50);border:1px solid var(--hairline);border-radius:999px;padding:5px;margin-top:6px;}
-#configuracoes .theme-toggle .theme-pill{position:absolute;top:5px;left:5px;height:calc(100% - 10px);width:calc((100% - 10px)/2);background:var(--grad);border-radius:999px;transition:transform .35s cubic-bezier(.4,.0,.15,1);box-shadow:var(--shadow-grad);}
-#configuracoes .theme-toggle .theme-pill[data-i="1"]{transform:translateX(100%);}
-#configuracoes .theme-toggle button{position:relative;z-index:1;padding:11px;font-size:13.5px;font-weight:600;color:var(--ink-500);border-radius:999px;display:inline-flex;align-items:center;justify-content:center;gap:8px;transition:color .25s;cursor:pointer;background:none;border:none;}
-#configuracoes .theme-toggle button svg{width:14px;height:14px;}
-#configuracoes .theme-toggle button.active{color:#fff;}
-#configuracoes .toggle-row{display:flex!important;align-items:center;justify-content:space-between;gap:14px;padding:14px;background:var(--grad-pale);border:1px solid var(--hairline);border-radius:var(--radius-md);flex-wrap:nowrap!important;}
-#configuracoes .toggle-row+.toggle-row{margin-top:10px;}
-#configuracoes .toggle-row>div:first-child{flex:1;min-width:0;}
-#configuracoes .toggle-row .lbl{font-size:13.5px;font-weight:600;color:var(--ink-900);}
-#configuracoes .toggle-row .sub{font-size:12px;color:var(--ink-500);margin-top:2px;}
-#configuracoes .switch{position:relative;width:44px;height:26px;flex-shrink:0;}
-#configuracoes .switch input{position:absolute;opacity:0;pointer-events:none;}
-#configuracoes .switch-slider{position:absolute;inset:0;background:var(--ink-200);border-radius:999px;cursor:pointer;transition:background .2s;}
-#configuracoes .switch-slider::before{content:'';position:absolute;top:3px;left:3px;width:20px;height:20px;background:#fff;border-radius:50%;transition:transform .25s;box-shadow:0 1px 3px rgba(0,0,0,.15);}
-#configuracoes .switch input:checked~.switch-slider{background:var(--grad);}
-#configuracoes .switch input:checked~.switch-slider::before{transform:translateX(18px);}
-#configuracoes .info{display:flex;align-items:flex-start;gap:10px;padding:14px;background:var(--grad-pale);border:1px solid var(--hairline);border-radius:var(--radius-md);font-size:13px;color:var(--ink-700);line-height:1.55;margin-top:14px;}
-#configuracoes .info svg{width:18px;height:18px;color:var(--lav-600);flex-shrink:0;margin-top:1px;}
-#configuracoes .info b{color:var(--ink-900);font-weight:700;}
-#configuracoes .cfg-bottom-nav{display:none;position:fixed;bottom:0;left:0;right:0;background:rgba(255,255,255,.92);backdrop-filter:blur(16px);border-top:1px solid var(--hairline);padding:10px 16px calc(10px + env(safe-area-inset-bottom));z-index:50;align-items:center;justify-content:space-around;}
-#configuracoes .bn-item{display:flex;flex-direction:column;align-items:center;gap:4px;font-size:11px;font-weight:600;color:var(--ink-500);text-decoration:none;padding:6px 14px;flex:1;text-align:center;cursor:pointer;background:none;border:none;}
-#configuracoes .bn-item svg{width:22px;height:22px;}
-#configuracoes .bn-item.active{color:var(--lav-700);}
-#configuracoes .bn-fab{position:relative;margin-top:-28px;width:56px;height:56px;border-radius:50%;background:var(--grad);display:grid;place-items:center;box-shadow:var(--shadow-grad);color:#fff;cursor:pointer;border:none;}
-#configuracoes .bn-fab svg{width:24px;height:24px;}
-#configuracoes .reveal{animation:cfgFadeUp .5s ease both;}
-#configuracoes .reveal:nth-child(2){animation-delay:.05s;}
-#configuracoes .reveal:nth-child(3){animation-delay:.10s;}
-#configuracoes .reveal:nth-child(4){animation-delay:.15s;}
-@keyframes cfgFadeUp{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
-@media(max-width:1024px){
-  #configuracoes .cfg-shell{grid-template-columns:1fr!important;gap:0!important;padding:20px 16px 100px!important;}
-  #configuracoes .cfg-sidebar{display:none!important;}
-  #configuracoes .cfg-grid{grid-template-columns:1fr!important;gap:16px!important;}
-  #configuracoes .col-span-2{grid-column:span 1!important;}
-  #configuracoes .cfg-bottom-nav{display:flex!important;}
-}
-@media(max-width:600px){
-  #configuracoes .cfg-shell{padding:16px 14px 110px!important;}
-  #configuracoes .cfg-hero{padding:26px 22px 22px;border-radius:var(--radius-lg);}
-  #configuracoes .cfg-card{padding:18px;border-radius:var(--radius-lg);}
-  #configuracoes .card-title{font-size:22px;}
-  #configuracoes .btn-row.inline{flex-direction:column;}
-  #configuracoes .cfg-topbar-user span{display:none;}
-}
-@media(max-width:380px){
-  #configuracoes .cfg-shell{padding:14px 12px 110px!important;}
-  #configuracoes .cfg-card{padding:16px;}
-  #configuracoes .hero-title{font-size:28px;}
-}
-</style>
-
-  <div class="cfg-shell">
-
-    <!-- SIDEBAR (desktop) -->
-    <aside class="cfg-sidebar">
-      <div class="side-brand">
-        <div class="side-mark" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 21c0-5 3-9 8-10-1 5-4 8-8 10z"/>
-            <path d="M12 21c0-5-3-9-8-10 1 5 4 8 8 10z"/>
-            <path d="M12 21V8"/><circle cx="12" cy="6" r="2"/>
-          </svg>
-        </div>
-        <div class="side-name">Vida Nova</div>
-      </div>
-      <nav class="side-nav" id="cfg-side-nav">
-        <a class="side-link active" href="#cfg-sec-perfil"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a6 6 0 0 1 6-6h4a6 6 0 0 1 6 6v1"/></svg>Perfil</a>
-        <a class="side-link" href="#cfg-sec-assinatura"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 9.2 8.6 2 9.3l5.4 4.9L5.8 22 12 18.3 18.2 22l-1.6-7.8L22 9.3l-7.2-.7L12 2z"/></svg>Assinatura</a>
-        <a class="side-link" href="#cfg-sec-notificacoes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 16v-5a6 6 0 1 0-12 0v5l-2 3h16z"/><path d="M9 19a3 3 0 0 0 6 0"/></svg>Notificações</a>
-        <a class="side-link" href="#cfg-sec-aparencia"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>Aparência</a>
-        <a class="side-link" href="#cfg-sec-seguranca"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>Segurança</a>
-        <a class="side-link" href="#cfg-sec-instalacao"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg>Instalação</a>
-        <a class="side-link" href="#cfg-sec-guia"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h12a4 4 0 0 1 4 4v12"/><path d="M4 4v16h12a4 4 0 0 0 4-4"/><path d="M4 4l16 16"/></svg>Guia da usuária</a>
-        <a class="side-link" href="#cfg-sec-sessao"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/><path d="M14 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h9"/></svg>Sair da conta</a>
-      </nav>
-      <div class="side-footer">Vida Nova v2.6.0<br>© 2026 — Cuide de você.</div>
-    </aside>
-
-    <!-- CONTENT -->
-    <main class="cfg-content">
-
-      <div class="cfg-topbar">
-        <button class="cfg-back-btn" type="button" data-go-home>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
-          Voltar
-        </button>
-        <div class="cfg-topbar-user">
-          <div class="cfg-topbar-av" id="cfg-topbar-av">VN</div>
-          <span id="cfg-topbar-name">Vida Nova</span>
-        </div>
-      </div>
-
-      <section class="cfg-hero reveal">
-        <div class="hero-eyebrow">Conta e experiência</div>
-        <h1 class="hero-title">Configurações do app</h1>
-        <div class="hero-pill">Personalize do seu jeito</div>
-      </section>
-
-      <div class="cfg-grid">
-
-        <!-- PERFIL -->
-        <section class="cfg-card col-span-2 reveal" id="cfg-sec-perfil">
-          <div class="card-eyebrow">Perfil</div>
-          <h2 class="card-title">Dados da usuária</h2>
-          <div class="profile-id">
-            <div class="cfg-avatar" id="settings-avatar-preview">VN</div>
-            <div class="profile-id-info">
-              <div class="profile-name-txt" id="settings-profile-name">Vida Nova</div>
-              <div class="profile-email-txt" id="settings-profile-email">Seu e-mail aparece aqui</div>
-            </div>
-          </div>
-          <form id="settings-profile-form" class="form-group">
-            <div class="field-row">
-              <label class="cfg-label" for="settings-avatar-input">Foto do perfil</label>
-              <label class="file-input-wrap" for="settings-avatar-input">
-                <span class="file-btn">Escolher arquivo</span>
-                <span class="file-nm" id="cfg-file-name">Nenhum arquivo selecionado</span>
-                <input type="file" id="settings-avatar-input" accept="image/*" />
-              </label>
-            </div>
-            <div class="field-row">
-              <label class="cfg-label" for="settings-name-input">Nome</label>
-              <input class="cfg-input" id="settings-name-input" type="text" placeholder="Seu nome" />
-            </div>
-            <div class="field-row">
-              <label class="cfg-label" for="settings-email-input">E-mail</label>
-              <input class="cfg-input" id="settings-email-input" type="email" placeholder="seuemail@provedor.com" />
-            </div>
-            <div class="field-row">
-              <label class="cfg-label" for="settings-subscription-url">Link de renovação do pacote</label>
-              <input class="cfg-input" id="settings-subscription-url" type="url" placeholder="https://..." />
-            </div>
-            <div class="btn-row inline">
-              <button class="btn btn-grad" type="submit">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><path d="M17 21v-8H7v8"/><path d="M7 3v5h8"/></svg>
-                Salvar perfil
-              </button>
-              <button id="settings-renew-button" class="btn btn-soft" type="button">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 3v6h-6"/></svg>
-                Renovar pacote
-              </button>
-            </div>
-            <div class="btn-row inline" style="margin-top:10px;">
-              <a id="settings-open-renewal" class="btn btn-outline" href="#" target="_blank" rel="noopener">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M21 14v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5"/></svg>
-                Abrir renovação
-              </a>
-              <button id="settings-open-install" class="btn btn-outline" type="button">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg>
-                Instalar app
-              </button>
-            </div>
-            <p id="settings-profile-feedback" class="caption"></p>
-            <p class="caption">Use o link de renovação da Kiwify ou do seu checkout para que a cliente consiga renovar por aqui.</p>
-          </form>
-        </section>
-
-        <!-- ASSINATURA -->
-        <section class="cfg-card reveal" id="cfg-sec-assinatura">
-          <div class="card-eyebrow">Assinatura</div>
-          <h2 class="card-title">Pacote e renovação</h2>
-          <div class="status-row">
-            <div class="status-item">
-              <div class="l1">Status</div>
-              <div class="l2"><span class="dot"></span><span id="settings-subscription-status">Conta ativa</span></div>
-            </div>
-            <div class="status-item">
-              <div class="l1">Renovação</div>
-              <div class="l2"><span id="settings-renewal-label">Configurar link</span></div>
-            </div>
-          </div>
-          <div class="btn-row">
-            <button class="btn btn-grad" type="button">Gerenciar assinatura</button>
-          </div>
-        </section>
-
-        <!-- NOTIFICAÇÕES -->
-        <section class="cfg-card reveal" id="cfg-sec-notificacoes">
-          <div class="card-eyebrow">Notificações</div>
-          <h2 class="card-title">Avisos e novos vídeos</h2>
-          <p class="card-desc">Ative as notificações para receber avisos quando um novo vídeo for publicado e quando houver novidades no app.</p>
-          <div class="toggle-row">
-            <div><div class="lbl">Novos vídeos</div><div class="sub">Avisos do canal</div></div>
-            <label class="switch"><input type="checkbox" checked /><span class="switch-slider"></span></label>
-          </div>
-          <div class="toggle-row">
-            <div><div class="lbl">Atualizações do app</div><div class="sub">Quando houver nova versão</div></div>
-            <label class="switch"><input type="checkbox" checked /><span class="switch-slider"></span></label>
-          </div>
-          <div class="btn-row" style="margin-top:14px;">
-            <button id="push-subscribe-btn" class="btn btn-grad" type="button">Ativar notificações</button>
-          </div>
-          <p id="push-subscribe-status" class="caption">Ative para receber avisos de novos vídeos e novidades.</p>
-        </section>
-
-        <!-- APARÊNCIA -->
-        <section class="cfg-card reveal" id="cfg-sec-aparencia">
-          <div class="card-eyebrow">Aparência</div>
-          <h2 class="card-title">Preferências do app</h2>
-          <label class="cfg-label" style="margin-bottom:6px;display:block;">Tema</label>
-          <div class="theme-toggle" id="cfg-theme-toggle">
-            <span class="theme-pill" data-i="0"></span>
-            <button class="active" type="button" data-theme-choice="light">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
-              Claro
-            </button>
-            <button type="button" data-theme-choice="dark">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-              Escuro
-            </button>
-          </div>
-          <p class="caption">A identidade visual do Vida Nova fica padronizada em todos os dispositivos.</p>
-        </section>
-
-        <!-- SEGURANÇA -->
-        <section class="cfg-card reveal" id="cfg-sec-seguranca">
-          <div class="card-eyebrow">Segurança</div>
-          <h2 class="card-title">Senha e acesso</h2>
-          <form id="settings-password-form" class="form-group">
-            <div class="field-row">
-              <label class="cfg-label" for="settings-password-input">Nova senha</label>
-              <input class="cfg-input" id="settings-password-input" type="password" placeholder="Mínimo de 6 caracteres" />
-            </div>
-            <div class="field-row">
-              <label class="cfg-label" for="settings-password-confirm-input">Confirmar nova senha</label>
-              <input class="cfg-input" id="settings-password-confirm-input" type="password" placeholder="Repita a senha" />
-            </div>
-            <div class="btn-row">
-              <button class="btn btn-grad" type="submit">Atualizar senha</button>
-            </div>
-            <p id="settings-password-feedback" class="caption"></p>
-          </form>
-        </section>
-
-        <!-- APP INSTALADO -->
-        <section class="cfg-card col-span-2 reveal" id="cfg-sec-instalacao">
-          <div class="card-eyebrow">App instalado</div>
-          <h2 class="card-title">Instalação e atualizações</h2>
-          <p class="card-desc">Use sempre a versão publicada. O app instalado passa a buscar atualizações automaticamente quando houver nova publicação.</p>
-          <div class="badges">
-            <span class="badge">Web publicada</span>
-            <span class="badge">Atualização automática</span>
-            <span class="badge">Dados preservados</span>
-          </div>
-          <div class="btn-row inline">
-            <a id="install-live-link" class="btn btn-grad" href="https://vidanova-1.onrender.com" target="_blank" rel="noreferrer">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M21 14v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5"/></svg>
-              Abrir app no navegador
-            </a>
-            <button id="install-chrome-button" class="btn btn-outline" type="button">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg>
-              Instalar app
-            </button>
-          </div>
-          <div class="btn-row inline" style="margin-top:10px;">
-            <button id="install-help-button" class="btn btn-soft" type="button">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v4M12 16h.01"/></svg>
-              Como instalar
-            </button>
-            <button id="settings-force-update" class="btn btn-outline" type="button">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 3v6h-6"/></svg>
-              Atualizar app
-            </button>
-          </div>
-          <div class="info">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2" width="12" height="20" rx="3"/><path d="M11 18h2"/></svg>
-            <div><b>No iPhone:</b> abra no Safari e use <i>Compartilhar &rsaquo; Adicionar à Tela de Início</i>. Em navegadores dentro de outros apps essa opção pode não aparecer.</div>
-          </div>
-          <p id="settings-update-feedback" class="caption"></p>
-        </section>
-
-        <!-- GUIA -->
-        <section class="cfg-card col-span-2 reveal" id="cfg-sec-guia">
-          <div class="card-eyebrow">Guia da usuária</div>
-          <h2 class="card-title">Como usar o app</h2>
-          <ol class="guide-list" style="list-style:none;padding:0;margin:0;">
-            <li class="guide-item"><span class="gnum">1</span>Entre sempre pela mesma conta para manter seus dados sincronizados.</li>
-            <li class="guide-item"><span class="gnum">2</span>Use a Agenda para compromissos, lembretes e notificações dos agendamentos.</li>
-            <li class="guide-item"><span class="gnum">3</span>As capas, textos e organização dos blocos ficam salvos na sua conta.</li>
-            <li class="guide-item"><span class="gnum">4</span>Se a assinatura ficar pendente, os dados continuam guardados e retornam após a reativação.</li>
-            <li class="guide-item"><span class="gnum">5</span>Depois de publicar alterações novas, o app instalado busca a versão atual automaticamente e avisa quando houver atualização.</li>
-          </ol>
-        </section>
-
-        <!-- ADMIN (hidden) -->
-        <section id="admin-shortcut-card" class="cfg-card col-span-2 hidden reveal" aria-hidden="true">
-          <div class="card-eyebrow">Administração</div>
-          <h2 class="card-title">Painel administrativo</h2>
-          <p class="card-desc">Acesse a lista de usuárias, acompanhe a assinatura e ajuste status diretamente por aqui.</p>
-          <div class="btn-row">
-            <button id="admin-open-panel" class="btn btn-grad" type="button">Abrir painel admin</button>
-          </div>
-        </section>
-
-        <!-- SESSÃO -->
-        <section class="cfg-card col-span-2 reveal" id="cfg-sec-sessao">
-          <div class="card-eyebrow">Sessão</div>
-          <h2 class="card-title">Sair da conta</h2>
-          <p class="card-desc">Ao sair, seus dados continuam salvos. Basta entrar novamente com o mesmo e-mail e senha.</p>
-          <button class="btn btn-danger" type="button" onclick="document.getElementById('logout-button').click()">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/><path d="M14 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h9"/></svg>
-            Sair da conta
-          </button>
-        </section>
-
-      </div>
-    </main>
-  </div>
-
-  <!-- Bottom nav (mobile) -->
-  <nav class="cfg-bottom-nav" aria-label="Navegação principal">
-    <button class="bn-item" type="button" data-go-home>
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m3 11 9-8 9 8"/><path d="M5 10v10h14V10"/></svg>
-      Início
-    </button>
-    <button class="bn-fab" type="button" data-go-home aria-label="Início">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 11 9-8 9 8"/><path d="M5 10v10h14V10"/></svg>
-    </button>
-    <button class="bn-item active" type="button">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a6 6 0 0 1 6-6h4a6 6 0 0 1 6 6v1"/></svg>
-      Perfil
-    </button>
-  </nav>
-
-  <script>
-  (function(){
-    var tt=document.getElementById('cfg-theme-toggle');
-    if(tt){var pill=tt.querySelector('.theme-pill');tt.querySelectorAll('button').forEach(function(btn,i){btn.addEventListener('click',function(){tt.querySelectorAll('button').forEach(function(b){b.classList.remove('active');});btn.classList.add('active');pill.dataset.i=String(i);});});}
-    var fi=document.getElementById('settings-avatar-input'),fn=document.getElementById('cfg-file-name');
-    if(fi&&fn)fi.addEventListener('change',function(e){var f=e.target.files&&e.target.files[0];fn.textContent=f?f.name:'Nenhum arquivo selecionado';});
-    var nav=document.getElementById('cfg-side-nav');
-    if(nav){var links=nav.querySelectorAll('.side-link');links.forEach(function(l){l.addEventListener('click',function(e){var href=l.getAttribute('href');var target=document.querySelector(href);if(target){e.preventDefault();target.scrollIntoView({behavior:'smooth',block:'start'});}links.forEach(function(x){x.classList.remove('active');});l.classList.add('active');});});}
-    var pn=document.getElementById('settings-profile-name'),ta=document.getElementById('cfg-topbar-av'),tn=document.getElementById('cfg-topbar-name');
-    function syncTop(){var n=(pn&&pn.textContent)||'VN';if(tn)tn.textContent=n;if(ta&&!ta.querySelector('img'))ta.textContent=n.slice(0,2).toUpperCase();}
-    if(pn)new MutationObserver(syncTop).observe(pn,{childList:true,characterData:true,subtree:true});
-    syncTop();
-  })();
-  </script>
-</section>
 
         <section class="page-view" data-page-view="admin" id="admin">
           <div class="page-return-bar">
@@ -2733,33 +2587,6 @@
       </main>
     </div>
 
-    <nav class="mobile-bottom-nav" aria-label="Navegação principal mobile">
-      <button type="button" data-page-link="comunidade">
-        <span aria-hidden="true">
-          <svg viewBox="0 0 24 24">
-            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2m7-10a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm13 10v-2a4 4 0 0 0-3-3.87m-3-12a4 4 0 0 1 0 7.75" />
-          </svg>
-        </span>
-        Comunidade
-      </button>
-      <button class="is-home" type="button" data-page-link="dashboard">
-        <span aria-hidden="true">
-          <svg viewBox="0 0 24 24">
-            <path d="m3 11 9-8 9 8v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1V11Z" />
-          </svg>
-        </span>
-        INÍCIO
-      </button>
-      <button type="button" data-page-link="configuracoes">
-        <span aria-hidden="true">
-          <svg viewBox="0 0 24 24">
-            <path d="M20 21a8 8 0 1 0-16 0m8-10a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm7 2 1.2 1.2M22 15l-1.7.5m-.6 3.2L18.5 17.5" />
-          </svg>
-        </span>
-        Perfil
-      </button>
-    </nav>
-
     <div id="editor-modal" class="editor-modal hidden" aria-hidden="true">
       <div class="editor-backdrop" data-close-editor="true"></div>
       <section class="editor-sheet" role="dialog" aria-modal="true" aria-labelledby="editor-title">
@@ -2819,6 +2646,86 @@
         </div>
         <p id="calendar-modal-empty" class="module-note">Nada cadastrado para este dia.</p>
         <ul id="calendar-modal-list" class="task-list"></ul>
+
+        <form id="calendar-modal-form" class="editor-form">
+          <label>
+            Data
+            <input id="calendar-modal-date" type="date" />
+          </label>
+          <label>
+            Hora inicial
+            <input id="calendar-modal-time" type="time" />
+          </label>
+          <label>
+            Hora final
+            <input id="calendar-modal-end-time" type="time" />
+          </label>
+          <label>
+            Título
+            <input id="calendar-modal-title-input" type="text" placeholder="Compromisso" />
+          </label>
+          <label style="display:none;">
+            Categoria
+            <select id="calendar-modal-category">
+              <option value="Pessoal" selected>Pessoal</option>
+              <option value="Trabalho">Trabalho</option>
+              <option value="Casa">Casa</option>
+              <option value="Saúde">Saúde</option>
+              <option value="Espiritual">Espiritual</option>
+            </select>
+          </label>
+          <label>
+            Calendario
+            <select id="calendar-modal-calendar"></select>
+          </label>
+          <label>
+            Recorrência
+            <select id="calendar-modal-recurrence">
+              <option value="none">Não se repete</option>
+              <option value="daily">Diariamente</option>
+              <option value="weekly">Semanalmente</option>
+              <option value="monthly">Mensalmente</option>
+              <option value="yearly">Anualmente</option>
+            </select>
+          </label>
+          <label>
+            Alerta
+            <select id="calendar-modal-reminder">
+              <option value="15">15 min antes</option>
+              <option value="5">5 min antes</option>
+              <option value="30">30 min antes</option>
+              <option value="60">1 hora antes</option>
+              <option value="0">No horário</option>
+              <option value="-1">Sem alerta</option>
+            </select>
+          </label>
+          <label>
+            Local
+            <input id="calendar-modal-location" type="text" placeholder="Local" />
+          </label>
+          <label>
+            Link
+            <input id="calendar-modal-link" type="url" placeholder="Link de reuniao ou referencia" />
+          </label>
+          <label>
+            Convidados
+            <input id="calendar-modal-guests" type="text" placeholder="Emails separados por virgula" />
+          </label>
+          <div class="color-field agenda-color-field">
+            <span>Cor</span>
+            <input id="calendar-modal-color" type="hidden" value="#c55b84" />
+            <div class="app-color-preset-grid" data-color-preset-grid="agenda-modal"></div>
+          </div>
+          <label>
+            Descrição
+            <textarea id="calendar-modal-description" rows="4" placeholder="Descrição completa do compromisso"></textarea>
+          </label>
+          <div class="editor-actions">
+            <button id="calendar-modal-cancel-edit" class="ghost-button hidden" type="button">Cancelar edição</button>
+            <button class="primary-button" type="submit">Salvar compromisso</button>
+          </div>
+        </form>
+
         <div class="mirror-block">
           <div class="panel-heading">
             <div>
@@ -2837,84 +2744,6 @@
             <ul id="calendar-modal-tasks" class="dashboard-preview-list"></ul>
           </div>
         </div>
-        <form id="calendar-modal-form" class="editor-form">
-          <label>
-            Data
-            <input id="calendar-modal-date" type="date" />
-          </label>
-          <label>
-            Hora inicial
-            <input id="calendar-modal-time" type="time" />
-          </label>
-          <label>
-            Hora final
-            <input id="calendar-modal-end-time" type="time" />
-          </label>
-          <label>
-            Alerta
-            <select id="calendar-modal-reminder">
-              <option value="15">15 min antes</option>
-              <option value="5">5 min antes</option>
-              <option value="30">30 min antes</option>
-              <option value="60">1 hora antes</option>
-              <option value="0">No horário</option>
-              <option value="-1">Sem alerta</option>
-            </select>
-          </label>
-          <label>
-            Título
-            <input id="calendar-modal-title-input" type="text" placeholder="Compromisso" />
-          </label>
-          <label>
-            Local
-            <input id="calendar-modal-location" type="text" placeholder="Local" />
-          </label>
-          <label>
-            Link
-            <input id="calendar-modal-link" type="url" placeholder="Link de reuniao ou referencia" />
-          </label>
-          <label>
-            Convidados
-            <input id="calendar-modal-guests" type="text" placeholder="Emails separados por virgula" />
-          </label>
-          <label>
-            Calendario
-            <select id="calendar-modal-calendar"></select>
-          </label>
-          <label>
-            Categoria
-            <select id="calendar-modal-category">
-              <option value="Pessoal">Pessoal</option>
-              <option value="Trabalho">Trabalho</option>
-              <option value="Casa">Casa</option>
-              <option value="Saúde">Saúde</option>
-              <option value="Espiritual">Espiritual</option>
-            </select>
-          </label>
-          <label>
-            Recorrência
-            <select id="calendar-modal-recurrence">
-              <option value="none">Não se repete</option>
-              <option value="daily">Diariamente</option>
-              <option value="weekly">Semanalmente</option>
-              <option value="monthly">Mensalmente</option>
-              <option value="yearly">Anualmente</option>
-            </select>
-          </label>
-          <div class="color-field agenda-color-field">
-            <span>Cor</span>
-            <input id="calendar-modal-color" type="hidden" value="#8fb2f4" />
-            <div class="app-color-preset-grid" data-color-preset-grid="agenda-modal"></div>
-          </div>
-          <label>
-            Descrição
-            <textarea id="calendar-modal-description" rows="4" placeholder="Descrição completa do compromisso"></textarea>
-          </label>
-          <div class="editor-actions">
-            <button id="calendar-modal-cancel-edit" class="ghost-button hidden" type="button">Cancelar edição</button>
-            <button class="primary-button" type="submit">Salvar compromisso</button>
-          </div>
-        </form>
       </section>
     </div>
 
@@ -3075,7 +2904,7 @@
         <div class="gcal-form-row">
           <span class="gcal-row-icon">&#127912;</span>
           <div class="gcal-row-content gcal-color-row">
-            <input id="agenda-color-input" type="hidden" value="#8fb2f4" aria-label="Cor" />
+            <input id="agenda-color-input" type="hidden" value="#c55b84" aria-label="Cor" />
             <div class="app-color-preset-grid" data-color-preset-grid="agenda-form"></div>
           </div>
         </div>
@@ -3084,8 +2913,8 @@
           <span class="gcal-row-icon">&#128193;</span>
           <div class="gcal-row-content">
             <select id="agenda-calendar-input" class="gcal-select" aria-label="Calend&#225;rio"></select>
-            <select id="agenda-category-input" class="gcal-select" aria-label="Categoria">
-              <option value="Pessoal">Pessoal</option>
+            <select id="agenda-category-input" class="gcal-select" aria-label="Categoria" style="display: none;">
+              <option value="Pessoal" selected>Pessoal</option>
               <option value="Trabalho">Trabalho</option>
               <option value="Casa">Casa</option>
               <option value="Sa&#250;de">Sa&#250;de</option>
@@ -3117,8 +2946,27 @@
       </form>
     </div>
 
-    <script src="script.js?v=nv4"></script>
-    <script type="module" src="agenda-firebase.js"></script>
+    <!-- Navegação Mobile Fixa no Rodapé -->
+    <nav class="mobile-nav" aria-label="Navegação mobile">
+      <a href="#dashboard" data-page-link="dashboard" class="is-active">
+        <span class="icon" aria-hidden="true">🌸</span>
+        <span>Início</span>
+      </a>
+      <a href="#planner" data-page-link="planner" data-planner-open="planner-agenda">
+        <span class="icon" aria-hidden="true">📅</span>
+        <span>Agenda</span>
+      </a>
+      <a href="#finanças" data-page-link="finanças">
+        <span class="icon" aria-hidden="true">💰</span>
+        <span>Finanças</span>
+      </a>
+      <a href="#configuracoes" data-page-link="configuracoes">
+        <span class="icon" aria-hidden="true">⚙️</span>
+        <span>Ajustes</span>
+      </a>
+    </nav>
+
+    <script src="script.js"></script>
 
 </body>
 </html>
