@@ -367,7 +367,7 @@
               <small>Autocuidado e rituais</small>
             </button>
 
-            <button class="workspace-card workspace-card-cycle" type="button" data-dashboard-open="ciclo" data-cover-key="ciclo">
+            <button id="dashboard-cycle-card" class="workspace-card workspace-card-cycle" type="button" data-dashboard-open="corpo" data-cover-key="ciclo">
               <div class="workspace-card-cover">
                 <div class="workspace-card-tools">
                   <label class="workspace-cover-upload">
@@ -771,7 +771,7 @@
                 <div class="dream-vision-shell planner-dream-vision-shell">
                   <div class="planner-dream-board-copy">
                     <strong>Meu quadro dos sonhos</strong>
-                    <p class="planner-dream-tip">Escolha imagens maiores do seu dispositivo e monte um mosaico com 10 objetivos visuais.</p>
+                    <p class="planner-dream-tip">Escolha imagens maiores do seu dispositivo e monte um mosaico com 12 objetivos visuais.</p>
                   </div>
                   <div id="planner-dream-board-grid" class="planner-dream-board-grid"></div>
                 </div>
@@ -1877,6 +1877,15 @@
                       </div>
                     </div>
                   </div>
+                  <article id="cycle-inline-panel" class="panel cycle-inline-panel">
+                    <div class="panel-heading">
+                      <div>
+                        <p class="eyebrow">Saúde e Beleza</p>
+                        <h3>Ciclo menstrual</h3>
+                      </div>
+                    </div>
+                    <iframe class="cycle-module-frame cycle-inline-frame" src="vidanova_ciclo_menstrual.html" title="Ciclo Menstrual"></iframe>
+                  </article>
                 </div>
               </section>
             </div>
@@ -3011,6 +3020,7 @@
       </div>
 
       <form id="agenda-form" class="gcal-form">
+        <div class="gcal-section-title">Compromisso</div>
         <div class="gcal-title-row">
           <input id="agenda-title-input" type="text" class="gcal-title-input" placeholder="T&#237;tulo do compromisso" aria-label="T&#237;tulo" />
         </div>
@@ -3072,10 +3082,11 @@
         <div class="gcal-form-row">
           <span class="gcal-row-icon">&#128221;</span>
           <div class="gcal-row-content">
-            <textarea id="agenda-description-input" class="gcal-textarea" rows="2" placeholder="Adicionar descri&#231;&#227;o ou link"></textarea>
+            <textarea id="agenda-description-input" class="gcal-textarea" rows="3" placeholder="Tarefas do dia relacionadas ao compromisso"></textarea>
           </div>
         </div>
 
+        <div class="gcal-section-title">Organiza&#231;&#227;o visual</div>
         <div class="gcal-form-row">
           <span class="gcal-row-icon">&#127912;</span>
           <div class="gcal-row-content gcal-color-row">
@@ -3088,13 +3099,6 @@
           <span class="gcal-row-icon">&#128193;</span>
           <div class="gcal-row-content">
             <select id="agenda-calendar-input" class="gcal-select" aria-label="Calend&#225;rio"></select>
-            <select id="agenda-category-input" class="gcal-select" aria-label="Categoria">
-              <option value="Pessoal">Pessoal</option>
-              <option value="Trabalho">Trabalho</option>
-              <option value="Casa">Casa</option>
-              <option value="Sa&#250;de">Sa&#250;de</option>
-              <option value="Espiritual">Espiritual</option>
-            </select>
           </div>
         </div>
 

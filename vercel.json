@@ -1,16 +1,17 @@
 {
   "version": 2,
-  "buildCommand": "npm run build",
+  "buildCommand": "mkdir -p public && cp -r assets index.html styles.css styles.fixed.css styles_override.css script.js login.html login.js mobile.html mobile.js manifest.webmanifest sw.js version.json vida-nova-fallback.json *.png *.svg *.xml public/ 2>/dev/null || true",
+  "outputDirectory": "public",
   "installCommand": "npm ci --omit=dev",
   "functions": {
-    "server.js": {
+    "api/server.js": {
       "maxDuration": 30,
       "memory": 256
     }
   },
   "routes": [
-    { "src": "/api/(.*)",     "dest": "/server.js" },
-    { "src": "/version.json", "dest": "/server.js" },
+    { "src": "/api/(.*)",     "dest": "/api/server.js" },
+    { "src": "/version.json", "dest": "/api/server.js" },
     { "src": "/(.*)",         "dest": "/$1" }
   ]
 }
