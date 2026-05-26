@@ -57,3 +57,4 @@ temp/
 # Variáveis sensíveis
 .env.production
 secrets.json
+.vercel
