@@ -347,6 +347,7 @@ const plannerWeekPhotoUpload1 = document.querySelector("#planner-week-photo-uplo
 const plannerWeekPhotoUpload2 = document.querySelector("#planner-week-photo-upload-2");
 const plannerWeekPhotoUpload3 = document.querySelector("#planner-week-photo-upload-3");
 const plannerWeekPhotoUpload4 = document.querySelector("#planner-week-photo-upload-4");
+const dashboardCycleCard = document.querySelector("#dashboard-cycle-card");
 const plannerTaskForms = document.querySelectorAll(".planner-task-form");
 const plannerTaskLists = document.querySelectorAll("[data-planner-list]");
 const projectUploads = document.querySelectorAll("[data-project-upload]");
@@ -5290,7 +5291,8 @@ if (agendaForm) {
       .map((guest) => guest.trim())
       .filter(Boolean);
     const calendarId = agendaCalendarInput?.value || calendarStore[0]?.id || "pessoal";
-    const category = agendaCategoryInput.value || "Pessoal";
+    const selectedCalendarOption = agendaCalendarInput?.selectedOptions?.[0];
+    const category = agendaCategoryInput?.value || selectedCalendarOption?.textContent?.trim() || "Pessoal";
     const color = agendaColorInput.value || getCalendarById(calendarId).color || "#4285f4";
     const recurrence = agendaRecurrenceInput?.value || "none";
     const reminderMinutes = Number(agendaReminderInput?.value ?? 15);
@@ -6000,7 +6002,7 @@ function renderPlannerDreamBoard() {
   const images = getStoredDreamVisionImages("planner");
   plannerDreamBoardGrid.innerHTML = "";
 
-  for (let index = 0; index < 10; index += 1) {
+  for (let index = 0; index < 12; index += 1) {
     const image = images[index] || null;
     const item = document.createElement("article");
     item.className = `planner-dream-slot${image ? " has-image" : ""}`;
@@ -7047,6 +7049,17 @@ if (weekViewHeader) {
     renderCalendar();
     renderAgendaEvents();
     openCalendarModal(selectedDateKey);
+  });
+}
+
+if (dashboardCycleCard) {
+  dashboardCycleCard.addEventListener("click", () => {
+    setActivePage("corpo");
+    window.requestAnimationFrame(() => {
+      const beautyTabButton = document.querySelector('[data-tab-group="autocuidado"] [data-tab-target="beleza"]');
+      beautyTabButton?.click();
+      document.querySelector("#cycle-inline-panel")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
   });
 }
 
