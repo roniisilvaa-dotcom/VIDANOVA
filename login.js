@@ -20,6 +20,15 @@ const loginNote = document.querySelector("#login-note");
 const showLoginFormButton = document.querySelector("#show-login-form");
 const backToPaywallButton = document.querySelector("#back-to-paywall");
 const paywallSubscribeBtn = document.querySelector("#paywall-subscribe-btn");
+const createAccountButtons = document.querySelectorAll("[data-create-account]");
+const togglePasswordButton = document.querySelector("#toggle-password");
+const googleLoginButton = document.querySelector("#google-login-button");
+const appleLoginButton = document.querySelector("#apple-login-button");
+const socialLoginButtons = document.querySelectorAll("[data-social-login]");
+const signupForm = document.querySelector("#signupForm");
+const signupEmail = document.querySelector("#email2");
+const signupPassword = document.querySelector("#senha2");
+const signupTerms = document.querySelector("#terms");
 
 const AUTH_TOKEN_KEY = "vida-nova:auth-token";
 const AUTH_USER_KEY = "vida-nova:auth-user";
@@ -31,16 +40,15 @@ let deferredInstallPrompt = null;
 let _paywallVisible = true;
 
 function showPaywall() {
-  _paywallVisible = true;
-  if (paywallBlock) paywallBlock.style.display = "";
-  if (loginBlock) loginBlock.style.display = "none";
-  if (loginForm) loginForm.style.display = "none";
-  if (loginNote) loginNote.style.display = "none";
+  _paywallVisible = false;
+  if (typeof window.switchTab === "function") {
+    window.switchTab(null, "assinar");
+  }
 }
 
 function showLoginSection() {
   _paywallVisible = false;
-  if (paywallBlock) paywallBlock.style.display = "none";
+  if (paywallBlock) paywallBlock.style.display = "";
   if (loginBlock) loginBlock.style.display = "";
   if (loginForm) loginForm.style.display = "";
   if (loginNote) loginNote.style.display = "";
@@ -48,8 +56,8 @@ function showLoginSection() {
 
 async function loadAppConfig() {
   try {
-    const res = await fetch("/api/config");
-    if (!res.ok) return;
+    const res = await fetch(getApiUrl("/api/config"));
+    if (!res.ok) throw new Error("Config indisponivel");
     const config = await res.json();
 
     if (paywallSubscribeBtn && config.checkoutUrl) {
@@ -58,6 +66,10 @@ async function loadAppConfig() {
 
 
   } catch {}
+
+  if (paywallSubscribeBtn && (!paywallSubscribeBtn.href || paywallSubscribeBtn.getAttribute("href") === "#")) {
+    paywallSubscribeBtn.href = getPublishedAppUrl();
+  }
 }
 
 function getAuthStorage() {
@@ -88,31 +100,46 @@ function clearLegacyAuthCache() {
 }
 
 function setFeedback(message, type = "neutral") {
-  if (!authFeedback) {
+  const feedbackTargets = document.querySelectorAll("[data-auth-feedback]");
+  if (!authFeedback && !feedbackTargets.length) {
     return;
   }
 
-  authFeedback.textContent = message;
-  authFeedback.dataset.state = type;
+  const targets = feedbackTargets.length ? feedbackTargets : [authFeedback];
+  targets.forEach((target) => {
+    target.textContent = message;
+    target.dataset.state = type;
+  });
 }
 
 function setMode(mode) {
   authMode = mode;
 
   const isRegister = mode === "register";
-  authTitle.textContent = isRegister ? "Criar conta" : "Entrar no app";
-  authSubmit.textContent = isRegister ? "Criar conta" : "Entrar agora";
-  nameField.classList.toggle("hidden-field", !isRegister);
-  confirmPasswordField.classList.toggle("hidden-field", !isRegister);
-  loginName.required = isRegister;
-  loginConfirmPassword.required = isRegister;
-  modeLoginButton.classList.toggle("is-active", !isRegister);
-  modeRegisterButton.classList.toggle("is-active", isRegister);
-  setFeedback(
-    isRegister
-      ? "Crie uma conta para liberar o armazenamento separado por usuaria."
-      : "Entre com seu e-mail e senha para acessar seus dados.",
-  );
+  document.body.classList.toggle("auth-register-mode", isRegister);
+  if (authTitle) authTitle.innerHTML = isRegister ? "Comece sua <em>jornada</em>." : "Bem-vinda de <em>volta</em>.";
+  const submitText = authSubmit?.querySelector(".btn-text") || authSubmit;
+  if (submitText) submitText.textContent = isRegister ? "Criar minha conta" : "Entrar agora";
+  nameField?.classList.add("hidden-field");
+  confirmPasswordField?.classList.add("hidden-field");
+  if (loginName) {
+    loginName.required = false;
+    loginName.value = "";
+  }
+  if (loginConfirmPassword) {
+    loginConfirmPassword.required = false;
+    loginConfirmPassword.value = "";
+  }
+  modeLoginButton?.classList.toggle("is-active", !isRegister);
+  modeLoginButton?.classList.toggle("active", !isRegister);
+  modeLoginButton?.setAttribute("aria-selected", String(!isRegister));
+  modeRegisterButton?.classList.toggle("is-active", isRegister);
+  modeRegisterButton?.classList.toggle("active", isRegister);
+  modeRegisterButton?.setAttribute("aria-selected", String(isRegister));
+  if (typeof window.switchTab === "function") {
+    window.switchTab(null, isRegister ? "criar" : "entrar");
+  }
+  setFeedback("");
 }
 
 function saveSession(token, user) {
@@ -145,6 +172,65 @@ function getPublishedAppUrl() {
   }
 
   return FALLBACK_PUBLIC_APP_URL;
+}
+
+function getApiUrl(path) {
+  if (/^https?:\/\//i.test(path)) {
+    return path;
+  }
+
+  if (window.location.protocol === "file:") {
+    return `${FALLBACK_PUBLIC_APP_URL}${path}`;
+  }
+
+  return path;
+}
+
+function consumeSocialLoginResult() {
+  const query = new URLSearchParams(window.location.search);
+  const hash = new URLSearchParams(window.location.hash.replace(/^#/, ""));
+  const socialError = query.get("social_error") || hash.get("social_error");
+
+  if (socialError) {
+    setFeedback(socialError, "error");
+    if (window.history?.replaceState) {
+      window.history.replaceState({}, document.title, window.location.pathname);
+    }
+    return true;
+  }
+
+  const token = hash.get("social_token");
+  const encodedUser = hash.get("social_user");
+  if (!token || !encodedUser) {
+    return false;
+  }
+
+  try {
+    const normalizedUser = encodedUser.replace(/-/g, "+").replace(/_/g, "/");
+    const paddedUser = normalizedUser.padEnd(Math.ceil(normalizedUser.length / 4) * 4, "=");
+    const user = JSON.parse(atob(paddedUser));
+    saveSession(token, user);
+
+    if (!user?.is_admin && user?.subscription_status !== "active") {
+      getAuthStorage().removeItem(AUTH_TOKEN_KEY);
+      getAuthStorage().removeItem(AUTH_USER_KEY);
+      getAuthStorage().removeItem(LEGACY_SESSION_KEY);
+      clearLegacyAuthCache();
+      setFeedback("Login confirmado. Assine agora para liberar o acesso completo.", "error");
+      showPaywall();
+    } else {
+      setFeedback("Acesso liberado. Redirecionando...", "success");
+      window.location.href = getPostLoginTarget(user);
+    }
+  } catch {
+    setFeedback("Não foi possível concluir o login social. Tente novamente.", "error");
+  } finally {
+    if (window.history?.replaceState) {
+      window.history.replaceState({}, document.title, window.location.pathname);
+    }
+  }
+
+  return true;
 }
 
 function getInstallContext() {
@@ -240,7 +326,7 @@ async function triggerLoginInstallFlow() {
 }
 
 async function postJson(url, payload) {
-  const response = await fetch(url, {
+  const response = await fetch(getApiUrl(url), {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -304,6 +390,46 @@ if (modeRegisterButton) {
   modeRegisterButton.addEventListener("click", () => setMode("register"));
 }
 
+if (createAccountButtons.length) {
+  createAccountButtons.forEach((createAccountButton) => createAccountButton.addEventListener("click", () => {
+    showLoginSection();
+    setMode("register");
+    loginEmail?.focus();
+  }));
+}
+
+if (togglePasswordButton && loginPassword) {
+  togglePasswordButton.addEventListener("click", () => {
+    const showPassword = loginPassword.type === "password";
+    loginPassword.type = showPassword ? "text" : "password";
+    togglePasswordButton.classList.toggle("is-visible", showPassword);
+    if (!togglePasswordButton.querySelector("svg")) {
+      togglePasswordButton.textContent = showPassword ? "●" : "◌";
+    }
+    togglePasswordButton.setAttribute("aria-label", showPassword ? "Ocultar senha" : "Mostrar senha");
+  });
+}
+
+function handleSocialLogin(provider) {
+  const providerSlug = provider.toLowerCase();
+  setFeedback(`Abrindo login com ${provider}...`);
+  window.location.href = getApiUrl(`/api/auth/${providerSlug}/start`);
+}
+
+if (socialLoginButtons.length) {
+  socialLoginButtons.forEach((button) => {
+    button.addEventListener("click", () => handleSocialLogin(button.dataset.socialLogin));
+  });
+} else {
+  if (googleLoginButton) {
+    googleLoginButton.addEventListener("click", () => handleSocialLogin("Google"));
+  }
+
+  if (appleLoginButton) {
+    appleLoginButton.addEventListener("click", () => handleSocialLogin("Apple"));
+  }
+}
+
 if (loginForm) {
   loginForm.addEventListener("submit", async (event) => {
     event.preventDefault();
@@ -317,32 +443,21 @@ if (loginForm) {
       return;
     }
 
-    if (isRegister) {
-      const name = loginName.value.trim();
-      const confirmPassword = loginConfirmPassword.value;
-
-      if (!name) {
-        setFeedback("Informe seu nome para criar a conta.", "error");
-        return;
-      }
-
-      if (password !== confirmPassword) {
-        setFeedback("As senhas nao coincidem.", "error");
-        return;
-      }
+    if (authSubmit) {
+      authSubmit.disabled = true;
+      authSubmit.classList.add("loading");
     }
-
-    authSubmit.disabled = true;
-    demoAccess.disabled = true;
+    if (demoAccess) demoAccess.disabled = true;
     setFeedback(isRegister ? "Criando sua conta..." : "Entrando na sua conta...");
 
     try {
+      const derivedName = email.split("@")[0]?.replace(/[._-]+/g, " ").trim() || "Vida Nova";
       const payload = isRegister
         ? {
-            name: loginName.value.trim(),
+            name: derivedName,
             email,
             password,
-            confirmPassword: loginConfirmPassword.value,
+            confirmPassword: password,
           }
         : {
             email,
@@ -381,8 +496,11 @@ if (loginForm) {
           paywallSubscribeBtn.href = subscriptionUrl;
         }
         showPaywall();
-        authSubmit.disabled = false;
-        demoAccess.disabled = false;
+        if (authSubmit) {
+          authSubmit.disabled = false;
+          authSubmit.classList.remove("loading");
+        }
+        if (demoAccess) demoAccess.disabled = false;
         return;
       }
 
@@ -391,9 +509,28 @@ if (loginForm) {
     } catch (error) {
       setFeedback(error.message, "error");
     } finally {
-      authSubmit.disabled = false;
-      demoAccess.disabled = false;
+      if (authSubmit) {
+        authSubmit.disabled = false;
+        authSubmit.classList.remove("loading");
+      }
+      if (demoAccess) demoAccess.disabled = false;
     }
+  });
+}
+
+if (signupForm && loginForm && signupEmail && signupPassword && loginEmail && loginPassword) {
+  signupForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+
+    if (signupTerms && !signupTerms.checked) {
+      setFeedback("Aceite os termos para criar sua conta.", "error");
+      return;
+    }
+
+    setMode("register");
+    loginEmail.value = signupEmail.value;
+    loginPassword.value = signupPassword.value;
+    loginForm.requestSubmit();
   });
 }
 
@@ -428,9 +565,11 @@ clearLegacyAuthCache();
 refreshInstallLinks();
 setMode("login");
 updateLoginInstallUi();
-showPaywall();
+showLoginSection();
 loadAppConfig();
-redirectIfAuthenticated();
+if (!consumeSocialLoginResult()) {
+  redirectIfAuthenticated();
+}
 
 // Auto-update: reload login page when a new version is deployed
 (async function startLoginVersionPolling() {

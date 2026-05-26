@@ -1,24 +1,78 @@
 const verses = [
   {
-    text: "Entrega o teu caminho ao Senhor; confia nele, e ele o fara.",
+    text: "Entrega o teu caminho ao Senhor; confia nele, e ele o fará.",
     reference: "Salmos 37:5",
   },
   {
-    text: "A mulher sabia edifica a sua casa, mas a tola a derruba com as proprias maos.",
-    reference: "Proverbios 14:1",
+    text: "A mulher sábia edifica a sua casa, mas a tola a derruba com as próprias mãos.",
+    reference: "Provérbios 14:1",
   },
   {
     text: "Tudo posso naquele que me fortalece.",
     reference: "Filipenses 4:13",
   },
   {
-    text: "Lancando sobre ele toda a vossa ansiedade, porque ele tem cuidado de vos.",
+    text: "Lançando sobre ele toda a vossa ansiedade, porque ele tem cuidado de vós.",
     reference: "1 Pedro 5:7",
   },
   {
-    text: "Ensina-nos a contar os nossos dias, para que alcancemos coracao sabio.",
+    text: "Ensina-nos a contar os nossos dias, para que alcancemos coração sábio.",
     reference: "Salmos 90:12",
   },
+  { text: "O Senhor é o meu pastor; nada me faltará.", reference: "Salmos 23:1" },
+  { text: "Aquietai-vos e sabei que eu sou Deus.", reference: "Salmos 46:10" },
+  { text: "O choro pode durar uma noite, mas a alegria vem pela manhã.", reference: "Salmos 30:5" },
+  { text: "Cria em mim, ó Deus, um coração puro.", reference: "Salmos 51:10" },
+  { text: "Lâmpada para os meus pés é a tua palavra e luz para o meu caminho.", reference: "Salmos 119:105" },
+  { text: "Este é o dia que fez o Senhor; regozijemo-nos e alegremo-nos nele.", reference: "Salmos 118:24" },
+  { text: "O Senhor te guardará de todo mal; guardará a tua alma.", reference: "Salmos 121:7" },
+  { text: "Deleita-te também no Senhor, e ele te concederá o que deseja o teu coração.", reference: "Salmos 37:4" },
+  { text: "Perto está o Senhor dos que têm o coração quebrantado.", reference: "Salmos 34:18" },
+  { text: "Provai e vede que o Senhor é bom.", reference: "Salmos 34:8" },
+  { text: "Confia no Senhor de todo o teu coração.", reference: "Provérbios 3:5" },
+  { text: "Reconhece-o em todos os teus caminhos, e ele endireitará as tuas veredas.", reference: "Provérbios 3:6" },
+  { text: "Sobre tudo o que se deve guardar, guarda o teu coração.", reference: "Provérbios 4:23" },
+  { text: "A resposta branda desvia o furor.", reference: "Provérbios 15:1" },
+  { text: "O coração alegre serve de bom remédio.", reference: "Provérbios 17:22" },
+  { text: "Há amigo mais chegado do que um irmão.", reference: "Provérbios 18:24" },
+  { text: "Os que esperam no Senhor renovarão as suas forças.", reference: "Isaías 40:31" },
+  { text: "Não temas, porque eu sou contigo.", reference: "Isaías 41:10" },
+  { text: "Quando passares pelas águas, estarei contigo.", reference: "Isaías 43:2" },
+  { text: "Eu faço coisa nova; agora sairá à luz.", reference: "Isaías 43:19" },
+  { text: "Tu conservarás em paz aquele cuja mente está firme em ti.", reference: "Isaías 26:3" },
+  { text: "Porque eu bem sei os pensamentos que penso de vós, diz o Senhor.", reference: "Jeremias 29:11" },
+  { text: "Clama a mim, e responder-te-ei.", reference: "Jeremias 33:3" },
+  { text: "As misericórdias do Senhor são a causa de não sermos consumidos.", reference: "Lamentações 3:22" },
+  { text: "Grande é a tua fidelidade.", reference: "Lamentações 3:23" },
+  { text: "Buscai primeiro o reino de Deus e a sua justiça.", reference: "Mateus 6:33" },
+  { text: "Vinde a mim todos os que estais cansados e oprimidos, e eu vos aliviarei.", reference: "Mateus 11:28" },
+  { text: "Porque para Deus nada é impossível.", reference: "Lucas 1:37" },
+  { text: "Eu sou a videira; vós, as varas.", reference: "João 15:5" },
+  { text: "Conhecereis a verdade, e a verdade vos libertará.", reference: "João 8:32" },
+  { text: "A minha paz vos dou.", reference: "João 14:27" },
+  { text: "Se Deus é por nós, quem será contra nós?", reference: "Romanos 8:31" },
+  { text: "Todas as coisas contribuem juntamente para o bem daqueles que amam a Deus.", reference: "Romanos 8:28" },
+  { text: "Não te deixes vencer do mal, mas vence o mal com o bem.", reference: "Romanos 12:21" },
+  { text: "O amor é paciente, o amor é bondoso.", reference: "1 Coríntios 13:4" },
+  { text: "Andamos por fé, e não por vista.", reference: "2 Coríntios 5:7" },
+  { text: "A minha graça te basta.", reference: "2 Coríntios 12:9" },
+  { text: "Não nos cansemos de fazer o bem.", reference: "Gálatas 6:9" },
+  { text: "Sede uns para com os outros benignos e misericordiosos.", reference: "Efésios 4:32" },
+  { text: "Revesti-vos de toda a armadura de Deus.", reference: "Efésios 6:11" },
+  { text: "Aquele que começou a boa obra a aperfeiçoará.", reference: "Filipenses 1:6" },
+  { text: "Não estejais inquietos por coisa alguma.", reference: "Filipenses 4:6" },
+  { text: "A paz de Deus guardará os vossos corações.", reference: "Filipenses 4:7" },
+  { text: "Tudo quanto fizerdes, fazei-o de todo o coração.", reference: "Colossenses 3:23" },
+  { text: "Em tudo dai graças.", reference: "1 Tessalonicenses 5:18" },
+  { text: "Deus não nos deu espírito de temor, mas de fortaleza, amor e moderação.", reference: "2 Timóteo 1:7" },
+  { text: "Cheguemos com confiança ao trono da graça.", reference: "Hebreus 4:16" },
+  { text: "A fé é o firme fundamento das coisas que se esperam.", reference: "Hebreus 11:1" },
+  { text: "Toda boa dádiva vem do alto.", reference: "Tiago 1:17" },
+  { text: "Sujeitai-vos, pois, a Deus; resisti ao diabo, e ele fugirá de vós.", reference: "Tiago 4:7" },
+  { text: "Humilhai-vos perante o Senhor, e ele vos exaltará.", reference: "Tiago 4:10" },
+  { text: "Sede sóbrios e vigiai.", reference: "1 Pedro 5:8" },
+  { text: "O perfeito amor lança fora o medo.", reference: "1 João 4:18" },
+  { text: "Maior é o que está em vós do que o que está no mundo.", reference: "1 João 4:4" },
 ];
 
 const initialTasks = [];
@@ -39,6 +93,7 @@ const DEFAULT_DASHBOARD_COVERS = Object.freeze({
   sonhos: "assets/covers/sonhos.png",
   corpo: "assets/covers/corpo.png",
   agenda: "assets/covers/agenda.png",
+  ciclo: "assets/covers/ciclo-menstrual.png",
   financas: "assets/covers/financas.png",
   "finanças": "assets/covers/financas.png",
   estudos: "assets/covers/estudos.png",
@@ -46,6 +101,7 @@ const DEFAULT_DASHBOARD_COVERS = Object.freeze({
   casa: "assets/covers/casa.png",
   viagens: "assets/covers/viagens.png",
   espiritual: "assets/covers/espiritual.png",
+  comunidade: "assets/covers/comunidade.png",
 });
 
 const APP_IDENTITY_COLOR_PRESETS = Object.freeze([
@@ -134,6 +190,10 @@ const subscriptionGateCopy = document.querySelector("#subscription-gate-copy");
 const subscriptionRenewButton = document.querySelector("#subscription-renew-button");
 const subscriptionOpenSettings = document.querySelector("#subscription-open-settings");
 const userGreeting = document.querySelector("#user-greeting");
+const mobileHomeName = document.querySelector("#mobile-home-name");
+const mobileHomeAvatar = document.querySelector("#mobile-home-avatar");
+const mobileVerseText = document.querySelector("#mobile-verse-text");
+const mobileVerseRef = document.querySelector("#mobile-verse-ref");
 const logoutButton = document.querySelector("#logout-button");
 const settingsButton = document.querySelector("#settings-button");
 const homeButton = document.querySelector("#home-button");
@@ -171,6 +231,11 @@ const goHomeButtons = document.querySelectorAll("[data-go-home]");
 const topbarAvatar = document.querySelector("#topbar-avatar");
 const topbarEmail = document.querySelector("#topbar-email");
 const topbarPlan = document.querySelector("#topbar-plan");
+const topbarAccountName = document.querySelector("#topbar-account-name");
+const communityPostForm = document.querySelector("#community-post-form");
+const communityPostInput = document.querySelector("#community-post-input");
+const communityPostFeedback = document.querySelector("#community-post-feedback");
+const communityFeed = document.querySelector("#community-feed");
 const financeIncomeInput = document.querySelector("#finance-income-input");
 const financeExpenseInput = document.querySelector("#finance-expense-input");
 const financeGoalInput = document.querySelector("#finance-goal-input");
@@ -313,6 +378,7 @@ const draggableCards = document.querySelectorAll(".draggable-card");
 const dashboardCoverInputs = document.querySelectorAll("[data-cover-upload]");
 const workspaceCards = document.querySelectorAll(".workspace-card[data-cover-key]");
 const agendaColorPresetGrids = document.querySelectorAll("[data-color-preset-grid]");
+const cycleModuleFrame = document.querySelector(".cycle-module-frame");
 const isTouchDevice =
   window.matchMedia("(pointer: coarse)").matches ||
   "ontouchstart" in window ||
@@ -326,8 +392,20 @@ const CLOUD_STATE_TYPE = "app_state";
 const CLOUD_STATE_KEY = "main";
 const FALLBACK_PUBLIC_APP_URL = "https://vidanova-1.onrender.com";
 
+// Cloud sync retry state for robust Neon synchronization
+let cloudSyncRetry = { attempt: 0, timer: null };
+function updateSyncStatus(text, cls = "is-pending") {
+  const el = document.getElementById("sync-status-pill");
+  if (!el) return;
+  el.textContent = text || el.textContent;
+  el.className = "topbar-status-pill" + (cls ? ` ${cls}` : "");
+}
+
 let tasks = [...initialTasks];
-let verseIndex = new Date().getDate() % verses.length;
+const nowForVerse = new Date();
+const startOfYearForVerse = new Date(nowForVerse.getFullYear(), 0, 0);
+let verseIndex =
+  Math.floor((nowForVerse - startOfYearForVerse) / 86400000) % verses.length;
 let activeCard = null;
 let draggedCard = null;
 let deferredInstallPrompt = null;
@@ -343,6 +421,13 @@ let customAgendaDays = Number(localStorage.getItem("vida-nova:custom-days") || 4
 if (Object.keys(agendaStore).length === 0) {
   agendaStore = { ...initialAgendaEvents };
 }
+
+// Expõe agendaStore para o módulo de sync Firebase (agenda-firebase.js)
+Object.defineProperty(window, '_vnAgendaStore', {
+  get() { return agendaStore; },
+  set(v) { agendaStore = v; },
+  configurable: true,
+});
 
 let activeFinanceFilter = localStorage.getItem("ela-em-ordem:finance-filter") || "all";
 let financeStore = JSON.parse(localStorage.getItem("ela-em-ordem:finance") || "{}");
@@ -591,21 +676,8 @@ function renderDashboardCardTools() {
 
 function renderAgendaColorPalettes() {
   agendaColorPresetGrids.forEach((grid) => {
-    const scope = grid.dataset.colorPresetGrid || "";
-    const input = scope === "agenda-modal" ? calendarModalColor : agendaColorInput;
-    const selectedColor = input?.value || APP_IDENTITY_COLOR_PRESETS[0];
-
-    grid.innerHTML = APP_IDENTITY_COLOR_PRESETS.map((color, index) => `
-      <button
-        class="app-color-swatch${selectedColor === color ? " is-active" : ""}"
-        type="button"
-        data-app-color-scope="${escapeHtml(scope)}"
-        data-app-color-value="${escapeHtml(color)}"
-        aria-label="Cor ${index + 1}"
-        title="Cor ${index + 1}"
-        style="--swatch-color: ${escapeHtml(color)};"
-      ></button>
-    `).join("");
+    grid.innerHTML = "";
+    grid.hidden = true;
   });
 }
 
@@ -652,67 +724,41 @@ function getColorablePageViews() {
 }
 
 function renderPageColorToolbars() {
-  const colorMap = getPageColorMap();
-
   getColorablePageViews().forEach((view) => {
     const pageName = view.dataset.pageView || "";
     if (!pageName) {
       return;
     }
-
-    let toolbar = view.querySelector(`[data-page-color-toolbar="${pageName}"]`);
-    if (!toolbar) {
-      toolbar = document.createElement("section");
-      toolbar.className = "block-color-toolbar";
-      toolbar.dataset.pageColorToolbar = pageName;
-      toolbar.innerHTML = `
-        <div class="block-color-toolbar-copy">
-          <p class="eyebrow">Cor do bloco</p>
-          <strong>Escolha a cor desta area</strong>
-        </div>
-        <div class="block-color-swatch-grid"></div>
-      `;
-
-      const returnBar = view.querySelector(".page-return-bar");
-      if (returnBar) {
-        returnBar.insertAdjacentElement("afterend", toolbar);
-      } else {
-        view.prepend(toolbar);
-      }
-    }
-
-    const grid = toolbar.querySelector(".block-color-swatch-grid");
-    if (!grid) {
-      return;
-    }
-
-    const selectedColor = colorMap[pageName] || APP_IDENTITY_COLOR_PRESETS[0];
-    grid.innerHTML = APP_IDENTITY_COLOR_PRESETS.map((color, index) => `
-      <button
-        class="block-color-swatch${selectedColor === color ? " is-active" : ""}"
-        type="button"
-        data-page-color-key="${escapeHtml(pageName)}"
-        data-page-color-value="${escapeHtml(color)}"
-        aria-label="Cor ${index + 1}"
-        title="Cor ${index + 1}"
-        style="--swatch-color: ${escapeHtml(color)};"
-      ></button>
-    `).join("");
+    view.querySelector(`[data-page-color-toolbar="${pageName}"]`)?.remove();
   });
 }
 
 function applyPageColors() {
-  const colorMap = getPageColorMap();
-
   getColorablePageViews().forEach((view) => {
-    const pageName = view.dataset.pageView || "";
-    const color = colorMap[pageName] || APP_IDENTITY_COLOR_PRESETS[0];
-    view.style.setProperty("--block-soft", mixColor(color, 0.86));
-    view.style.setProperty("--block-fade", mixColor(color, 0.93));
-    view.style.setProperty("--block-line", mixColor(color, 0.42));
+    view.style.removeProperty("--block-soft");
+    view.style.removeProperty("--block-fade");
+    view.style.removeProperty("--block-line");
   });
 
   renderPageColorToolbars();
+}
+
+function resizeCycleModuleFrame() {
+  if (!cycleModuleFrame) {
+    return;
+  }
+
+  try {
+    const frameDocument = cycleModuleFrame.contentDocument || cycleModuleFrame.contentWindow?.document;
+    const height = Math.max(
+      frameDocument?.body?.scrollHeight || 0,
+      frameDocument?.documentElement?.scrollHeight || 0,
+      window.innerHeight - 120,
+    );
+    cycleModuleFrame.style.height = `${height + 8}px`;
+  } catch {
+    cycleModuleFrame.style.height = "3600px";
+  }
 }
 
 function setFeedback(element, message, type = "") {
@@ -746,6 +792,550 @@ async function apiPost(url, payload) {
   }
 
   return data;
+}
+
+function timeAgo(dateStr) {
+  const diff = Date.now() - new Date(dateStr || Date.now()).getTime();
+  const mins = Math.floor(diff / 60000);
+  if (mins < 1) return "agora";
+  if (mins < 60) return `há ${mins}min`;
+  const hrs = Math.floor(mins / 60);
+  if (hrs < 24) return `há ${hrs}h`;
+  const days = Math.floor(hrs / 24);
+  return `há ${days}d`;
+}
+
+function renderCommunityFeed(posts = []) {
+  if (!communityFeed) return;
+
+  if (!posts.length) {
+    communityFeed.innerHTML = `
+      <article class="community-empty">
+        <strong>Seja a primeira a compartilhar hoje</strong>
+        <p>Conte uma vitória, uma oração, uma dica ou um pedido de apoio.</p>
+      </article>
+    `;
+    return;
+  }
+
+  communityFeed.innerHTML = posts
+    .map((post) => {
+      const initials = String(post.author_name || "VN")
+        .split(/\s+/).slice(0, 2)
+        .map((p) => p[0]?.toUpperCase() || "").join("") || "VN";
+      const liked = Boolean(post.liked_by_me);
+      const likesCount = Number(post.likes_count) || 0;
+      const commentsCount = Number(post.comments_count) || 0;
+
+      const isOwn = currentSession && Number(post.user_id) === Number(currentSession.id);
+      const canManage = isOwn || isAdminSession();
+      const photoFormat = post.image_format === "story" ? "story" : "square";
+      const communityType = post.image_data ? "photos" : "text";
+      const photoHtml = post.image_data
+        ? `<div class="community-post-photo-wrap community-post-photo-${photoFormat}"><img class="community-post-photo" src="${post.image_data}" alt="Foto do post" loading="lazy" /></div>`
+        : "";
+      const moreBtn = canManage
+        ? `<div class="community-post-more-wrap">
+             <button class="community-edit-btn" data-post-id="${post.id}" type="button" aria-label="Mais opções">
+               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg>
+             </button>
+             <div class="community-post-dropdown" id="dropdown-${post.id}" hidden>
+               ${isOwn ? `<button class="community-dropdown-item" data-action="edit" data-post-id="${post.id}">Editar publicação</button>` : ""}
+               <button class="community-dropdown-item community-dropdown-delete" data-action="delete" data-post-id="${post.id}">${isOwn ? "Excluir publicação" : "Excluir como admin"}</button>
+             </div>
+           </div>`
+        : "";
+
+      const avatarHtml = post.author_avatar_url
+        ? `<img src="${escapeHtml(post.author_avatar_url)}" alt="" />`
+        : escapeHtml(initials);
+
+      return `
+        <article class="community-post-card" data-post-id="${post.id}" data-community-type="${communityType}">
+
+          <!-- Cabeçalho do post -->
+          <div class="community-post-header">
+            <div class="community-post-avatar${post.author_avatar_url ? " has-image" : ""}">${avatarHtml}</div>
+            <div class="community-post-author">
+              <strong>${escapeHtml(post.author_name || "Mulher Vida Nova")}</strong>
+              <span>${timeAgo(post.created_at)}</span>
+            </div>
+            ${moreBtn}
+          </div>
+
+          <!-- Conteúdo -->
+          <div class="community-post-content" data-post-id="${post.id}">
+            ${post.content ? `<p class="community-post-text">${escapeHtml(post.content)}</p>` : ""}
+          </div>
+          ${photoHtml}
+
+          <!-- Formulário de edição (oculto) -->
+          <div class="community-edit-form" id="edit-form-${post.id}" hidden>
+            <div class="community-edit-photo-preview" id="edit-photo-preview-${post.id}">
+              ${post.image_data ? `<img src="${post.image_data}" alt="" /><button type="button" class="community-photo-remove community-edit-photo-remove" data-post-id="${post.id}">×</button>` : ""}
+            </div>
+            <textarea class="community-edit-textarea" data-post-id="${post.id}" maxlength="600">${escapeHtml(post.content || "")}</textarea>
+            <div class="community-edit-actions">
+              <label class="community-composer-media-btn community-edit-photo-label" title="Trocar foto">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
+                <input type="file" class="community-edit-photo-input" data-post-id="${post.id}" accept="image/*" style="display:none" />
+              </label>
+              <button class="community-edit-cancel" data-post-id="${post.id}" type="button">Cancelar</button>
+              <button class="community-edit-save" data-post-id="${post.id}" type="button">Salvar</button>
+            </div>
+          </div>
+
+          <!-- Contadores -->
+          <div class="community-post-counts">
+            ${likesCount > 0 ? `<span class="community-likes-span" data-count="${likesCount}">${likesCount} ${likesCount === 1 ? "curtida" : "curtidas"}</span>` : ""}
+            ${commentsCount > 0 ? `<button class="community-view-comments-btn" data-post-id="${post.id}">${commentsCount} ${commentsCount === 1 ? "comentário" : "comentários"}</button>` : ""}
+          </div>
+
+          <!-- Barra de ações -->
+          <div class="community-post-actions">
+            <button class="community-like-btn ${liked ? "is-liked" : ""}" data-post-id="${post.id}" type="button" aria-label="Curtir">
+              <svg viewBox="0 0 24 24"><path d="M20.8 5.6a5.1 5.1 0 0 0-7.2 0L12 7.2l-1.6-1.6a5.1 5.1 0 1 0-7.2 7.2L12 21l8.8-8.2a5.1 5.1 0 0 0 0-7.2Z"/></svg>
+              Curtir
+            </button>
+            <button class="community-comment-trigger" data-post-id="${post.id}" type="button">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+              Comentar
+            </button>
+          </div>
+
+          <!-- Seção de comentários -->
+          <div class="community-comments-section" id="comments-${post.id}" hidden>
+            <div class="community-comments-list"></div>
+            <div class="community-inline-comment">
+              <div class="community-comment-self-avatar${currentSession?.avatar_url ? " has-image" : ""}">${currentSession?.avatar_url ? `<img src="${escapeHtml(currentSession.avatar_url)}" alt="" />` : escapeHtml(String(currentSession?.name || "V").split(/\s+/).slice(0,2).map(p=>p[0]?.toUpperCase()||"").join("") || "V")}</div>
+              <form class="community-comment-form" data-post-id="${post.id}">
+                <input type="text" placeholder="Adicione um comentário…" maxlength="300" required />
+                <button type="submit">Enviar</button>
+              </form>
+            </div>
+          </div>
+
+        </article>
+      `;
+    })
+    .join("");
+
+  communityFeed.querySelectorAll(".community-like-btn").forEach((btn) => {
+    btn.addEventListener("click", () => toggleLike(btn.dataset.postId, btn));
+  });
+  communityFeed.querySelectorAll(".community-comment-trigger, .community-view-comments-btn").forEach((btn) => {
+    btn.addEventListener("click", () => toggleComments(btn.dataset.postId));
+  });
+  communityFeed.querySelectorAll(".community-comment-form").forEach((form) => {
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const input = form.querySelector("input");
+      submitComment(form.dataset.postId, input.value, input);
+    });
+  });
+  communityFeed.querySelectorAll(".community-edit-btn").forEach((btn) => {
+    btn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const dropdown = document.getElementById(`dropdown-${btn.dataset.postId}`);
+      if (!dropdown) return;
+      const isHidden = dropdown.hidden;
+      document.querySelectorAll(".community-post-dropdown").forEach((d) => { d.hidden = true; });
+      dropdown.hidden = !isHidden;
+    });
+  });
+  communityFeed.querySelectorAll(".community-dropdown-item").forEach((item) => {
+    item.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const postId = item.dataset.postId;
+      const dropdown = document.getElementById(`dropdown-${postId}`);
+      if (dropdown) dropdown.hidden = true;
+      if (item.dataset.action === "edit") enterEditMode(postId);
+      else if (item.dataset.action === "delete") deletePost(postId);
+    });
+  });
+  communityFeed.querySelectorAll(".community-edit-cancel").forEach((btn) => {
+    btn.addEventListener("click", () => cancelEditMode(btn.dataset.postId));
+  });
+  communityFeed.querySelectorAll(".community-edit-save").forEach((btn) => {
+    btn.addEventListener("click", () => saveEdit(btn.dataset.postId));
+  });
+  communityFeed.querySelectorAll(".community-edit-photo-input").forEach((input) => {
+    input.addEventListener("change", async () => {
+      const file = input.files[0];
+      if (!file) return;
+      const postId = input.dataset.postId;
+      const previewWrap = document.getElementById(`edit-photo-preview-${postId}`);
+      const data = await compressImage(file);
+      input._editPhotoData = data;
+      if (previewWrap) {
+        previewWrap.innerHTML = `<img src="${data}" alt="" /><button type="button" class="community-photo-remove community-edit-photo-remove" data-post-id="${postId}">×</button>`;
+        previewWrap.querySelector(".community-edit-photo-remove")?.addEventListener("click", () => {
+          input._editPhotoData = "__remove__";
+          previewWrap.innerHTML = "";
+        });
+      }
+      input.value = "";
+    });
+  });
+  communityFeed.querySelectorAll(".community-edit-photo-remove").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const postId = btn.dataset.postId;
+      const input = communityFeed.querySelector(`.community-edit-photo-input[data-post-id="${postId}"]`);
+      if (input) input._editPhotoData = "__remove__";
+      const previewWrap = document.getElementById(`edit-photo-preview-${postId}`);
+      if (previewWrap) previewWrap.innerHTML = "";
+    });
+  });
+  applyCommunityFilter(document.querySelector("[data-community-filter].is-active")?.dataset.communityFilter || "all");
+}
+
+function enterEditMode(postId) {
+  const content = document.querySelector(`.community-post-content[data-post-id="${postId}"]`);
+  const form = document.getElementById(`edit-form-${postId}`);
+  if (content) content.hidden = true;
+  if (form) {
+    form.hidden = false;
+    form.querySelector("textarea")?.focus();
+  }
+}
+
+function cancelEditMode(postId) {
+  const content = document.querySelector(`.community-post-content[data-post-id="${postId}"]`);
+  const form = document.getElementById(`edit-form-${postId}`);
+  if (content) content.hidden = false;
+  if (form) form.hidden = true;
+}
+
+async function saveEdit(postId) {
+  const textarea = communityFeed?.querySelector(`.community-edit-textarea[data-post-id="${postId}"]`);
+  const photoInput = communityFeed?.querySelector(`.community-edit-photo-input[data-post-id="${postId}"]`);
+  const saveBtn = communityFeed?.querySelector(`.community-edit-save[data-post-id="${postId}"]`);
+  const content = textarea?.value.trim() || "";
+  let imageData = photoInput?._editPhotoData;
+  if (imageData === "__remove__") imageData = null;
+
+  if (saveBtn) saveBtn.disabled = true;
+  try {
+    const res = await apiPost("/api/community/edit", {
+      token: getAuthToken(),
+      post_id: Number(postId),
+      content,
+      image_data: imageData !== undefined ? imageData : undefined,
+    });
+    renderCommunityFeed(res.posts || []);
+  } catch (err) {
+    alert(err.message || "Erro ao salvar.");
+    if (saveBtn) saveBtn.disabled = false;
+  }
+}
+
+async function deletePost(postId) {
+  if (!confirm("Excluir esta publicação?")) return;
+  try {
+    const res = await apiPost("/api/community/delete", { token: getAuthToken(), post_id: Number(postId) });
+    renderCommunityFeed(res.posts || []);
+  } catch (err) {
+    alert(err.message || "Erro ao excluir.");
+  }
+}
+
+async function toggleLike(postId, btn) {
+  if (!getAuthToken()) return;
+  const wasLiked = btn.classList.contains("is-liked");
+
+  const card = communityFeed?.querySelector(`.community-post-card[data-post-id="${postId}"]`);
+  const countsEl = card?.querySelector(".community-post-counts");
+  let likesSpan = countsEl?.querySelector(".community-likes-span");
+
+  const current = parseInt(likesSpan?.dataset.count || "0") || 0;
+  const newCount = wasLiked ? current - 1 : current + 1;
+
+  btn.classList.toggle("is-liked");
+
+  if (countsEl) {
+    if (newCount > 0) {
+      if (!likesSpan) {
+        likesSpan = document.createElement("span");
+        likesSpan.className = "community-likes-span";
+        countsEl.prepend(likesSpan);
+      }
+      likesSpan.dataset.count = newCount;
+      likesSpan.textContent = `${newCount} ${newCount === 1 ? "curtida" : "curtidas"}`;
+    } else if (likesSpan) {
+      likesSpan.remove();
+    }
+  }
+
+  try {
+    await apiPost("/api/community/like", { token: getAuthToken(), post_id: Number(postId) });
+  } catch {
+    btn.classList.toggle("is-liked");
+    if (countsEl) {
+      const rollback = wasLiked ? current : current - 1;
+      let span = countsEl.querySelector(".community-likes-span");
+      if (rollback > 0) {
+        if (!span) { span = document.createElement("span"); span.className = "community-likes-span"; countsEl.prepend(span); }
+        span.dataset.count = rollback;
+        span.textContent = `${rollback} ${rollback === 1 ? "curtida" : "curtidas"}`;
+      } else if (span) { span.remove(); }
+    }
+  }
+}
+
+async function toggleComments(postId) {
+  const section = document.getElementById(`comments-${postId}`);
+  if (!section) return;
+  const isHidden = section.hidden;
+  section.hidden = !isHidden;
+  if (isHidden) {
+    await loadComments(postId);
+  }
+}
+
+async function loadComments(postId) {
+  const section = document.getElementById(`comments-${postId}`);
+  if (!section) return;
+  const list = section.querySelector(".community-comments-list");
+  list.innerHTML = `<p class="community-comments-loading">Carregando…</p>`;
+  try {
+    const res = await apiPost("/api/community/comments", { token: getAuthToken(), post_id: Number(postId) });
+    renderComments(list, res.comments || []);
+  } catch {
+    list.innerHTML = "";
+  }
+}
+
+function renderComments(listEl, comments) {
+  if (!comments.length) {
+    listEl.innerHTML = `<p class="community-comments-empty">Seja a primeira a comentar.</p>`;
+    return;
+  }
+  listEl.innerHTML = comments.map((c) => {
+    const initials = String(c.author_name || "VN").split(/\s+/).slice(0, 2)
+      .map((p) => p[0]?.toUpperCase() || "").join("") || "VN";
+    return `
+      <div class="community-comment-item">
+        <div class="community-comment-avatar${c.author_avatar_url ? " has-image" : ""}">${c.author_avatar_url ? `<img src="${escapeHtml(c.author_avatar_url)}" alt="" />` : escapeHtml(initials)}</div>
+        <div class="community-comment-body">
+          <strong>${escapeHtml(c.author_name || "Mulher Vida Nova")}</strong>
+          <span>${timeAgo(c.created_at)}</span>
+          <p>${escapeHtml(c.content || "")}</p>
+        </div>
+      </div>
+    `;
+  }).join("");
+}
+
+async function submitComment(postId, text, inputEl) {
+  const content = (text || "").trim();
+  if (!content || !getAuthToken()) return;
+  inputEl.disabled = true;
+  try {
+    const res = await apiPost("/api/community/comment", { token: getAuthToken(), post_id: Number(postId), content });
+    const section = document.getElementById(`comments-${postId}`);
+    if (section) renderComments(section.querySelector(".community-comments-list"), res.comments || []);
+    inputEl.value = "";
+    const countEl = communityFeed?.querySelector(`.community-comment-btn[data-post-id="${postId}"] .community-comment-count`);
+    if (countEl) {
+      const n = (parseInt(countEl.textContent) || 0) + 1;
+      countEl.textContent = n;
+    }
+  } catch (err) {
+    console.error(err);
+  } finally {
+    inputEl.disabled = false;
+    inputEl.focus();
+  }
+}
+
+async function loadCommunityFeed() {
+  if (!communityFeed || !getAuthToken()) {
+    return;
+  }
+
+  communityFeed.innerHTML = `<article class="community-empty"><strong>Carregando comunidade...</strong></article>`;
+
+  try {
+    const response = await apiPost("/api/community/list", { token: getAuthToken() });
+    renderCommunityFeed(response.posts || []);
+  } catch (error) {
+    communityFeed.innerHTML = `
+      <article class="community-empty">
+        <strong>Não foi possível carregar a comunidade</strong>
+        <p>${escapeHtml(error.message)}</p>
+      </article>
+    `;
+  }
+}
+
+let _communityPhotoData = null;
+let _communityPhotoFormat = "square";
+
+function compressImage(file, maxPx = 1080, quality = 0.78) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const img = new Image();
+      img.onload = () => {
+        const scale = Math.min(1, maxPx / Math.max(img.width, img.height));
+        const canvas = document.createElement("canvas");
+        canvas.width = Math.round(img.width * scale);
+        canvas.height = Math.round(img.height * scale);
+        canvas.getContext("2d").drawImage(img, 0, 0, canvas.width, canvas.height);
+        resolve(canvas.toDataURL("image/jpeg", quality));
+      };
+      img.onerror = reject;
+      img.src = e.target.result;
+    };
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
+function setupCommunityPhotoInput() {
+  const photoInput = document.querySelector("#community-photo-input");
+  const preview = document.querySelector("#community-photo-preview");
+  const previewImg = document.querySelector("#community-photo-preview-img");
+  const removeBtn = document.querySelector("#community-photo-remove");
+
+  if (!photoInput) return;
+  if (photoInput.dataset.communityPhotoBound === "true") return;
+  photoInput.dataset.communityPhotoBound = "true";
+
+  function applyPreviewFormat(fmt) {
+    if (!previewImg) return;
+    if (fmt === "story") {
+      previewImg.style.aspectRatio = "9 / 16";
+      previewImg.style.width = "56%";
+      previewImg.style.margin = "0 auto";
+      previewImg.style.display = "block";
+    } else {
+      previewImg.style.aspectRatio = "1 / 1";
+      previewImg.style.width = "100%";
+      previewImg.style.margin = "";
+      previewImg.style.display = "block";
+    }
+  }
+
+  photoInput.addEventListener("change", async () => {
+    const file = photoInput.files[0];
+    if (!file) return;
+    try {
+      _communityPhotoData = await compressImage(file);
+      previewImg.src = _communityPhotoData;
+      applyPreviewFormat(_communityPhotoFormat);
+      preview.hidden = false;
+      const formatToggle = document.getElementById("community-format-toggle");
+      if (formatToggle) formatToggle.hidden = false;
+    } catch {
+      setFeedback(communityPostFeedback, "Não foi possível carregar a foto.", "error");
+    }
+    photoInput.value = "";
+  });
+
+  if (removeBtn) {
+    removeBtn.addEventListener("click", () => {
+      _communityPhotoData = null;
+      _communityPhotoFormat = "square";
+      previewImg.src = "";
+      preview.hidden = true;
+      const formatToggle = document.getElementById("community-format-toggle");
+      if (formatToggle) formatToggle.hidden = true;
+    });
+  }
+
+  document.querySelectorAll(".community-format-btn").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      _communityPhotoFormat = btn.dataset.format;
+      document.querySelectorAll(".community-format-btn").forEach((b) => b.classList.remove("is-active"));
+      btn.classList.add("is-active");
+      applyPreviewFormat(_communityPhotoFormat);
+    });
+  });
+}
+
+function applyCommunityFilter(filter = "all") {
+  const normalizedFilter = ["all", "photos", "text"].includes(filter) ? filter : "all";
+  document.querySelectorAll("[data-community-filter]").forEach((button) => {
+    button.classList.toggle("is-active", button.dataset.communityFilter === normalizedFilter);
+  });
+  document.querySelectorAll(".community-post-card").forEach((card) => {
+    const type = card.dataset.communityType || "text";
+    card.hidden = normalizedFilter !== "all" && type !== normalizedFilter;
+  });
+}
+
+function setupCommunityUiEnhancements() {
+  if (document._communityUiEnhancementsSet) return;
+  document._communityUiEnhancementsSet = true;
+
+  document.addEventListener("click", (event) => {
+    const focusPostTrigger = event.target.closest("[data-community-focus-post]");
+    if (focusPostTrigger) {
+      event.preventDefault();
+      const input = document.querySelector("#community-post-input");
+      input?.focus({ preventScroll: true });
+      input?.scrollIntoView({ behavior: "smooth", block: "center" });
+      return;
+    }
+
+    const filterButton = event.target.closest("[data-community-filter]");
+    if (filterButton) {
+      event.preventDefault();
+      applyCommunityFilter(filterButton.dataset.communityFilter);
+      return;
+    }
+
+    const shortcut = event.target.closest("[data-community-filter-shortcut]");
+    if (shortcut) {
+      event.preventDefault();
+      applyCommunityFilter(shortcut.dataset.communityFilterShortcut);
+    }
+  });
+}
+
+async function publishCommunityPost(content) {
+  if (!communityPostFeedback) return;
+  const cleanedContent = String(content || "").trim();
+  const publishButton = document.querySelector(".community-publish-btn");
+
+  if (!cleanedContent && !_communityPhotoData) {
+    setFeedback(communityPostFeedback, "Escreva uma mensagem ou adicione uma foto.", "error");
+    communityPostInput?.focus();
+    return;
+  }
+
+  if (publishButton) {
+    publishButton.disabled = true;
+    publishButton.classList.add("is-loading");
+  }
+  setFeedback(communityPostFeedback, "Publicando...");
+  try {
+    const response = await apiPost("/api/community/post", {
+      token: getAuthToken(),
+      content: cleanedContent,
+      image_data: _communityPhotoData || null,
+      image_format: _communityPhotoFormat,
+    });
+    if (communityPostInput) communityPostInput.value = "";
+    _communityPhotoData = null;
+    _communityPhotoFormat = "square";
+    const preview = document.querySelector("#community-photo-preview");
+    if (preview) { preview.hidden = true; const img = preview.querySelector("img"); if (img) img.src = ""; }
+    const formatToggle = document.getElementById("community-format-toggle");
+    if (formatToggle) formatToggle.hidden = true;
+    document.querySelectorAll(".community-format-btn").forEach((b) => { b.classList.toggle("is-active", b.dataset.format === "square"); });
+    setFeedback(communityPostFeedback, "Publicado!", "success");
+    renderCommunityFeed(response.posts || []);
+    applyCommunityFilter(document.querySelector("[data-community-filter].is-active")?.dataset.communityFilter || "all");
+  } catch (error) {
+    setFeedback(communityPostFeedback, error.message, "error");
+  } finally {
+    if (publishButton) {
+      publishButton.disabled = false;
+      publishButton.classList.remove("is-loading");
+    }
+  }
 }
 
 function hasActiveSubscription(session = currentSession) {
@@ -1394,8 +1984,6 @@ function collectCloudState() {
     financeFilter: activeFinanceFilter,
     cards: getSavedCardsState(),
     gridOrders: getSavedGridOrders(),
-    cycleLogs,
-    cycleHistory,
   };
 }
 
@@ -1428,8 +2016,6 @@ function createEmptyCloudState() {
     financeFilter: "all",
     cards: {},
     gridOrders: {},
-    cycleLogs: {},
-    cycleHistory: [],
   };
 }
 
@@ -1529,20 +2115,6 @@ function applyCloudState(state) {
   saveDreamVisionImages(Array.isArray(state.dreamImages) ? state.dreamImages : [], "main");
   saveDreamVisionImages(Array.isArray(state.plannerDreamImages) ? state.plannerDreamImages : [], "planner");
   applyPersistedFieldState(state.persistedFields || {});
-  
-  if (state.cycleLogs) {
-    cycleLogs = state.cycleLogs;
-    localStorage.setItem("vida-nova:cycle-logs", JSON.stringify(cycleLogs));
-  }
-  if (state.cycleHistory) {
-    cycleHistory = state.cycleHistory;
-    localStorage.setItem("vida-nova:cycle-history", JSON.stringify(cycleHistory));
-  }
-  if (typeof calculateAndRenderCycle === "function") {
-    calculateAndRenderCycle();
-    renderCycleHistory();
-  }
-
   renderPlannerPostitBoard();
   renderDashboardCovers();
   applyPageColors();
@@ -1556,15 +2128,31 @@ function scheduleCloudSync() {
   }
 
   window.clearTimeout(syncTimeoutId);
+  // Clear any scheduled retry to avoid overlapping attempts
+  if (cloudSyncRetry.timer) {
+    clearTimeout(cloudSyncRetry.timer);
+    cloudSyncRetry.timer = null;
+  }
+
   syncTimeoutId = window.setTimeout(() => {
     syncInFlight = apiPost("/api/data/save", {
       token: getAuthToken(),
       dataType: CLOUD_STATE_TYPE,
       dataKey: CLOUD_STATE_KEY,
       dataValue: collectCloudState(),
-    }).catch((error) => {
-      console.error("Erro ao sincronizar dados:", error);
-    });
+    })
+      .then(() => {
+        cloudSyncRetry.attempt = 0;
+        cloudSyncRetry.timer = null;
+        updateSyncStatus("Sincronizado", "is-active");
+      })
+      .catch((error) => {
+        console.error("Erro ao sincronizar dados:", error);
+        cloudSyncRetry.attempt = (cloudSyncRetry.attempt || 0) + 1;
+        const delay = Math.min(1000 * Math.pow(2, cloudSyncRetry.attempt), 5 * 60 * 1000);
+        cloudSyncRetry.timer = setTimeout(scheduleCloudSync, delay);
+        updateSyncStatus(`Falha na sincronização. Re-tentando em ${Math.ceil(delay / 1000)}s`, "is-inactive");
+      });
   }, 250);
 }
 
@@ -1630,6 +2218,12 @@ function renderVerse() {
   if (headlineVerseReference) {
     headlineVerseReference.textContent = verse.reference;
   }
+  if (mobileVerseText) {
+    mobileVerseText.textContent = verse.text;
+  }
+  if (mobileVerseRef) {
+    mobileVerseRef.textContent = verse.reference;
+  }
 }
 
 function cycleVerse() {
@@ -1639,6 +2233,11 @@ function cycleVerse() {
 
 if (changeVerseButton) {
   changeVerseButton.addEventListener("click", cycleVerse);
+}
+
+const mobileChangeVerseBtn = document.querySelector("#mobile-change-verse-btn");
+if (mobileChangeVerseBtn) {
+  mobileChangeVerseBtn.addEventListener("click", cycleVerse);
 }
 
 function setActivePage(pageName, syncHash = true) {
@@ -1667,6 +2266,7 @@ function setActivePage(pageName, syncHash = true) {
   // Remove classe de agenda full-screen ao sair da página planner
   if (nextPage !== "planner") {
     document.body.classList.remove("agenda-tab-active");
+    document.body.classList.remove("planner-dreams-active");
   }
 
   if (syncHash && window.location.hash !== `#${nextPage}`) {
@@ -1681,6 +2281,29 @@ function setActivePage(pageName, syncHash = true) {
 
   if (nextPage === "admin" && isAdminSession()) {
     loadAdminDashboard();
+  }
+
+  if (nextPage === "comunidade") {
+    const composerAvatar = document.getElementById("community-composer-avatar");
+    if (composerAvatar && currentSession) {
+      renderAvatar(composerAvatar, currentSession.avatar_url, getSessionInitials(currentSession));
+    }
+    loadCommunityFeed();
+    setupCommunityPhotoInput();
+    setupCommunityUiEnhancements();
+    applyCommunityFilter(document.querySelector("[data-community-filter].is-active")?.dataset.communityFilter || "all");
+    if (!document._communityDropdownListenerSet) {
+      document._communityDropdownListenerSet = true;
+      document.addEventListener("click", (e) => {
+        if (!e.target.closest(".community-post-more-wrap")) {
+          document.querySelectorAll(".community-post-dropdown").forEach((d) => { d.hidden = true; });
+        }
+      });
+    }
+  }
+
+  if (nextPage === "ciclo") {
+    resizeCycleModuleFrame();
   }
 
   window.scrollTo({ top: 0, behavior: "smooth" });
@@ -2859,6 +3482,7 @@ function saveAgendaStore() {
   localStorage.setItem("ela-em-ordem:agenda-events", JSON.stringify(agendaStore));
   scheduleAllAgendaNotifications();
   scheduleCloudSync();
+  if (window.agendaFirebase) window.agendaFirebase.onEventsSaved(agendaStore);
 }
 
 function findAgendaEventById(dateKey, eventId) {
@@ -3773,8 +4397,15 @@ function hydrateSessionUI(session) {
   if (userGreeting) {
     userGreeting.textContent = `Bem-vinda, ${session.name}`;
   }
+  if (topbarAccountName) {
+    topbarAccountName.textContent = session.name || "Vida Nova";
+  }
+  if (mobileHomeName) {
+    mobileHomeName.textContent = String(session.name || "Vida Nova").toUpperCase();
+  }
 
   renderAvatar(topbarAvatar, session.avatar_url, getSessionInitials(session));
+  renderAvatar(mobileHomeAvatar, session.avatar_url || "assets/login-hero-woman.png", getSessionInitials(session));
   renderAvatar(settingsAvatarPreview, session.avatar_url, getSessionInitials(session));
 
   if (settingsProfileName) {
@@ -4571,6 +5202,14 @@ dashboardOpenButtons.forEach((button) => {
   });
 });
 
+if (communityPostForm) {
+  communityPostForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+    const content = communityPostInput?.value.trim() || "";
+    publishCommunityPost(content);
+  });
+}
+
 document.addEventListener("click", (event) => {
   const dashboardTrigger = event.target.closest("[data-dashboard-open]");
   if (dashboardTrigger) {
@@ -4651,7 +5290,7 @@ if (agendaForm) {
       .map((guest) => guest.trim())
       .filter(Boolean);
     const calendarId = agendaCalendarInput?.value || calendarStore[0]?.id || "pessoal";
-    const category = getCalendarById(calendarId)?.name || "Pessoal";
+    const category = agendaCategoryInput.value || "Pessoal";
     const color = agendaColorInput.value || getCalendarById(calendarId).color || "#4285f4";
     const recurrence = agendaRecurrenceInput?.value || "none";
     const reminderMinutes = Number(agendaReminderInput?.value ?? 15);
@@ -5361,7 +6000,7 @@ function renderPlannerDreamBoard() {
   const images = getStoredDreamVisionImages("planner");
   plannerDreamBoardGrid.innerHTML = "";
 
-  for (let index = 0; index < 12; index += 1) {
+  for (let index = 0; index < 10; index += 1) {
     const image = images[index] || null;
     const item = document.createElement("article");
     item.className = `planner-dream-slot${image ? " has-image" : ""}`;
@@ -5574,18 +6213,38 @@ function setPlannerTab(target) {
   const buttons = plannerShell.querySelectorAll("[data-tab-target]");
   const panels = plannerShell.querySelectorAll("[data-tab-panel]");
   currentPlannerTab = target;
+  const dreamsOnly = target === "planner-dreams";
+  document.body.classList.toggle("planner-dreams-active", dreamsOnly);
+  plannerShell.classList.toggle("is-dreams-only", dreamsOnly);
+  plannerShell.dataset.plannerMode = dreamsOnly ? "dreams" : "planner";
+
+  const ribbon = plannerShell.querySelector(".planner-tab-ribbon");
+  if (ribbon) {
+    ribbon.hidden = dreamsOnly;
+    ribbon.setAttribute("aria-hidden", dreamsOnly ? "true" : "false");
+  }
 
   buttons.forEach((button) => {
     button.classList.toggle("is-active", button.dataset.tabTarget === target);
   });
 
   panels.forEach((panel) => {
-    panel.classList.toggle("is-active", panel.dataset.tabPanel === target);
+    const isActive = panel.dataset.tabPanel === target;
+    panel.classList.toggle("is-active", isActive);
+    panel.hidden = dreamsOnly ? panel.dataset.tabPanel !== "planner-dreams" : false;
   });
 
   // No mobile: agenda ocupa tela cheia (bloqueia scroll da página)
   if (window.innerWidth < 768) {
     document.body.classList.toggle("agenda-tab-active", target === "planner-agenda");
+    if (target === "planner-agenda") {
+      // Renderiza o strip e o timeline ao abrir a agenda
+      requestAnimationFrame(() => {
+        renderWeekView();
+        if (typeof window.renderMobWeekStrip === "function") window.renderMobWeekStrip();
+        if (typeof window.updateMobDayLabel === "function") window.updateMobDayLabel();
+      });
+    }
   }
 }
 
@@ -6129,6 +6788,11 @@ renderDashboardCovers();
 renderAgendaColorPalettes();
 applyPageColors();
 
+if (cycleModuleFrame) {
+  cycleModuleFrame.addEventListener("load", resizeCycleModuleFrame);
+  window.addEventListener("resize", resizeCycleModuleFrame);
+}
+
 document.addEventListener("click", (event) => {
   const colorSwatch = event.target.closest("[data-app-color-scope][data-app-color-value]");
   if (colorSwatch) {
@@ -6277,7 +6941,7 @@ if (calendarModalForm) {
         .map((guest) => guest.trim())
         .filter(Boolean),
       calendarId,
-      category: getCalendarById(calendarId)?.name || "Pessoal",
+      category: calendarModalCategory.value || "Pessoal",
       recurrence: calendarModalRecurrence?.value || "none",
       reminderMinutes,
       color: calendarModalColor.value || getCalendarById(calendarId).color || "#4285f4",
@@ -6816,6 +7480,7 @@ async function bootApp() {
   renderVerse();
   renderTasks();
   renderCalendar();
+  renderWeekView();
   renderAgendaEvents();
   resetAgendaForm();
   scheduleAllAgendaNotifications();
@@ -6828,9 +7493,6 @@ async function bootApp() {
   setupTabs();
   setupDreamVisionUpload();
   setupProjectUploads();
-  if (typeof initMenstrualCycle === "function") {
-    initMenstrualCycle();
-  }
   registerServiceWorker();
   startVersionPolling();
   startClientKeepAlive();
@@ -7309,13 +7971,14 @@ window.DynTable.initAll();
     label.textContent = `${dayNames[d.getDay()]}. ${d.getDate()}`;
   }
 
-  // Botão de voltar no header mobile — fecha a agenda e volta ao dashboard
+  // Botão de voltar no header mobile — fecha a agenda e volta para as abas da My Planner.
   const mobBackBtn = document.getElementById("agenda-mob-back");
   if (mobBackBtn) {
     mobBackBtn.addEventListener("click", () => {
       document.body.classList.remove("agenda-tab-active");
       document.body.style.overflow = "";
-      setActivePage("dashboard");
+      setActivePage("planner");
+      setPlannerTab("planner-weekly");
     });
   }
 
@@ -7513,497 +8176,6 @@ function flushSyncNow() {
     navigator.sendBeacon("/api/data/save", new Blob([payload], { type: "application/json" }));
   }
 }
-
-/* ── INICIALIZAÇÃO E LÓGICA DO CICLO MENSTRUAL ── */
-
-let cycleLogs = JSON.parse(localStorage.getItem("vida-nova:cycle-logs") || "{}");
-let cycleHistory = JSON.parse(localStorage.getItem("vida-nova:cycle-history") || "[]");
-
-// Data selecionada no calendário menstrual (default hoje)
-let selectedCycleDate = new Date().toISOString().split("T")[0];
-
-// Mês sendo visualizado no calendário menstrual (default hoje)
-let currentCycleViewDate = new Date();
-
-function initMenstrualCycle() {
-  const durationInput = document.getElementById("cycle-input-duration");
-  const flowInput = document.getElementById("cycle-input-flow");
-  const startInput = document.getElementById("cycle-input-start");
-
-  // Fallbacks para datas/valores persistidos
-  if (durationInput && !durationInput.value) durationInput.value = "28";
-  if (flowInput && !flowInput.value) flowInput.value = "5";
-  if (startInput && !startInput.value) {
-    const d = new Date();
-    d.setDate(d.getDate() - 10);
-    startInput.value = d.toISOString().split("T")[0];
-    localStorage.setItem("vida-nova:field:cycle-last-start", startInput.value);
-  }
-
-  // Listener para inputs de ciclo
-  [durationInput, flowInput, startInput].forEach(inp => {
-    if (inp) {
-      inp.addEventListener("change", () => {
-        calculateAndRenderCycle();
-      });
-      inp.addEventListener("input", () => {
-        calculateAndRenderCycle();
-      });
-    }
-  });
-
-  // Listeners para navegação do calendário
-  const prevBtn = document.getElementById("cycle-cal-prev");
-  const nextBtn = document.getElementById("cycle-cal-next");
-  if (prevBtn) {
-    prevBtn.addEventListener("click", () => {
-      currentCycleViewDate.setMonth(currentCycleViewDate.getMonth() - 1);
-      renderCycleCalendar();
-    });
-  }
-  if (nextBtn) {
-    nextBtn.addEventListener("click", () => {
-      currentCycleViewDate.setMonth(currentCycleViewDate.getMonth() + 1);
-      renderCycleCalendar();
-    });
-  }
-
-  // Chips do registro diário (Fluxo, Humor, Sintomas)
-  setupCycleChipsGroup("cycle-flow-chips", "flow", false);
-  setupCycleChipsGroup("cycle-mood-chips", "mood", false);
-  setupCycleChipsGroup("cycle-symptom-chips", "symptoms", true);
-
-  // Sliders de energia
-  const sliders = ["cycle-slider-ef", "cycle-slider-ee", "cycle-slider-es", "cycle-slider-el"];
-  sliders.forEach(id => {
-    const slider = document.getElementById(id);
-    if (slider) {
-      slider.addEventListener("input", () => {
-        document.getElementById(id + "-val").textContent = slider.value;
-        saveDailyLog();
-      });
-    }
-  });
-
-  // Notas
-  const notesArea = document.getElementById("cycle-log-notes");
-  if (notesArea) {
-    notesArea.addEventListener("input", () => {
-      saveDailyLog();
-    });
-  }
-
-  // TPM Tracker
-  const tpmItems = document.querySelectorAll("#cycle-tpm-grid .tpm-item");
-  tpmItems.forEach(item => {
-    const dots = item.querySelectorAll(".tpm-dot");
-    dots.forEach((dot, idx) => {
-      dot.addEventListener("click", () => {
-        dots.forEach((d, i) => {
-          if (i <= idx) {
-            d.classList.add("active");
-          } else {
-            d.classList.remove("active");
-          }
-        });
-        saveDailyLog();
-      });
-    });
-  });
-
-  // Novo registro de histórico
-  const newHistBtn = document.getElementById("cycle-btn-new-hist");
-  if (newHistBtn) {
-    newHistBtn.addEventListener("click", () => {
-      const dateVal = prompt("Digite a data de início do ciclo (AAAA-MM-DD):", new Date().toISOString().split("T")[0]);
-      if (!dateVal) return;
-      const durationVal = parseInt(prompt("Duração do ciclo (dias):", "28"), 10) || 28;
-      const flowVal = parseInt(prompt("Duração da menstruação (dias):", "5"), 10) || 5;
-
-      cycleHistory.push({
-        startDate: dateVal,
-        duration: durationVal,
-        flowDuration: flowVal
-      });
-      cycleHistory.sort((a, b) => b.startDate.localeCompare(a.startDate));
-      localStorage.setItem("vida-nova:cycle-history", JSON.stringify(cycleHistory));
-      renderCycleHistory();
-      calculateAndRenderCycle();
-    });
-  }
-
-  // Carregar e renderizar tudo
-  calculateAndRenderCycle();
-  renderCycleHistory();
-}
-
-function setupCycleChipsGroup(containerId, logKey, isMulti) {
-  const container = document.getElementById(containerId);
-  if (!container) return;
-
-  container.addEventListener("click", (e) => {
-    const chip = e.target.closest(".rchip");
-    if (!chip) return;
-
-    const val = chip.dataset.val;
-    const activeClass = containerId === "cycle-mood-chips" ? "sel-purple" : (containerId === "cycle-symptom-chips" ? "sel-amber" : "sel");
-
-    if (!isMulti) {
-      container.querySelectorAll(".rchip").forEach(c => {
-        if (c !== chip) c.classList.remove(activeClass);
-      });
-      chip.classList.toggle(activeClass);
-    } else {
-      chip.classList.toggle(activeClass);
-    }
-
-    saveDailyLog();
-  });
-}
-
-function calculateAndRenderCycle() {
-  const durationInput = document.getElementById("cycle-input-duration");
-  const flowInput = document.getElementById("cycle-input-flow");
-  const startInput = document.getElementById("cycle-input-start");
-
-  const duration = parseInt(durationInput?.value || "28", 10);
-  const flow = parseInt(flowInput?.value || "5", 10);
-  const startDateStr = startInput?.value;
-
-  if (!startDateStr) return;
-
-  const startDate = new Date(startDateStr + "T00:00:00");
-  const today = new Date();
-  today.setHours(0,0,0,0);
-
-  const diffTime = today - startDate;
-  const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-  const currentDayOfCycle = ((diffDays % duration) + duration) % duration + 1;
-
-  let phase = "";
-  let phaseDesc = "";
-  let phaseProgress = 0;
-  
-  if (currentDayOfCycle <= flow) {
-    phase = "Fase Menstrual";
-    phaseDesc = "Corpo eliminando endométrio. Descanse e acolha-se.";
-    phaseProgress = Math.round((currentDayOfCycle / flow) * 100);
-  } else if (currentDayOfCycle <= duration - 14 - 3) {
-    phase = "Fase Folicular";
-    phaseDesc = "Energia crescente, disposição e clareza mental.";
-    const start = flow + 1;
-    const end = duration - 14 - 3;
-    phaseProgress = Math.round(((currentDayOfCycle - start + 1) / (end - start + 1)) * 100);
-  } else if (currentDayOfCycle <= duration - 14 + 2) {
-    phase = "Fase Ovulatória";
-    phaseDesc = "Período de maior fertilidade, comunicação e vitalidade.";
-    const start = duration - 14 - 2;
-    const end = duration - 14 + 2;
-    phaseProgress = Math.round(((currentDayOfCycle - start + 1) / (end - start + 1)) * 100);
-  } else {
-    phase = "Fase Lútea / TPM";
-    phaseDesc = "Energia decrescente. Pratique autocuidado e seja paciente.";
-    const start = duration - 14 + 3;
-    const end = duration;
-    phaseProgress = Math.round(((currentDayOfCycle - start + 1) / (end - start + 1)) * 100);
-  }
-
-  const phaseValEl = document.getElementById("cycle-current-phase-val");
-  const phaseDescEl = document.getElementById("cycle-current-phase-desc");
-  const phaseProgressEl = document.getElementById("cycle-current-phase-progress");
-  
-  if (phaseValEl) phaseValEl.textContent = `${phase} (Dia ${currentDayOfCycle}/${duration})`;
-  if (phaseDescEl) phaseDescEl.textContent = phaseDesc;
-  if (phaseProgressEl) phaseProgressEl.style.width = phaseProgress + "%";
-
-  const ovulationDate = new Date(startDate.getTime());
-  ovulationDate.setDate(startDate.getDate() + (duration - 14));
-  if (ovulationDate < today) {
-    ovulationDate.setDate(ovulationDate.getDate() + duration);
-  }
-  const diffOv = Math.ceil((ovulationDate - today) / (1000 * 60 * 60 * 24));
-  const nextOvValEl = document.getElementById("cycle-next-ovulation-val");
-  if (nextOvValEl) {
-    nextOvValEl.textContent = diffOv === 0 ? "Hoje!" : `Em ${diffOv} dia(s)`;
-  }
-
-  const fertileStart = new Date(ovulationDate.getTime());
-  fertileStart.setDate(ovulationDate.getDate() - 5);
-  const fertileEnd = new Date(ovulationDate.getTime());
-  
-  const options = { day: 'numeric', month: 'short' };
-  const fertileValEl = document.getElementById("cycle-fertile-window-val");
-  if (fertileValEl) {
-    fertileValEl.textContent = `${fertileStart.toLocaleDateString('pt-BR', options)} - ${fertileEnd.toLocaleDateString('pt-BR', options)}`;
-  }
-
-  const nextPeriodDate = new Date(startDate.getTime());
-  nextPeriodDate.setDate(startDate.getDate() + duration);
-  if (nextPeriodDate < today) {
-    nextPeriodDate.setDate(nextPeriodDate.getDate() + duration);
-  }
-  const diffPeriod = Math.ceil((nextPeriodDate - today) / (1000 * 60 * 60 * 24));
-  const nextPeriodValEl = document.getElementById("cycle-next-period-val");
-  const nextPeriodDateSubEl = document.getElementById("cycle-next-period-date-sub");
-  
-  if (nextPeriodValEl) {
-    nextPeriodValEl.textContent = diffPeriod === 0 ? "Hoje!" : `Em ${diffPeriod} dia(s)`;
-  }
-  if (nextPeriodDateSubEl) {
-    nextPeriodDateSubEl.textContent = `Previsão: ${nextPeriodDate.toLocaleDateString('pt-BR', { day: 'numeric', month: 'long', year: 'numeric' })}`;
-  }
-
-  renderCycleCalendar();
-  loadDailyLog();
-}
-
-function renderCycleCalendar() {
-  const grid = document.getElementById("cycle-calendar-grid");
-  const monthTitle = document.getElementById("cycle-cal-month-title");
-  if (!grid || !monthTitle) return;
-
-  grid.innerHTML = "";
-
-  const year = currentCycleViewDate.getFullYear();
-  const month = currentCycleViewDate.getMonth();
-
-  const monthNames = [
-    "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
-    "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
-  ];
-  monthTitle.textContent = `${monthNames[month]} de ${year}`;
-
-  const firstDay = new Date(year, month, 1);
-  const lastDay = new Date(year, month + 1, 0);
-  const numDays = lastDay.getDate();
-  const startDayOfWeek = firstDay.getDay();
-
-  for (let i = 0; i < startDayOfWeek; i++) {
-    const emptyCell = document.createElement("div");
-    emptyCell.className = "cal-cell empty";
-    grid.appendChild(emptyCell);
-  }
-
-  const durationInput = document.getElementById("cycle-input-duration");
-  const flowInput = document.getElementById("cycle-input-flow");
-  const startInput = document.getElementById("cycle-input-start");
-
-  const duration = parseInt(durationInput?.value || "28", 10);
-  const flow = parseInt(flowInput?.value || "5", 10);
-  const startDateStr = startInput?.value;
-
-  for (let day = 1; day <= numDays; day++) {
-    const cellDateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-    const cellDate = new Date(cellDateStr + "T00:00:00");
-
-    const cell = document.createElement("div");
-    cell.className = "cal-cell";
-    cell.dataset.date = cellDateStr;
-
-    if (cellDateStr === selectedCycleDate) {
-      cell.classList.add("selected-day");
-    }
-
-    const t = new Date();
-    if (t.getFullYear() === year && t.getMonth() === month && t.getDate() === day) {
-      cell.classList.add("today");
-    }
-
-    let phaseClass = "";
-    let phaseLabel = "";
-
-    if (startDateStr) {
-      const baseStart = new Date(startDateStr + "T00:00:00");
-      const diffMs = cellDate - baseStart;
-      const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
-      const cycleDay = ((diffDays % duration) + duration) % duration + 1;
-      
-      if (cycleDay <= flow) {
-        phaseClass = "menstruacao";
-        phaseLabel = "mens.";
-      } else if (cycleDay >= duration - 14 - 5 && cycleDay <= duration - 14) {
-        phaseClass = "fertil";
-        phaseLabel = "fértil";
-        if (cycleDay === duration - 14) {
-          phaseClass = "ovulacao";
-          phaseLabel = "ovul.";
-        }
-      } else if (cycleDay >= duration - 7) {
-        phaseClass = "tpm";
-        phaseLabel = "tpm";
-      }
-    }
-
-    if (phaseClass) {
-      cell.classList.add(phaseClass);
-    }
-
-    cell.innerHTML = `
-      <div class="cal-num">${day}</div>
-      ${phaseLabel ? `<div class="cal-phase-label">${phaseLabel}</div>` : ""}
-    `;
-
-    cell.addEventListener("click", () => {
-      selectedCycleDate = cellDateStr;
-      
-      document.querySelectorAll("#cycle-calendar-grid .cal-cell").forEach(c => {
-        c.classList.remove("selected-day");
-      });
-      cell.classList.add("selected-day");
-
-      loadDailyLog();
-    });
-
-    grid.appendChild(cell);
-  }
-}
-
-function loadDailyLog() {
-  const dateObj = new Date(selectedCycleDate + "T00:00:00");
-  const formattedDate = dateObj.toLocaleDateString("pt-BR", { day: "numeric", month: "long", year: "numeric" });
-  
-  const titleEl = document.getElementById("cycle-log-title-date");
-  if (titleEl) {
-    titleEl.textContent = `Registro do dia: ${formattedDate}`;
-  }
-
-  const log = cycleLogs[selectedCycleDate] || {
-    flow: "",
-    mood: "",
-    symptoms: [],
-    energy: { physical: 6, emotional: 5, sleep: 7, libido: 4 },
-    notes: "",
-    tpm: {}
-  };
-
-  const flowContainer = document.getElementById("cycle-flow-chips");
-  if (flowContainer) {
-    flowContainer.querySelectorAll(".rchip").forEach(chip => {
-      chip.classList.toggle("sel", chip.dataset.val === log.flow);
-    });
-  }
-
-  const moodContainer = document.getElementById("cycle-mood-chips");
-  if (moodContainer) {
-    moodContainer.querySelectorAll(".rchip").forEach(chip => {
-      chip.classList.toggle("sel-purple", chip.dataset.val === log.mood);
-    });
-  }
-
-  const symptomContainer = document.getElementById("cycle-symptom-chips");
-  if (symptomContainer) {
-    const list = Array.isArray(log.symptoms) ? log.symptoms : [];
-    symptomContainer.querySelectorAll(".rchip").forEach(chip => {
-      chip.classList.toggle("sel-amber", list.includes(chip.dataset.val));
-    });
-  }
-
-  const sls = {
-    "cycle-slider-ef": log.energy?.physical ?? 6,
-    "cycle-slider-ee": log.energy?.emotional ?? 5,
-    "cycle-slider-es": log.energy?.sleep ?? 7,
-    "cycle-slider-el": log.energy?.libido ?? 4
-  };
-  Object.entries(sls).forEach(([id, val]) => {
-    const slider = document.getElementById(id);
-    if (slider) {
-      slider.value = val;
-      const label = document.getElementById(id + "-val");
-      if (label) label.textContent = val;
-    }
-  });
-
-  const notesArea = document.getElementById("cycle-log-notes");
-  if (notesArea) {
-    notesArea.value = log.notes || "";
-  }
-
-  const tpmItems = document.querySelectorAll("#cycle-tpm-grid .tpm-item");
-  const tpmLogs = log.tpm || {};
-  tpmItems.forEach(item => {
-    const key = item.dataset.tpmKey;
-    const value = tpmLogs[key] || 0;
-    const dots = item.querySelectorAll(".tpm-dot");
-    dots.forEach((dot, idx) => {
-      dot.classList.toggle("active", idx < value);
-    });
-  });
-}
-
-function saveDailyLog() {
-  const flowContainer = document.getElementById("cycle-flow-chips");
-  const moodContainer = document.getElementById("cycle-mood-chips");
-  const symptomContainer = document.getElementById("cycle-symptom-chips");
-
-  const flowChip = flowContainer?.querySelector(".rchip.sel");
-  const moodChip = moodContainer?.querySelector(".rchip.sel-purple");
-  
-  const symptoms = [];
-  symptomContainer?.querySelectorAll(".rchip.sel-amber").forEach(c => {
-    symptoms.push(c.dataset.val);
-  });
-
-  const physical = parseInt(document.getElementById("cycle-slider-ef")?.value || "6", 10);
-  const emotional = parseInt(document.getElementById("cycle-slider-ee")?.value || "5", 10);
-  const sleep = parseInt(document.getElementById("cycle-slider-es")?.value || "7", 10);
-  const libido = parseInt(document.getElementById("cycle-slider-el")?.value || "4", 10);
-
-  const notes = document.getElementById("cycle-log-notes")?.value || "";
-
-  const tpm = {};
-  const tpmItems = document.querySelectorAll("#cycle-tpm-grid .tpm-item");
-  tpmItems.forEach(item => {
-    const key = item.dataset.tpmKey;
-    const activeCount = item.querySelectorAll(".tpm-dot.active").length;
-    tpm[key] = activeCount;
-  });
-
-  cycleLogs[selectedCycleDate] = {
-    flow: flowChip ? flowChip.dataset.val : "",
-    mood: moodChip ? moodChip.dataset.val : "",
-    symptoms,
-    energy: { physical, emotional, sleep, libido },
-    notes,
-    tpm
-  };
-
-  localStorage.setItem("vida-nova:cycle-logs", JSON.stringify(cycleLogs));
-  scheduleCloudSync();
-}
-
-function renderCycleHistory() {
-  const tbody = document.querySelector("#cycle-history-table tbody");
-  if (!tbody) return;
-
-  if (cycleHistory.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="4" style="text-align:center;color:var(--muted)">Nenhum ciclo registrado.</td></tr>`;
-    return;
-  }
-
-  tbody.innerHTML = cycleHistory.map((item, index) => {
-    const dateObj = new Date(item.startDate + "T00:00:00");
-    const formattedDate = dateObj.toLocaleDateString("pt-BR", { day: "numeric", month: "short", year: "numeric" });
-    return `
-      <tr>
-        <td>${escapeHtml(formattedDate)}</td>
-        <td>${escapeHtml(item.duration)} dias</td>
-        <td>${escapeHtml(item.flowDuration)} dias</td>
-        <td>
-          <button type="button" class="btn-delete-hist" onclick="deleteCycleHistoryItem(${index})">🗑️</button>
-        </td>
-      </tr>
-    `;
-  }).join("");
-}
-
-window.deleteCycleHistoryItem = function(index) {
-  if (confirm("Deseja realmente excluir este ciclo do histórico?")) {
-    cycleHistory.splice(index, 1);
-    localStorage.setItem("vida-nova:cycle-history", JSON.stringify(cycleHistory));
-    renderCycleHistory();
-    calculateAndRenderCycle();
-  }
-};
 
 window.addEventListener("beforeunload", flushSyncNow);
 document.addEventListener("visibilitychange", () => {

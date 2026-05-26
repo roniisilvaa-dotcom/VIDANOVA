@@ -1,171 +1,1185 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no" />
-    <title>Entrar | Vida Nova</title>
-    
-    <!-- Theme Colors -->
-    <meta name="theme-color" content="#c55b84" />
-    <meta name="msapplication-TileColor" content="#c55b84" />
-    
-    <!-- iOS Web App Meta Tags -->
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-    <meta name="apple-mobile-web-app-title" content="Vida Nova" />
-    <link rel="apple-touch-icon" href="apple-touch-icon.png?v=nv3" />
-    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon-180.png?v=nv3" />
-    
-    <!-- Android Web App Meta Tags -->
-    <meta name="mobile-web-app-capable" content="yes" />
-    
-    <!-- Windows/Microsoft -->
-    <meta name="application-name" content="Vida Nova" />
-    <meta name="msapplication-starturl" content="./login.html" />
-    
-    <!-- Description -->
-    <meta name="description" content="Acesso mobile do planner Vida Nova para rotina, agenda, finanças e organização da vida." />
-    
-    <!-- Security Headers -->
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    
-    <!-- PWA Manifest -->
-    <link rel="manifest" href="manifest.webmanifest?v=nv3" />
-    <link rel="icon" href="icon.svg?v=nv3" type="image/svg+xml" />
-    <link rel="icon" href="icon-192.png?v=nv3" sizes="192x192" type="image/png" />
-    <link rel="stylesheet" href="styles.css?v=nv6" />
-  </head>
-  <body class="auth-body">
-    <div id="vn-splash" style="position:fixed;inset:0;z-index:9999;background:linear-gradient(135deg,#c55b84,#e8829a);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;transition:opacity .5s ease">
-      <div style="width:72px;height:72px;border-radius:50%;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:2rem">🌸</div>
-      <div style="color:#fff;font-size:1.6rem;font-weight:900;letter-spacing:.04em">Vida Nova</div>
-      <div style="color:rgba(255,255,255,.8);font-size:.9rem">Carregando seu planner...</div>
-      <div style="width:40px;height:4px;background:rgba(255,255,255,.3);border-radius:4px;overflow:hidden;margin-top:8px">
-        <div id="vn-splash-bar" style="height:100%;background:#fff;border-radius:4px;width:0;animation:vnload 1.8s ease forwards"></div>
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="theme-color" content="#8fb2f4" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="Vida Nova" />
+<title>Vida Nova — Entrar</title>
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon-180.png?v=nv3" />
+<link rel="manifest" href="manifest.webmanifest?v=nv3" />
+<link rel="icon" href="icon.svg?v=nv3" type="image/svg+xml" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    /* Lavender luxury palette */
+    --lav-50:  #F7F4FF;
+    --lav-100: #EFEAFE;
+    --lav-200: #DED5FC;
+    --lav-300: #C4B5FD;
+    --lav-400: #A491F2;
+    --lav-500: #8674E3;
+    --lav-600: #6E5BD0;
+    --lav-700: #564BAA;
+    --lav-800: #3D3580;
+    --lav-900: #251F52;
+
+    --ink-900: #1B1735;
+    --ink-700: #423E5E;
+    --ink-500: #756F94;
+    --ink-400: #9892B5;
+    --ink-300: #C7C1DD;
+
+    --bg-base: #FBFAFF;
+    --surface: #FFFFFF;
+    --hairline: rgba(86, 75, 170, 0.10);
+    --hairline-soft: rgba(86, 75, 170, 0.06);
+
+    --gold: #C9A86A;        /* Warm accent for "premium" details */
+    --gold-soft: #E8DBBE;
+
+    --shadow-sm: 0 1px 2px rgba(37, 31, 82, 0.04), 0 1px 1px rgba(37, 31, 82, 0.03);
+    --shadow-md: 0 8px 24px -8px rgba(56, 45, 130, 0.12), 0 2px 6px rgba(56, 45, 130, 0.05);
+    --shadow-lg: 0 24px 60px -20px rgba(56, 45, 130, 0.25), 0 8px 16px -8px rgba(56, 45, 130, 0.10);
+    --shadow-button: 0 12px 24px -12px rgba(86, 75, 170, 0.55), 0 4px 8px -2px rgba(86, 75, 170, 0.30);
+
+    --radius-sm: 10px;
+    --radius-md: 14px;
+    --radius-lg: 20px;
+    --radius-xl: 28px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    overflow-x: hidden;
+    font-family: 'Manrope', system-ui, -apple-system, sans-serif;
+    color: var(--ink-900);
+    background: var(--bg-base);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  button { font-family: inherit; cursor: pointer; border: none; background: none; color: inherit; }
+  input { font-family: inherit; }
+
+  .serif { font-family: 'Cormorant Garamond', 'Times New Roman', serif; }
+
+  /* ============================================================
+     PAGE LAYOUT — split (desktop) / stack (mobile)
+     ============================================================ */
+  .page {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1.05fr 1fr;
+    background: var(--bg-base);
+  }
+
+  /* ============================================================
+     LEFT — Brand panel (desktop only)
+     ============================================================ */
+  .brand-panel {
+    position: relative;
+    overflow: hidden;
+    color: #2E2952;
+    padding: 56px 64px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background:
+      radial-gradient(120% 80% at 100% 0%, rgba(255,255,255,0.25), transparent 60%),
+      radial-gradient(80% 60% at 0% 100%, rgba(255,255,255,0.12), transparent 60%),
+      linear-gradient(110deg, #B5C7F5 0%, #C9B8EE 50%, #E5C5DC 100%);
+    isolation: isolate;
+  }
+
+  /* Decorative orbs */
+  .brand-panel::before,
+  .brand-panel::after {
+    content: '';
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(60px);
+    z-index: -1;
+    pointer-events: none;
+  }
+  .brand-panel::before {
+    width: 520px; height: 520px;
+    background: radial-gradient(circle, rgba(255,255,255,0.55), transparent 70%);
+    top: -180px; right: -120px;
+  }
+  .brand-panel::after {
+    width: 420px; height: 420px;
+    background: radial-gradient(circle, rgba(229,197,220,0.55), transparent 70%);
+    bottom: -160px; left: -100px;
+  }
+
+  /* Subtle grain overlay */
+  .grain {
+    position: absolute; inset: 0;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.08 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+    mix-blend-mode: overlay;
+    opacity: 0.5;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .brand-top { position: relative; z-index: 1; display: flex; align-items: center; gap: 14px; }
+  .brand-mark {
+    width: 48px; height: 48px;
+    border-radius: 14px;
+    display: grid; place-items: center;
+    background: linear-gradient(135deg, rgba(255,255,255,0.65), rgba(255,255,255,0.30));
+    border: 1px solid rgba(255,255,255,0.55);
+    backdrop-filter: blur(8px);
+  }
+  .brand-mark svg { width: 24px; height: 24px; }
+  .brand-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-weight: 500;
+    font-size: 28px;
+    letter-spacing: 0.5px;
+    color: #2E2952;
+  }
+  .brand-name b { font-weight: 600; }
+
+  .brand-center {
+    position: relative; z-index: 1;
+    max-width: 460px;
+  }
+  .brand-eyebrow {
+    text-transform: uppercase;
+    font-size: 11px;
+    letter-spacing: 0.32em;
+    color: #6E5BD0;
+    font-weight: 700;
+    margin-bottom: 22px;
+    display: inline-flex; align-items: center; gap: 12px;
+  }
+  .brand-eyebrow::before {
+    content: ''; display: block;
+    width: 28px; height: 1px;
+    background: #6E5BD0;
+  }
+  .brand-headline {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 500;
+    font-size: clamp(40px, 4vw, 56px);
+    line-height: 1.05;
+    letter-spacing: -0.5px;
+    margin: 0 0 18px 0;
+    color: #2E2952;
+  }
+  .brand-headline em {
+    font-style: italic;
+    color: #C25295;
+    font-weight: 500;
+  }
+  .brand-sub {
+    font-size: 15px;
+    line-height: 1.65;
+    color: rgba(46,41,82,0.72);
+    font-weight: 400;
+    margin: 0;
+    max-width: 380px;
+  }
+
+  .brand-verse {
+    position: relative; z-index: 1;
+    padding: 26px 28px;
+    border-radius: var(--radius-lg);
+    background: linear-gradient(135deg, rgba(255,255,255,0.55), rgba(255,255,255,0.25));
+    border: 1px solid rgba(255,255,255,0.65);
+    backdrop-filter: blur(12px);
+    max-width: 460px;
+  }
+  .verse-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.3em;
+    color: #6E5BD0;
+    font-weight: 700;
+    margin-bottom: 12px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .verse-label::before {
+    content: '✦';
+    color: #C25295;
+    font-size: 11px;
+  }
+  .verse-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-weight: 500;
+    font-size: 19px;
+    line-height: 1.45;
+    color: #2E2952;
+    margin: 0 0 10px 0;
+  }
+  .verse-ref {
+    font-size: 11px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: rgba(46,41,82,0.55);
+    font-weight: 700;
+  }
+
+  /* ============================================================
+     RIGHT — Form panel
+     ============================================================ */
+  .form-panel {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 48px 56px;
+    background:
+      radial-gradient(70% 50% at 100% 0%, rgba(181,199,245,0.18), transparent 60%),
+      radial-gradient(60% 50% at 0% 100%, rgba(229,197,220,0.18), transparent 60%),
+      var(--bg-base);
+  }
+
+  .form-card {
+    width: 100%;
+    max-width: 440px;
+  }
+
+  /* Brand mark for mobile (hidden on desktop) */
+  .mobile-brand {
+    display: none;
+    text-align: center;
+    margin-bottom: 28px;
+  }
+
+  /* Tabs */
+  .tabs {
+    position: relative;
+    display: flex;
+    background: var(--lav-50);
+    border: 1px solid var(--hairline);
+    border-radius: 999px;
+    padding: 5px;
+    margin-bottom: 38px;
+  }
+  .tab {
+    flex: 1;
+    padding: 11px 16px;
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--ink-500);
+    border-radius: 999px;
+    text-align: center;
+    transition: color 0.25s ease;
+    position: relative;
+    z-index: 1;
+    letter-spacing: 0.01em;
+  }
+  .tab.active { color: #fff; }
+  .tab:not(.active):hover { color: var(--lav-700); }
+  .tab-pill {
+    position: absolute;
+    top: 5px; left: 5px;
+    height: calc(100% - 10px);
+    width: calc((100% - 10px) / 3);
+    background: linear-gradient(110deg, #95A8E8 0%, #B299E0 50%, #D29CBC 100%);
+    border-radius: 999px;
+    transition: transform 0.4s cubic-bezier(0.4, 0.0, 0.15, 1);
+    box-shadow: 0 4px 12px -2px rgba(150, 130, 210, 0.45);
+    z-index: 0;
+  }
+  .tab-pill[data-index="1"] { transform: translateX(100%); }
+  .tab-pill[data-index="2"] { transform: translateX(200%); }
+
+  /* Heading */
+  .form-heading {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 500;
+    font-size: 38px;
+    line-height: 1.1;
+    letter-spacing: -0.5px;
+    margin: 0 0 8px 0;
+    color: var(--ink-900);
+  }
+  .form-heading em {
+    font-style: italic;
+    font-weight: 500;
+    background: linear-gradient(110deg, #6E81C5 0%, #8E72C8 50%, #B8689A 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: #8E72C8;
+  }
+  .form-sub {
+    font-size: 14.5px;
+    color: var(--ink-500);
+    margin: 0 0 32px 0;
+    font-weight: 400;
+    line-height: 1.55;
+  }
+
+  /* Form fields */
+  .field-group { display: flex; flex-direction: column; gap: 14px; margin-bottom: 22px; }
+
+  .field {
+    position: relative;
+    display: flex;
+    align-items: center;
+    background: var(--surface);
+    border: 1.5px solid var(--hairline);
+    border-radius: var(--radius-md);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+  }
+  .field:hover {
+    border-color: var(--lav-200);
+  }
+  .field:focus-within {
+    border-color: var(--lav-400);
+    box-shadow: 0 0 0 4px rgba(164, 145, 242, 0.14);
+    background: #fff;
+  }
+  .field-icon {
+    display: grid; place-items: center;
+    width: 48px; height: 48px;
+    color: var(--lav-500);
+    flex-shrink: 0;
+  }
+  .field-icon svg { width: 18px; height: 18px; }
+  .field input {
+    flex: 1;
+    border: none;
+    outline: none;
+    background: transparent;
+    padding: 14px 14px 14px 0;
+    font-size: 14.5px;
+    color: var(--ink-900);
+    font-weight: 500;
+    height: 50px;
+  }
+  .field input::placeholder { color: var(--ink-400); font-weight: 400; }
+  .field .toggle-pw {
+    width: 48px; height: 48px;
+    display: grid; place-items: center;
+    color: var(--ink-400);
+    transition: color 0.2s ease;
+  }
+  .field .toggle-pw:hover { color: var(--lav-600); }
+  .field .toggle-pw svg { width: 18px; height: 18px; }
+
+  /* Row: remember + forgot */
+  .row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 28px;
+    flex-wrap: wrap;
+  }
+  .check {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    user-select: none;
+    font-size: 13.5px;
+    color: var(--ink-700);
+    font-weight: 500;
+  }
+  .check input { position: absolute; opacity: 0; pointer-events: none; }
+  .check-box {
+    width: 20px; height: 20px;
+    border-radius: 6px;
+    border: 1.5px solid var(--ink-300);
+    background: #fff;
+    display: grid; place-items: center;
+    transition: all 0.18s ease;
+    flex-shrink: 0;
+  }
+  .check-box svg { width: 12px; height: 12px; color: #fff; opacity: 0; transition: opacity 0.18s ease; }
+  .check input:checked ~ .check-box {
+    background: linear-gradient(135deg, var(--lav-500), var(--lav-700));
+    border-color: var(--lav-600);
+  }
+  .check input:checked ~ .check-box svg { opacity: 1; }
+  .check:hover .check-box { border-color: var(--lav-400); }
+
+  .link-forgot {
+    font-size: 13.5px;
+    color: var(--lav-700);
+    font-weight: 600;
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+  .link-forgot:hover { color: var(--lav-800); text-decoration: underline; text-underline-offset: 3px; }
+
+  /* Primary button */
+  .btn-primary {
+    width: 100%;
+    height: 54px;
+    border-radius: var(--radius-md);
+    background: linear-gradient(110deg, #95A8E8 0%, #B299E0 50%, #D29CBC 100%);
+    color: #fff;
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    box-shadow: var(--shadow-button);
+    transition: transform 0.15s ease, box-shadow 0.2s ease, filter 0.2s ease;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+  .btn-primary::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.15), transparent 50%);
+    opacity: 0;
+    transition: opacity 0.25s ease;
+  }
+  .btn-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 16px 28px -10px rgba(86, 75, 170, 0.55), 0 6px 12px -2px rgba(86, 75, 170, 0.30);
+  }
+  .btn-primary:hover::before { opacity: 1; }
+  .btn-primary:active { transform: translateY(0); filter: brightness(0.97); }
+  .btn-primary.loading { pointer-events: none; }
+  .btn-primary.loading .btn-text { opacity: 0; }
+  .btn-primary .spinner {
+    position: absolute;
+    width: 20px; height: 20px;
+    border: 2px solid rgba(255,255,255,0.35);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+  }
+  .btn-primary.loading .spinner { opacity: 1; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* Divider */
+  .divider {
+    display: flex; align-items: center; gap: 16px;
+    margin: 28px 0 20px;
+    color: var(--ink-400);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .divider::before, .divider::after {
+    content: '';
+    flex: 1; height: 1px;
+    background: linear-gradient(90deg, transparent, var(--hairline), transparent);
+  }
+
+  /* Social buttons */
+  .socials { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 24px; }
+  .btn-social {
+    height: 50px;
+    background: #fff;
+    border: 1.5px solid var(--hairline);
+    border-radius: var(--radius-md);
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ink-900);
+    transition: all 0.2s ease;
+  }
+  .btn-social:hover {
+    border-color: var(--lav-300);
+    background: var(--lav-50);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-sm);
+  }
+  .btn-social svg { width: 20px; height: 20px; flex-shrink: 0; }
+
+  .hidden-field { display: none !important; }
+  .auth-feedback {
+    min-height: 20px;
+    margin: -4px 0 12px;
+    color: var(--ink-500);
+    font-size: 12.5px;
+    line-height: 1.45;
+    text-align: center;
+  }
+  .auth-feedback[data-state="error"] { color: #C74B7A; }
+  .auth-feedback[data-state="success"] { color: #5F8D68; }
+  .demo-access-btn {
+    grid-column: 1 / -1;
+    width: 100%;
+    color: var(--ink-500);
+    font-size: 12.5px;
+    font-weight: 500;
+  }
+
+  /* Sign-up footer card */
+  .signup-card {
+    display: flex; align-items: center; gap: 14px;
+    padding: 16px 18px;
+    background: linear-gradient(135deg, var(--lav-50) 0%, #FCFAFF 100%);
+    border: 1px solid var(--hairline);
+    border-radius: var(--radius-md);
+    transition: all 0.2s ease;
+  }
+  .signup-card:hover {
+    border-color: var(--lav-200);
+    box-shadow: var(--shadow-sm);
+  }
+  .signup-icon {
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--lav-200), var(--lav-300));
+    display: grid; place-items: center;
+    color: var(--lav-800);
+    flex-shrink: 0;
+  }
+  .signup-icon svg { width: 20px; height: 20px; }
+  .signup-text { flex: 1; }
+  .signup-text .t1 { font-size: 13px; color: var(--ink-500); margin: 0 0 2px; }
+  .signup-text .t2 {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--lav-700);
+    text-decoration: none;
+    display: inline-flex; align-items: center; gap: 6px;
+    transition: gap 0.2s ease;
+  }
+  .signup-text .t2:hover { gap: 10px; }
+
+  /* Legal */
+  .legal {
+    text-align: center;
+    font-size: 11.5px;
+    color: var(--ink-400);
+    margin-top: 24px;
+    line-height: 1.6;
+  }
+  .legal a { color: var(--ink-500); text-decoration: none; font-weight: 500; }
+  .legal a:hover { color: var(--lav-700); text-decoration: underline; text-underline-offset: 2px; }
+
+  /* Error state */
+  .field.error {
+    border-color: #E0739B;
+    background: #FFF8FB;
+  }
+  .field.error .field-icon { color: #C25278; }
+  .error-msg {
+    color: #C25278;
+    font-size: 12.5px;
+    font-weight: 500;
+    margin-top: -8px;
+    margin-bottom: 4px;
+    padding-left: 4px;
+    display: none;
+  }
+  .error-msg.show { display: block; }
+
+  /* ============================================================
+     MOBILE
+     ============================================================ */
+  @media (max-width: 880px) {
+    .page { grid-template-columns: 1fr; }
+    .brand-panel { display: none; }
+    .form-panel {
+      padding: 28px 22px 36px;
+      min-height: 100vh;
+      align-items: flex-start;
+      padding-top: 56px;
+    }
+    .mobile-brand { display: block; }
+    .mobile-brand .brand-mark-m {
+      width: 64px; height: 64px;
+      border-radius: 20px;
+      margin: 0 auto 16px;
+      display: grid; place-items: center;
+      background: linear-gradient(110deg, #95A8E8 0%, #B299E0 50%, #D29CBC 100%);
+      box-shadow: 0 12px 24px -8px rgba(178, 153, 224, 0.45);
+    }
+    .mobile-brand .brand-mark-m svg { width: 32px; height: 32px; color: #fff; }
+    .mobile-brand .brand-name-m {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-weight: 600;
+      font-size: 34px;
+      color: var(--lav-800);
+      letter-spacing: 0.5px;
+      margin: 0 0 4px 0;
+    }
+    .mobile-brand .brand-tag-m {
+      font-size: 12px;
+      color: var(--ink-500);
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      font-weight: 500;
+    }
+    .form-heading { font-size: 30px; }
+    .form-sub { font-size: 14px; margin-bottom: 24px; }
+    .tabs { margin-bottom: 28px; }
+    .socials { grid-template-columns: 1fr 1fr; gap: 10px; }
+    .btn-social { font-size: 13px; }
+  }
+
+  @media (max-width: 480px) {
+    .form-panel { padding: 24px 18px 32px; padding-top: 40px; }
+    .form-heading { font-size: 26px; line-height: 1.15; }
+    .form-sub { font-size: 13.5px; }
+    .socials { grid-template-columns: 1fr; gap: 10px; }
+    .tab { font-size: 12.5px; padding: 10px 8px; }
+    .field input { font-size: 14px; }
+    .field-icon { width: 44px; height: 44px; }
+    .field .toggle-pw { width: 44px; height: 44px; }
+    .signup-card { padding: 14px; gap: 12px; }
+    .signup-icon { width: 40px; height: 40px; }
+    .row { gap: 10px; margin-bottom: 22px; }
+    .check { font-size: 13px; }
+    .link-forgot { font-size: 13px; }
+    .btn-primary { font-size: 14px; height: 52px; }
+    .mobile-brand .brand-name-m { font-size: 30px; }
+    .mobile-brand .brand-mark-m { width: 56px; height: 56px; }
+    .plan-name-big { font-size: 22px; }
+    .plan-price-big .num { font-size: 48px; }
+    .plan-flag-top { padding: 10px 16px; font-size: 10px; letter-spacing: 0.18em; }
+    .plan-card-body { padding: 18px 18px 20px; }
+  }
+
+  @media (max-width: 360px) {
+    .form-panel { padding: 20px 14px 28px; padding-top: 32px; }
+    .form-heading { font-size: 24px; }
+    .tab { font-size: 11.5px; padding: 9px 4px; letter-spacing: 0; }
+    .form-card { max-width: 100%; }
+  }
+
+  /* Reduce motion */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
+  /* Subtle entrance */
+  .fade-in {
+    animation: fadeUp 0.6s ease 0.05s both;
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+</style>
+</head>
+<body>
+
+<main class="page">
+
+  <!-- ============= LEFT: BRAND PANEL (web) ============= -->
+  <aside class="brand-panel">
+    <div class="grain"></div>
+
+    <header class="brand-top">
+      <div class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#564BAA" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 21c0-5 3-9 8-10-1 5-4 8-8 10z"/>
+          <path d="M12 21c0-5-3-9-8-10 1 5 4 8 8 10z"/>
+          <path d="M12 21V8"/>
+          <circle cx="12" cy="6" r="2"/>
+        </svg>
       </div>
-    </div>
-    <style>@keyframes vnload{0%{width:0}70%{width:85%}100%{width:100%}}</style>
-    <script>
-      window.addEventListener("load",function(){
-        var s=document.getElementById("vn-splash");
-        if(s){setTimeout(function(){s.style.opacity="0";setTimeout(function(){s.remove()},520)},600);}
-      });
-    </script>
-    <main class="auth-shell">
-      <section class="auth-panel">
-        <p class="eyebrow">Planner web com acesso no celular</p>
-        <h1>Vida Nova</h1>
-        <p class="auth-copy">
-          Uma entrada pensada para a mulher acessar pelo celular, instalar na
-          tela inicial e voltar todos os dias para cuidar da vida, da casa, da
-          rotina e da espiritualidade.
-        </p>
-        <ul class="auth-list">
-          <li>Agenda, rotina e prioridades do dia</li>
-          <li>Finanças, imagem, casa e autocuidado</li>
-          <li>Vida espiritual com versículo diário</li>
-          <li>Experiencia mobile com instalação na tela inicial</li>
-        </ul>
-      </section>
+      <div class="brand-name">Vida <b>Nova</b></div>
+    </header>
 
-      <section class="auth-form-card">
+    <section class="brand-center fade-in">
+      <div class="brand-eyebrow">Bem-vinda</div>
+      <h1 class="brand-headline">
+        Cuide de você.<br />
+        <em>Transforme sua vida.</em>
+      </h1>
+      <p class="brand-sub">
+        Um espaço sereno para nutrir corpo, mente e espírito —
+        com rituais diários, intenções e propósito.
+      </p>
+    </section>
 
-        <!-- Bloco de assinatura — visível para quem ainda não tem conta -->
-        <div id="paywall-block" class="paywall-block">
-          <p class="eyebrow">Acesso exclusivo para assinantes</p>
-          <h2>Comece seu Vida Nova</h2>
-          <p class="auth-copy">Para usar o app você precisa ter uma assinatura ativa. Clique em assinar e libere o acesso completo.</p>
+    <footer class="brand-verse fade-in">
+      <div class="verse-label">Versículo do dia</div>
+      <p class="verse-text">
+        "Lançando sobre Ele toda a vossa ansiedade,
+        porque Ele tem cuidado de vós."
+      </p>
+      <div class="verse-ref">1 Pedro 5:7</div>
+    </footer>
+  </aside>
 
-          <div class="auth-actions">
-            <a id="paywall-subscribe-btn" href="#" target="_blank" rel="noopener noreferrer" class="primary-button paywall-subscribe-btn">Assinar agora</a>
-          </div>
-          <p class="auth-note">Já tem assinatura? <button id="show-login-form" class="link-button" type="button">Entrar com sua conta</button></p>
+  <!-- ============= RIGHT: FORM ============= -->
+  <section class="form-panel">
+    <div class="form-card" id="login-block">
+
+      <!-- Mobile-only brand -->
+      <div class="mobile-brand">
+        <div class="brand-mark-m" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 21c0-5 3-9 8-10-1 5-4 8-8 10z"/>
+            <path d="M12 21c0-5-3-9-8-10 1 5 4 8 8 10z"/>
+            <path d="M12 21V8"/>
+            <circle cx="12" cy="6" r="2"/>
+          </svg>
         </div>
+        <div class="brand-name-m">Vida Nova</div>
+        <div class="brand-tag-m">Cuide de você</div>
+      </div>
 
-        <!-- Formulário de login — oculto por padrão, exibido ao clicar em "Entrar" -->
-        <div id="login-block" class="hidden-field" style="display:none">
-          <div>
-            <p class="eyebrow">Acesso da assinante</p>
-            <h2 id="auth-title">Entrar no app</h2>
+      <!-- Tabs -->
+      <nav class="tabs" role="tablist" aria-label="Acesso à conta">
+        <div class="tab-pill" id="tabPill" data-index="0"></div>
+        <button class="tab active" id="mode-login" role="tab" data-tab="entrar" aria-selected="true">Entrar</button>
+        <button class="tab" id="mode-register" role="tab" data-tab="criar" aria-selected="false">Criar conta</button>
+        <button class="tab" role="tab" data-tab="assinar" aria-selected="false">Assinar</button>
+      </nav>
+
+      <!-- ============= ENTRAR ============= -->
+      <div class="tab-content" data-content="entrar">
+        <h2 class="form-heading" id="auth-title">Bem-vinda de <em>volta</em>.</h2>
+        <p class="form-sub">Entre na sua conta para continuar sua jornada.</p>
+
+        <form id="login-form" novalidate>
+          <div class="hidden-field" id="name-field">
+            <input id="login-name" type="text" autocomplete="name" />
+          </div>
+          <div class="hidden-field" id="confirm-password-field">
+            <input id="login-confirm-password" type="password" autocomplete="new-password" />
+          </div>
+          <div class="field-group">
+            <label class="field" for="login-email">
+              <span class="field-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="3" y="5" width="18" height="14" rx="2.5"/>
+                  <path d="m3 7 9 6 9-6"/>
+                </svg>
+              </span>
+              <input id="login-email" type="email" placeholder="Seu e-mail" autocomplete="email" required />
+            </label>
+
+            <label class="field" for="login-password">
+              <span class="field-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="4" y="11" width="16" height="10" rx="2.5"/>
+                  <path d="M8 11V8a4 4 0 0 1 8 0v3"/>
+                </svg>
+              </span>
+              <input id="login-password" type="password" placeholder="Sua senha" autocomplete="current-password" required />
+              <button type="button" class="toggle-pw" aria-label="Mostrar senha" id="toggle-password">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/>
+                  <circle cx="12" cy="12" r="3"/>
+                </svg>
+              </button>
+            </label>
           </div>
 
-          <div class="auth-mode-switch" role="tablist" aria-label="Modo de autenticação">
-            <button id="mode-login" class="secondary-button is-active" type="button">Entrar</button>
-            <button id="mode-register" class="secondary-button" type="button">Criar conta</button>
-          </div>
-        </div>
-
-        <form id="login-form" class="auth-form" style="display:none">
-          <label id="name-field" class="auth-field hidden-field">
-            Nome
-            <input id="login-name" type="text" placeholder="Seu nome completo" />
-          </label>
-
-          <label>
-            E-mail ou login
-            <input id="login-email" type="text" placeholder="voce@email.com ou Admin" required />
-          </label>
-
-          <label>
-            Senha
-            <input id="login-password" type="password" placeholder="Digite sua senha" required minlength="6" />
-          </label>
-
-          <label id="confirm-password-field" class="auth-field hidden-field">
-            Confirmar senha
-            <input id="login-confirm-password" type="password" placeholder="Repita sua senha" minlength="6" />
-          </label>
-
-          <p id="auth-feedback" class="auth-feedback" role="status" aria-live="polite"></p>
-
-          <div class="auth-actions">
-            <button id="auth-submit" class="primary-button" type="submit">Entrar agora</button>
-            <button id="back-to-paywall" class="secondary-button" type="button">Voltar</button>
-          </div>
-          <button id="demo-access" class="secondary-button" type="button" style="display:none">Sem acesso demo</button>
-        </form>
-
-        <p class="auth-note" id="login-note" style="display:none">
-          O acesso depende de conta real com assinatura ativa.
-          O login fica salvo neste dispositivo.
-        </p>
-
-        <section class="auth-install-box">
-          <div>
-            <p class="eyebrow">Instalar app</p>
-            <h3>Baixar e abrir sem entrar primeiro</h3>
-            <p class="auth-copy">
-              A cliente pode abrir a versão publicada e instalar o app direto no
-              iPhone, Android, Mac ou Windows. Depois ela entra com a conta e os
-              dados continuam sincronizados com o Neon. Quando houver nova publicação,
-              o app deve avisar sobre a atualização e tentar carregar a versão mais recente.
-            </p>
+          <div class="row">
+            <label class="check">
+              <input type="checkbox" id="remember" checked />
+              <span class="check-box">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="m5 12 5 5L20 7"/>
+                </svg>
+              </span>
+              <span>Lembrar meu acesso</span>
+            </label>
+            <a href="#esqueci" class="link-forgot">Esqueci minha senha</a>
           </div>
 
-          <div class="install-actions">
-            <a
-              id="login-live-link"
-              class="primary-button"
-              href="https://vidanova-1.onrender.com"
-              target="_blank"
-              rel="noreferrer"
-            >
-              Abrir app no navegador
-            </a>
-            <button id="login-install-button" class="secondary-button" type="button">
-              Instalar app
+          <div class="auth-feedback" id="auth-feedback" data-auth-feedback role="status" aria-live="polite"></div>
+
+          <button type="submit" class="btn-primary" id="auth-submit">
+            <span class="btn-text">Entrar agora</span>
+            <span class="spinner" aria-hidden="true"></span>
+          </button>
+
+          <div class="divider">ou continue com</div>
+
+          <div class="socials">
+            <button type="button" class="btn-social" id="google-login-button" data-social-login="Google">
+              <svg viewBox="0 0 48 48" aria-hidden="true">
+                <path fill="#FFC107" d="M43.611 20.083H42V20H24v8h11.303c-1.649 4.657-6.08 8-11.303 8-6.627 0-12-5.373-12-12s5.373-12 12-12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4 12.955 4 4 12.955 4 24s8.955 20 20 20 20-8.955 20-20c0-1.341-.138-2.65-.389-3.917z"/>
+                <path fill="#FF3D00" d="m6.306 14.691 6.571 4.819C14.655 15.108 18.961 12 24 12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4 16.318 4 9.656 8.337 6.306 14.691z"/>
+                <path fill="#4CAF50" d="M24 44c5.166 0 9.86-1.977 13.409-5.192l-6.19-5.238A11.93 11.93 0 0 1 24 36c-5.202 0-9.619-3.317-11.283-7.946l-6.522 5.025C9.505 39.556 16.227 44 24 44z"/>
+                <path fill="#1976D2" d="M43.611 20.083H42V20H24v8h11.303a12.04 12.04 0 0 1-4.087 5.571l.003-.002 6.19 5.238C36.971 39.205 44 34 44 24c0-1.341-.138-2.65-.389-3.917z"/>
+              </svg>
+              <span>Google</span>
+            </button>
+            <button type="button" class="btn-social" id="apple-login-button" data-social-login="Apple">
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.53 4.08zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/>
+              </svg>
+              <span>Apple</span>
             </button>
           </div>
 
-          <p id="login-install-status" class="auth-note">
-            No iPhone/iPad, abra no Safari. Se abrir por Chrome, Instagram,
-            WhatsApp ou outro app, a opção “Adicionar à Tela de Início” pode não aparecer.
-            No Android, Mac e Windows, use Chrome ou Edge para instalar.
-          </p>
-        </section>
-      </section>
-    </main>
+          <button type="button" class="btn-social demo-access-btn" id="demo-access">Entrar como demonstração</button>
 
-    <script src="login.js?v=nv6"></script>
-  </body>
+          <a href="#criar" class="signup-card" data-create-account onclick="switchTab(event, 'criar')">
+            <div class="signup-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+                <circle cx="9" cy="7" r="4"/>
+                <path d="M22 11h-6M19 8v6"/>
+              </svg>
+            </div>
+            <div class="signup-text">
+              <p class="t1">Ainda não tem conta?</p>
+              <span class="t2">Criar minha conta <span aria-hidden="true">→</span></span>
+            </div>
+          </a>
+        </form>
+      </div>
+
+      <!-- ============= CRIAR CONTA ============= -->
+      <div class="tab-content" data-content="criar" hidden>
+        <h2 class="form-heading">Comece sua <em>jornada</em>.</h2>
+        <p class="form-sub">Crie sua conta gratuita em segundos.</p>
+
+        <form id="signupForm" novalidate>
+          <div class="field-group">
+            <label class="field hidden-field" for="nome">
+              <span class="field-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                  <circle cx="12" cy="7" r="4"/>
+                </svg>
+              </span>
+              <input id="nome" type="text" placeholder="Seu nome completo" autocomplete="name" />
+            </label>
+
+            <label class="field" for="email2">
+              <span class="field-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="3" y="5" width="18" height="14" rx="2.5"/>
+                  <path d="m3 7 9 6 9-6"/>
+                </svg>
+              </span>
+              <input id="email2" type="email" placeholder="Seu e-mail" autocomplete="email" required />
+            </label>
+
+            <label class="field" for="senha2">
+              <span class="field-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="4" y="11" width="16" height="10" rx="2.5"/>
+                  <path d="M8 11V8a4 4 0 0 1 8 0v3"/>
+                </svg>
+              </span>
+              <input id="senha2" type="password" placeholder="Crie uma senha" autocomplete="new-password" required />
+            </label>
+          </div>
+
+          <label class="check" style="margin-bottom: 22px;">
+            <input type="checkbox" id="terms" required />
+            <span class="check-box">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                <path d="m5 12 5 5L20 7"/>
+              </svg>
+            </span>
+            <span style="font-size: 13px;">
+              Concordo com os <a href="#termos" style="color: var(--lav-700); font-weight: 600; text-decoration: none;">Termos</a>
+              e a <a href="#privacidade" style="color: var(--lav-700); font-weight: 600; text-decoration: none;">Política de Privacidade</a>
+            </span>
+          </label>
+
+          <div class="auth-feedback" data-auth-feedback role="status" aria-live="polite"></div>
+
+          <button type="submit" class="btn-primary">
+            <span class="btn-text">Criar minha conta</span>
+            <span class="spinner" aria-hidden="true"></span>
+          </button>
+
+          <div class="divider">ou continue com</div>
+          <div class="socials">
+            <button type="button" class="btn-social" data-social-login="Google">
+              <svg viewBox="0 0 48 48" aria-hidden="true">
+                <path fill="#FFC107" d="M43.611 20.083H42V20H24v8h11.303c-1.649 4.657-6.08 8-11.303 8-6.627 0-12-5.373-12-12s5.373-12 12-12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4 12.955 4 4 12.955 4 24s8.955 20 20 20 20-8.955 20-20c0-1.341-.138-2.65-.389-3.917z"/>
+                <path fill="#FF3D00" d="m6.306 14.691 6.571 4.819C14.655 15.108 18.961 12 24 12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4 16.318 4 9.656 8.337 6.306 14.691z"/>
+                <path fill="#4CAF50" d="M24 44c5.166 0 9.86-1.977 13.409-5.192l-6.19-5.238A11.93 11.93 0 0 1 24 36c-5.202 0-9.619-3.317-11.283-7.946l-6.522 5.025C9.505 39.556 16.227 44 24 44z"/>
+                <path fill="#1976D2" d="M43.611 20.083H42V20H24v8h11.303a12.04 12.04 0 0 1-4.087 5.571l.003-.002 6.19 5.238C36.971 39.205 44 34 44 24c0-1.341-.138-2.65-.389-3.917z"/>
+              </svg>
+              <span>Google</span>
+            </button>
+            <button type="button" class="btn-social" data-social-login="Apple">
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.53 4.08zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/>
+              </svg>
+              <span>Apple</span>
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- ============= ASSINAR — PREMIUM ============= -->
+      <div class="tab-content" id="paywall-block" data-content="assinar" hidden>
+        <div class="premium-hero">
+          <div class="premium-badge">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M12 2 9.2 8.6 2 9.3l5.4 4.9L5.8 22 12 18.3 18.2 22l-1.6-7.8L22 9.3l-7.2-.7L12 2z"/>
+            </svg>
+            Vida Nova Premium
+          </div>
+          <h2 class="form-heading" style="margin-bottom: 6px;">Sua jornada <em>completa</em>.</h2>
+          <p class="form-sub" style="margin-bottom: 20px;">Acesso ilimitado a todos os rituais, planners e jornadas guiadas.</p>
+        </div>
+
+        <!-- Benefits -->
+        <ul class="benefits">
+          <li><span class="check-dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5L20 7"/></svg></span> Planner, sonhos, metas e ciclo menstrual</li>
+          <li><span class="check-dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5L20 7"/></svg></span> Jornadas guiadas e devocionais diários</li>
+          <li><span class="check-dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5L20 7"/></svg></span> Comunidade exclusiva e suporte prioritário</li>
+          <li><span class="check-dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5L20 7"/></svg></span> Conteúdo novo toda semana, sem anúncios</li>
+        </ul>
+
+        <!-- Single Premium Plan -->
+        <div class="plan-card">
+          <div class="plan-flag-top">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2 9.2 8.6 2 9.3l5.4 4.9L5.8 22 12 18.3 18.2 22l-1.6-7.8L22 9.3l-7.2-.7L12 2z"/></svg>
+            ASSINATURA PREMIUM
+          </div>
+          <div class="plan-card-body">
+            <div class="plan-name-big">Vida Nova <em>Premium</em></div>
+            <div class="plan-price-big">
+              <span class="cur">R$</span>
+              <span class="num">37</span>
+              <span class="month">/mês</span>
+            </div>
+            <div class="plan-card-tag">Acesso ilimitado · cancele quando quiser</div>
+          </div>
+        </div>
+
+        <a class="btn-primary" id="paywall-subscribe-btn" href="#" target="_blank" rel="noopener">
+          <span class="btn-text">Assinar Agora</span>
+        </a>
+
+        <div class="trust-row">
+          <div class="trust-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>
+            Pagamento seguro
+          </div>
+          <div class="trust-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12V8H6a2 2 0 0 1 0-4h12v4"/><path d="M4 6v12a2 2 0 0 0 2 2h14v-4"/><circle cx="17" cy="14" r="1.5"/></svg>
+            Pix · Cartão · Boleto
+          </div>
+          <div class="trust-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l3-8 4 16 3-8h4"/></svg>
+            +12 mil mulheres
+          </div>
+        </div>
+      </div>
+
+      <style>
+        /* Premium subscription styles */
+        .premium-hero { margin-bottom: 6px; }
+        .premium-badge {
+          display: inline-flex; align-items: center; gap: 8px;
+          padding: 6px 14px 6px 12px;
+          background: linear-gradient(110deg, #95A8E8 0%, #B299E0 50%, #D29CBC 100%);
+          color: #fff;
+          font-size: 11px;
+          font-weight: 700;
+          letter-spacing: 0.14em;
+          text-transform: uppercase;
+          border-radius: 999px;
+          margin-bottom: 18px;
+          box-shadow: 0 6px 14px -6px rgba(178, 153, 224, 0.65);
+        }
+        .premium-badge svg { width: 14px; height: 14px; fill: #fff; }
+
+        .benefits {
+          list-style: none;
+          padding: 0;
+          margin: 0 0 24px 0;
+          display: flex;
+          flex-direction: column;
+          gap: 10px;
+        }
+        .benefits li {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          font-size: 13.5px;
+          color: var(--ink-700);
+          font-weight: 500;
+        }
+        .check-dot {
+          width: 22px; height: 22px;
+          border-radius: 50%;
+          background: linear-gradient(135deg, var(--lav-200), var(--lav-300));
+          color: var(--lav-800);
+          display: grid; place-items: center;
+          flex-shrink: 0;
+        }
+        .check-dot svg { width: 12px; height: 12px; }
+
+        .plan-card {
+          position: relative;
+          margin: 22px 0 18px;
+          padding: 0;
+          border-radius: var(--radius-lg);
+          background:
+            radial-gradient(120% 80% at 100% 0%, rgba(255, 255, 255, 0.40), transparent 60%),
+            linear-gradient(110deg, #95A8E8 0%, #B299E0 50%, #D29CBC 100%);
+          color: #fff;
+          overflow: hidden;
+          box-shadow:
+            0 24px 50px -20px rgba(150, 130, 210, 0.50),
+            0 8px 16px -8px rgba(150, 130, 210, 0.25),
+            inset 0 1px 0 rgba(255,255,255,0.30);
+          isolation: isolate;
+        }
+        .plan-card::before {
+          content: '';
+          position: absolute;
+          inset: 0;
+          background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.06 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+          mix-blend-mode: overlay;
+          opacity: 0.5;
+          z-index: 0;
+          pointer-events: none;
+        }
+        .plan-card::after {
+          content: '';
+          position: absolute;
+          width: 280px; height: 280px;
+          border-radius: 50%;
+          background: radial-gradient(circle, rgba(255, 255, 255, 0.45), transparent 70%);
+          filter: blur(40px);
+          top: -120px; right: -80px;
+          z-index: 0;
+          pointer-events: none;
+        }
+        .plan-flag-top {
+          position: relative;
+          z-index: 1;
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          padding: 12px 20px;
+          background: linear-gradient(90deg, rgba(255,255,255,0.35), rgba(255,255,255,0.10));
+          border-bottom: 1px solid rgba(255,255,255,0.30);
+          font-size: 10.5px;
+          font-weight: 700;
+          letter-spacing: 0.24em;
+          color: #fff;
+        }
+        .plan-flag-top svg { width: 13px; height: 13px; color: #fff; }
+        .plan-card-body {
+          position: relative;
+          z-index: 1;
+          padding: 22px 24px 24px;
+        }
+        .plan-name-big {
+          font-family: 'Cormorant Garamond', serif;
+          font-weight: 500;
+          font-size: 26px;
+          letter-spacing: 0.3px;
+          color: #fff;
+          margin-bottom: 6px;
+        }
+        .plan-name-big em {
+          font-style: italic;
+          color: #FFE9F1;
+          font-weight: 500;
+        }
+        .plan-price-big {
+          display: inline-flex;
+          align-items: baseline;
+          gap: 4px;
+          color: #fff;
+          margin: 4px 0 8px;
+          font-family: 'Cormorant Garamond', serif;
+          font-weight: 600;
+          line-height: 1;
+        }
+        .plan-price-big .cur { font-size: 18px; opacity: 0.85; margin-right: 2px; }
+        .plan-price-big .num { font-size: 56px; letter-spacing: -2px; }
+        .plan-price-big .month {
+          font-family: 'Manrope', sans-serif;
+          font-size: 14px;
+          font-weight: 500;
+          color: rgba(255,255,255,0.70);
+          margin-left: 6px;
+        }
+        .plan-card-tag {
+          font-size: 13px;
+          color: rgba(255,255,255,0.78);
+          font-weight: 500;
+        }
+
+        .trust-row {
+          margin-top: 18px;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 8px;
+          padding: 12px 4px;
+          border-top: 1px solid var(--hairline-soft);
+          flex-wrap: wrap;
+        }
+        .trust-item {
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+          font-size: 11.5px;
+          color: var(--ink-500);
+          font-weight: 600;
+          letter-spacing: 0.01em;
+        }
+        .trust-item svg { width: 14px; height: 14px; color: var(--lav-600); }
+
+        @media (max-width: 420px) {
+          .price-main .num { font-size: 28px; }
+          .plan-row { padding-right: 28px; }
+        }
+      </style>
+
+      <!-- Legal -->
+      <p class="legal" id="login-note">
+        Ao continuar você concorda com nossos <a href="#termos">Termos de Uso</a>
+        e <a href="#privacidade">Política de Privacidade</a>.
+      </p>
+    </div>
+  </section>
+</main>
+
+<script>
+  /* ============================================================
+     TABS
+     ============================================================ */
+  const tabs = document.querySelectorAll('.tab');
+  const tabContents = document.querySelectorAll('.tab-content');
+  const tabPill = document.getElementById('tabPill');
+
+  window.switchTab = function switchTab(e, tabName) {
+    if (e) e.preventDefault();
+    tabs.forEach((t, i) => {
+      const active = t.dataset.tab === tabName;
+      t.classList.toggle('active', active);
+      t.classList.toggle('is-active', active);
+      t.setAttribute('aria-selected', active);
+      if (active) tabPill.dataset.index = String(i);
+    });
+    tabContents.forEach(c => {
+      c.hidden = c.dataset.content !== tabName;
+    });
+  };
+
+  tabs.forEach(t => t.addEventListener('click', () => window.switchTab(null, t.dataset.tab)));
+</script>
+<script src="login.js"></script>
+
+</body>
 </html>

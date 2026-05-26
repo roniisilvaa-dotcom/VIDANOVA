@@ -10,7 +10,7 @@ const https = require("https");
 const webPush = require("web-push");
 
 const app = express();
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 3000;
 const JWT_SECRET =
   process.env.JWT_SECRET || "sua_chave_secreta_super_segura_mudar_em_producao";
 const DATABASE_URL = process.env.DATABASE_URL;
@@ -23,6 +23,15 @@ const KIWIFY_CHECKOUT_URL = process.env.KIWIFY_CHECKOUT_URL || "";
 const MONTHLY_SUBSCRIPTION_PRICE = Number(process.env.MONTHLY_SUBSCRIPTION_PRICE || 0);
 const ANNUAL_SUBSCRIPTION_PRICE = Number(process.env.ANNUAL_SUBSCRIPTION_PRICE || 0);
 const KIWIFY_CHECKOUT_URL_ANNUAL = process.env.KIWIFY_CHECKOUT_URL_ANNUAL || "";
+const PUBLIC_APP_URL = process.env.PUBLIC_APP_URL || process.env.RENDER_EXTERNAL_URL || "";
+const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID || "";
+const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET || "";
+const GOOGLE_REDIRECT_URI = process.env.GOOGLE_REDIRECT_URI || "";
+const APPLE_CLIENT_ID = process.env.APPLE_CLIENT_ID || "";
+const APPLE_TEAM_ID = process.env.APPLE_TEAM_ID || "";
+const APPLE_KEY_ID = process.env.APPLE_KEY_ID || "";
+const APPLE_PRIVATE_KEY = (process.env.APPLE_PRIVATE_KEY || "").replace(/\\n/g, "\n");
+const APPLE_REDIRECT_URI = process.env.APPLE_REDIRECT_URI || "";
 const DATA_FILE = path.join(__dirname, "vida-nova-fallback.json");
 
 const VAPID_PUBLIC_KEY = process.env.VAPID_PUBLIC_KEY || "BEXjy4tVUIHgrOsny2mSdzm9LQknr7RmsB749yLH84ULm4cr2pz3ZyL_xgb6bs9qdilkDw6rcpDgMvuHIgLVb7I";
@@ -50,12 +59,51 @@ const pool = isUsingDatabase
 
 app.use(cors());
 app.use(express.json({ limit: "2mb" }));
+app.use(express.urlencoded({ extended: false }));
 
 // version.json must never be cached so auto-update detection works
 app.get("/version.json", (req, res, next) => {
   res.set("Cache-Control", "no-store, no-cache, must-revalidate");
   res.set("Pragma", "no-cache");
   next();
+});
+
+// Health check endpoint for quick status and version visibility
+function readVersionFile() {
+  try {
+    const versionPath = path.join(__dirname, "version.json");
+    if (fs.existsSync(versionPath)) {
+      const raw = fs.readFileSync(versionPath, "utf8");
+      const parsed = JSON.parse(raw);
+      return parsed?.version ?? "unknown";
+    }
+  } catch (e) {
+    // fallthrough to unknown
+  }
+  return "unknown";
+}
+
+function getVersion() {
+  return readVersionFile();
+}
+
+app.get("/health", (req, res) => {
+  res.json({ status: "ok", version: getVersion(), timestamp: new Date().toISOString() });
+});
+
+// Endpoint to quickly verify database connectivity (Neon) from any client
+app.get("/api/status", async (req, res) => {
+  try {
+    if (isUsingDatabase) {
+      // Simple heartbeat against the database
+      await query("SELECT 1");
+      res.json({ ok: true, database: "neon", timestamp: new Date().toISOString() });
+    } else {
+      res.json({ ok: true, database: "fallback", timestamp: new Date().toISOString() });
+    }
+  } catch (err) {
+    res.status(500).json({ ok: false, error: err?.message || "DB heartbeat failed" });
+  }
 });
 
 app.use(express.static(path.join(__dirname)));
@@ -66,6 +114,148 @@ function shouldUseSsl(connectionString) {
 
 function normalizeEmail(email) {
   return String(email || "").trim().toLowerCase();
+}
+
+function getRequestBaseUrl(req) {
+  const protocol = req.headers["x-forwarded-proto"] || req.protocol || "http";
+  const host = req.headers["x-forwarded-host"] || req.headers.host;
+  return `${protocol}://${host}`;
+}
+
+function getPublicBaseUrl(req) {
+  return (PUBLIC_APP_URL || getRequestBaseUrl(req)).replace(/\/+$/, "");
+}
+
+function getSocialRedirectUri(req, provider) {
+  if (provider === "google" && GOOGLE_REDIRECT_URI) {
+    return GOOGLE_REDIRECT_URI;
+  }
+
+  if (provider === "apple" && APPLE_REDIRECT_URI) {
+    return APPLE_REDIRECT_URI;
+  }
+
+  return `${getPublicBaseUrl(req)}/api/auth/${provider}/callback`;
+}
+
+function createSocialState(provider) {
+  return jwt.sign(
+    {
+      provider,
+      purpose: "social-auth",
+    },
+    JWT_SECRET,
+    { expiresIn: "10m" },
+  );
+}
+
+function verifySocialState(token, provider) {
+  try {
+    const payload = jwt.verify(token, JWT_SECRET);
+    return payload?.purpose === "social-auth" && payload?.provider === provider;
+  } catch {
+    return false;
+  }
+}
+
+function buildLoginRedirect(req, params = {}) {
+  const url = new URL(`${getPublicBaseUrl(req)}/login.html`);
+  Object.entries(params).forEach(([key, value]) => {
+    if (value !== undefined && value !== null && value !== "") {
+      url.searchParams.set(key, String(value));
+    }
+  });
+  return url.toString();
+}
+
+function buildSocialSuccessRedirect(req, token, user) {
+  const url = new URL(`${getPublicBaseUrl(req)}/login.html`);
+  const fragment = new URLSearchParams({
+    social_token: token,
+    social_user: Buffer.from(JSON.stringify(buildPublicUser(user))).toString("base64url"),
+  });
+  url.hash = fragment.toString();
+  return url.toString();
+}
+
+function httpsJson(method, urlString, { headers = {}, body = null } = {}) {
+  return new Promise((resolve, reject) => {
+    const url = new URL(urlString);
+    const req = https.request(
+      {
+        method,
+        hostname: url.hostname,
+        path: `${url.pathname}${url.search}`,
+        headers,
+      },
+      (res) => {
+        let raw = "";
+        res.setEncoding("utf8");
+        res.on("data", (chunk) => {
+          raw += chunk;
+        });
+        res.on("end", () => {
+          let data = {};
+          try {
+            data = raw ? JSON.parse(raw) : {};
+          } catch {
+            data = { raw };
+          }
+          if (res.statusCode < 200 || res.statusCode >= 300) {
+            const error = new Error(data.error_description || data.error || "Falha na autenticação social");
+            error.status = res.statusCode;
+            error.data = data;
+            reject(error);
+            return;
+          }
+          resolve(data);
+        });
+      },
+    );
+
+    req.on("error", reject);
+    if (body) req.write(body);
+    req.end();
+  });
+}
+
+async function findOrCreateSocialUser({ name, email, avatarUrl = "", provider }) {
+  const normalizedEmail = normalizeEmail(email);
+  if (!normalizedEmail) {
+    const error = new Error("O provedor não retornou e-mail para autenticar.");
+    error.status = 400;
+    throw error;
+  }
+
+  const existing = await findUserByEmail(normalizedEmail);
+  if (existing) {
+    if (avatarUrl && !existing.avatar_url) {
+      await updateUserProfile(existing.id, { avatarUrl });
+      return getUserWithPasswordById(existing.id);
+    }
+    return existing;
+  }
+
+  const randomPassword = await bcrypt.hash(
+    `${provider}:${normalizedEmail}:${Date.now()}:${Math.random()}`,
+    10,
+  );
+
+  return createUser({
+    name: String(name || normalizedEmail.split("@")[0] || "Vida Nova").trim(),
+    email: normalizedEmail,
+    password: randomPassword,
+    avatarUrl,
+    subscriptionUrl: "",
+  });
+}
+
+function signAuthToken(user) {
+  return jwt.sign(
+    { id: user.id, email: user.email, name: user.name },
+    JWT_SECRET,
+    { expiresIn: "30d" },
+  );
 }
 
 function detectDeviceInfo(userAgent = "") {
@@ -121,10 +311,15 @@ function getDefaultStore() {
       user: 1,
       appData: 1,
       activity: 1,
+      communityPost: 1,
+      communityComment: 1,
     },
     users: [],
     appData: [],
     activityLog: [],
+    communityPosts: [],
+    communityLikes: [],
+    communityComments: [],
     pushSubscriptions: [],
   };
 }
@@ -290,6 +485,16 @@ async function initDb() {
   `);
 
   await query(`
+    CREATE TABLE IF NOT EXISTS community_posts (
+      id SERIAL PRIMARY KEY,
+      user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+      content TEXT NOT NULL,
+      created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+      updated_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
+    )
+  `);
+
+  await query(`
     CREATE INDEX IF NOT EXISTS idx_app_data_user_type
     ON app_data (user_id, data_type)
   `);
@@ -297,6 +502,43 @@ async function initDb() {
   await query(`
     CREATE INDEX IF NOT EXISTS idx_activity_log_user
     ON activity_log (user_id, created_at DESC)
+  `);
+
+  await query(`
+    CREATE INDEX IF NOT EXISTS idx_community_posts_created
+    ON community_posts (created_at DESC)
+  `);
+
+  await query(`
+    CREATE TABLE IF NOT EXISTS community_likes (
+      post_id INTEGER NOT NULL REFERENCES community_posts(id) ON DELETE CASCADE,
+      user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+      created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+      PRIMARY KEY (post_id, user_id)
+    )
+  `);
+
+  await query(`
+    CREATE TABLE IF NOT EXISTS community_comments (
+      id SERIAL PRIMARY KEY,
+      post_id INTEGER NOT NULL REFERENCES community_posts(id) ON DELETE CASCADE,
+      user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+      content TEXT NOT NULL,
+      created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
+    )
+  `);
+
+  await query(`
+    CREATE INDEX IF NOT EXISTS idx_community_comments_post
+    ON community_comments (post_id, created_at ASC)
+  `);
+
+  await query(`
+    ALTER TABLE community_posts ADD COLUMN IF NOT EXISTS image_data TEXT
+  `);
+
+  await query(`
+    ALTER TABLE community_posts ADD COLUMN IF NOT EXISTS image_format TEXT DEFAULT 'square'
   `);
 
   await query(`
@@ -918,6 +1160,277 @@ async function listUserDataEntries(userId, dataType) {
       created_at: item.created_at,
       updated_at: item.updated_at,
     }));
+}
+
+async function listCommunityPosts(limit = 50, requestingUserId = null) {
+  const normalizedLimit = Math.max(1, Math.min(Number(limit) || 50, 100));
+
+  if (isUsingDatabase) {
+    const result = await query(
+      `SELECT
+         community_posts.id,
+         community_posts.user_id,
+         community_posts.content,
+         community_posts.image_data,
+         community_posts.image_format,
+         community_posts.created_at,
+         users.name AS author_name,
+         users.avatar_url AS author_avatar_url,
+         COUNT(DISTINCT community_likes.user_id)::int AS likes_count,
+         COUNT(DISTINCT community_comments.id)::int AS comments_count,
+         BOOL_OR(community_likes.user_id = $2) AS liked_by_me
+       FROM community_posts
+       JOIN users ON users.id = community_posts.user_id
+       LEFT JOIN community_likes ON community_likes.post_id = community_posts.id
+       LEFT JOIN community_comments ON community_comments.post_id = community_posts.id
+       GROUP BY community_posts.id, users.name, users.avatar_url
+       ORDER BY community_posts.created_at DESC
+       LIMIT $1`,
+      [normalizedLimit, requestingUserId || 0],
+    );
+    return result.rows;
+  }
+
+  const store = await readStore();
+  const likes = store.communityLikes || [];
+  const comments = store.communityComments || [];
+  return [...(store.communityPosts || [])]
+    .sort((left, right) => new Date(right.created_at || 0).getTime() - new Date(left.created_at || 0).getTime())
+    .slice(0, normalizedLimit)
+    .map((post) => {
+      const user = store.users.find((entry) => Number(entry.id) === Number(post.user_id)) || {};
+      const postLikes = likes.filter((l) => Number(l.post_id) === Number(post.id));
+      const postComments = comments.filter((c) => Number(c.post_id) === Number(post.id));
+      return {
+        ...post,
+        author_name: user.name || "Mulher Vida Nova",
+        author_avatar_url: user.avatar_url || "",
+        likes_count: postLikes.length,
+        comments_count: postComments.length,
+        liked_by_me: requestingUserId ? postLikes.some((l) => Number(l.user_id) === Number(requestingUserId)) : false,
+      };
+    });
+}
+
+async function toggleCommunityLike(userId, postId) {
+  if (isUsingDatabase) {
+    const existing = await query(
+      `SELECT 1 FROM community_likes WHERE post_id = $1 AND user_id = $2`,
+      [postId, userId],
+    );
+    if (existing.rows.length) {
+      await query(`DELETE FROM community_likes WHERE post_id = $1 AND user_id = $2`, [postId, userId]);
+      return false;
+    } else {
+      await query(`INSERT INTO community_likes (post_id, user_id) VALUES ($1, $2) ON CONFLICT DO NOTHING`, [postId, userId]);
+      return true;
+    }
+  }
+
+  const store = await readStore();
+  if (!Array.isArray(store.communityLikes)) store.communityLikes = [];
+  const idx = store.communityLikes.findIndex(
+    (l) => Number(l.post_id) === Number(postId) && Number(l.user_id) === Number(userId),
+  );
+  if (idx >= 0) {
+    store.communityLikes.splice(idx, 1);
+    await writeStore(store);
+    return false;
+  } else {
+    store.communityLikes.push({ post_id: Number(postId), user_id: Number(userId) });
+    await writeStore(store);
+    return true;
+  }
+}
+
+async function addCommunityComment(userId, postId, content) {
+  const cleanedContent = String(content || "").trim().slice(0, 300);
+  if (!cleanedContent) {
+    const error = new Error("Escreva um comentário.");
+    error.status = 400;
+    throw error;
+  }
+
+  if (isUsingDatabase) {
+    const result = await query(
+      `INSERT INTO community_comments (post_id, user_id, content)
+       VALUES ($1, $2, $3)
+       RETURNING id, content, created_at`,
+      [postId, userId, cleanedContent],
+    );
+    return result.rows[0];
+  }
+
+  const store = await readStore();
+  if (!Array.isArray(store.communityComments)) store.communityComments = [];
+  if (!store.counters.communityComment) store.counters.communityComment = 1;
+  const comment = {
+    id: store.counters.communityComment++,
+    post_id: Number(postId),
+    user_id: Number(userId),
+    content: cleanedContent,
+    created_at: new Date().toISOString(),
+  };
+  store.communityComments.push(comment);
+  await writeStore(store);
+  return comment;
+}
+
+async function listCommunityComments(postId) {
+  if (isUsingDatabase) {
+    const result = await query(
+      `SELECT community_comments.id, community_comments.content, community_comments.created_at,
+              users.name AS author_name, users.avatar_url AS author_avatar_url
+       FROM community_comments
+       JOIN users ON users.id = community_comments.user_id
+       WHERE community_comments.post_id = $1
+       ORDER BY community_comments.created_at ASC`,
+      [postId],
+    );
+    return result.rows;
+  }
+
+  const store = await readStore();
+  return (store.communityComments || [])
+    .filter((c) => Number(c.post_id) === Number(postId))
+    .sort((a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime())
+    .map((c) => {
+      const user = store.users.find((u) => Number(u.id) === Number(c.user_id)) || {};
+      return { ...c, author_name: user.name || "Mulher Vida Nova", author_avatar_url: user.avatar_url || "" };
+    });
+}
+
+const MAX_IMAGE_BYTES = 1.5 * 1024 * 1024;
+
+function validateImageData(imageData) {
+  if (!imageData) return null;
+  const str = String(imageData);
+  if (!str.startsWith("data:image/")) return null;
+  if (Buffer.byteLength(str, "utf8") > MAX_IMAGE_BYTES) {
+    const err = new Error("Imagem muito grande. Use uma foto menor.");
+    err.status = 400;
+    throw err;
+  }
+  return str;
+}
+
+async function createCommunityPost(user, content, imageData = null, imageFormat = "square") {
+  const cleanedContent = String(content || "").trim().slice(0, 600);
+  if (!cleanedContent && !imageData) {
+    const error = new Error("Escreva uma mensagem ou adicione uma foto.");
+    error.status = 400;
+    throw error;
+  }
+  const safeImage = validateImageData(imageData);
+  const safeFormat = imageFormat === "story" ? "story" : "square";
+
+  if (isUsingDatabase) {
+    await query(
+      `INSERT INTO community_posts (user_id, content, image_data, image_format)
+       VALUES ($1, $2, $3, $4)`,
+      [user.id, cleanedContent, safeImage, safeFormat],
+    );
+    return;
+  }
+
+  const store = await readStore();
+  if (!Array.isArray(store.communityPosts)) store.communityPosts = [];
+  if (!store.counters.communityPost) store.counters.communityPost = 1;
+
+  store.communityPosts.push({
+    id: store.counters.communityPost++,
+    user_id: user.id,
+    content: cleanedContent,
+    image_data: safeImage,
+    image_format: safeFormat,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+  });
+  await writeStore(store);
+}
+
+async function editCommunityPost(userId, postId, content, imageData) {
+  const cleanedContent = String(content || "").trim().slice(0, 600);
+  const safeImage = validateImageData(imageData);
+
+  if (isUsingDatabase) {
+    const result = await query(
+      `UPDATE community_posts SET content = $1, image_data = $2, updated_at = NOW()
+       WHERE id = $3 AND user_id = $4
+       RETURNING id`,
+      [cleanedContent, safeImage, postId, userId],
+    );
+    if (!result.rows.length) {
+      const err = new Error("Publicação não encontrada ou sem permissão.");
+      err.status = 403;
+      throw err;
+    }
+    return;
+  }
+
+  const store = await readStore();
+  const post = (store.communityPosts || []).find(
+    (p) => Number(p.id) === Number(postId) && Number(p.user_id) === Number(userId),
+  );
+  if (!post) {
+    const err = new Error("Publicação não encontrada ou sem permissão.");
+    err.status = 403;
+    throw err;
+  }
+  post.content = cleanedContent;
+  post.image_data = safeImage;
+  post.updated_at = new Date().toISOString();
+  await writeStore(store);
+}
+
+async function deleteCommunityPost(user, postId) {
+  const normalizedPostId = Number(postId);
+  const isAdmin = getUserRole(user.email, user.role) === "admin";
+
+  if (!normalizedPostId) {
+    const err = new Error("Publicação inválida.");
+    err.status = 400;
+    throw err;
+  }
+
+  if (isUsingDatabase) {
+    const params = isAdmin
+      ? [normalizedPostId]
+      : [normalizedPostId, user.id];
+    const sql = isAdmin
+      ? "DELETE FROM community_posts WHERE id = $1 RETURNING id"
+      : "DELETE FROM community_posts WHERE id = $1 AND user_id = $2 RETURNING id";
+    const result = await query(sql, params);
+    if (!result.rows.length) {
+      const err = new Error("Publicação não encontrada ou sem permissão.");
+      err.status = 403;
+      throw err;
+    }
+    return;
+  }
+
+  const store = await readStore();
+  if (!Array.isArray(store.communityPosts)) store.communityPosts = [];
+  const idx = store.communityPosts.findIndex((post) => {
+    const samePost = Number(post.id) === normalizedPostId;
+    const canDelete = isAdmin || Number(post.user_id) === Number(user.id);
+    return samePost && canDelete;
+  });
+
+  if (idx === -1) {
+    const err = new Error("Publicação não encontrada ou sem permissão.");
+    err.status = 403;
+    throw err;
+  }
+
+  store.communityPosts.splice(idx, 1);
+  store.communityLikes = (store.communityLikes || []).filter(
+    (like) => Number(like.post_id) !== normalizedPostId,
+  );
+  store.communityComments = (store.communityComments || []).filter(
+    (comment) => Number(comment.post_id) !== normalizedPostId,
+  );
+  await writeStore(store);
 }
 
 async function updateUserProfile(
@@ -1632,6 +2145,183 @@ app.post("/api/auth/login", async (req, res) => {
   }
 });
 
+app.get("/api/auth/google/start", (req, res) => {
+  if (!GOOGLE_CLIENT_ID || !GOOGLE_CLIENT_SECRET) {
+    return res.redirect(
+      buildLoginRedirect(req, {
+        social_error: "Login com Google ainda precisa das credenciais GOOGLE_CLIENT_ID e GOOGLE_CLIENT_SECRET no servidor.",
+      }),
+    );
+  }
+
+  const params = new URLSearchParams({
+    client_id: GOOGLE_CLIENT_ID,
+    redirect_uri: getSocialRedirectUri(req, "google"),
+    response_type: "code",
+    scope: "openid email profile",
+    access_type: "online",
+    prompt: "select_account",
+    state: createSocialState("google"),
+  });
+
+  res.redirect(`https://accounts.google.com/o/oauth2/v2/auth?${params.toString()}`);
+});
+
+app.get("/api/auth/google/callback", async (req, res) => {
+  try {
+    const { code, state, error } = req.query;
+    if (error) {
+      return res.redirect(buildLoginRedirect(req, { social_error: `Google: ${error}` }));
+    }
+
+    if (!code || !verifySocialState(state, "google")) {
+      return res.redirect(buildLoginRedirect(req, { social_error: "Retorno do Google inválido. Tente novamente." }));
+    }
+
+    const body = new URLSearchParams({
+      code: String(code),
+      client_id: GOOGLE_CLIENT_ID,
+      client_secret: GOOGLE_CLIENT_SECRET,
+      redirect_uri: getSocialRedirectUri(req, "google"),
+      grant_type: "authorization_code",
+    }).toString();
+
+    const tokenData = await httpsJson("POST", "https://oauth2.googleapis.com/token", {
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+        "Content-Length": Buffer.byteLength(body),
+      },
+      body,
+    });
+
+    const profile = await httpsJson(
+      "GET",
+      `https://oauth2.googleapis.com/tokeninfo?id_token=${encodeURIComponent(tokenData.id_token)}`,
+    );
+
+    if (profile.aud !== GOOGLE_CLIENT_ID) {
+      return res.redirect(buildLoginRedirect(req, { social_error: "Credencial do Google não pertence a este app." }));
+    }
+
+    const user = await findOrCreateSocialUser({
+      provider: "google",
+      name: profile.name,
+      email: profile.email,
+      avatarUrl: profile.picture,
+    });
+
+    await updateUserLastSeenDevice(user.id, req.headers["user-agent"] || "");
+    await logActivity(user.id, "user_login_google", `Login com Google às ${new Date().toISOString()}`);
+    const refreshedUser = await getUserWithPasswordById(user.id);
+    const publicUser = buildPublicUser(refreshedUser || user);
+    const token = signAuthToken(publicUser);
+
+    res.redirect(buildSocialSuccessRedirect(req, token, publicUser));
+  } catch (err) {
+    console.error("Erro no login Google:", err);
+    res.redirect(buildLoginRedirect(req, { social_error: "Não foi possível concluir o login com Google." }));
+  }
+});
+
+function createAppleClientSecret() {
+  return jwt.sign(
+    {
+      iss: APPLE_TEAM_ID,
+      iat: Math.floor(Date.now() / 1000),
+      exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 30,
+      aud: "https://appleid.apple.com",
+      sub: APPLE_CLIENT_ID,
+    },
+    APPLE_PRIVATE_KEY,
+    {
+      algorithm: "ES256",
+      keyid: APPLE_KEY_ID,
+    },
+  );
+}
+
+app.get("/api/auth/apple/start", (req, res) => {
+  if (!APPLE_CLIENT_ID || !APPLE_TEAM_ID || !APPLE_KEY_ID || !APPLE_PRIVATE_KEY) {
+    return res.redirect(
+      buildLoginRedirect(req, {
+        social_error: "Login com Apple precisa das credenciais APPLE_CLIENT_ID, APPLE_TEAM_ID, APPLE_KEY_ID e APPLE_PRIVATE_KEY.",
+      }),
+    );
+  }
+
+  const params = new URLSearchParams({
+    client_id: APPLE_CLIENT_ID,
+    redirect_uri: getSocialRedirectUri(req, "apple"),
+    response_type: "code",
+    response_mode: "form_post",
+    scope: "name email",
+    state: createSocialState("apple"),
+  });
+
+  res.redirect(`https://appleid.apple.com/auth/authorize?${params.toString()}`);
+});
+
+app.post("/api/auth/apple/callback", async (req, res) => {
+  try {
+    const { code, state, user: appleUserRaw, error } = req.body;
+    if (error) {
+      return res.redirect(buildLoginRedirect(req, { social_error: `Apple: ${error}` }));
+    }
+
+    if (!code || !verifySocialState(state, "apple")) {
+      return res.redirect(buildLoginRedirect(req, { social_error: "Retorno da Apple inválido. Tente novamente." }));
+    }
+
+    const body = new URLSearchParams({
+      code: String(code),
+      client_id: APPLE_CLIENT_ID,
+      client_secret: createAppleClientSecret(),
+      redirect_uri: getSocialRedirectUri(req, "apple"),
+      grant_type: "authorization_code",
+    }).toString();
+
+    const tokenData = await httpsJson("POST", "https://appleid.apple.com/auth/token", {
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+        "Content-Length": Buffer.byteLength(body),
+      },
+      body,
+    });
+
+    const idPayload = jwt.decode(tokenData.id_token) || {};
+    if (idPayload.aud !== APPLE_CLIENT_ID || idPayload.iss !== "https://appleid.apple.com") {
+      return res.redirect(buildLoginRedirect(req, { social_error: "Credencial da Apple não pertence a este app." }));
+    }
+
+    let appleProfile = {};
+    try {
+      appleProfile = appleUserRaw ? JSON.parse(appleUserRaw) : {};
+    } catch {}
+
+    const fullName = [appleProfile?.name?.firstName, appleProfile?.name?.lastName]
+      .filter(Boolean)
+      .join(" ");
+
+    const user = await findOrCreateSocialUser({
+      provider: "apple",
+      name: fullName || idPayload.email,
+      email: idPayload.email,
+      avatarUrl: "",
+    });
+
+    await updateUserLastSeenDevice(user.id, req.headers["user-agent"] || "");
+    await logActivity(user.id, "user_login_apple", `Login com Apple às ${new Date().toISOString()}`);
+    const refreshedUser = await getUserWithPasswordById(user.id);
+    const publicUser = buildPublicUser(refreshedUser || user);
+    const token = signAuthToken(publicUser);
+
+    res.redirect(buildSocialSuccessRedirect(req, token, publicUser));
+  } catch (err) {
+    console.error("Erro no login Apple:", err);
+    res.redirect(buildLoginRedirect(req, { social_error: "Não foi possível concluir o login com Apple." }));
+  }
+});
+
 app.post("/api/auth/verify", async (req, res) => {
   try {
     const { token } = req.body;
@@ -1702,6 +2392,113 @@ app.post("/api/data/get", async (req, res) => {
       error: error.message || "Não autorizado",
       user: error.user || null,
     });
+  }
+});
+
+app.post("/api/community/list", async (req, res) => {
+  try {
+    const { token, limit } = req.body;
+    const { user } = await requireAuthorizedUser(token, { requireActiveSubscription: true });
+    const posts = await listCommunityPosts(limit || 50, user.id);
+
+    res.json({
+      success: true,
+      posts,
+      storageMode: isUsingDatabase ? "neon" : "fallback",
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(error.status || 401).json({
+      error: error.message || "Não autorizado",
+      user: error.user || null,
+    });
+  }
+});
+
+app.post("/api/community/post", async (req, res) => {
+  try {
+    const { token, content, image_data, image_format } = req.body;
+    const { user } = await requireAuthorizedUser(token, { requireActiveSubscription: true });
+    await createCommunityPost(user, content, image_data, image_format);
+    await logActivity(user.id, "community_post_created", "Publicou na comunidade");
+    const posts = await listCommunityPosts(50, user.id);
+
+    res.json({
+      success: true,
+      posts,
+      storageMode: isUsingDatabase ? "neon" : "fallback",
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(error.status || 401).json({
+      error: error.message || "Não autorizado",
+      user: error.user || null,
+    });
+  }
+});
+
+app.post("/api/community/edit", async (req, res) => {
+  try {
+    const { token, post_id, content, image_data } = req.body;
+    const { user } = await requireAuthorizedUser(token, { requireActiveSubscription: true });
+    await editCommunityPost(user.id, post_id, content, image_data);
+    const posts = await listCommunityPosts(50, user.id);
+    res.json({ success: true, posts });
+  } catch (error) {
+    console.error(error);
+    res.status(error.status || 400).json({ error: error.message || "Erro ao editar" });
+  }
+});
+
+app.post("/api/community/delete", async (req, res) => {
+  try {
+    const { token, post_id } = req.body;
+    const { user } = await requireAuthorizedUser(token, { requireActiveSubscription: true });
+    await deleteCommunityPost(user, post_id);
+    await logActivity(user.id, "community_post_deleted", "Excluiu uma publicação da comunidade");
+    const posts = await listCommunityPosts(50, user.id);
+    res.json({ success: true, posts });
+  } catch (error) {
+    console.error(error);
+    res.status(error.status || 400).json({ error: error.message || "Erro ao excluir" });
+  }
+});
+
+app.post("/api/community/like", async (req, res) => {
+  try {
+    const { token, post_id } = req.body;
+    const { user } = await requireAuthorizedUser(token, { requireActiveSubscription: true });
+    const liked = await toggleCommunityLike(user.id, post_id);
+    res.json({ success: true, liked });
+  } catch (error) {
+    console.error(error);
+    res.status(error.status || 401).json({ error: error.message || "Erro ao curtir" });
+  }
+});
+
+app.post("/api/community/comment", async (req, res) => {
+  try {
+    const { token, post_id, content } = req.body;
+    const { user } = await requireAuthorizedUser(token, { requireActiveSubscription: true });
+    const comment = await addCommunityComment(user.id, post_id, content);
+    await logActivity(user.id, "community_comment_created", "Comentou na comunidade");
+    const comments = await listCommunityComments(post_id);
+    res.json({ success: true, comment, comments });
+  } catch (error) {
+    console.error(error);
+    res.status(error.status || 400).json({ error: error.message || "Erro ao comentar" });
+  }
+});
+
+app.post("/api/community/comments", async (req, res) => {
+  try {
+    const { token, post_id } = req.body;
+    await requireAuthorizedUser(token, { requireActiveSubscription: true });
+    const comments = await listCommunityComments(post_id);
+    res.json({ success: true, comments });
+  } catch (error) {
+    console.error(error);
+    res.status(error.status || 401).json({ error: error.message || "Erro ao carregar comentários" });
   }
 });
 
