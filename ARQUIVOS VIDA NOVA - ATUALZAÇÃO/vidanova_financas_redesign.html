@@ -1,0 +1,433 @@
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap');
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'DM Sans',sans-serif;background:#fdf7f9;padding:24px 20px 48px;}
+
+.module-hero{background:#c9395f;border-radius:18px;padding:22px 28px;margin-bottom:20px;display:flex;align-items:center;gap:18px;position:relative;overflow:hidden;}
+.hero-deco{position:absolute;right:24px;top:-10px;font-family:'Cormorant Garamond',serif;font-size:110px;color:rgba(255,255,255,.06);pointer-events:none;}
+.hero-icon{width:44px;height:44px;min-width:44px;background:rgba(255,255,255,.15);border-radius:13px;display:flex;align-items:center;justify-content:center;}
+.hero-icon i{font-size:22px;color:#fff;}
+.hero-eye{font-size:9px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.55);margin-bottom:5px;}
+.hero-title{font-family:'Cormorant Garamond',serif;font-size:22px;font-style:italic;color:#fff;font-weight:400;}
+
+.tabs-row{display:flex;gap:6px;margin-bottom:24px;flex-wrap:wrap;}
+.tab{font-size:12px;font-weight:500;letter-spacing:.04em;padding:8px 18px;border-radius:60px;border:0.5px solid #e8d0da;background:#fff;color:#9a7a8a;cursor:pointer;}
+.tab.active{background:#c9395f;color:#fff;border-color:#c9395f;}
+
+.section-title{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:500;color:#2a1f28;margin-bottom:16px;display:flex;align-items:center;gap:10px;}
+.section-title::after{content:'';flex:1;height:0.5px;background:#f0dce6;}
+
+.stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px;}
+.stat-card{border-radius:16px;padding:18px 20px;}
+.stat-card.green{background:#eef7ee;border:0.5px solid #b8ddb8;}
+.stat-card.red{background:#fdf0f0;border:0.5px solid #f0b8b8;}
+.stat-card.amber{background:#fef7ec;border:0.5px solid #f5dca0;}
+.stat-card.blue{background:#eef3fd;border:0.5px solid #b8ccf0;}
+.stat-label{font-size:9px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;margin-bottom:8px;}
+.stat-label.green{color:#4a8a4a;}
+.stat-label.red{color:#c04040;}
+.stat-label.amber{color:#c9853f;}
+.stat-label.blue{color:#3060b0;}
+.stat-value{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:500;line-height:1;}
+.stat-value.green{color:#3a7a3a;}
+.stat-value.red{color:#c04040;}
+.stat-value.amber{color:#c9853f;}
+.stat-value.blue{color:#2050a0;}
+
+.saldo-row{background:#fff;border:0.5px solid #f0dce6;border-radius:14px;padding:14px 20px;margin-bottom:20px;display:flex;align-items:center;justify-content:space-between;}
+.saldo-label{font-size:12px;font-weight:500;color:#9a7a8a;letter-spacing:.04em;}
+.saldo-value{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:500;color:#c9395f;}
+
+.annual-card{background:#fff;border:0.5px solid #f0dce6;border-radius:16px;overflow:hidden;margin-bottom:24px;}
+.annual-header{background:#fdf0f4;padding:14px 20px;border-bottom:0.5px solid #f5e8ee;display:flex;align-items:center;gap:10px;}
+.annual-header i{font-size:18px;color:#c9395f;}
+.annual-header span{font-size:13px;font-weight:500;color:#c9395f;}
+.annual-table{width:100%;border-collapse:collapse;font-size:11px;overflow-x:auto;}
+.annual-table th{padding:9px 8px;text-align:center;font-size:9px;font-weight:500;letter-spacing:.07em;text-transform:uppercase;color:#b09aa8;border-bottom:0.5px solid #f5e8ee;}
+.annual-table th:first-child{text-align:left;padding-left:20px;min-width:120px;}
+.annual-table td{padding:8px;border-bottom:0.5px solid #fdf0f4;text-align:center;}
+.annual-table td:first-child{padding-left:20px;text-align:left;font-size:12px;color:#2a1f28;}
+.annual-table tr:last-child td{border-bottom:none;}
+.a-input{width:52px;border:0.5px solid #f0dce6;border-radius:7px;padding:5px 4px;font-family:'DM Sans',sans-serif;font-size:11px;color:#2a1f28;background:#fdf8f9;outline:none;text-align:center;}
+.add-row-btn{display:flex;align-items:center;justify-content:center;gap:6px;padding:12px;font-size:11px;font-weight:500;color:#c9395f;cursor:pointer;border-top:0.5px solid #fdf0f4;}
+.add-row-btn i{font-size:14px;}
+
+.calc-card{background:#fff;border:0.5px solid #f0dce6;border-radius:16px;overflow:hidden;margin-bottom:24px;}
+.calc-header{background:#fdf0f4;padding:14px 20px;border-bottom:0.5px solid #f5e8ee;display:flex;align-items:center;gap:10px;}
+.calc-header i{font-size:18px;color:#c9395f;}
+.calc-header span{font-size:13px;font-weight:500;color:#c9395f;}
+.calc-display{background:#2a1f28;padding:20px 24px;text-align:right;}
+.calc-display-num{font-family:'Cormorant Garamond',serif;font-size:36px;font-weight:400;color:#fff;}
+.calc-display-expr{font-size:11px;color:rgba(255,255,255,.4);margin-bottom:4px;min-height:16px;}
+.calc-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:16px;}
+.calc-btn{border:none;border-radius:12px;padding:14px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:500;cursor:pointer;transition:opacity .15s;}
+.calc-btn.num{background:#fdf0f4;color:#2a1f28;}
+.calc-btn.op{background:#c9395f;color:#fff;}
+.calc-btn.ac{background:#f5e8ee;color:#c9395f;}
+.calc-btn.eq{background:#c9395f;color:#fff;grid-column:span 2;}
+.calc-btn:hover{opacity:.85;}
+
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px;}
+.card{background:#fff;border:0.5px solid #f0dce6;border-radius:16px;overflow:hidden;}
+.card-header-rose{background:#c9395f;padding:13px 18px;display:flex;align-items:center;gap:8px;}
+.card-header-rose i{font-size:17px;color:#fff;}
+.card-header-rose span{font-size:12px;font-weight:500;color:#fff;letter-spacing:.04em;}
+.card-body{padding:16px 18px;}
+
+.wish-table{width:100%;border-collapse:collapse;font-size:11px;}
+.wish-table th{padding:8px 6px;text-align:left;font-size:9px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:#b09aa8;border-bottom:0.5px solid #f5e8ee;}
+.wish-table td{padding:8px 6px;border-bottom:0.5px solid #fdf0f4;}
+.wish-table tr:last-child td{border-bottom:none;}
+.wt-input{border:0.5px solid #f0dce6;border-radius:7px;padding:5px 8px;font-family:'DM Sans',sans-serif;font-size:11px;color:#2a1f28;background:#fdf8f9;outline:none;width:100%;}
+.add-btn{display:flex;align-items:center;justify-content:center;gap:6px;padding:10px;font-size:11px;font-weight:500;color:#c9395f;cursor:pointer;border-top:0.5px solid #fdf0f4;}
+
+.goal-card{background:#fff;border:0.5px solid #f0dce6;border-radius:16px;margin-bottom:12px;overflow:hidden;}
+.goal-header{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:0.5px solid #f5e8ee;}
+.goal-name{font-size:13px;font-weight:500;color:#2a1f28;}
+.goal-meta{font-size:11px;color:#b09aa8;}
+.goal-body{padding:12px 18px;}
+.progress-bar-wrap{background:#f5e8ee;border-radius:60px;height:8px;margin-bottom:8px;}
+.progress-bar{background:#c9395f;border-radius:60px;height:8px;}
+.progress-labels{display:flex;justify-content:space-between;font-size:10px;color:#b09aa8;}
+.new-goal-btn{background:#fdf0f4;border:1px dashed #f0c0d0;border-radius:16px;padding:16px;display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;font-size:12px;font-weight:500;color:#c9395f;margin-bottom:24px;}
+
+.month-select{display:flex;align-items:center;gap:10px;margin-bottom:20px;}
+.month-select select{border:0.5px solid #f0dce6;border-radius:10px;padding:8px 14px;font-family:'DM Sans',sans-serif;font-size:12px;color:#2a1f28;background:#fff;outline:none;}
+.month-select label{font-size:12px;color:#9a7a8a;font-weight:500;}
+
+.fin-section{background:#fff;border:0.5px solid #f0dce6;border-radius:16px;overflow:hidden;margin-bottom:12px;}
+.fin-section-header{padding:12px 18px;display:flex;align-items:center;justify-content:space-between;border-bottom:0.5px solid #f5e8ee;}
+.fsh-left{display:flex;align-items:center;gap:8px;}
+.fsh-icon{width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;}
+.fsh-icon.green{background:#eef7ee;}
+.fsh-icon.green i{color:#4a8a4a;font-size:15px;}
+.fsh-icon.red{background:#fdf0f0;}
+.fsh-icon.red i{color:#c04040;font-size:15px;}
+.fsh-icon.amber{background:#fef7ec;}
+.fsh-icon.amber i{color:#c9853f;font-size:15px;}
+.fsh-icon.rose{background:#fbeef3;}
+.fsh-icon.rose i{color:#c9395f;font-size:15px;}
+.fsh-title{font-size:13px;font-weight:500;color:#2a1f28;}
+.fsh-add{display:flex;align-items:center;gap:4px;font-size:11px;font-weight:500;color:#c9395f;cursor:pointer;background:#fbeef3;border:none;border-radius:60px;padding:5px 12px;}
+.fin-table{width:100%;border-collapse:collapse;font-size:11px;}
+.fin-table th{padding:9px 12px;text-align:left;font-size:9px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:#b09aa8;border-bottom:0.5px solid #f5e8ee;}
+.fin-table td{padding:9px 12px;border-bottom:0.5px solid #fdf0f4;color:#4a3a46;}
+.fin-table tr:last-child td{border-bottom:none;}
+.fin-empty{padding:16px 18px;font-size:11px;color:#c9b8c4;font-style:italic;text-align:center;}
+
+.balance-card{background:#2a1f28;border-radius:16px;padding:20px 24px;margin-bottom:24px;}
+.balance-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:16px;}
+.bal-item{}
+.bal-label{font-size:9px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:6px;}
+.bal-value{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:500;}
+.bal-value.pos{color:#7adba0;}
+.bal-value.neg{color:#f08080;}
+.bal-value.neu{color:#fff;}
+.balance-notes{width:100%;background:rgba(255,255,255,.07);border:0.5px solid rgba(255,255,255,.12);border-radius:10px;padding:12px 14px;font-family:'DM Sans',sans-serif;font-size:12px;color:rgba(255,255,255,.7);outline:none;resize:none;min-height:72px;}
+.balance-notes::placeholder{color:rgba(255,255,255,.3);}
+
+.parcela-card{background:#fff;border:0.5px solid #f0dce6;border-radius:16px;overflow:hidden;margin-bottom:24px;}
+.parcela-new-btn{background:#c9395f;color:#fff;border:none;border-radius:60px;padding:8px 16px;font-size:11px;font-weight:500;cursor:pointer;display:flex;align-items:center;gap:5px;}
+.parcela-new-btn i{font-size:14px;}
+.card-empty{padding:24px;text-align:center;font-size:12px;color:#c9b8c4;font-style:italic;}
+.card-empty i{font-size:28px;display:block;margin:0 auto 8px;color:#f0c8d8;}
+</style>
+
+<div>
+
+<div class="module-hero">
+  <div class="hero-deco">R$</div>
+  <div class="hero-icon"><i class="ti ti-coin" aria-hidden="true"></i></div>
+  <div>
+    <div class="hero-eye">Finanças</div>
+    <div class="hero-title">Controle financeiro</div>
+  </div>
+</div>
+
+<div class="tabs-row">
+  <div class="tab active">Planejamento</div>
+  <div class="tab">Compras Parceladas</div>
+  <div class="tab">Desejos</div>
+  <div class="tab">Metas</div>
+  <div class="tab">Controle Mensal</div>
+</div>
+
+<div class="section-title">Visão geral</div>
+
+<div class="stat-grid">
+  <div class="stat-card green">
+    <div class="stat-label green">Entradas</div>
+    <div class="stat-value green">R$ 0,00</div>
+  </div>
+  <div class="stat-card red">
+    <div class="stat-label red">Saídas</div>
+    <div class="stat-value red">R$ 0,00</div>
+  </div>
+  <div class="stat-card amber">
+    <div class="stat-label amber">Dívidas</div>
+    <div class="stat-value amber">R$ 0,00</div>
+  </div>
+  <div class="stat-card blue">
+    <div class="stat-label blue">Investimentos</div>
+    <div class="stat-value blue">R$ 0,00</div>
+  </div>
+</div>
+
+<div class="saldo-row">
+  <span class="saldo-label">Saldo disponível</span>
+  <span class="saldo-value">R$ 0,00</span>
+</div>
+
+<div class="section-title">Acompanhamento anual</div>
+<div class="annual-card" style="margin-bottom:24px;">
+  <div class="annual-header">
+    <i class="ti ti-chart-bar" aria-hidden="true"></i>
+    <span>Todas as categorias · 2026</span>
+  </div>
+  <div style="overflow-x:auto;">
+    <table class="annual-table">
+      <thead>
+        <tr>
+          <th>Categoria</th>
+          <th>Jan</th><th>Fev</th><th>Mar</th><th>Abr</th><th>Mai</th><th>Jun</th>
+          <th>Jul</th><th>Ago</th><th>Set</th><th>Out</th><th>Nov</th><th>Dez</th>
+          <th>Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><input style="border:none;background:none;font-family:'DM Sans',sans-serif;font-size:12px;color:#2a1f28;outline:none;width:110px;" placeholder="Nova categoria"/></td>
+          <td><input class="a-input" placeholder="—"/></td><td><input class="a-input" placeholder="—"/></td><td><input class="a-input" placeholder="—"/></td><td><input class="a-input" placeholder="—"/></td><td><input class="a-input" placeholder="—"/></td><td><input class="a-input" placeholder="—"/></td>
+          <td><input class="a-input" placeholder="—"/></td><td><input class="a-input" placeholder="—"/></td><td><input class="a-input" placeholder="—"/></td><td><input class="a-input" placeholder="—"/></td><td><input class="a-input" placeholder="—"/></td><td><input class="a-input" placeholder="—"/></td>
+          <td style="font-weight:500;color:#c9395f;">R$ 0</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="add-row-btn"><i class="ti ti-plus" aria-hidden="true"></i>Adicionar categoria</div>
+</div>
+
+<div class="section-title">Calculadora rápida</div>
+<div class="calc-card" style="margin-bottom:24px;">
+  <div class="calc-header">
+    <i class="ti ti-calculator" aria-hidden="true"></i>
+    <span>Calculadora rápida</span>
+  </div>
+  <div class="calc-display">
+    <div class="calc-display-expr" id="expr"></div>
+    <div class="calc-display-num" id="display">0</div>
+  </div>
+  <div class="calc-grid">
+    <button class="calc-btn ac" onclick="calcAC()">AC</button>
+    <button class="calc-btn ac" onclick="calcInput('(')">(</button>
+    <button class="calc-btn ac" onclick="calcInput(')')">)</button>
+    <button class="calc-btn op" onclick="calcInput('÷')">÷</button>
+    <button class="calc-btn num" onclick="calcInput('7')">7</button>
+    <button class="calc-btn num" onclick="calcInput('8')">8</button>
+    <button class="calc-btn num" onclick="calcInput('9')">9</button>
+    <button class="calc-btn op" onclick="calcInput('×')">×</button>
+    <button class="calc-btn num" onclick="calcInput('4')">4</button>
+    <button class="calc-btn num" onclick="calcInput('5')">5</button>
+    <button class="calc-btn num" onclick="calcInput('6')">6</button>
+    <button class="calc-btn op" onclick="calcInput('−')">−</button>
+    <button class="calc-btn num" onclick="calcInput('1')">1</button>
+    <button class="calc-btn num" onclick="calcInput('2')">2</button>
+    <button class="calc-btn num" onclick="calcInput('3')">3</button>
+    <button class="calc-btn op" onclick="calcInput('+')">+</button>
+    <button class="calc-btn num" onclick="calcInput('0')">0</button>
+    <button class="calc-btn num" onclick="calcInput('.')">.</button>
+    <button class="calc-btn eq" onclick="calcEq()">=</button>
+  </div>
+</div>
+
+<div class="section-title">Compras parceladas</div>
+<div class="parcela-card" style="margin-bottom:24px;">
+  <div class="annual-header" style="justify-content:space-between;">
+    <div style="display:flex;align-items:center;gap:10px;">
+      <i class="ti ti-credit-card" aria-hidden="true"></i>
+      <span style="font-size:13px;font-weight:500;color:#c9395f;">Meus cartões e parcelas</span>
+    </div>
+    <button class="parcela-new-btn"><i class="ti ti-plus" aria-hidden="true"></i>Novo cartão</button>
+  </div>
+  <div class="card-empty">
+    <i class="ti ti-credit-card" aria-hidden="true"></i>
+    Nenhum cartão cadastrado ainda. Clique em "Novo cartão" para começar.
+  </div>
+</div>
+
+<div class="section-title">Desejos</div>
+<div class="two-col" style="margin-bottom:24px;">
+  <div class="card">
+    <div class="card-header-rose"><i class="ti ti-heart" aria-hidden="true"></i><span>Meus desejos</span></div>
+    <div style="overflow-x:auto;">
+      <table class="wish-table">
+        <thead><tr><th>Item</th><th>Categoria</th><th>Valor</th><th>Prioridade</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><input class="wt-input" placeholder="Ex.: Tênis novo"/></td>
+            <td><input class="wt-input" placeholder="Moda"/></td>
+            <td><input class="wt-input" placeholder="R$ 0"/></td>
+            <td>
+              <select style="border:0.5px solid #f0dce6;border-radius:7px;padding:5px 6px;font-family:'DM Sans',sans-serif;font-size:11px;color:#2a1f28;background:#fdf8f9;outline:none;width:100%;">
+                <option>Alta</option><option>Média</option><option>Baixa</option>
+              </select>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="add-btn"><i class="ti ti-plus" aria-hidden="true"></i>Adicionar desejo</div>
+  </div>
+  <div class="card">
+    <div class="card-header-rose"><i class="ti ti-home" aria-hidden="true"></i><span>Desejos da casa</span></div>
+    <div style="overflow-x:auto;">
+      <table class="wish-table">
+        <thead><tr><th>Item</th><th>Categoria</th><th>Valor</th><th>Prioridade</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><input class="wt-input" placeholder="Ex.: Sofá novo"/></td>
+            <td><input class="wt-input" placeholder="Móveis"/></td>
+            <td><input class="wt-input" placeholder="R$ 0"/></td>
+            <td>
+              <select style="border:0.5px solid #f0dce6;border-radius:7px;padding:5px 6px;font-family:'DM Sans',sans-serif;font-size:11px;color:#2a1f28;background:#fdf8f9;outline:none;width:100%;">
+                <option>Alta</option><option>Média</option><option>Baixa</option>
+              </select>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="add-btn"><i class="ti ti-plus" aria-hidden="true"></i>Adicionar desejo</div>
+  </div>
+</div>
+
+<div class="section-title">Metas financeiras</div>
+<div class="goal-card">
+  <div class="goal-header">
+    <div>
+      <div class="goal-name">Reserva de emergência</div>
+      <div class="goal-meta">Meta: R$ 10.000 · Prazo: Dez/2026</div>
+    </div>
+    <span style="font-size:12px;font-weight:500;color:#c9395f;">0%</span>
+  </div>
+  <div class="goal-body">
+    <div class="progress-bar-wrap"><div class="progress-bar" style="width:0%;"></div></div>
+    <div class="progress-labels"><span>R$ 0,00 guardado</span><span>R$ 10.000,00</span></div>
+  </div>
+</div>
+<div class="new-goal-btn"><i class="ti ti-plus" aria-hidden="true"></i>Nova meta financeira</div>
+
+<div class="section-title">Controle mensal</div>
+<div class="month-select">
+  <label>Mês:</label>
+  <select>
+    <option>Janeiro</option><option>Fevereiro</option><option>Março</option><option>Abril</option>
+    <option selected>Maio</option><option>Junho</option><option>Julho</option><option>Agosto</option>
+    <option>Setembro</option><option>Outubro</option><option>Novembro</option><option>Dezembro</option>
+  </select>
+</div>
+
+<div class="fin-section">
+  <div class="fin-section-header">
+    <div class="fsh-left">
+      <div class="fsh-icon green"><i class="ti ti-arrow-up" aria-hidden="true"></i></div>
+      <span class="fsh-title">Entradas</span>
+    </div>
+    <button class="fsh-add"><i class="ti ti-plus" aria-hidden="true"></i>Adicionar</button>
+  </div>
+  <table class="fin-table">
+    <thead><tr><th>Descrição</th><th>Data</th><th>Valor</th><th>Observação</th></tr></thead>
+  </table>
+  <div class="fin-empty">Nenhuma entrada registrada. Clique em "Adicionar" para começar.</div>
+</div>
+
+<div class="fin-section">
+  <div class="fin-section-header">
+    <div class="fsh-left">
+      <div class="fsh-icon rose"><i class="ti ti-pin" aria-hidden="true"></i></div>
+      <span class="fsh-title">Gastos fixos</span>
+    </div>
+    <button class="fsh-add"><i class="ti ti-plus" aria-hidden="true"></i>Adicionar</button>
+  </div>
+  <table class="fin-table">
+    <thead><tr><th>Descrição</th><th>Vencimento</th><th>Valor</th><th>Status</th></tr></thead>
+  </table>
+  <div class="fin-empty">Nenhum gasto fixo registrado ainda.</div>
+</div>
+
+<div class="fin-section">
+  <div class="fin-section-header">
+    <div class="fsh-left">
+      <div class="fsh-icon amber"><i class="ti ti-shopping-cart" aria-hidden="true"></i></div>
+      <span class="fsh-title">Gastos variáveis</span>
+    </div>
+    <button class="fsh-add"><i class="ti ti-plus" aria-hidden="true"></i>Adicionar</button>
+  </div>
+  <table class="fin-table">
+    <thead><tr><th>Descrição</th><th>Data</th><th>Categoria</th><th>Valor</th></tr></thead>
+  </table>
+  <div class="fin-empty">Nenhum gasto variável registrado ainda.</div>
+</div>
+
+<div class="fin-section" style="margin-bottom:24px;">
+  <div class="fin-section-header">
+    <div class="fsh-left">
+      <div class="fsh-icon red"><i class="ti ti-alert-triangle" aria-hidden="true"></i></div>
+      <span class="fsh-title">Dívidas</span>
+    </div>
+    <button class="fsh-add"><i class="ti ti-plus" aria-hidden="true"></i>Adicionar</button>
+  </div>
+  <table class="fin-table">
+    <thead><tr><th>Credor</th><th>Valor</th><th>Vencimento</th><th>Status</th></tr></thead>
+  </table>
+  <div class="fin-empty">Nenhuma dívida registrada. </div>
+</div>
+
+<div class="balance-card">
+  <div class="balance-grid">
+    <div class="bal-item">
+      <div class="bal-label">Total entradas</div>
+      <div class="bal-value pos">R$ 0,00</div>
+    </div>
+    <div class="bal-item">
+      <div class="bal-label">Total saídas</div>
+      <div class="bal-value neg">R$ 0,00</div>
+    </div>
+    <div class="bal-item">
+      <div class="bal-label">Saldo do mês</div>
+      <div class="bal-value neu">R$ 0,00</div>
+    </div>
+  </div>
+  <textarea class="balance-notes" placeholder="Observações do mês, metas alcançadas, próximos passos..."></textarea>
+</div>
+
+</div>
+
+<script>
+let expr = '';
+let display = document.getElementById('display');
+let exprEl = document.getElementById('expr');
+function calcInput(v){
+  expr += v;
+  display.textContent = expr;
+  exprEl.textContent = '';
+}
+function calcAC(){
+  expr = '';
+  display.textContent = '0';
+  exprEl.textContent = '';
+}
+function calcEq(){
+  try {
+    let e = expr.replace(/÷/g,'/').replace(/×/g,'*').replace(/−/g,'-');
+    let r = Function('"use strict";return ('+e+')')();
+    exprEl.textContent = expr + ' =';
+    display.textContent = Math.round(r * 100) / 100;
+    expr = String(Math.round(r * 100) / 100);
+  } catch(e){
+    display.textContent = 'Erro';
+    expr = '';
+  }
+}
+</script>

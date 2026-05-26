@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Vida Nova — Comunidade</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --lav-50:#F7F4FF; --lav-100:#EFEAFE; --lav-200:#DED5FC; --lav-300:#C4B5FD;
+    --lav-400:#A491F2; --lav-500:#8674E3; --lav-600:#6E5BD0; --lav-700:#564BAA;
+    --lav-800:#3D3580; --lav-900:#251F52;
+    --ink-900:#1B1735; --ink-700:#423E5E; --ink-500:#756F94; --ink-400:#9892B5;
+    --ink-300:#C7C1DD; --ink-200:#E5E0F2;
+    --bg-base:#FBFAFF; --surface:#FFFFFF;
+    --hairline: rgba(86,75,170,0.10);
+    --hairline-soft: rgba(86,75,170,0.06);
+    --grad: linear-gradient(110deg,#95A8E8 0%,#B299E0 50%,#D29CBC 100%);
+    --grad-soft: linear-gradient(110deg,#C5D2F3 0%,#D6CAF0 50%,#ECCFDC 100%);
+    --grad-pale: linear-gradient(110deg,#EFF3FD 0%,#F2EBFB 50%,#FAEDF3 100%);
+    --shadow-sm: 0 1px 2px rgba(37,31,82,.04), 0 1px 1px rgba(37,31,82,.03);
+    --shadow-md: 0 8px 24px -8px rgba(56,45,130,.10), 0 2px 6px rgba(56,45,130,.04);
+    --shadow-grad: 0 10px 24px -10px rgba(178,153,224,.55), 0 4px 8px -2px rgba(178,153,224,.30);
+    --r-sm:10px; --r-md:14px; --r-lg:20px; --r-xl:28px;
+  }
+  *,*::before,*::after{box-sizing:border-box}
+  html,body{margin:0;padding:0;min-height:100vh;overflow-x:hidden;
+    font-family:'Manrope',system-ui,-apple-system,sans-serif;color:var(--ink-900);
+    background:radial-gradient(70% 50% at 100% 0%,rgba(210,156,188,.10),transparent 60%),
+      radial-gradient(60% 50% at 0% 80%,rgba(149,168,232,.10),transparent 60%),var(--bg-base);
+    -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+  button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+  input,textarea{font-family:inherit}
+  .serif{font-family:'Cormorant Garamond',serif}
+
+  .shell{max-width:680px;margin:0 auto;padding:24px 20px 110px}
+  @media (min-width:1024px){.shell{padding:32px 32px 48px}}
+
+  /* Top bar */
+  .topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:20px}
+  .back{display:inline-flex;align-items:center;gap:8px;padding:9px 16px;background:#fff;
+    border:1px solid var(--hairline);border-radius:999px;font-size:13.5px;font-weight:600;
+    color:var(--ink-700);text-decoration:none;box-shadow:var(--shadow-sm);transition:all .18s ease}
+  .back:hover{border-color:var(--lav-300);color:var(--lav-700);transform:translateY(-1px)}
+  .back svg{width:14px;height:14px}
+  .top-actions{display:flex;gap:8px}
+  .icon-btn{width:38px;height:38px;border-radius:50%;background:#fff;border:1px solid var(--hairline);
+    display:grid;place-items:center;color:var(--lav-700);box-shadow:var(--shadow-sm);transition:all .18s}
+  .icon-btn:hover{border-color:var(--lav-300);transform:translateY(-1px)}
+  .icon-btn svg{width:18px;height:18px}
+
+  /* Hero header */
+  .hero{position:relative;padding:24px 26px;border-radius:var(--r-xl);
+    background:radial-gradient(120% 80% at 100% 0%,rgba(255,255,255,.40),transparent 60%),var(--grad);
+    color:#fff;box-shadow:var(--shadow-md);overflow:hidden;margin-bottom:22px;isolation:isolate}
+  .hero::after{content:'';position:absolute;width:280px;height:280px;border-radius:50%;
+    background:radial-gradient(circle,rgba(255,255,255,.30),transparent 70%);filter:blur(40px);
+    top:-100px;right:-60px;z-index:0;pointer-events:none}
+  .hero-row{position:relative;z-index:1;display:flex;align-items:center;justify-content:space-between;gap:16px}
+  .hero-title{font-family:'Cormorant Garamond',serif;font-weight:500;font-size:clamp(28px,4vw,40px);
+    line-height:1.05;margin:0;letter-spacing:-.3px}
+  .hero-live{display:inline-flex;align-items:center;gap:8px;padding:6px 12px;
+    background:rgba(255,255,255,.22);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.35);
+    border-radius:999px;font-size:12px;font-weight:600}
+  .hero-live .pulse{width:8px;height:8px;border-radius:50%;background:#fff;position:relative}
+  .hero-live .pulse::after{content:'';position:absolute;inset:-3px;border-radius:50%;
+    border:2px solid rgba(255,255,255,.6);animation:pulse 1.6s ease-out infinite}
+  @keyframes pulse{0%{transform:scale(.6);opacity:1}100%{transform:scale(1.6);opacity:0}}
+  .hero-sub{position:relative;z-index:1;margin:8px 0 0;font-size:13.5px;color:rgba(255,255,255,.85)}
+
+  /* Story strip — single user only */
+  .story-strip{display:flex;gap:14px;overflow-x:auto;padding:4px 2px 12px;margin-bottom:20px;
+    scrollbar-width:none;-webkit-overflow-scrolling:touch}
+  .story-strip::-webkit-scrollbar{display:none}
+  .story{flex:0 0 auto;display:flex;flex-direction:column;align-items:center;gap:8px;width:78px;cursor:pointer}
+  .story-ring{width:74px;height:74px;border-radius:50%;padding:3px;background:var(--grad);
+    position:relative;transition:transform .2s}
+  .story-ring.viewed{background:var(--ink-200)}
+  .story:hover .story-ring{transform:scale(1.04)}
+  .story-img{width:100%;height:100%;border-radius:50%;background-size:cover;background-position:center;
+    border:3px solid #fff;display:grid;place-items:center;color:var(--lav-700);
+    font-family:'Cormorant Garamond',serif;font-weight:600;font-size:22px;
+    background-color:#F1ECFB}
+  .story.add .story-ring{background:var(--grad-pale);border:1.5px dashed var(--lav-300);padding:0}
+  .story.add .story-img{background:#fff;color:var(--lav-700)}
+  .story.add .story-img svg{width:26px;height:26px}
+  .story-label{font-size:11.5px;color:var(--ink-700);font-weight:600;max-width:74px;
+    overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-align:center}
+
+  /* Composer */
+  .composer{background:#fff;border:1px solid var(--hairline);border-radius:var(--r-lg);
+    padding:18px;box-shadow:var(--shadow-sm);margin-bottom:24px}
+  .composer-top{display:flex;gap:12px;align-items:flex-start}
+  .avatar{width:44px;height:44px;border-radius:50%;flex-shrink:0;background:var(--grad-soft);
+    display:grid;place-items:center;color:var(--lav-800);font-family:'Cormorant Garamond',serif;
+    font-weight:600;font-size:18px;background-size:cover;background-position:center}
+  .avatar.sm{width:36px;height:36px;font-size:15px}
+  .composer textarea{flex:1;border:none;outline:none;resize:none;min-height:60px;font-size:15px;
+    color:var(--ink-900);background:transparent;padding:10px 0;line-height:1.5}
+  .composer textarea::placeholder{color:var(--ink-400)}
+  .composer-bottom{display:flex;align-items:center;justify-content:space-between;
+    margin-top:12px;padding-top:14px;border-top:1px solid var(--hairline-soft)}
+  .chips{display:flex;gap:8px;flex-wrap:wrap}
+  .chip{display:inline-flex;align-items:center;gap:6px;padding:8px 12px;background:var(--grad-pale);
+    border:1px solid var(--hairline);border-radius:999px;font-size:12.5px;font-weight:600;
+    color:var(--lav-800);transition:all .18s}
+  .chip:hover{border-color:var(--lav-300);transform:translateY(-1px)}
+  .chip svg{width:14px;height:14px}
+  .btn-publish{padding:10px 22px;border-radius:999px;background:var(--grad);color:#fff;
+    font-size:13.5px;font-weight:600;box-shadow:var(--shadow-grad);transition:all .15s;
+    display:inline-flex;align-items:center;gap:6px}
+  .btn-publish:hover{transform:translateY(-1px);box-shadow:0 14px 30px -10px rgba(178,153,224,.65)}
+  .btn-publish svg{width:14px;height:14px}
+  .btn-publish:disabled{opacity:.5;cursor:not-allowed;transform:none}
+
+  /* Feed tabs */
+  .feed-tabs{display:flex;gap:6px;background:#fff;border:1px solid var(--hairline);
+    border-radius:999px;padding:5px;margin-bottom:18px;position:sticky;top:12px;z-index:10;
+    box-shadow:var(--shadow-sm);backdrop-filter:blur(8px)}
+  .feed-tab{flex:1;padding:10px;font-size:13px;font-weight:600;color:var(--ink-500);
+    border-radius:999px;text-align:center;transition:all .25s}
+  .feed-tab.active{background:var(--grad);color:#fff;box-shadow:var(--shadow-grad)}
+  .feed-tab:not(.active):hover{color:var(--lav-700)}
+
+  /* Post */
+  .feed{display:flex;flex-direction:column;gap:18px}
+  .post{background:#fff;border:1px solid var(--hairline);border-radius:var(--r-lg);
+    box-shadow:var(--shadow-sm);overflow:hidden;transition:box-shadow .2s}
+  .post:hover{box-shadow:var(--shadow-md)}
+  .post-head{display:flex;align-items:center;gap:12px;padding:16px 18px}
+  .post-meta{flex:1;min-width:0}
+  .post-name{font-size:13.5px;font-weight:700;color:var(--ink-900);letter-spacing:.04em}
+  .post-time{font-size:12px;color:var(--ink-500);margin-top:1px;display:flex;align-items:center;gap:6px}
+  .post-time .dot{width:3px;height:3px;border-radius:50%;background:var(--ink-300)}
+  .post-more{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;color:var(--ink-500);
+    transition:background .18s}
+  .post-more:hover{background:var(--lav-50);color:var(--lav-700)}
+  .post-more svg{width:18px;height:18px}
+
+  .post-body{padding:0 18px 14px;font-size:14.5px;color:var(--ink-900);line-height:1.55}
+
+  .post-media{position:relative;background:var(--grad-pale);overflow:hidden;aspect-ratio:4/5}
+  .post-media .placeholder{position:absolute;inset:0;display:grid;place-items:center;
+    color:var(--lav-700);font-family:monospace;font-size:11px;letter-spacing:.05em}
+  .post-media .placeholder span{padding:8px 14px;background:rgba(255,255,255,.6);border-radius:6px;
+    border:1px solid var(--hairline)}
+  .post-media.gradient-a{background:linear-gradient(135deg,#E5C5DC,#C9B8EE 60%,#B5C7F5)}
+  .post-media.gradient-b{background:linear-gradient(135deg,#FBE6D4,#E5C5DC 60%,#C9B8EE)}
+  .post-media.gradient-c{background:linear-gradient(135deg,#C9B8EE,#B5C7F5)}
+  .post-media.square{aspect-ratio:1/1}
+
+  /* Heart-pop animation */
+  .heart-pop{position:absolute;inset:0;display:grid;place-items:center;pointer-events:none;opacity:0}
+  .heart-pop svg{width:90px;height:90px;color:#fff;filter:drop-shadow(0 4px 12px rgba(0,0,0,.25))}
+  .post-media.liked .heart-pop{animation:heartPop .8s ease}
+  @keyframes heartPop{
+    0%{opacity:0;transform:scale(.5)}
+    25%{opacity:1;transform:scale(1.15)}
+    50%{opacity:1;transform:scale(1)}
+    100%{opacity:0;transform:scale(1.1)}
+  }
+
+  .post-actions{display:flex;align-items:center;gap:4px;padding:8px 12px;border-top:1px solid var(--hairline-soft)}
+  .act{display:inline-flex;align-items:center;gap:7px;padding:9px 12px;border-radius:10px;
+    font-size:13px;font-weight:600;color:var(--ink-700);transition:all .15s}
+  .act:hover{background:var(--lav-50);color:var(--lav-700)}
+  .act svg{width:19px;height:19px;transition:transform .2s}
+  .act:active svg{transform:scale(.85)}
+  .act.liked{color:#E25C8A}
+  .act.liked svg{fill:#E25C8A;stroke:#E25C8A}
+  .act.liked svg{animation:bump .35s ease}
+  @keyframes bump{0%{transform:scale(1)}50%{transform:scale(1.25)}100%{transform:scale(1)}}
+  .act.saved{color:var(--lav-700)}
+  .act.saved svg{fill:var(--lav-700);stroke:var(--lav-700)}
+  .act-spacer{flex:1}
+
+  .post-stats{padding:0 18px 14px;font-size:13px;color:var(--ink-700)}
+  .post-stats b{color:var(--ink-900);font-weight:700}
+
+  /* Comments */
+  .comments{padding:0 18px 16px;display:flex;flex-direction:column;gap:10px}
+  .comment{display:flex;gap:10px;align-items:flex-start}
+  .comment-bubble{background:var(--grad-pale);border:1px solid var(--hairline);
+    border-radius:14px;padding:9px 12px;font-size:13px;color:var(--ink-900);line-height:1.45;flex:1;min-width:0}
+  .comment-bubble b{font-weight:700;font-size:12px;color:var(--lav-800);display:block;margin-bottom:2px;letter-spacing:.03em}
+  .comment-meta{font-size:11px;color:var(--ink-400);margin-top:4px;padding-left:4px;display:flex;gap:12px}
+  .comment-meta button{font-weight:600;color:var(--ink-500)}
+  .comment-meta button:hover{color:var(--lav-700)}
+
+  .comment-input{display:flex;gap:10px;align-items:center;padding:12px 18px 18px;border-top:1px solid var(--hairline-soft)}
+  .comment-field{flex:1;display:flex;align-items:center;background:var(--lav-50);
+    border:1px solid var(--hairline);border-radius:999px;padding:4px 4px 4px 14px;
+    transition:border-color .2s,box-shadow .2s}
+  .comment-field:focus-within{border-color:var(--lav-400);box-shadow:0 0 0 4px rgba(164,145,242,.14);background:#fff}
+  .comment-field input{flex:1;border:none;outline:none;background:transparent;padding:8px 0;
+    font-size:13.5px;color:var(--ink-900)}
+  .comment-field input::placeholder{color:var(--ink-400)}
+  .comment-send{width:34px;height:34px;border-radius:50%;background:var(--grad);color:#fff;
+    display:grid;place-items:center;box-shadow:var(--shadow-grad)}
+  .comment-send svg{width:16px;height:16px}
+
+  /* Story viewer modal */
+  .story-modal{position:fixed;inset:0;background:rgba(15,12,35,.92);backdrop-filter:blur(10px);
+    z-index:100;display:none;align-items:center;justify-content:center;padding:24px}
+  .story-modal.open{display:flex;animation:fadeIn .25s ease}
+  @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+  .story-view{width:100%;max-width:380px;aspect-ratio:9/16;position:relative;border-radius:20px;
+    overflow:hidden;background:var(--grad-soft);box-shadow:0 30px 80px -20px rgba(0,0,0,.5)}
+  .story-view .bar{position:absolute;top:14px;left:14px;right:14px;height:3px;border-radius:99px;
+    background:rgba(255,255,255,.35);overflow:hidden;z-index:2}
+  .story-view .bar::after{content:'';display:block;height:100%;width:35%;background:#fff;border-radius:99px}
+  .story-view .sv-head{position:absolute;top:30px;left:14px;right:14px;display:flex;align-items:center;
+    gap:10px;z-index:2;color:#fff}
+  .story-view .sv-head .avatar{width:32px;height:32px;font-size:13px;border:2px solid rgba(255,255,255,.6)}
+  .story-view .sv-name{font-size:13px;font-weight:700;letter-spacing:.04em}
+  .story-view .sv-time{font-size:11px;opacity:.7;margin-left:6px}
+  .story-view .sv-close{margin-left:auto;width:32px;height:32px;border-radius:50%;
+    background:rgba(255,255,255,.18);display:grid;place-items:center;color:#fff}
+  .story-view .sv-close svg{width:16px;height:16px}
+  .story-view .sv-text{position:absolute;left:0;right:0;top:50%;transform:translateY(-50%);
+    text-align:center;padding:0 32px;color:#fff;font-family:'Cormorant Garamond',serif;
+    font-style:italic;font-size:26px;line-height:1.25;text-shadow:0 2px 12px rgba(0,0,0,.25)}
+  .story-view .sv-foot{position:absolute;bottom:18px;left:14px;right:14px;display:flex;gap:10px;z-index:2}
+  .story-view .sv-foot input{flex:1;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.35);
+    color:#fff;padding:11px 14px;border-radius:999px;outline:none;font-size:13px}
+  .story-view .sv-foot input::placeholder{color:rgba(255,255,255,.7)}
+  .story-view .sv-foot .sv-like{width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.18);
+    border:1px solid rgba(255,255,255,.35);display:grid;place-items:center;color:#fff}
+  .story-view .sv-foot .sv-like svg{width:18px;height:18px}
+
+  /* Empty state */
+  .empty{padding:38px 24px;text-align:center;border:1px dashed var(--hairline);
+    border-radius:var(--r-lg);background:var(--grad-pale);color:var(--ink-700)}
+  .empty .em-icon{width:54px;height:54px;border-radius:50%;background:#fff;margin:0 auto 14px;
+    display:grid;place-items:center;color:var(--lav-700);box-shadow:var(--shadow-sm)}
+  .empty .em-icon svg{width:24px;height:24px}
+  .empty h3{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:500;margin:0 0 6px}
+  .empty p{font-size:13.5px;color:var(--ink-500);margin:0 0 16px;line-height:1.55}
+
+  /* Bottom nav */
+  .bottom-nav{display:flex;position:fixed;bottom:0;left:0;right:0;background:rgba(255,255,255,.92);
+    backdrop-filter:blur(16px);border-top:1px solid var(--hairline);
+    padding:10px 16px calc(10px + env(safe-area-inset-bottom));z-index:50;
+    align-items:center;justify-content:space-around}
+  @media (min-width:1024px){.bottom-nav{display:none}.shell{padding-bottom:48px}}
+  .bn-item{display:flex;flex-direction:column;align-items:center;gap:4px;font-size:11px;
+    font-weight:600;color:var(--ink-500);text-decoration:none;padding:6px 14px;flex:1;text-align:center}
+  .bn-item svg{width:22px;height:22px}
+  .bn-item.active{color:var(--lav-700)}
+  .bn-fab{position:relative;margin-top:-28px;width:56px;height:56px;border-radius:50%;
+    background:var(--grad);display:grid;place-items:center;box-shadow:var(--shadow-grad);color:#fff}
+  .bn-fab svg{width:24px;height:24px}
+
+  @media (max-width:480px){
+    .shell{padding:18px 14px 110px}
+    .hero{padding:20px 22px}
+    .composer{padding:16px}
+    .post-head{padding:14px 14px}
+    .post-body{padding:0 14px 12px}
+    .post-actions{padding:6px 8px}
+    .post-stats{padding:0 14px 12px}
+    .comments{padding:0 14px 14px}
+    .comment-input{padding:10px 14px 14px}
+    .feed-tab{font-size:12.5px;padding:9px}
+  }
+  @media (prefers-reduced-motion: reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+</style>
+</head>
+<body>
+
+<div class="shell">
+
+  <!-- Top bar -->
+  <div class="topbar">
+    <a href="#" class="back">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+      Voltar
+    </a>
+    <div class="top-actions">
+      <button class="icon-btn" aria-label="Buscar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      </button>
+      <button class="icon-btn" aria-label="Notificações">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 16v-5a6 6 0 1 0-12 0v5l-2 3h16z"/><path d="M9 19a3 3 0 0 0 6 0"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-row">
+      <h1 class="hero-title">Comunidade</h1>
+      <span class="hero-live"><span class="pulse"></span>ao vivo</span>
+    </div>
+    <p class="hero-sub">Compartilhe seus momentos e devocionais.</p>
+  </section>
+
+  <!-- Stories -->
+  <div class="story-strip" id="storyStrip">
+    <div class="story add" data-add>
+      <div class="story-ring">
+        <div class="story-img">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+        </div>
+      </div>
+      <div class="story-label">Novo story</div>
+    </div>
+    <div class="story" data-story="0">
+      <div class="story-ring"><div class="story-img" style="background:linear-gradient(135deg,#E5C5DC,#C9B8EE)">CR</div></div>
+      <div class="story-label">há 2h</div>
+    </div>
+    <div class="story" data-story="1">
+      <div class="story-ring viewed"><div class="story-img" style="background:linear-gradient(135deg,#C9B8EE,#B5C7F5)">CR</div></div>
+      <div class="story-label">ontem</div>
+    </div>
+    <div class="story" data-story="2">
+      <div class="story-ring viewed"><div class="story-img" style="background:linear-gradient(135deg,#FBE6D4,#E5C5DC)">CR</div></div>
+      <div class="story-label">2 dias</div>
+    </div>
+    <div class="story" data-story="3">
+      <div class="story-ring viewed"><div class="story-img" style="background:linear-gradient(135deg,#B5C7F5,#C9B8EE)">CR</div></div>
+      <div class="story-label">3 dias</div>
+    </div>
+  </div>
+
+  <!-- Composer -->
+  <section class="composer">
+    <div class="composer-top">
+      <div class="avatar">CR</div>
+      <textarea id="composerText" placeholder="Compartilhe algo com a comunidade..."></textarea>
+    </div>
+    <div class="composer-bottom">
+      <div class="chips">
+        <button class="chip" type="button">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="9" cy="9" r="2"/><path d="m21 15-5-5L5 21"/></svg>
+          Foto
+        </button>
+        <button class="chip" type="button">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+          Story
+        </button>
+        <button class="chip" type="button">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h12a4 4 0 0 1 4 4v12"/><path d="M4 4v16h12a4 4 0 0 0 4-4"/><path d="M8 9h8M8 13h6"/></svg>
+          Versículo
+        </button>
+      </div>
+      <button class="btn-publish" id="btnPublish" type="button" disabled>
+        Publicar
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </button>
+    </div>
+  </section>
+
+  <!-- Feed tabs -->
+  <div class="feed-tabs" id="feedTabs">
+    <button class="feed-tab active" data-tab="todos">Todos</button>
+    <button class="feed-tab" data-tab="fotos">Fotos</button>
+    <button class="feed-tab" data-tab="versiculos">Versículos</button>
+    <button class="feed-tab" data-tab="salvos">Salvos</button>
+  </div>
+
+  <!-- Feed -->
+  <div class="feed" id="feed">
+
+    <!-- POST 1: photo -->
+    <article class="post" data-type="fotos">
+      <header class="post-head">
+        <div class="avatar" style="background:linear-gradient(135deg,#E5C5DC,#C9B8EE)">CR</div>
+        <div class="post-meta">
+          <div class="post-name">CAMILA ROCHA</div>
+          <div class="post-time">há 6h <span class="dot"></span> Feed</div>
+        </div>
+        <button class="post-more" aria-label="Mais opções">
+          <svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/></svg>
+        </button>
+      </header>
+      <div class="post-body">Sorrisinho para meu amor ❤️</div>
+      <div class="post-media gradient-a" data-dblclick>
+        <div class="placeholder"><span>FOTO DO POST</span></div>
+        <div class="heart-pop">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21s-7-4.5-9.5-9A5 5 0 0 1 12 6a5 5 0 0 1 9.5 6c-2.5 4.5-9.5 9-9.5 9z"/></svg>
+        </div>
+      </div>
+      <div class="post-actions">
+        <button class="act like" data-like>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-4.5-9.5-9A5 5 0 0 1 12 6a5 5 0 0 1 9.5 6c-2.5 4.5-9.5 9-9.5 9z"/></svg>
+          <span class="like-count">42</span>
+        </button>
+        <button class="act" data-comment>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a8 8 0 0 1-12 7l-5 1 1-5a8 8 0 1 1 16-3z"/></svg>
+          <span>8</span>
+        </button>
+        <button class="act">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8h16v-8"/><path d="m8 8 4-4 4 4"/><path d="M12 4v12"/></svg>
+        </button>
+        <span class="act-spacer"></span>
+        <button class="act save" data-save>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 4h12v17l-6-4-6 4z"/></svg>
+        </button>
+      </div>
+      <div class="post-stats"><b>42 curtidas</b> · Sua primeira publicação preferida do mês.</div>
+      <div class="comments">
+        <div class="comment">
+          <div class="avatar sm" style="background:linear-gradient(135deg,#C9B8EE,#B5C7F5)">CR</div>
+          <div style="flex:1;min-width:0">
+            <div class="comment-bubble">
+              <b>Camila Rocha</b>
+              Dia especial pra guardar 💜
+            </div>
+            <div class="comment-meta"><span>há 5h</span><button>Curtir (3)</button><button>Responder</button></div>
+          </div>
+        </div>
+      </div>
+      <form class="comment-input" data-comment-form>
+        <div class="avatar sm" style="background:linear-gradient(135deg,#E5C5DC,#C9B8EE)">CR</div>
+        <div class="comment-field">
+          <input type="text" placeholder="Escreva um comentário..." />
+          <button class="comment-send" type="submit" aria-label="Enviar">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 11.5 22 3l-8 19-2.5-7.5z"/></svg>
+          </button>
+        </div>
+      </form>
+    </article>
+
+    <!-- POST 2: verse card -->
+    <article class="post" data-type="versiculos">
+      <header class="post-head">
+        <div class="avatar" style="background:linear-gradient(135deg,#B5C7F5,#C9B8EE)">CR</div>
+        <div class="post-meta">
+          <div class="post-name">CAMILA ROCHA</div>
+          <div class="post-time">há 1 dia <span class="dot"></span> Versículo</div>
+        </div>
+        <button class="post-more" aria-label="Mais opções">
+          <svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/></svg>
+        </button>
+      </header>
+      <div class="post-media square gradient-c" data-dblclick style="display:grid;place-items:center;aspect-ratio:1/1">
+        <div style="text-align:center;padding:32px;color:#fff">
+          <div style="font-size:10.5px;font-weight:700;letter-spacing:.28em;opacity:.85;margin-bottom:18px">VERSÍCULO DO DIA</div>
+          <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:clamp(20px,5vw,28px);line-height:1.35;font-weight:500">"Perto está o Senhor dos que têm o coração quebrantado."</div>
+          <div style="font-size:11px;font-weight:700;letter-spacing:.26em;margin-top:18px;opacity:.8">SALMOS 34:18</div>
+        </div>
+        <div class="heart-pop"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21s-7-4.5-9.5-9A5 5 0 0 1 12 6a5 5 0 0 1 9.5 6c-2.5 4.5-9.5 9-9.5 9z"/></svg></div>
+      </div>
+      <div class="post-actions">
+        <button class="act like" data-like>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-4.5-9.5-9A5 5 0 0 1 12 6a5 5 0 0 1 9.5 6c-2.5 4.5-9.5 9-9.5 9z"/></svg>
+          <span class="like-count">68</span>
+        </button>
+        <button class="act" data-comment>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a8 8 0 0 1-12 7l-5 1 1-5a8 8 0 1 1 16-3z"/></svg>
+          <span>14</span>
+        </button>
+        <button class="act">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8h16v-8"/><path d="m8 8 4-4 4 4"/><path d="M12 4v12"/></svg>
+        </button>
+        <span class="act-spacer"></span>
+        <button class="act save saved" data-save>
+          <svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 4h12v17l-6-4-6 4z"/></svg>
+        </button>
+      </div>
+      <div class="post-stats"><b>68 curtidas</b> · Guardado nos seus favoritos.</div>
+      <form class="comment-input" data-comment-form>
+        <div class="avatar sm" style="background:linear-gradient(135deg,#E5C5DC,#C9B8EE)">CR</div>
+        <div class="comment-field">
+          <input type="text" placeholder="Escreva um comentário..." />
+          <button class="comment-send" type="submit" aria-label="Enviar">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 11.5 22 3l-8 19-2.5-7.5z"/></svg>
+          </button>
+        </div>
+      </form>
+    </article>
+
+    <!-- POST 3: text only -->
+    <article class="post" data-type="todos">
+      <header class="post-head">
+        <div class="avatar" style="background:linear-gradient(135deg,#FBE6D4,#E5C5DC)">CR</div>
+        <div class="post-meta">
+          <div class="post-name">CAMILA ROCHA</div>
+          <div class="post-time">há 3 dias <span class="dot"></span> Reflexão</div>
+        </div>
+        <button class="post-more" aria-label="Mais opções">
+          <svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/></svg>
+        </button>
+      </header>
+      <div class="post-body" style="padding-bottom:18px;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:18px;line-height:1.5;color:var(--ink-700)">
+        "Cuidar de si também é um ato de fé. Hoje desacelerei, respirei e agradeci."
+      </div>
+      <div class="post-actions">
+        <button class="act like" data-like>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-4.5-9.5-9A5 5 0 0 1 12 6a5 5 0 0 1 9.5 6c-2.5 4.5-9.5 9-9.5 9z"/></svg>
+          <span class="like-count">23</span>
+        </button>
+        <button class="act" data-comment>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a8 8 0 0 1-12 7l-5 1 1-5a8 8 0 1 1 16-3z"/></svg>
+          <span>5</span>
+        </button>
+        <button class="act">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8h16v-8"/><path d="m8 8 4-4 4 4"/><path d="M12 4v12"/></svg>
+        </button>
+        <span class="act-spacer"></span>
+        <button class="act save" data-save>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 4h12v17l-6-4-6 4z"/></svg>
+        </button>
+      </div>
+      <div class="post-stats"><b>23 curtidas</b></div>
+    </article>
+
+  </div>
+
+  <!-- Empty (salvos) -->
+  <div class="empty" id="emptySaved" style="display:none">
+    <div class="em-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 4h12v17l-6-4-6 4z"/></svg></div>
+    <h3>Seus salvos aparecem aqui</h3>
+    <p>Toque no marcador em qualquer publicação para guardar e reler depois.</p>
+  </div>
+
+</div>
+
+<!-- Story viewer -->
+<div class="story-modal" id="storyModal" aria-hidden="true">
+  <div class="story-view">
+    <div class="bar"></div>
+    <div class="sv-head">
+      <div class="avatar" style="background:linear-gradient(135deg,#E5C5DC,#C9B8EE)">CR</div>
+      <span class="sv-name">CAMILA ROCHA</span>
+      <span class="sv-time">há 2h</span>
+      <button class="sv-close" id="closeStory" aria-label="Fechar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      </button>
+    </div>
+    <div class="sv-text">"Cuide de você. Transforme sua vida."</div>
+    <div class="sv-foot">
+      <input type="text" placeholder="Responder ao story..." />
+      <button class="sv-like" aria-label="Curtir">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-4.5-9.5-9A5 5 0 0 1 12 6a5 5 0 0 1 9.5 6c-2.5 4.5-9.5 9-9.5 9z"/></svg>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Bottom nav -->
+<nav class="bottom-nav" aria-label="Navegação principal">
+  <a href="#" class="bn-item active">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 11h-6M19 8v6"/></svg>
+    Comunidade
+  </a>
+  <a href="#" class="bn-fab" aria-label="Início">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 11 9-8 9 8"/><path d="M5 10v10h14V10"/></svg>
+  </a>
+  <a href="#" class="bn-item">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a6 6 0 0 1 6-6h4a6 6 0 0 1 6 6v1"/></svg>
+    Perfil
+  </a>
+</nav>
+
+<script>
+  // Composer publish enabler
+  const ta = document.getElementById('composerText');
+  const btn = document.getElementById('btnPublish');
+  ta.addEventListener('input', () => {
+    btn.disabled = ta.value.trim().length === 0;
+  });
+
+  // Like
+  document.querySelectorAll('[data-like]').forEach(b => {
+    b.addEventListener('click', () => {
+      const c = b.querySelector('.like-count');
+      const liked = b.classList.toggle('liked');
+      c.textContent = (+c.textContent) + (liked ? 1 : -1);
+    });
+  });
+
+  // Save
+  document.querySelectorAll('[data-save]').forEach(b => {
+    b.addEventListener('click', () => b.classList.toggle('saved'));
+  });
+
+  // Double-tap to like (image)
+  document.querySelectorAll('[data-dblclick]').forEach(media => {
+    let last = 0;
+    const onTap = () => {
+      const now = Date.now();
+      if (now - last < 350) {
+        media.classList.remove('liked');
+        void media.offsetWidth;
+        media.classList.add('liked');
+        const post = media.closest('.post');
+        const likeBtn = post?.querySelector('[data-like]');
+        if (likeBtn && !likeBtn.classList.contains('liked')) likeBtn.click();
+      }
+      last = now;
+    };
+    media.addEventListener('click', onTap);
+  });
+
+  // Focus comment input on bubble click
+  document.querySelectorAll('[data-comment]').forEach(b => {
+    b.addEventListener('click', () => {
+      const post = b.closest('.post');
+      const input = post?.querySelector('.comment-field input');
+      input?.focus();
+    });
+  });
+
+  // Comment submit
+  document.querySelectorAll('[data-comment-form]').forEach(f => {
+    f.addEventListener('submit', e => {
+      e.preventDefault();
+      const inp = f.querySelector('input');
+      const val = inp.value.trim();
+      if (!val) return;
+      const post = f.closest('.post');
+      let comments = post.querySelector('.comments');
+      if (!comments) {
+        comments = document.createElement('div');
+        comments.className = 'comments';
+        post.insertBefore(comments, f);
+      }
+      const div = document.createElement('div');
+      div.className = 'comment';
+      div.innerHTML = `<div class="avatar sm" style="background:linear-gradient(135deg,#E5C5DC,#C9B8EE)">CR</div>
+        <div style="flex:1;min-width:0">
+          <div class="comment-bubble"><b>Camila Rocha</b>${val.replace(/[<>]/g,'')}</div>
+          <div class="comment-meta"><span>agora</span><button>Curtir</button><button>Responder</button></div>
+        </div>`;
+      comments.appendChild(div);
+      inp.value = '';
+    });
+  });
+
+  // Tabs
+  const tabs = document.querySelectorAll('.feed-tab');
+  const posts = document.querySelectorAll('.post');
+  const emptySaved = document.getElementById('emptySaved');
+  tabs.forEach(t => t.addEventListener('click', () => {
+    tabs.forEach(x => x.classList.remove('active'));
+    t.classList.add('active');
+    const key = t.dataset.tab;
+    let shown = 0;
+    posts.forEach(p => {
+      let show = true;
+      if (key === 'fotos') show = p.dataset.type === 'fotos';
+      else if (key === 'versiculos') show = p.dataset.type === 'versiculos';
+      else if (key === 'salvos') show = p.querySelector('.save.saved') !== null;
+      p.style.display = show ? '' : 'none';
+      if (show) shown++;
+    });
+    emptySaved.style.display = (key === 'salvos' && shown === 0) ? 'block' : 'none';
+  }));
+
+  // Story modal
+  const modal = document.getElementById('storyModal');
+  document.querySelectorAll('.story[data-story]').forEach(s => {
+    s.addEventListener('click', () => modal.classList.add('open'));
+  });
+  document.querySelector('.story.add').addEventListener('click', () => {
+    // open composer focus on textarea
+    ta.focus();
+  });
+  document.getElementById('closeStory').addEventListener('click', () => modal.classList.remove('open'));
+  modal.addEventListener('click', e => { if (e.target === modal) modal.classList.remove('open'); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') modal.classList.remove('open'); });
+</script>
+
+</body>
+</html>

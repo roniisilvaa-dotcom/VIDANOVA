@@ -1,0 +1,490 @@
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap');
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'DM Sans',sans-serif;background:#fdf7f9;padding:24px 20px 48px;}
+
+.module-hero{background:#c9395f;border-radius:18px;padding:22px 28px;margin-bottom:20px;display:flex;align-items:center;gap:18px;position:relative;overflow:hidden;}
+.hero-deco{position:absolute;right:24px;top:-10px;font-family:'Cormorant Garamond',serif;font-size:110px;color:rgba(255,255,255,.06);pointer-events:none;}
+.hero-icon{width:44px;height:44px;min-width:44px;background:rgba(255,255,255,.15);border-radius:13px;display:flex;align-items:center;justify-content:center;}
+.hero-icon i{font-size:22px;color:#fff;}
+.hero-eye{font-size:9px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.55);margin-bottom:5px;}
+.hero-title{font-family:'Cormorant Garamond',serif;font-size:22px;font-style:italic;color:#fff;}
+
+.tabs-row{display:flex;gap:6px;margin-bottom:24px;flex-wrap:wrap;}
+.tab{font-size:12px;font-weight:500;padding:8px 16px;border-radius:60px;border:0.5px solid #e8d0da;background:#fff;color:#9a7a8a;cursor:pointer;display:flex;align-items:center;gap:6px;}
+.tab i{font-size:14px;}
+.tab.active{background:#c9395f;color:#fff;border-color:#c9395f;}
+
+.sec-title{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:500;color:#2a1f28;margin-bottom:16px;display:flex;align-items:center;gap:10px;}
+.sec-title::after{content:'';flex:1;height:0.5px;background:#f0dce6;}
+
+/* PERFIL DE ESTILO */
+.perfil-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px;}
+.perfil-card{background:#fff;border:0.5px solid #f0dce6;border-radius:16px;padding:18px 20px;}
+.pc-label{display:flex;align-items:center;gap:8px;margin-bottom:12px;}
+.pc-icon{width:30px;height:30px;border-radius:9px;display:flex;align-items:center;justify-content:center;}
+.pc-icon.rose{background:#fbeef3;} .pc-icon.rose i{color:#c9395f;font-size:15px;}
+.pc-icon.amber{background:#fef7ec;} .pc-icon.amber i{color:#c9853f;font-size:15px;}
+.pc-icon.sage{background:#eef5f0;} .pc-icon.sage i{color:#4a9a6a;font-size:15px;}
+.pc-icon.blue{background:#eef3fd;} .pc-icon.blue i{color:#3060b0;font-size:15px;}
+.pc-icon.purple{background:#f3eefe;} .pc-icon.purple i{color:#7040c0;font-size:15px;}
+.pc-title{font-size:13px;font-weight:500;color:#2a1f28;}
+
+.style-chips{display:flex;flex-wrap:wrap;gap:6px;}
+.chip{font-size:11px;padding:5px 12px;border-radius:60px;border:0.5px solid #f0dce6;color:#9a7a8a;cursor:pointer;background:#fff;transition:all .15s;}
+.chip.selected{background:#c9395f;color:#fff;border-color:#c9395f;}
+.chip:hover{border-color:#f0c0d0;color:#c9395f;}
+
+.color-palette{display:flex;gap:6px;flex-wrap:wrap;}
+.color-dot{width:28px;height:28px;border-radius:50%;cursor:pointer;border:2px solid transparent;transition:border .15s;}
+.color-dot.selected{border:2px solid #c9395f;}
+.color-dot-label{font-size:10px;color:#b09aa8;text-align:center;margin-top:3px;}
+.color-item{display:flex;flex-direction:column;align-items:center;gap:2px;}
+
+.input-field{width:100%;border:0.5px solid #f0dce6;border-radius:10px;padding:9px 12px;font-family:'DM Sans',sans-serif;font-size:12px;color:#2a1f28;background:#fdf8f9;outline:none;}
+.input-field::placeholder{color:#c9b8c4;}
+.textarea-field{width:100%;min-height:72px;border:0.5px solid #f0dce6;border-radius:10px;padding:10px 12px;font-family:'DM Sans',sans-serif;font-size:12px;color:#2a1f28;background:#fdf8f9;resize:none;outline:none;line-height:1.6;}
+.textarea-field::placeholder{color:#c9b8c4;}
+.field-label{font-size:9px;font-weight:500;letter-spacing:.09em;text-transform:uppercase;color:#b09aa8;margin-bottom:5px;}
+
+/* LOOKS DA SEMANA */
+.looks-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;margin-bottom:24px;}
+.look-card{background:#fff;border:0.5px solid #f0dce6;border-radius:14px;overflow:hidden;}
+.look-day{background:#c9395f;padding:7px 8px;text-align:center;font-size:9px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:#fff;}
+.look-img{height:90px;background:#fdf0f4;border:1px dashed #f0c0d0;margin:8px;border-radius:10px;display:flex;align-items:center;justify-content:center;cursor:pointer;}
+.look-img i{font-size:20px;color:#e0a0b8;}
+.look-body{padding:0 8px 10px;}
+.look-ocasiao{width:100%;border:0.5px solid #f0dce6;border-radius:7px;padding:5px 6px;font-family:'DM Sans',sans-serif;font-size:10px;color:#2a1f28;background:#fdf8f9;outline:none;margin-bottom:4px;}
+.look-peca{width:100%;border:none;border-bottom:0.5px solid #fdf0f4;background:none;font-family:'DM Sans',sans-serif;font-size:10px;color:#6a5060;outline:none;padding:3px 0;margin-bottom:2px;}
+.look-peca::placeholder{color:#d4b8c4;}
+
+/* CATÁLOGO DE PEÇAS */
+.catalogo-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+.add-btn-rose{background:#c9395f;color:#fff;border:none;border-radius:60px;padding:7px 16px;font-size:11px;font-weight:500;cursor:pointer;display:flex;align-items:center;gap:5px;}
+.add-btn-rose i{font-size:13px;}
+.cat-filters{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px;}
+.cat-filter{font-size:11px;padding:5px 14px;border-radius:60px;border:0.5px solid #f0dce6;color:#9a7a8a;cursor:pointer;background:#fff;}
+.cat-filter.active{background:#fbeef3;color:#c9395f;border-color:#f0c0d0;}
+
+.peca-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:24px;}
+.peca-card{background:#fff;border:0.5px solid #f0dce6;border-radius:14px;overflow:hidden;}
+.peca-img{height:100px;display:flex;align-items:center;justify-content:center;cursor:pointer;position:relative;}
+.peca-img.rosa-bg{background:#fdf0f4;}
+.peca-img.nude-bg{background:#f8f0e8;}
+.peca-img.azul-bg{background:#eef3fd;}
+.peca-img.verde-bg{background:#eef5f0;}
+.peca-img.preto-bg{background:#f0eeee;}
+.peca-img i{font-size:36px;color:rgba(0,0,0,.12);}
+.peca-add-overlay{position:absolute;bottom:6px;right:6px;width:24px;height:24px;background:#c9395f;border-radius:50%;display:flex;align-items:center;justify-content:center;}
+.peca-add-overlay i{font-size:13px;color:#fff;}
+.peca-body{padding:10px 12px;}
+.peca-name{width:100%;border:none;background:none;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;color:#2a1f28;outline:none;margin-bottom:4px;}
+.peca-name::placeholder{color:#c9b8c4;}
+.peca-meta{display:flex;gap:4px;flex-wrap:wrap;}
+.peca-tag{font-size:9px;padding:3px 8px;border-radius:60px;background:#fbeef3;color:#c9395f;font-weight:500;}
+.peca-tag.occasion{background:#fef7ec;color:#c9853f;}
+.peca-tag.color{background:#f3eefe;color:#7040c0;}
+
+/* LISTA NECESSIDADE / DESEJO */
+.need-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:24px;}
+.need-card{background:#fff;border:0.5px solid #f0dce6;border-radius:16px;overflow:hidden;}
+.need-header{padding:13px 18px;display:flex;align-items:center;gap:8px;border-bottom:0.5px solid #f5e8ee;}
+.need-header.rose{background:#c9395f;}
+.need-header.amber{background:#c9853f;}
+.need-header i{font-size:17px;color:#fff;}
+.need-header span{font-size:12px;font-weight:500;color:#fff;}
+.need-list{padding:8px 0;}
+.need-item{display:flex;align-items:center;gap:10px;padding:9px 18px;border-bottom:0.5px solid #fdf0f4;}
+.need-item:last-child{border-bottom:none;}
+.need-item input[type=checkbox]{width:15px;height:15px;accent-color:#c9395f;flex-shrink:0;}
+.need-item-inputs{flex:1;display:flex;gap:8px;}
+.need-input{flex:1;border:none;background:none;font-family:'DM Sans',sans-serif;font-size:12px;color:#2a1f28;outline:none;}
+.need-input::placeholder{color:#c9b8c4;}
+.need-price{width:70px;border:none;background:none;font-family:'DM Sans',sans-serif;font-size:11px;color:#c9395f;outline:none;text-align:right;}
+.need-price::placeholder{color:#e0c0d0;}
+.need-add{display:flex;align-items:center;justify-content:center;gap:5px;padding:10px;font-size:11px;font-weight:500;color:#c9395f;cursor:pointer;border-top:0.5px solid #fdf0f4;}
+
+/* PALETA PESSOAL */
+.paleta-card{background:#2a1f28;border-radius:16px;padding:22px 24px;margin-bottom:24px;}
+.paleta-header{display:flex;align-items:center;gap:10px;margin-bottom:16px;}
+.paleta-header i{font-size:18px;color:rgba(255,255,255,.6);}
+.paleta-header span{font-size:13px;font-weight:500;color:rgba(255,255,255,.8);}
+.paleta-sub{font-size:11px;color:rgba(255,255,255,.4);margin-bottom:16px;}
+.paleta-section{margin-bottom:14px;}
+.paleta-section-title{font-size:9px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:8px;}
+.paleta-swatches{display:flex;gap:8px;flex-wrap:wrap;}
+.swatch{width:36px;height:36px;border-radius:10px;cursor:pointer;border:2px solid transparent;transition:border .15s;flex-shrink:0;}
+.swatch:hover{border-color:rgba(255,255,255,.4);}
+.swatch.selected{border-color:#fff;}
+.paleta-tips{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px;}
+.paleta-tip{background:rgba(255,255,255,.07);border:0.5px solid rgba(255,255,255,.1);border-radius:10px;padding:12px 14px;}
+.pt-label{font-size:9px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:5px;}
+.pt-value{font-family:'Cormorant Garamond',serif;font-size:14px;font-style:italic;color:rgba(255,255,255,.8);}
+
+/* CONSULTORA TIPS */
+.tips-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:24px;}
+.tip-card{background:#fff;border:0.5px solid #f0dce6;border-radius:14px;padding:16px 18px;}
+.tip-header{display:flex;align-items:center;gap:8px;margin-bottom:10px;}
+.tip-icon{width:30px;height:30px;border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.tip-icon.rose{background:#fbeef3;} .tip-icon.rose i{color:#c9395f;font-size:15px;}
+.tip-icon.amber{background:#fef7ec;} .tip-icon.amber i{color:#c9853f;font-size:15px;}
+.tip-icon.sage{background:#eef5f0;} .tip-icon.sage i{color:#4a9a6a;font-size:15px;}
+.tip-icon.blue{background:#eef3fd;} .tip-icon.blue i{color:#3060b0;font-size:15px;}
+.tip-title{font-size:12px;font-weight:500;color:#2a1f28;}
+.tip-list{display:flex;flex-direction:column;gap:6px;}
+.tip-item{display:flex;align-items:flex-start;gap:7px;font-size:11px;color:#6a5060;line-height:1.5;}
+.tip-item i{font-size:13px;color:#e0a0b8;flex-shrink:0;margin-top:1px;}
+</style>
+
+<div>
+
+<div class="module-hero">
+  <div class="hero-deco">✦</div>
+  <div class="hero-icon"><i class="ti ti-hanger" aria-hidden="true"></i></div>
+  <div>
+    <div class="hero-eye">Imagem & Estilo</div>
+    <div class="hero-title">Seu guarda-roupa inteligente</div>
+  </div>
+</div>
+
+<div class="tabs-row">
+  <div class="tab active"><i class="ti ti-user-circle" aria-hidden="true"></i>Meu estilo</div>
+  <div class="tab"><i class="ti ti-calendar-week" aria-hidden="true"></i>Looks da semana</div>
+  <div class="tab"><i class="ti ti-shirt" aria-hidden="true"></i>Catálogo de peças</div>
+  <div class="tab"><i class="ti ti-shopping-bag" aria-hidden="true"></i>Preciso comprar</div>
+  <div class="tab"><i class="ti ti-palette" aria-hidden="true"></i>Minha paleta</div>
+</div>
+
+<div class="sec-title">Meu perfil de estilo</div>
+<div class="perfil-grid">
+  <div class="perfil-card">
+    <div class="pc-label"><div class="pc-icon rose"><i class="ti ti-sparkles" aria-hidden="true"></i></div><span class="pc-title">Estilo predominante</span></div>
+    <div class="style-chips">
+      <div class="chip selected" onclick="this.classList.toggle('selected')">Clássico</div>
+      <div class="chip" onclick="this.classList.toggle('selected')">Romântico</div>
+      <div class="chip selected" onclick="this.classList.toggle('selected')">Feminino</div>
+      <div class="chip" onclick="this.classList.toggle('selected')">Casual chic</div>
+      <div class="chip" onclick="this.classList.toggle('selected')">Minimalista</div>
+      <div class="chip" onclick="this.classList.toggle('selected')">Boho</div>
+      <div class="chip" onclick="this.classList.toggle('selected')">Sofisticado</div>
+      <div class="chip" onclick="this.classList.toggle('selected')">Esportivo</div>
+      <div class="chip" onclick="this.classList.toggle('selected')">Urbano</div>
+      <div class="chip" onclick="this.classList.toggle('selected')">Colorido</div>
+    </div>
+  </div>
+  <div class="perfil-card">
+    <div class="pc-label"><div class="pc-icon amber"><i class="ti ti-body-scan" aria-hidden="true"></i></div><span class="pc-title">Tipo de corpo</span></div>
+    <div class="style-chips">
+      <div class="chip selected" onclick="this.classList.toggle('selected')">Ampulheta</div>
+      <div class="chip" onclick="this.classList.toggle('selected')">Triângulo</div>
+      <div class="chip" onclick="this.classList.toggle('selected')">Triângulo invertido</div>
+      <div class="chip" onclick="this.classList.toggle('selected')">Retangular</div>
+      <div class="chip" onclick="this.classList.toggle('selected')">Oval</div>
+      <div class="chip" onclick="this.classList.toggle('selected')">Redondo</div>
+    </div>
+    <div style="margin-top:10px;">
+      <div class="field-label">Características que gosto de valorizar</div>
+      <textarea class="textarea-field" style="min-height:48px;" placeholder="Ex.: Cintura, colo, ombros..."></textarea>
+    </div>
+  </div>
+  <div class="perfil-card">
+    <div class="pc-label"><div class="pc-icon sage"><i class="ti ti-sun" aria-hidden="true"></i></div><span class="pc-title">Coloração pessoal</span></div>
+    <div class="style-chips">
+      <div class="chip" onclick="this.classList.toggle('selected')">Inverno frio</div>
+      <div class="chip selected" onclick="this.classList.toggle('selected')">Primavera quente</div>
+      <div class="chip" onclick="this.classList.toggle('selected')">Verão frio</div>
+      <div class="chip" onclick="this.classList.toggle('selected')">Outono quente</div>
+    </div>
+    <div style="margin-top:10px;">
+      <div class="field-label">Cores que me favorecem</div>
+      <input class="input-field" type="text" placeholder="Ex.: Rose, off-white, caramelo, verde oliva..."/>
+    </div>
+    <div style="margin-top:8px;">
+      <div class="field-label">Cores que devo evitar</div>
+      <input class="input-field" type="text" placeholder="Ex.: Amarelo neon, laranja forte..."/>
+    </div>
+  </div>
+  <div class="perfil-card">
+    <div class="pc-label"><div class="pc-icon blue"><i class="ti ti-calendar" aria-hidden="true"></i></div><span class="pc-title">Ocasiões do meu dia a dia</span></div>
+    <div class="style-chips">
+      <div class="chip selected" onclick="this.classList.toggle('selected')">Trabalho presencial</div>
+      <div class="chip" onclick="this.classList.toggle('selected')">Home office</div>
+      <div class="chip selected" onclick="this.classList.toggle('selected')">Casual fim de semana</div>
+      <div class="chip" onclick="this.classList.toggle('selected')">Eventos sociais</div>
+      <div class="chip" onclick="this.classList.toggle('selected')">Academia</div>
+      <div class="chip" onclick="this.classList.toggle('selected')">Viagens</div>
+      <div class="chip selected" onclick="this.classList.toggle('selected')">Igreja / cultos</div>
+      <div class="chip" onclick="this.classList.toggle('selected')">Jantares</div>
+    </div>
+  </div>
+</div>
+
+<div class="sec-title">Looks da semana</div>
+<div class="looks-grid" style="margin-bottom:24px;">
+  <div class="look-card">
+    <div class="look-day">Seg</div>
+    <div class="look-img"><i class="ti ti-camera" aria-hidden="true"></i></div>
+    <div class="look-body">
+      <select class="look-ocasiao"><option value="">Ocasião...</option><option>Trabalho</option><option>Casual</option><option>Evento</option><option>Igreja</option><option>Academia</option></select>
+      <input class="look-peca" type="text" placeholder="Blusa..."/>
+      <input class="look-peca" type="text" placeholder="Calça / saia..."/>
+      <input class="look-peca" type="text" placeholder="Sapato..."/>
+      <input class="look-peca" type="text" placeholder="Acessório..."/>
+    </div>
+  </div>
+  <div class="look-card">
+    <div class="look-day">Ter</div>
+    <div class="look-img"><i class="ti ti-camera" aria-hidden="true"></i></div>
+    <div class="look-body">
+      <select class="look-ocasiao"><option value="">Ocasião...</option><option>Trabalho</option><option>Casual</option><option>Evento</option><option>Igreja</option><option>Academia</option></select>
+      <input class="look-peca" type="text" placeholder="Blusa..."/>
+      <input class="look-peca" type="text" placeholder="Calça / saia..."/>
+      <input class="look-peca" type="text" placeholder="Sapato..."/>
+      <input class="look-peca" type="text" placeholder="Acessório..."/>
+    </div>
+  </div>
+  <div class="look-card">
+    <div class="look-day">Qua</div>
+    <div class="look-img"><i class="ti ti-camera" aria-hidden="true"></i></div>
+    <div class="look-body">
+      <select class="look-ocasiao"><option value="">Ocasião...</option><option>Trabalho</option><option>Casual</option><option>Evento</option><option>Igreja</option><option>Academia</option></select>
+      <input class="look-peca" type="text" placeholder="Blusa..."/>
+      <input class="look-peca" type="text" placeholder="Calça / saia..."/>
+      <input class="look-peca" type="text" placeholder="Sapato..."/>
+      <input class="look-peca" type="text" placeholder="Acessório..."/>
+    </div>
+  </div>
+  <div class="look-card">
+    <div class="look-day">Qui</div>
+    <div class="look-img"><i class="ti ti-camera" aria-hidden="true"></i></div>
+    <div class="look-body">
+      <select class="look-ocasiao"><option value="">Ocasião...</option><option>Trabalho</option><option>Casual</option><option>Evento</option><option>Igreja</option><option>Academia</option></select>
+      <input class="look-peca" type="text" placeholder="Blusa..."/>
+      <input class="look-peca" type="text" placeholder="Calça / saia..."/>
+      <input class="look-peca" type="text" placeholder="Sapato..."/>
+      <input class="look-peca" type="text" placeholder="Acessório..."/>
+    </div>
+  </div>
+  <div class="look-card">
+    <div class="look-day">Sex</div>
+    <div class="look-img"><i class="ti ti-camera" aria-hidden="true"></i></div>
+    <div class="look-body">
+      <select class="look-ocasiao"><option value="">Ocasião...</option><option>Trabalho</option><option>Casual</option><option>Evento</option><option>Igreja</option><option>Academia</option></select>
+      <input class="look-peca" type="text" placeholder="Blusa..."/>
+      <input class="look-peca" type="text" placeholder="Calça / saia..."/>
+      <input class="look-peca" type="text" placeholder="Sapato..."/>
+      <input class="look-peca" type="text" placeholder="Acessório..."/>
+    </div>
+  </div>
+  <div class="look-card">
+    <div class="look-day">Sáb</div>
+    <div class="look-img"><i class="ti ti-camera" aria-hidden="true"></i></div>
+    <div class="look-body">
+      <select class="look-ocasiao"><option value="">Ocasião...</option><option>Trabalho</option><option>Casual</option><option>Evento</option><option>Igreja</option><option>Academia</option></select>
+      <input class="look-peca" type="text" placeholder="Blusa..."/>
+      <input class="look-peca" type="text" placeholder="Calça / saia..."/>
+      <input class="look-peca" type="text" placeholder="Sapato..."/>
+      <input class="look-peca" type="text" placeholder="Acessório..."/>
+    </div>
+  </div>
+  <div class="look-card">
+    <div class="look-day">Dom</div>
+    <div class="look-img"><i class="ti ti-camera" aria-hidden="true"></i></div>
+    <div class="look-body">
+      <select class="look-ocasiao"><option value="">Ocasião...</option><option>Trabalho</option><option>Casual</option><option>Evento</option><option>Igreja</option><option>Academia</option></select>
+      <input class="look-peca" type="text" placeholder="Blusa..."/>
+      <input class="look-peca" type="text" placeholder="Calça / saia..."/>
+      <input class="look-peca" type="text" placeholder="Sapato..."/>
+      <input class="look-peca" type="text" placeholder="Acessório..."/>
+    </div>
+  </div>
+</div>
+
+<div class="sec-title">Catálogo de peças-chave</div>
+<div class="catalogo-header">
+  <div class="cat-filters">
+    <div class="cat-filter active" onclick="setFilter(this)">Todas</div>
+    <div class="cat-filter" onclick="setFilter(this)">Blusas</div>
+    <div class="cat-filter" onclick="setFilter(this)">Calças</div>
+    <div class="cat-filter" onclick="setFilter(this)">Saias</div>
+    <div class="cat-filter" onclick="setFilter(this)">Vestidos</div>
+    <div class="cat-filter" onclick="setFilter(this)">Casacos</div>
+    <div class="cat-filter" onclick="setFilter(this)">Sapatos</div>
+    <div class="cat-filter" onclick="setFilter(this)">Acessórios</div>
+  </div>
+  <button class="add-btn-rose"><i class="ti ti-plus" aria-hidden="true"></i>Adicionar peça</button>
+</div>
+<div class="peca-grid" style="margin-bottom:24px;">
+  <div class="peca-card">
+    <div class="peca-img rosa-bg"><i class="ti ti-shirt" aria-hidden="true"></i><div class="peca-add-overlay"><i class="ti ti-camera" aria-hidden="true"></i></div></div>
+    <div class="peca-body">
+      <input class="peca-name" type="text" placeholder="Nome da peça..."/>
+      <div class="peca-meta">
+        <span class="peca-tag">Blusa</span>
+        <span class="peca-tag occasion">Trabalho</span>
+        <span class="peca-tag color">Rose</span>
+      </div>
+    </div>
+  </div>
+  <div class="peca-card">
+    <div class="peca-img nude-bg"><i class="ti ti-cut" aria-hidden="true"></i><div class="peca-add-overlay"><i class="ti ti-camera" aria-hidden="true"></i></div></div>
+    <div class="peca-body">
+      <input class="peca-name" type="text" placeholder="Nome da peça..."/>
+      <div class="peca-meta">
+        <span class="peca-tag">Calça</span>
+        <span class="peca-tag occasion">Casual</span>
+        <span class="peca-tag color">Nude</span>
+      </div>
+    </div>
+  </div>
+  <div class="peca-card">
+    <div class="peca-img azul-bg"><i class="ti ti-shirt" aria-hidden="true"></i><div class="peca-add-overlay"><i class="ti ti-camera" aria-hidden="true"></i></div></div>
+    <div class="peca-body">
+      <input class="peca-name" type="text" placeholder="Nome da peça..."/>
+      <div class="peca-meta">
+        <span class="peca-tag">Vestido</span>
+        <span class="peca-tag occasion">Evento</span>
+        <span class="peca-tag color">Azul</span>
+      </div>
+    </div>
+  </div>
+  <div class="peca-card">
+    <div class="peca-img verde-bg"><i class="ti ti-hanger" aria-hidden="true"></i><div class="peca-add-overlay"><i class="ti ti-camera" aria-hidden="true"></i></div></div>
+    <div class="peca-body">
+      <input class="peca-name" type="text" placeholder="Nome da peça..."/>
+      <div class="peca-meta">
+        <span class="peca-tag">Casaco</span>
+        <span class="peca-tag occasion">Todos</span>
+        <span class="peca-tag color">Verde</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="sec-title">Lista de compras</div>
+<div class="need-grid" style="margin-bottom:24px;">
+  <div class="need-card">
+    <div class="need-header rose"><i class="ti ti-heart" aria-hidden="true"></i><span>Preciso — Peças essenciais</span></div>
+    <div class="need-list">
+      <div class="need-item"><input type="checkbox"/><div class="need-item-inputs"><input class="need-input" type="text" placeholder="Ex.: Calça preta básica"/><input class="need-price" type="text" placeholder="R$ 0"/></div></div>
+      <div class="need-item"><input type="checkbox"/><div class="need-item-inputs"><input class="need-input" type="text" placeholder="Ex.: Blazer nude"/><input class="need-price" type="text" placeholder="R$ 0"/></div></div>
+      <div class="need-item"><input type="checkbox"/><div class="need-item-inputs"><input class="need-input" type="text" placeholder="Ex.: Scarpin bege"/><input class="need-price" type="text" placeholder="R$ 0"/></div></div>
+      <div class="need-item"><input type="checkbox"/><div class="need-item-inputs"><input class="need-input" type="text" placeholder=""/><input class="need-price" type="text" placeholder="R$ 0"/></div></div>
+      <div class="need-item"><input type="checkbox"/><div class="need-item-inputs"><input class="need-input" type="text" placeholder=""/><input class="need-price" type="text" placeholder="R$ 0"/></div></div>
+    </div>
+    <div class="need-add"><i class="ti ti-plus" aria-hidden="true"></i>Adicionar item</div>
+  </div>
+  <div class="need-card">
+    <div class="need-header amber"><i class="ti ti-star" aria-hidden="true"></i><span>Desejo — Lista de sonhos</span></div>
+    <div class="need-list">
+      <div class="need-item"><input type="checkbox"/><div class="need-item-inputs"><input class="need-input" type="text" placeholder="Ex.: Bolsa de couro"/><input class="need-price" type="text" placeholder="R$ 0"/></div></div>
+      <div class="need-item"><input type="checkbox"/><div class="need-item-inputs"><input class="need-input" type="text" placeholder="Ex.: Vestido midi floral"/><input class="need-price" type="text" placeholder="R$ 0"/></div></div>
+      <div class="need-item"><input type="checkbox"/><div class="need-item-inputs"><input class="need-input" type="text" placeholder="Ex.: Trench coat caramelo"/><input class="need-price" type="text" placeholder="R$ 0"/></div></div>
+      <div class="need-item"><input type="checkbox"/><div class="need-item-inputs"><input class="need-input" type="text" placeholder=""/><input class="need-price" type="text" placeholder="R$ 0"/></div></div>
+      <div class="need-item"><input type="checkbox"/><div class="need-item-inputs"><input class="need-input" type="text" placeholder=""/><input class="need-price" type="text" placeholder="R$ 0"/></div></div>
+    </div>
+    <div class="need-add"><i class="ti ti-plus" aria-hidden="true"></i>Adicionar item</div>
+  </div>
+</div>
+
+<div class="sec-title">Minha paleta de cores</div>
+<div class="paleta-card" style="margin-bottom:24px;">
+  <div class="paleta-header"><i class="ti ti-palette" aria-hidden="true"></i><span>Cores que compõem o seu universo de estilo</span></div>
+  <div class="paleta-sub">Selecione as cores que te favorecem e formam sua paleta pessoal</div>
+  <div class="paleta-section">
+    <div class="paleta-section-title">Neutros base</div>
+    <div class="paleta-swatches">
+      <div class="swatch selected" style="background:#f5ede3;" title="Off-white"></div>
+      <div class="swatch selected" style="background:#d4b49a;" title="Nude"></div>
+      <div class="swatch" style="background:#2a1f28;" title="Preto"></div>
+      <div class="swatch" style="background:#8a7a6a;" title="Camel"></div>
+      <div class="swatch" style="background:#c5b5a5;" title="Bege"></div>
+      <div class="swatch" style="background:#9a8a84;" title="Cinza rosado"></div>
+      <div class="swatch" style="background:#fff;" title="Branco" style="border:1px solid rgba(255,255,255,.2)"></div>
+    </div>
+  </div>
+  <div class="paleta-section">
+    <div class="paleta-section-title">Cores de destaque</div>
+    <div class="paleta-swatches">
+      <div class="swatch selected" style="background:#c9395f;" title="Rose"></div>
+      <div class="swatch" style="background:#e8557a;" title="Pink suave"></div>
+      <div class="swatch" style="background:#c9a96e;" title="Dourado"></div>
+      <div class="swatch" style="background:#7a9060;" title="Verde oliva"></div>
+      <div class="swatch" style="background:#6080b0;" title="Azul acinzentado"></div>
+      <div class="swatch" style="background:#9060a0;" title="Lilás"></div>
+      <div class="swatch" style="background:#c04040;" title="Vermelho vinho"></div>
+      <div class="swatch" style="background:#c9853f;" title="Caramelo"></div>
+    </div>
+  </div>
+  <div class="paleta-tips">
+    <div class="paleta-tip">
+      <div class="pt-label">Tom de pele</div>
+      <input style="border:none;background:none;font-family:'Cormorant Garamond',serif;font-size:14px;font-style:italic;color:rgba(255,255,255,.8);outline:none;width:100%;" placeholder="Ex.: Morena quente..."/>
+    </div>
+    <div class="paleta-tip">
+      <div class="pt-label">Coloração pessoal</div>
+      <input style="border:none;background:none;font-family:'Cormorant Garamond',serif;font-size:14px;font-style:italic;color:rgba(255,255,255,.8);outline:none;width:100%;" placeholder="Ex.: Primavera quente..."/>
+    </div>
+    <div class="paleta-tip">
+      <div class="pt-label">Metais favoritos</div>
+      <input style="border:none;background:none;font-family:'Cormorant Garamond',serif;font-size:14px;font-style:italic;color:rgba(255,255,255,.8);outline:none;width:100%;" placeholder="Ex.: Ouro, rose gold..."/>
+    </div>
+    <div class="paleta-tip">
+      <div class="pt-label">Estampas que me favorecem</div>
+      <input style="border:none;background:none;font-family:'Cormorant Garamond',serif;font-size:14px;font-style:italic;color:rgba(255,255,255,.8);outline:none;width:100%;" placeholder="Ex.: Floral delicado, listras finas..."/>
+    </div>
+  </div>
+</div>
+
+<div class="sec-title">Dicas da sua consultora</div>
+<div class="tips-grid">
+  <div class="tip-card">
+    <div class="tip-header"><div class="tip-icon rose"><i class="ti ti-award" aria-hidden="true"></i></div><span class="tip-title">Peças-chave de todo guarda-roupa</span></div>
+    <div class="tip-list">
+      <div class="tip-item"><i class="ti ti-check" aria-hidden="true"></i>Calça preta bem cortada — combina com tudo</div>
+      <div class="tip-item"><i class="ti ti-check" aria-hidden="true"></i>Blazer neutro (bege ou navy) para elevar qualquer look</div>
+      <div class="tip-item"><i class="ti ti-check" aria-hidden="true"></i>Vestido midi versátil para dia e noite</div>
+      <div class="tip-item"><i class="ti ti-check" aria-hidden="true"></i>Scarpin ou mule nude — alonga a silhueta</div>
+      <div class="tip-item"><i class="ti ti-check" aria-hidden="true"></i>Bolsa estruturada em tom neutro</div>
+    </div>
+  </div>
+  <div class="tip-card">
+    <div class="tip-header"><div class="tip-icon amber"><i class="ti ti-bulb" aria-hidden="true"></i></div><span class="tip-title">Regras de ouro do estilo</span></div>
+    <div class="tip-list">
+      <div class="tip-item"><i class="ti ti-check" aria-hidden="true"></i>Invista em qualidade, não em quantidade</div>
+      <div class="tip-item"><i class="ti ti-check" aria-hidden="true"></i>Compre pelo que já tem, não pelo que falta</div>
+      <div class="tip-item"><i class="ti ti-check" aria-hidden="true"></i>70% neutros + 30% colorido = guarda-roupa cápsula</div>
+      <div class="tip-item"><i class="ti ti-check" aria-hidden="true"></i>Um acessório de qualidade transforma o look</div>
+      <div class="tip-item"><i class="ti ti-check" aria-hidden="true"></i>Vista o que faz você se sentir poderosa</div>
+    </div>
+  </div>
+  <div class="tip-card">
+    <div class="tip-header"><div class="tip-icon sage"><i class="ti ti-recycle" aria-hidden="true"></i></div><span class="tip-title">Organização inteligente</span></div>
+    <div class="tip-list">
+      <div class="tip-item"><i class="ti ti-check" aria-hidden="true"></i>Faça o "desapego" a cada 3 meses</div>
+      <div class="tip-item"><i class="ti ti-check" aria-hidden="true"></i>Separe por ocasião: trabalho, casual, festas</div>
+      <div class="tip-item"><i class="ti ti-check" aria-hidden="true"></i>Peças que não usou em 1 ano: donate ou venda</div>
+      <div class="tip-item"><i class="ti ti-check" aria-hidden="true"></i>Mantenha visível o que você mais usa</div>
+      <div class="tip-item"><i class="ti ti-check" aria-hidden="true"></i>Fotografe seus looks favoritos para referência</div>
+    </div>
+  </div>
+  <div class="tip-card">
+    <div class="tip-header"><div class="tip-icon blue"><i class="ti ti-heart" aria-hidden="true"></i></div><span class="tip-title">Autoestima & imagem pessoal</span></div>
+    <div class="tip-list">
+      <div class="tip-item"><i class="ti ti-check" aria-hidden="true"></i>Vista-se para a vida que você quer ter</div>
+      <div class="tip-item"><i class="ti ti-check" aria-hidden="true"></i>Sua imagem comunica antes das palavras</div>
+      <div class="tip-item"><i class="ti ti-check" aria-hidden="true"></i>Conforto e elegância não se excluem</div>
+      <div class="tip-item"><i class="ti ti-check" aria-hidden="true"></i>Conheça seu corpo e celebre-o como ele é</div>
+      <div class="tip-item"><i class="ti ti-check" aria-hidden="true"></i>Estilo é autoconhecimento em forma de roupa</div>
+    </div>
+  </div>
+</div>
+
+</div>
+<script>
+function setFilter(el){
+  document.querySelectorAll('.cat-filter').forEach(f=>f.classList.remove('active'));
+  el.classList.add('active');
+}
+</script>

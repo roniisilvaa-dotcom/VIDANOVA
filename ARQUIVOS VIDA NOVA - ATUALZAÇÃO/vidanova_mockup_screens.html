@@ -1,0 +1,338 @@
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap');
+*{box-sizing:border-box;margin:0;padding:0;}
+.phone-wrap{background:#f5edf1;padding:20px 16px 28px;display:flex;flex-direction:column;align-items:center;gap:24px;}
+.screen-label{font-family:'DM Sans',sans-serif;font-size:10px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:#9a7a8a;margin-bottom:8px;text-align:center;}
+.phone{width:320px;background:#fdf8f9;border-radius:36px;border:1px solid #e8d0da;overflow:hidden;font-family:'DM Sans',sans-serif;}
+.phone-status{background:#fdf8f9;padding:12px 20px 6px;display:flex;justify-content:space-between;align-items:center;}
+.phone-time{font-size:12px;font-weight:500;color:#2a1f28;}
+.phone-icons{display:flex;gap:4px;align-items:center;}
+.phone-icons i{font-size:14px;color:#2a1f28;}
+.screen{padding:0 0 80px;}
+
+.dash-header{padding:20px 20px 0;}
+.dash-greeting{font-family:'DM Sans',sans-serif;font-size:11px;font-weight:400;color:#9a7a8a;letter-spacing:.04em;margin-bottom:2px;}
+.dash-name{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:500;color:#2a1f28;line-height:1.1;}
+.dash-name em{font-style:italic;color:#c9395f;}
+
+.verse-card{margin:16px 20px 0;background:#c9395f;border-radius:18px;padding:16px 18px;position:relative;overflow:hidden;}
+.verse-deco{position:absolute;top:-12px;right:6px;font-family:'Cormorant Garamond',serif;font-size:100px;color:rgba(255,255,255,.08);line-height:1;pointer-events:none;user-select:none;}
+.verse-eyebrow{font-size:9px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.55);margin-bottom:8px;}
+.verse-text{font-family:'Cormorant Garamond',serif;font-size:15px;font-style:italic;color:#fff;line-height:1.55;margin-bottom:8px;}
+.verse-ref{font-size:10px;color:rgba(255,255,255,.6);font-weight:500;}
+
+.stats-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;padding:16px 20px 0;}
+.stat{background:#fff;border:0.5px solid #f0d8e2;border-radius:14px;padding:12px 10px;text-align:center;}
+.stat-n{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:500;color:#c9395f;line-height:1;}
+.stat-l{font-size:9px;color:#b09aa8;letter-spacing:.05em;text-transform:uppercase;margin-top:2px;}
+
+.section-head{display:flex;justify-content:space-between;align-items:center;padding:20px 20px 10px;}
+.section-title{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:500;color:#2a1f28;}
+.section-link{font-size:10px;color:#c9395f;font-weight:500;letter-spacing:.04em;}
+
+.modules-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 20px;}
+.mod-card{background:#fff;border:0.5px solid #f0d8e2;border-radius:16px;padding:14px 14px 12px;}
+.mod-icon{width:32px;height:32px;background:#fbeef3;border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:10px;}
+.mod-icon i{font-size:17px;color:#c9395f;}
+.mod-name{font-size:12px;font-weight:500;color:#2a1f28;margin-bottom:2px;}
+.mod-sub{font-size:10px;color:#b09aa8;line-height:1.4;}
+
+.nav-bottom{position:relative;bottom:0;left:0;right:0;background:#fff;border-top:0.5px solid #f0d8e2;padding:10px 20px 16px;display:flex;justify-content:space-around;}
+.nav-it{display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;}
+.nav-it i{font-size:20px;color:#c9b8c0;}
+.nav-it.act i{color:#c9395f;}
+.nav-it span{font-size:9px;color:#c9b8c0;font-weight:500;}
+.nav-it.act span{color:#c9395f;}
+.nav-dot{width:4px;height:4px;background:#c9395f;border-radius:50%;margin-top:1px;}
+
+.hr{border:none;border-top:0.5px solid #f5e8ee;margin:0 20px;}
+
+.profile-header{background:#c9395f;padding:32px 20px 24px;text-align:center;}
+.avatar{width:64px;height:64px;background:rgba(255,255,255,.2);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;border:2px solid rgba(255,255,255,.35);}
+.avatar span{font-family:'Cormorant Garamond',serif;font-size:22px;color:#fff;font-weight:500;}
+.profile-name{font-family:'Cormorant Garamond',serif;font-size:20px;color:#fff;font-weight:500;}
+.profile-tag{font-size:10px;color:rgba(255,255,255,.65);margin-top:2px;}
+.profile-badge{display:inline-block;background:rgba(255,255,255,.15);border:0.5px solid rgba(255,255,255,.3);border-radius:60px;padding:4px 12px;font-size:10px;color:#fff;margin-top:10px;font-weight:500;letter-spacing:.04em;}
+
+.settings-list{padding:12px 20px;}
+.setting-row{display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-bottom:0.5px solid #f5e8ee;}
+.setting-row:last-child{border-bottom:none;}
+.setting-left{display:flex;align-items:center;gap:12px;}
+.setting-icon{width:32px;height:32px;background:#fbeef3;border-radius:10px;display:flex;align-items:center;justify-content:center;}
+.setting-icon i{font-size:16px;color:#c9395f;}
+.setting-name{font-size:13px;font-weight:500;color:#2a1f28;}
+.setting-desc{font-size:10px;color:#b09aa8;margin-top:1px;}
+.setting-right i{font-size:16px;color:#d4b4c0;}
+
+.toggle{width:36px;height:20px;background:#c9395f;border-radius:10px;position:relative;}
+.toggle-dot{position:absolute;right:3px;top:3px;width:14px;height:14px;background:#fff;border-radius:50%;}
+.toggle.off{background:#e8d8df;}
+.toggle.off .toggle-dot{left:3px;right:auto;}
+
+.fin-tabs{display:flex;gap:6px;padding:16px 20px 12px;overflow-x:auto;}
+.fin-tab{font-size:11px;font-weight:500;padding:6px 14px;border-radius:60px;white-space:nowrap;border:0.5px solid #f0d8e2;color:#b09aa8;background:#fff;}
+.fin-tab.act{background:#c9395f;color:#fff;border-color:#c9395f;}
+
+.fin-summary{margin:0 20px;background:#fff;border:0.5px solid #f0d8e2;border-radius:16px;padding:16px;}
+.fin-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;}
+.fin-row:last-child{margin-bottom:0;padding-top:12px;border-top:0.5px solid #f5e8ee;}
+.fin-item-name{font-size:12px;color:#6a5060;}
+.fin-item-val{font-size:13px;font-weight:500;color:#2a1f28;}
+.fin-item-val.pos{color:#3a7a3a;}
+.fin-item-val.neg{color:#c9395f;}
+
+.screen-tabs{display:flex;padding:12px 16px 0;gap:4px;}
+.stab{font-size:11px;font-weight:500;padding:7px 14px;border-radius:60px;cursor:pointer;color:#9a7a8a;background:none;border:none;}
+.stab.active{background:#c9395f;color:#fff;}
+
+.page-indicator{display:flex;gap:5px;justify-content:center;padding:8px 0 4px;}
+.dot{width:5px;height:5px;border-radius:50%;background:#e0c8d2;}
+.dot.act{width:16px;border-radius:3px;background:#c9395f;}
+</style>
+
+<div class="phone-wrap">
+
+<div style="text-align:center;">
+  <div class="screen-label">Telas do Vida Nova — redesign rose premium</div>
+  <div class="page-indicator">
+    <div class="dot act"></div>
+    <div class="dot"></div>
+    <div class="dot"></div>
+  </div>
+</div>
+
+<div>
+  <div class="screen-label">Dashboard · tela inicial</div>
+  <div class="phone">
+    <div class="phone-status">
+      <span class="phone-time">9:41</span>
+      <div class="phone-icons">
+        <i class="ti ti-wifi" aria-hidden="true"></i>
+        <i class="ti ti-battery" aria-hidden="true"></i>
+      </div>
+    </div>
+    <div class="screen">
+      <div class="dash-header">
+        <div class="dash-greeting">Bom dia,</div>
+        <div class="dash-name"><em>Bem-vinda</em> de volta</div>
+      </div>
+      <div class="verse-card">
+        <div class="verse-deco">"</div>
+        <div class="verse-eyebrow">Palavra para hoje</div>
+        <div class="verse-text">Entrega o teu caminho ao Senhor; confia nele, e ele o fará.</div>
+        <div class="verse-ref">Salmos 37:5</div>
+      </div>
+      <div class="stats-row">
+        <div class="stat">
+          <div class="stat-n">8</div>
+          <div class="stat-l">Tarefas</div>
+        </div>
+        <div class="stat">
+          <div class="stat-n">2</div>
+          <div class="stat-l">Hoje</div>
+        </div>
+        <div class="stat">
+          <div class="stat-n">R$0</div>
+          <div class="stat-l">Saldo</div>
+        </div>
+      </div>
+      <div class="section-head">
+        <div class="section-title">Seus módulos</div>
+        <div class="section-link">Ver todos ›</div>
+      </div>
+      <div class="modules-grid">
+        <div class="mod-card">
+          <div class="mod-icon"><i class="ti ti-calendar" aria-hidden="true"></i></div>
+          <div class="mod-name">Agenda</div>
+          <div class="mod-sub">Seus compromissos do dia</div>
+        </div>
+        <div class="mod-card">
+          <div class="mod-icon"><i class="ti ti-coin" aria-hidden="true"></i></div>
+          <div class="mod-name">Finanças</div>
+          <div class="mod-sub">Entradas e saídas</div>
+        </div>
+        <div class="mod-card">
+          <div class="mod-icon"><i class="ti ti-heart" aria-hidden="true"></i></div>
+          <div class="mod-name">Saúde</div>
+          <div class="mod-sub">Autocuidado e rituais</div>
+        </div>
+        <div class="mod-card">
+          <div class="mod-icon"><i class="ti ti-star" aria-hidden="true"></i></div>
+          <div class="mod-name">Sonhos</div>
+          <div class="mod-sub">Metas e mural</div>
+        </div>
+      </div>
+    </div>
+    <div class="nav-bottom">
+      <div class="nav-it act">
+        <i class="ti ti-home" aria-hidden="true"></i>
+        <span>Início</span>
+        <div class="nav-dot"></div>
+      </div>
+      <div class="nav-it">
+        <i class="ti ti-calendar" aria-hidden="true"></i>
+        <span>Agenda</span>
+      </div>
+      <div class="nav-it">
+        <i class="ti ti-users" aria-hidden="true"></i>
+        <span>Comunidade</span>
+      </div>
+      <div class="nav-it">
+        <i class="ti ti-user" aria-hidden="true"></i>
+        <span>Perfil</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div>
+  <div class="screen-label">Finanças · controle mensal</div>
+  <div class="phone">
+    <div class="phone-status">
+      <span class="phone-time">9:41</span>
+      <div class="phone-icons">
+        <i class="ti ti-wifi" aria-hidden="true"></i>
+        <i class="ti ti-battery" aria-hidden="true"></i>
+      </div>
+    </div>
+    <div class="screen">
+      <div class="dash-header" style="padding-bottom:0;">
+        <div class="dash-greeting">Módulo</div>
+        <div class="dash-name">Finanças</div>
+      </div>
+      <div class="fin-tabs">
+        <div class="fin-tab act">Maio</div>
+        <div class="fin-tab">Jun</div>
+        <div class="fin-tab">Jul</div>
+        <div class="fin-tab">Ago</div>
+        <div class="fin-tab">Set</div>
+      </div>
+      <div style="padding:0 20px;">
+        <div class="fin-summary">
+          <div class="fin-row">
+            <span class="fin-item-name">Entradas</span>
+            <span class="fin-item-val pos">R$ 4.500,00</span>
+          </div>
+          <div class="fin-row">
+            <span class="fin-item-name">Gastos fixos</span>
+            <span class="fin-item-val neg">— R$ 1.800,00</span>
+          </div>
+          <div class="fin-row">
+            <span class="fin-item-name">Gastos variáveis</span>
+            <span class="fin-item-val neg">— R$ 620,00</span>
+          </div>
+          <div class="fin-row">
+            <span class="fin-item-name" style="font-weight:500;color:#2a1f28;">Saldo</span>
+            <span class="fin-item-val pos" style="font-size:15px;">R$ 2.080,00</span>
+          </div>
+        </div>
+      </div>
+      <div class="section-head" style="padding-top:16px;">
+        <div class="section-title">Entradas</div>
+        <div style="width:28px;height:28px;background:#fbeef3;border-radius:8px;display:flex;align-items:center;justify-content:center;"><i class="ti ti-plus" style="font-size:15px;color:#c9395f;" aria-hidden="true"></i></div>
+      </div>
+      <div style="padding:0 20px;display:flex;flex-direction:column;gap:8px;">
+        <div style="background:#fff;border:0.5px solid #f0d8e2;border-radius:14px;padding:12px 14px;display:flex;justify-content:space-between;align-items:center;">
+          <div>
+            <div style="font-size:12px;font-weight:500;color:#2a1f28;">Salário</div>
+            <div style="font-size:10px;color:#b09aa8;margin-top:1px;">1 de maio</div>
+          </div>
+          <div style="font-size:13px;font-weight:500;color:#3a7a3a;">+ R$ 4.000</div>
+        </div>
+        <div style="background:#fff;border:0.5px solid #f0d8e2;border-radius:14px;padding:12px 14px;display:flex;justify-content:space-between;align-items:center;">
+          <div>
+            <div style="font-size:12px;font-weight:500;color:#2a1f28;">Freelance</div>
+            <div style="font-size:10px;color:#b09aa8;margin-top:1px;">8 de maio</div>
+          </div>
+          <div style="font-size:13px;font-weight:500;color:#3a7a3a;">+ R$ 500</div>
+        </div>
+      </div>
+    </div>
+    <div class="nav-bottom">
+      <div class="nav-it"><i class="ti ti-home" aria-hidden="true"></i><span>Início</span></div>
+      <div class="nav-it"><i class="ti ti-calendar" aria-hidden="true"></i><span>Agenda</span></div>
+      <div class="nav-it"><i class="ti ti-users" aria-hidden="true"></i><span>Comunidade</span></div>
+      <div class="nav-it act"><i class="ti ti-user" aria-hidden="true"></i><span>Perfil</span><div class="nav-dot"></div></div>
+    </div>
+  </div>
+</div>
+
+<div>
+  <div class="screen-label">Perfil · configurações</div>
+  <div class="phone">
+    <div class="phone-status" style="background:#c9395f;">
+      <span class="phone-time" style="color:#fff;">9:41</span>
+      <div class="phone-icons">
+        <i class="ti ti-wifi" style="color:#fff;" aria-hidden="true"></i>
+        <i class="ti ti-battery" style="color:#fff;" aria-hidden="true"></i>
+      </div>
+    </div>
+    <div class="screen">
+      <div class="profile-header">
+        <div class="avatar"><span>VN</span></div>
+        <div class="profile-name">Vida Nova</div>
+        <div class="profile-tag">seu@email.com.br</div>
+        <div class="profile-badge">Assinatura ativa</div>
+      </div>
+      <div class="settings-list">
+        <div class="setting-row">
+          <div class="setting-left">
+            <div class="setting-icon"><i class="ti ti-palette" aria-hidden="true"></i></div>
+            <div>
+              <div class="setting-name">Aparência</div>
+              <div class="setting-desc">Tema e paleta de cores</div>
+            </div>
+          </div>
+          <i class="ti ti-chevron-right setting-right" aria-hidden="true"></i>
+        </div>
+        <div class="setting-row">
+          <div class="setting-left">
+            <div class="setting-icon"><i class="ti ti-bell" aria-hidden="true"></i></div>
+            <div>
+              <div class="setting-name">Notificações</div>
+              <div class="setting-desc">Avisos e lembretes</div>
+            </div>
+          </div>
+          <div class="toggle"><div class="toggle-dot"></div></div>
+        </div>
+        <div class="setting-row">
+          <div class="setting-left">
+            <div class="setting-icon"><i class="ti ti-lock" aria-hidden="true"></i></div>
+            <div>
+              <div class="setting-name">Segurança</div>
+              <div class="setting-desc">Senha e acesso</div>
+            </div>
+          </div>
+          <i class="ti ti-chevron-right setting-right" aria-hidden="true"></i>
+        </div>
+        <div class="setting-row">
+          <div class="setting-left">
+            <div class="setting-icon"><i class="ti ti-refresh" aria-hidden="true"></i></div>
+            <div>
+              <div class="setting-name">Assinatura</div>
+              <div class="setting-desc">Renovar pacote</div>
+            </div>
+          </div>
+          <i class="ti ti-chevron-right setting-right" aria-hidden="true"></i>
+        </div>
+        <div class="setting-row">
+          <div class="setting-left">
+            <div class="setting-icon" style="background:#ffeef0;"><i class="ti ti-logout" style="color:#c9395f;" aria-hidden="true"></i></div>
+            <div>
+              <div class="setting-name" style="color:#c9395f;">Sair</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="nav-bottom">
+      <div class="nav-it"><i class="ti ti-home" aria-hidden="true"></i><span>Início</span></div>
+      <div class="nav-it"><i class="ti ti-calendar" aria-hidden="true"></i><span>Agenda</span></div>
+      <div class="nav-it"><i class="ti ti-users" aria-hidden="true"></i><span>Comunidade</span></div>
+      <div class="nav-it act"><i class="ti ti-user" aria-hidden="true"></i><span>Perfil</span><div class="nav-dot"></div></div>
+    </div>
+  </div>
+</div>
+
+</div>

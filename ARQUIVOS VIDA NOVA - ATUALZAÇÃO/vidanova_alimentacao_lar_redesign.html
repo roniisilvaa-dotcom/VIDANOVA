@@ -1,0 +1,444 @@
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap');
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'DM Sans',sans-serif;background:#fdf7f9;padding:24px 20px 48px;}
+
+.module-hero{background:#c9395f;border-radius:18px;padding:22px 28px;margin-bottom:20px;display:flex;align-items:center;gap:18px;position:relative;overflow:hidden;}
+.hero-deco{position:absolute;right:24px;top:-10px;font-family:'Cormorant Garamond',serif;font-size:110px;color:rgba(255,255,255,.06);pointer-events:none;}
+.hero-icon{width:44px;height:44px;min-width:44px;background:rgba(255,255,255,.15);border-radius:13px;display:flex;align-items:center;justify-content:center;}
+.hero-icon i{font-size:22px;color:#fff;}
+.hero-eye{font-size:9px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.55);margin-bottom:5px;}
+.hero-title{font-family:'Cormorant Garamond',serif;font-size:22px;font-style:italic;color:#fff;}
+
+.tabs-row{display:flex;gap:6px;margin-bottom:24px;flex-wrap:wrap;}
+.tab{font-size:12px;font-weight:500;padding:8px 16px;border-radius:60px;border:0.5px solid #e8d0da;background:#fff;color:#9a7a8a;cursor:pointer;display:flex;align-items:center;gap:6px;}
+.tab i{font-size:14px;}
+.tab.active{background:#c9395f;color:#fff;border-color:#c9395f;}
+
+.sec-title{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:500;color:#2a1f28;margin-bottom:16px;display:flex;align-items:center;gap:10px;}
+.sec-title::after{content:'';flex:1;height:0.5px;background:#f0dce6;}
+
+/* PLANNER DE REFEIÇÃO */
+.meal-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:0;margin-bottom:24px;border:0.5px solid #f0dce6;border-radius:16px;overflow:hidden;}
+.meal-col{border-right:0.5px solid #f5e8ee;}
+.meal-col:last-child{border-right:none;}
+.meal-day{background:#c9395f;padding:11px 14px;text-align:center;font-size:11px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:#fff;}
+.meal-slot{padding:10px 12px;border-bottom:0.5px solid #f5e8ee;background:#fff;}
+.meal-slot:last-child{border-bottom:none;}
+.meal-type{display:flex;align-items:center;gap:5px;margin-bottom:6px;}
+.meal-type i{font-size:13px;}
+.meal-type.cafe i{color:#c9853f;}
+.meal-type.almoco i{color:#4a8a4a;}
+.meal-type.lanche i{color:#c9395f;}
+.meal-type.jantar i{color:#3060b0;}
+.meal-type span{font-size:9px;font-weight:500;letter-spacing:.07em;text-transform:uppercase;color:#b09aa8;}
+.meal-textarea{width:100%;min-height:54px;border:none;background:none;font-family:'DM Sans',sans-serif;font-size:11px;color:#4a3a46;resize:none;outline:none;line-height:1.5;}
+.meal-textarea::placeholder{color:#ddd;font-style:italic;}
+
+/* LISTA DO MERCADO */
+.market-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:24px;}
+.market-cat{background:#fff;border:0.5px solid #f0dce6;border-radius:16px;overflow:hidden;}
+.market-cat-header{padding:12px 16px;display:flex;align-items:center;gap:8px;}
+.mch-icon{width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;}
+.mch-icon i{font-size:14px;}
+.mch-icon.green{background:#eef7ee;} .mch-icon.green i{color:#4a8a4a;}
+.mch-icon.red{background:#fdf0f0;} .mch-icon.red i{color:#c04040;}
+.mch-icon.amber{background:#fef7ec;} .mch-icon.amber i{color:#c9853f;}
+.mch-icon.rose{background:#fbeef3;} .mch-icon.rose i{color:#c9395f;}
+.mch-icon.blue{background:#eef3fd;} .mch-icon.blue i{color:#3060b0;}
+.mch-icon.purple{background:#f3eefe;} .mch-icon.purple i{color:#7040c0;}
+.mch-icon.sage{background:#eef5f0;} .mch-icon.sage i{color:#4a9a6a;}
+.mch-icon.nude{background:#f8f0e8;} .mch-icon.nude i{color:#a07040;}
+.mch-title{font-size:12px;font-weight:500;color:#2a1f28;}
+.market-items{display:grid;grid-template-columns:1fr 1fr;padding:4px 0 8px;}
+.market-item{display:flex;align-items:center;gap:8px;padding:7px 16px;}
+.market-item input[type=checkbox]{width:15px;height:15px;accent-color:#c9395f;flex-shrink:0;}
+.market-item span{font-size:12px;color:#4a3a46;}
+
+/* CRONOGRAMA LIMPEZA */
+.cleaning-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px;}
+.cleaning-card{background:#fff;border:0.5px solid #f0dce6;border-radius:16px;overflow:hidden;}
+.cleaning-icon-wrap{height:80px;display:flex;align-items:center;justify-content:center;}
+.cleaning-icon-wrap.rose-bg{background:#fdf0f4;}
+.cleaning-icon-wrap.sage-bg{background:#f0f7f3;}
+.cleaning-icon-wrap.blue-bg{background:#eef3fd;}
+.cleaning-icon-wrap.amber-bg{background:#fef7ec;}
+.cleaning-icon-wrap i{font-size:32px;}
+.cleaning-icon-wrap.rose-bg i{color:#c9395f;}
+.cleaning-icon-wrap.sage-bg i{color:#4a9a6a;}
+.cleaning-icon-wrap.blue-bg i{color:#3060b0;}
+.cleaning-icon-wrap.amber-bg i{color:#c9853f;}
+.cleaning-freq{padding:10px 14px 4px;font-size:11px;font-weight:500;color:#c9395f;letter-spacing:.04em;}
+.cleaning-list{padding:0 14px 12px;}
+.cl-item{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:0.5px solid #fdf0f4;}
+.cl-item:last-child{border-bottom:none;}
+.cl-item input[type=checkbox]{width:14px;height:14px;accent-color:#c9395f;flex-shrink:0;}
+.cl-item span{font-size:11px;color:#4a3a46;}
+
+/* CHECKLIST CÔMODOS */
+.rooms-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:24px;}
+.room-card{background:#fff;border:0.5px solid #f0dce6;border-radius:16px;overflow:hidden;}
+.room-img{height:80px;display:flex;align-items:center;justify-content:center;}
+.room-img.purple{background:#f0ecfe;}
+.room-img.amber{background:#fef5e4;}
+.room-img.teal{background:#e8f6f2;}
+.room-img.blue{background:#e8f0fe;}
+.room-img.peach{background:#fdeee8;}
+.room-img.sage{background:#eef5ec;}
+.room-img i{font-size:30px;color:rgba(0,0,0,.2);}
+.room-name{font-size:13px;font-weight:500;color:#2a1f28;padding:12px 16px 8px;}
+.room-items{padding:0 16px 8px;}
+.ri-item{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:0.5px solid #fdf0f4;}
+.ri-item:last-child{border-bottom:none;}
+.ri-item input[type=checkbox]{width:14px;height:14px;accent-color:#c9395f;flex-shrink:0;}
+.ri-item span{font-size:11px;color:#4a3a46;}
+.room-notes{margin:6px 16px 12px;}
+.room-notes textarea{width:100%;border:0.5px solid #f0dce6;border-radius:8px;padding:7px 10px;font-family:'DM Sans',sans-serif;font-size:11px;color:#4a3a46;background:#fdf8f9;resize:none;outline:none;min-height:48px;line-height:1.5;}
+.room-notes textarea::placeholder{color:#c9b8c4;}
+
+/* REFORMA */
+.reform-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:24px;}
+.reform-card{background:#fff;border:0.5px solid #f0dce6;border-radius:16px;overflow:hidden;}
+.reform-banner{height:80px;display:flex;align-items:center;justify-content:center;}
+.reform-banner.purple{background:#f0ecfe;}
+.reform-banner.amber{background:#fef5e4;}
+.reform-banner.blue{background:#e8f0fe;}
+.reform-banner.teal{background:#e8f6f2;}
+.reform-banner i{font-size:30px;color:rgba(0,0,0,.18);}
+.reform-body{padding:14px 16px;}
+.reform-name-input{width:100%;border:none;border-bottom:0.5px solid #f0dce6;padding:0 0 8px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;color:#2a1f28;background:none;outline:none;margin-bottom:12px;}
+.reform-name-input::placeholder{color:#c9b8c4;}
+.rf-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;}
+.rf-label{font-size:9px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:#b09aa8;margin-bottom:4px;}
+.rf-input{width:100%;border:0.5px solid #f0dce6;border-radius:8px;padding:7px 10px;font-family:'DM Sans',sans-serif;font-size:11px;color:#2a1f28;background:#fdf8f9;outline:none;}
+.rf-input::placeholder{color:#c9b8c4;}
+.rf-textarea{width:100%;border:0.5px solid #f0dce6;border-radius:8px;padding:8px 10px;font-family:'DM Sans',sans-serif;font-size:11px;color:#2a1f28;background:#fdf8f9;outline:none;resize:none;min-height:64px;line-height:1.5;}
+.rf-textarea::placeholder{color:#c9b8c4;}
+</style>
+
+<div>
+
+<div class="module-hero">
+  <div class="hero-deco">✦</div>
+  <div class="hero-icon"><i class="ti ti-home" aria-hidden="true"></i></div>
+  <div>
+    <div class="hero-eye">Alimentação e Lar</div>
+    <div class="hero-title">Planejamento da casa e refeições</div>
+  </div>
+</div>
+
+<div class="tabs-row">
+  <div class="tab active"><i class="ti ti-tools-kitchen-2" aria-hidden="true"></i>Planner de Refeição</div>
+  <div class="tab"><i class="ti ti-shopping-cart" aria-hidden="true"></i>Lista do Mercado</div>
+  <div class="tab"><i class="ti ti-sparkles" aria-hidden="true"></i>Cronograma de Limpeza</div>
+  <div class="tab"><i class="ti ti-home-check" aria-hidden="true"></i>Checklist Cômodos</div>
+  <div class="tab"><i class="ti ti-hammer" aria-hidden="true"></i>Reforma da Casa</div>
+</div>
+
+<div class="sec-title">Planner de refeição semanal</div>
+<div class="meal-grid" style="margin-bottom:24px;">
+  <div class="meal-col">
+    <div class="meal-day">Dia 1</div>
+    <div class="meal-slot"><div class="meal-type cafe"><i class="ti ti-coffee" aria-hidden="true"></i><span>Café</span></div><textarea class="meal-textarea" placeholder="Ex.: 2 ovos, fruta..."></textarea></div>
+    <div class="meal-slot"><div class="meal-type almoco"><i class="ti ti-salad" aria-hidden="true"></i><span>Almoço</span></div><textarea class="meal-textarea" placeholder="Ex.: Frango, arroz..."></textarea></div>
+    <div class="meal-slot"><div class="meal-type lanche"><i class="ti ti-apple" aria-hidden="true"></i><span>Lanche</span></div><textarea class="meal-textarea" placeholder="Ex.: Iogurte..."></textarea></div>
+    <div class="meal-slot"><div class="meal-type jantar"><i class="ti ti-moon" aria-hidden="true"></i><span>Jantar</span></div><textarea class="meal-textarea" placeholder="Ex.: Sopa..."></textarea></div>
+  </div>
+  <div class="meal-col">
+    <div class="meal-day">Dia 2</div>
+    <div class="meal-slot"><div class="meal-type cafe"><i class="ti ti-coffee" aria-hidden="true"></i><span>Café</span></div><textarea class="meal-textarea" placeholder="Ex.: Tapioca..."></textarea></div>
+    <div class="meal-slot"><div class="meal-type almoco"><i class="ti ti-salad" aria-hidden="true"></i><span>Almoço</span></div><textarea class="meal-textarea" placeholder="Ex.: Carne moída..."></textarea></div>
+    <div class="meal-slot"><div class="meal-type lanche"><i class="ti ti-apple" aria-hidden="true"></i><span>Lanche</span></div><textarea class="meal-textarea" placeholder="Ex.: Castanhas..."></textarea></div>
+    <div class="meal-slot"><div class="meal-type jantar"><i class="ti ti-moon" aria-hidden="true"></i><span>Jantar</span></div><textarea class="meal-textarea" placeholder="Ex.: Omelete..."></textarea></div>
+  </div>
+  <div class="meal-col">
+    <div class="meal-day">Dia 3</div>
+    <div class="meal-slot"><div class="meal-type cafe"><i class="ti ti-coffee" aria-hidden="true"></i><span>Café</span></div><textarea class="meal-textarea" placeholder="Ex.: Mingau..."></textarea></div>
+    <div class="meal-slot"><div class="meal-type almoco"><i class="ti ti-salad" aria-hidden="true"></i><span>Almoço</span></div><textarea class="meal-textarea" placeholder="Ex.: Peixe grelhado..."></textarea></div>
+    <div class="meal-slot"><div class="meal-type lanche"><i class="ti ti-apple" aria-hidden="true"></i><span>Lanche</span></div><textarea class="meal-textarea" placeholder="Ex.: Vitamina..."></textarea></div>
+    <div class="meal-slot"><div class="meal-type jantar"><i class="ti ti-moon" aria-hidden="true"></i><span>Jantar</span></div><textarea class="meal-textarea" placeholder="Ex.: Frango assado..."></textarea></div>
+  </div>
+  <div class="meal-col">
+    <div class="meal-day">Dias 4 e 5</div>
+    <div class="meal-slot"><div class="meal-type cafe"><i class="ti ti-coffee" aria-hidden="true"></i><span>Café</span></div><textarea class="meal-textarea" placeholder="Ex.: Tapioca..."></textarea></div>
+    <div class="meal-slot"><div class="meal-type almoco"><i class="ti ti-salad" aria-hidden="true"></i><span>Almoço</span></div><textarea class="meal-textarea" placeholder="Ex.: Carne grelha..."></textarea></div>
+    <div class="meal-slot"><div class="meal-type lanche"><i class="ti ti-apple" aria-hidden="true"></i><span>Lanche</span></div><textarea class="meal-textarea" placeholder="Ex.: Fruta..."></textarea></div>
+    <div class="meal-slot"><div class="meal-type jantar"><i class="ti ti-moon" aria-hidden="true"></i><span>Jantar</span></div><textarea class="meal-textarea" placeholder="Ex.: Sopa ou wrap..."></textarea></div>
+  </div>
+  <div class="meal-col">
+    <div class="meal-day">Dias 6 e 7</div>
+    <div class="meal-slot"><div class="meal-type cafe"><i class="ti ti-coffee" aria-hidden="true"></i><span>Café</span></div><textarea class="meal-textarea" placeholder="Ex.: Ovos cozidos..."></textarea></div>
+    <div class="meal-slot"><div class="meal-type almoco"><i class="ti ti-salad" aria-hidden="true"></i><span>Almoço</span></div><textarea class="meal-textarea" placeholder="Ex.: Frango assado..."></textarea></div>
+    <div class="meal-slot"><div class="meal-type lanche"><i class="ti ti-apple" aria-hidden="true"></i><span>Lanche</span></div><textarea class="meal-textarea" placeholder="Ex.: Iogurte granola..."></textarea></div>
+    <div class="meal-slot"><div class="meal-type jantar"><i class="ti ti-moon" aria-hidden="true"></i><span>Jantar</span></div><textarea class="meal-textarea" placeholder="Ex.: Salada completa..."></textarea></div>
+  </div>
+</div>
+
+<div class="sec-title">Lista do mercado</div>
+<div class="market-grid">
+  <div class="market-cat">
+    <div class="market-cat-header"><div class="mch-icon green"><i class="ti ti-leaf" aria-hidden="true"></i></div><span class="mch-title">Hortifruti</span></div>
+    <div class="market-items">
+      <div class="market-item"><input type="checkbox"/><span>Alface</span></div>
+      <div class="market-item"><input type="checkbox"/><span>Tomate</span></div>
+      <div class="market-item"><input type="checkbox"/><span>Cebola</span></div>
+      <div class="market-item"><input type="checkbox"/><span>Cenoura</span></div>
+      <div class="market-item"><input type="checkbox"/><span>Banana</span></div>
+      <div class="market-item"><input type="checkbox"/><span>Limão</span></div>
+      <div class="market-item"><input type="checkbox"/><span>Brócolis</span></div>
+      <div class="market-item"><input type="checkbox"/><span>Batata</span></div>
+      <div class="market-item"><input type="checkbox"/><span>Maçã</span></div>
+      <div class="market-item"><input type="checkbox"/><span>Alho</span></div>
+      <div class="market-item"><input type="checkbox"/><span>Pepino</span></div>
+      <div class="market-item"><input type="checkbox"/><span>Pimentão</span></div>
+    </div>
+  </div>
+  <div class="market-cat">
+    <div class="market-cat-header"><div class="mch-icon red"><i class="ti ti-meat" aria-hidden="true"></i></div><span class="mch-title">Açougue e Peixaria</span></div>
+    <div class="market-items">
+      <div class="market-item"><input type="checkbox"/><span>Peito de frango</span></div>
+      <div class="market-item"><input type="checkbox"/><span>Bife magro</span></div>
+      <div class="market-item"><input type="checkbox"/><span>Salmão</span></div>
+      <div class="market-item"><input type="checkbox"/><span>Carne moída</span></div>
+      <div class="market-item"><input type="checkbox"/><span>Peixe branco</span></div>
+      <div class="market-item"><input type="checkbox"/><span>Tilápia</span></div>
+    </div>
+  </div>
+  <div class="market-cat">
+    <div class="market-cat-header"><div class="mch-icon amber"><i class="ti ti-cheese" aria-hidden="true"></i></div><span class="mch-title">Laticínios e Frios</span></div>
+    <div class="market-items">
+      <div class="market-item"><input type="checkbox"/><span>Iogurte</span></div>
+      <div class="market-item"><input type="checkbox"/><span>Queijo</span></div>
+      <div class="market-item"><input type="checkbox"/><span>Manteiga</span></div>
+      <div class="market-item"><input type="checkbox"/><span>Presunto</span></div>
+      <div class="market-item"><input type="checkbox"/><span>Requeijão</span></div>
+      <div class="market-item"><input type="checkbox"/><span>Creme de leite</span></div>
+    </div>
+  </div>
+  <div class="market-cat">
+    <div class="market-cat-header"><div class="mch-icon rose"><i class="ti ti-basket" aria-hidden="true"></i></div><span class="mch-title">Mercearia</span></div>
+    <div class="market-items">
+      <div class="market-item"><input type="checkbox"/><span>Arroz</span></div>
+      <div class="market-item"><input type="checkbox"/><span>Feijão</span></div>
+      <div class="market-item"><input type="checkbox"/><span>Macarrão</span></div>
+      <div class="market-item"><input type="checkbox"/><span>Molho de tomate</span></div>
+      <div class="market-item"><input type="checkbox"/><span>Açúcar</span></div>
+      <div class="market-item"><input type="checkbox"/><span>Sal</span></div>
+      <div class="market-item"><input type="checkbox"/><span>Café</span></div>
+      <div class="market-item"><input type="checkbox"/><span>Azeite</span></div>
+      <div class="market-item"><input type="checkbox"/><span>Farinha de trigo</span></div>
+      <div class="market-item"><input type="checkbox"/><span>Temperos</span></div>
+    </div>
+  </div>
+  <div class="market-cat">
+    <div class="market-cat-header"><div class="mch-icon nude"><i class="ti ti-bread" aria-hidden="true"></i></div><span class="mch-title">Padaria</span></div>
+    <div class="market-items">
+      <div class="market-item"><input type="checkbox"/><span>Pão francês</span></div>
+      <div class="market-item"><input type="checkbox"/><span>Pão de forma</span></div>
+      <div class="market-item"><input type="checkbox"/><span>Tapioca</span></div>
+      <div class="market-item"><input type="checkbox"/><span>Bolo</span></div>
+    </div>
+  </div>
+  <div class="market-cat">
+    <div class="market-cat-header"><div class="mch-icon blue"><i class="ti ti-snowflake" aria-hidden="true"></i></div><span class="mch-title">Congelados</span></div>
+    <div class="market-items">
+      <div class="market-item"><input type="checkbox"/><span>Sorvete</span></div>
+      <div class="market-item"><input type="checkbox"/><span>Frango nuggets</span></div>
+      <div class="market-item"><input type="checkbox"/><span>Hambúrguer</span></div>
+      <div class="market-item"><input type="checkbox"/><span>Lasanha</span></div>
+    </div>
+  </div>
+  <div class="market-cat">
+    <div class="market-cat-header"><div class="mch-icon rose"><i class="ti ti-droplet" aria-hidden="true"></i></div><span class="mch-title">Higiene Pessoal</span></div>
+    <div class="market-items">
+      <div class="market-item"><input type="checkbox"/><span>Sabonete</span></div>
+      <div class="market-item"><input type="checkbox"/><span>Shampoo</span></div>
+      <div class="market-item"><input type="checkbox"/><span>Desodorante</span></div>
+      <div class="market-item"><input type="checkbox"/><span>Papel higiênico</span></div>
+      <div class="market-item"><input type="checkbox"/><span>Absorvente</span></div>
+      <div class="market-item"><input type="checkbox"/><span>Creme dental</span></div>
+    </div>
+  </div>
+  <div class="market-cat">
+    <div class="market-cat-header"><div class="mch-icon sage"><i class="ti ti-wash" aria-hidden="true"></i></div><span class="mch-title">Limpeza</span></div>
+    <div class="market-items">
+      <div class="market-item"><input type="checkbox"/><span>Detergente</span></div>
+      <div class="market-item"><input type="checkbox"/><span>Sabão em pó</span></div>
+      <div class="market-item"><input type="checkbox"/><span>Amaciante</span></div>
+      <div class="market-item"><input type="checkbox"/><span>Água sanitária</span></div>
+      <div class="market-item"><input type="checkbox"/><span>Desinfetante</span></div>
+      <div class="market-item"><input type="checkbox"/><span>Saco de lixo</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="sec-title">Cronograma de limpeza</div>
+<div class="cleaning-grid" style="margin-bottom:24px;">
+  <div class="cleaning-card">
+    <div class="cleaning-icon-wrap rose-bg"><i class="ti ti-brush" aria-hidden="true"></i></div>
+    <div class="cleaning-freq">Diariamente</div>
+    <div class="cleaning-list">
+      <div class="cl-item"><input type="checkbox"/><span>Arrumar a cama</span></div>
+      <div class="cl-item"><input type="checkbox"/><span>Lavar louça</span></div>
+      <div class="cl-item"><input type="checkbox"/><span>Tirar o lixo</span></div>
+      <div class="cl-item"><input type="checkbox"/><span>Varrer sala e cozinha</span></div>
+      <div class="cl-item"><input type="checkbox"/><span>Limpar bancada da pia</span></div>
+    </div>
+  </div>
+  <div class="cleaning-card">
+    <div class="cleaning-icon-wrap sage-bg"><i class="ti ti-bucket" aria-hidden="true"></i></div>
+    <div class="cleaning-freq" style="color:#4a9a6a;">Quinzenalmente</div>
+    <div class="cleaning-list">
+      <div class="cl-item"><input type="checkbox"/><span>Trocar roupa de cama</span></div>
+      <div class="cl-item"><input type="checkbox"/><span>Lavar banheiros</span></div>
+      <div class="cl-item"><input type="checkbox"/><span>Limpar geladeira</span></div>
+      <div class="cl-item"><input type="checkbox"/><span>Lavar tapetes</span></div>
+      <div class="cl-item"><input type="checkbox"/><span>Lavar e passar roupa</span></div>
+    </div>
+  </div>
+  <div class="cleaning-card">
+    <div class="cleaning-icon-wrap blue-bg"><i class="ti ti-calendar" aria-hidden="true"></i></div>
+    <div class="cleaning-freq" style="color:#3060b0;">Mensalmente</div>
+    <div class="cleaning-list">
+      <div class="cl-item"><input type="checkbox"/><span>Limpar armários por dentro</span></div>
+      <div class="cl-item"><input type="checkbox"/><span>Trocar maquiagens vencidas</span></div>
+      <div class="cl-item"><input type="checkbox"/><span>Lavar cortinas</span></div>
+      <div class="cl-item"><input type="checkbox"/><span>Limpar máquina de lavar</span></div>
+    </div>
+  </div>
+  <div class="cleaning-card">
+    <div class="cleaning-icon-wrap amber-bg"><i class="ti ti-tool" aria-hidden="true"></i></div>
+    <div class="cleaning-freq" style="color:#c9853f;">Por demanda</div>
+    <div class="cleaning-list">
+      <div class="cl-item"><input type="checkbox"/><span>Limpeza área externa</span></div>
+      <div class="cl-item"><input type="checkbox"/><span>Lavar roupa</span></div>
+      <div class="cl-item"><input type="checkbox"/><span>Limpar vidros</span></div>
+      <div class="cl-item"><input type="checkbox"/><span>Limpar sofás</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="sec-title">Checklist por cômodo</div>
+<div class="rooms-grid" style="margin-bottom:24px;">
+  <div class="room-card">
+    <div class="room-img purple"><i class="ti ti-bed" aria-hidden="true"></i></div>
+    <div class="room-name">Quarto casal</div>
+    <div class="room-items">
+      <div class="ri-item"><input type="checkbox"/><span>Painel / TV</span></div>
+      <div class="ri-item"><input type="checkbox"/><span>Móveis ao lado da cama</span></div>
+      <div class="ri-item"><input type="checkbox"/><span>Abajur</span></div>
+      <div class="ri-item"><input type="checkbox"/><span>Espelhos</span></div>
+      <div class="ri-item"><input type="checkbox"/><span>Cabeceira</span></div>
+    </div>
+    <div class="room-notes"><textarea placeholder="Notas especiais do quarto..."></textarea></div>
+  </div>
+  <div class="room-card">
+    <div class="room-img amber"><i class="ti ti-tools-kitchen-2" aria-hidden="true"></i></div>
+    <div class="room-name">Cozinha</div>
+    <div class="room-items">
+      <div class="ri-item"><input type="checkbox"/><span>Todos os armários</span></div>
+      <div class="ri-item"><input type="checkbox"/><span>Bancada e pia</span></div>
+      <div class="ri-item"><input type="checkbox"/><span>Fogão</span></div>
+      <div class="ri-item"><input type="checkbox"/><span>Microondas / Forno</span></div>
+      <div class="ri-item"><input type="checkbox"/><span>Geladeira</span></div>
+    </div>
+    <div class="room-notes"><textarea placeholder="Notas especiais da cozinha..."></textarea></div>
+  </div>
+  <div class="room-card">
+    <div class="room-img teal"><i class="ti ti-bath" aria-hidden="true"></i></div>
+    <div class="room-name">Banheiros</div>
+    <div class="room-items">
+      <div class="ri-item"><input type="checkbox"/><span>Bancada da pia</span></div>
+      <div class="ri-item"><input type="checkbox"/><span>Armários (dentro e fora)</span></div>
+      <div class="ri-item"><input type="checkbox"/><span>Box / Vaso sanitário</span></div>
+      <div class="ri-item"><input type="checkbox"/><span>Espelhos</span></div>
+      <div class="ri-item"><input type="checkbox"/><span>Lixeira / Tapete</span></div>
+    </div>
+    <div class="room-notes"><textarea placeholder="Notas especiais do banheiro..."></textarea></div>
+  </div>
+  <div class="room-card">
+    <div class="room-img blue"><i class="ti ti-sofa" aria-hidden="true"></i></div>
+    <div class="room-name">Sala de estar</div>
+    <div class="room-items">
+      <div class="ri-item"><input type="checkbox"/><span>Limpar tapete</span></div>
+      <div class="ri-item"><input type="checkbox"/><span>Mesas e mesinhas</span></div>
+      <div class="ri-item"><input type="checkbox"/><span>Sofá</span></div>
+      <div class="ri-item"><input type="checkbox"/><span>Ar condicionado</span></div>
+      <div class="ri-item"><input type="checkbox"/><span>TV / Painel</span></div>
+    </div>
+    <div class="room-notes"><textarea placeholder="Notas especiais da sala..."></textarea></div>
+  </div>
+  <div class="room-card">
+    <div class="room-img peach"><i class="ti ti-armchair" aria-hidden="true"></i></div>
+    <div class="room-name">Sala de jantar</div>
+    <div class="room-items">
+      <div class="ri-item"><input type="checkbox"/><span>Trocar toalha de mesa</span></div>
+      <div class="ri-item"><input type="checkbox"/><span>Lavar cadeiras</span></div>
+      <div class="ri-item"><input type="checkbox"/><span>Aparador</span></div>
+      <div class="ri-item"><input type="checkbox"/><span>Luminária</span></div>
+    </div>
+    <div class="room-notes"><textarea placeholder="Notas da sala de jantar..."></textarea></div>
+  </div>
+  <div class="room-card">
+    <div class="room-img sage"><i class="ti ti-wash" aria-hidden="true"></i></div>
+    <div class="room-name">Lavanderia / Área de serviço</div>
+    <div class="room-items">
+      <div class="ri-item"><input type="checkbox"/><span>Lavar roupas</span></div>
+      <div class="ri-item"><input type="checkbox"/><span>Passar roupa</span></div>
+      <div class="ri-item"><input type="checkbox"/><span>Máquina de lavar</span></div>
+      <div class="ri-item"><input type="checkbox"/><span>Tanque</span></div>
+    </div>
+    <div class="room-notes"><textarea placeholder="Notas da área de serviço..."></textarea></div>
+  </div>
+</div>
+
+<div class="sec-title">Reforma da casa</div>
+<div class="reform-grid">
+  <div class="reform-card">
+    <div class="reform-banner purple"><i class="ti ti-bed" aria-hidden="true"></i></div>
+    <div class="reform-body">
+      <input class="reform-name-input" type="text" placeholder="Ex.: Reforma do Quarto"/>
+      <div class="rf-row">
+        <div><div class="rf-label">Data de início</div><input class="rf-input" type="text" placeholder="dd/mm/aaaa"/></div>
+        <div><div class="rf-label">Data de término</div><input class="rf-input" type="text" placeholder="dd/mm/aaaa"/></div>
+      </div>
+      <div><div class="rf-label">Planejamento, orçamento e materiais</div><textarea class="rf-textarea" placeholder="Descreva o plano, valores, materiais necessários..."></textarea></div>
+    </div>
+  </div>
+  <div class="reform-card">
+    <div class="reform-banner amber"><i class="ti ti-tools-kitchen-2" aria-hidden="true"></i></div>
+    <div class="reform-body">
+      <input class="reform-name-input" type="text" placeholder="Ex.: Reforma da Cozinha"/>
+      <div class="rf-row">
+        <div><div class="rf-label">Data de início</div><input class="rf-input" type="text" placeholder="dd/mm/aaaa"/></div>
+        <div><div class="rf-label">Data de término</div><input class="rf-input" type="text" placeholder="dd/mm/aaaa"/></div>
+      </div>
+      <div><div class="rf-label">Planejamento, orçamento e materiais</div><textarea class="rf-textarea" placeholder="Descreva o plano, valores, materiais necessários..."></textarea></div>
+    </div>
+  </div>
+  <div class="reform-card">
+    <div class="reform-banner blue"><i class="ti ti-sofa" aria-hidden="true"></i></div>
+    <div class="reform-body">
+      <input class="reform-name-input" type="text" placeholder="Ex.: Reforma da Sala de Estar"/>
+      <div class="rf-row">
+        <div><div class="rf-label">Data de início</div><input class="rf-input" type="text" placeholder="dd/mm/aaaa"/></div>
+        <div><div class="rf-label">Data de término</div><input class="rf-input" type="text" placeholder="dd/mm/aaaa"/></div>
+      </div>
+      <div><div class="rf-label">Planejamento, orçamento e materiais</div><textarea class="rf-textarea" placeholder="Descreva o plano, valores, materiais necessários..."></textarea></div>
+    </div>
+  </div>
+  <div class="reform-card">
+    <div class="reform-banner teal"><i class="ti ti-bath" aria-hidden="true"></i></div>
+    <div class="reform-body">
+      <input class="reform-name-input" type="text" placeholder="Ex.: Reforma do Banheiro"/>
+      <div class="rf-row">
+        <div><div class="rf-label">Data de início</div><input class="rf-input" type="text" placeholder="dd/mm/aaaa"/></div>
+        <div><div class="rf-label">Data de término</div><input class="rf-input" type="text" placeholder="dd/mm/aaaa"/></div>
+      </div>
+      <div><div class="rf-label">Planejamento, orçamento e materiais</div><textarea class="rf-textarea" placeholder="Descreva o plano, valores, materiais necessários..."></textarea></div>
+    </div>
+  </div>
+</div>
+
+</div>

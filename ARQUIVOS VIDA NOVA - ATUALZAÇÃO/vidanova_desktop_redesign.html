@@ -1,0 +1,312 @@
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap');
+*{box-sizing:border-box;margin:0;padding:0;}
+.app{display:flex;height:680px;background:#fdf7f9;font-family:'DM Sans',sans-serif;border-radius:16px;overflow:hidden;border:1px solid #e8d0da;}
+
+.sidebar{width:200px;min-width:200px;background:#fff;border-right:0.5px solid #f0dce6;display:flex;flex-direction:column;padding:0;}
+.sidebar-logo{padding:24px 20px 20px;border-bottom:0.5px solid #f5e8ee;display:flex;align-items:center;gap:10px;}
+.logo-mark{width:32px;height:32px;background:#c9395f;border-radius:10px;display:flex;align-items:center;justify-content:center;}
+.logo-mark i{font-size:18px;color:#fff;}
+.logo-text{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:500;color:#2a1f28;letter-spacing:-.01em;}
+
+.sidebar-nav{padding:16px 12px;flex:1;display:flex;flex-direction:column;gap:2px;}
+.nav-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:12px;cursor:pointer;transition:background .15s;}
+.nav-item.active{background:#fbeef3;}
+.nav-item i{font-size:18px;color:#c9b8c0;}
+.nav-item.active i{color:#c9395f;}
+.nav-item span{font-size:13px;font-weight:400;color:#8a7080;}
+.nav-item.active span{font-weight:500;color:#c9395f;}
+.nav-accent{width:3px;height:20px;background:#c9395f;border-radius:2px;margin-left:auto;opacity:0;}
+.nav-item.active .nav-accent{opacity:1;}
+
+.sidebar-footer{padding:16px 12px 20px;border-top:0.5px solid #f5e8ee;}
+.sidebar-user{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:12px;background:#fdf7f9;}
+.user-avatar{width:30px;height:30px;border-radius:50%;background:#c9395f;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:500;color:#fff;font-family:'Cormorant Garamond',serif;}
+.user-name{font-size:12px;font-weight:500;color:#2a1f28;line-height:1.2;}
+.user-status{font-size:10px;color:#b09aa8;}
+
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden;}
+
+.topbar{background:#fff;border-bottom:0.5px solid #f0dce6;padding:0 28px;height:60px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
+.topbar-greeting{font-family:'DM Sans',sans-serif;font-size:13px;color:#b09aa8;font-weight:300;}
+.topbar-greeting strong{font-weight:500;color:#2a1f28;}
+.topbar-actions{display:flex;align-items:center;gap:12px;}
+.topbar-notif{width:34px;height:34px;background:#fbeef3;border-radius:10px;display:flex;align-items:center;justify-content:center;position:relative;cursor:pointer;}
+.topbar-notif i{font-size:17px;color:#c9395f;}
+.notif-dot{width:7px;height:7px;background:#c9395f;border-radius:50%;border:1.5px solid #fff;position:absolute;top:6px;right:7px;}
+.topbar-profile{display:flex;align-items:center;gap:8px;background:#fdf7f9;border:0.5px solid #f0dce6;border-radius:60px;padding:5px 14px 5px 6px;cursor:pointer;}
+.tp-avatar{width:28px;height:28px;border-radius:50%;background:#c9395f;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:500;color:#fff;}
+.tp-name{font-size:12px;font-weight:500;color:#2a1f28;}
+.tp-status{display:flex;align-items:center;gap:4px;font-size:10px;color:#b09aa8;}
+.tp-dot{width:6px;height:6px;background:#3a9a3a;border-radius:50%;}
+.btn-sair{font-size:11px;font-weight:500;color:#c9395f;background:none;border:0.5px solid #f0c0d0;border-radius:60px;padding:6px 14px;cursor:pointer;letter-spacing:.04em;}
+
+.content{flex:1;overflow-y:auto;padding:24px 28px;}
+
+.verse-card{background:#c9395f;border-radius:18px;padding:22px 28px;display:flex;align-items:center;gap:20px;margin-bottom:24px;position:relative;overflow:hidden;}
+.verse-deco{position:absolute;right:20px;top:-10px;font-family:'Cormorant Garamond',serif;font-size:120px;color:rgba(255,255,255,.07);line-height:1;pointer-events:none;}
+.verse-icon-wrap{width:44px;height:44px;min-width:44px;background:rgba(255,255,255,.15);border-radius:14px;display:flex;align-items:center;justify-content:center;}
+.verse-icon-wrap i{font-size:22px;color:#fff;}
+.verse-eyebrow{font-size:9px;font-weight:500;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.55);margin-bottom:6px;}
+.verse-text{font-family:'Cormorant Garamond',serif;font-size:17px;font-style:italic;color:#fff;line-height:1.5;margin-bottom:4px;}
+.verse-ref{font-size:11px;color:rgba(255,255,255,.6);font-weight:500;letter-spacing:.04em;}
+.verse-btn{margin-left:auto;background:rgba(255,255,255,.15);border:0.5px solid rgba(255,255,255,.25);border-radius:60px;padding:7px 16px;font-size:11px;color:#fff;cursor:pointer;white-space:nowrap;font-weight:500;letter-spacing:.04em;}
+
+.modules-header{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:14px;}
+.modules-title{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:500;color:#2a1f28;}
+.modules-link{font-size:11px;font-weight:500;color:#c9395f;letter-spacing:.04em;cursor:pointer;}
+
+.modules-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px;}
+.mod-card{background:#fff;border:0.5px solid #f0dce6;border-radius:16px;overflow:hidden;cursor:pointer;}
+.mod-img{height:110px;background:#f5e8ee;position:relative;overflow:hidden;}
+.mod-img-placeholder{width:100%;height:100%;background:linear-gradient(135deg,#fce4ed,#f5c8d8);}
+.mod-img-overlay{position:absolute;top:10px;left:10px;width:28px;height:28px;background:rgba(255,255,255,.85);border-radius:8px;display:flex;align-items:center;justify-content:center;}
+.mod-img-overlay i{font-size:15px;color:#c9395f;}
+.mod-body{padding:12px 14px;display:flex;align-items:center;justify-content:space-between;}
+.mod-info{}
+.mod-name{font-size:12px;font-weight:500;color:#2a1f28;margin-bottom:2px;}
+.mod-sub{font-size:10px;color:#b09aa8;line-height:1.4;}
+.mod-arrow{width:26px;height:26px;background:#fbeef3;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.mod-arrow i{font-size:13px;color:#c9395f;}
+
+.community-bar{background:#fff;border:0.5px solid #f0dce6;border-radius:16px;padding:16px 20px;display:flex;align-items:center;gap:16px;}
+.comm-icon{width:40px;height:40px;background:#fbeef3;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.comm-icon i{font-size:20px;color:#c9395f;}
+.comm-title{font-size:13px;font-weight:500;color:#2a1f28;margin-bottom:1px;}
+.comm-sub{font-size:11px;color:#b09aa8;}
+.comm-avatars{display:flex;margin-left:auto;}
+.comm-av{width:26px;height:26px;border-radius:50%;background:#e8c0d0;border:1.5px solid #fff;margin-left:-8px;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:500;color:#c9395f;}
+.comm-count{width:26px;height:26px;border-radius:50%;background:#c9395f;border:1.5px solid #fff;margin-left:-8px;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:500;color:#fff;}
+.comm-btn{background:#c9395f;color:#fff;border:none;border-radius:60px;padding:8px 18px;font-size:11px;font-weight:500;letter-spacing:.05em;cursor:pointer;white-space:nowrap;margin-left:12px;}
+
+.mod-img-1{background:#f9e8ee;}
+.mod-img-2{background:#fce8f0;}
+.mod-img-3{background:#f0e8f8;}
+.mod-img-4{background:#e8f0f8;}
+.mod-img-5{background:#e8f8f0;}
+.mod-img-6{background:#f8f0e8;}
+.mod-img-7{background:#f8e8f8;}
+.mod-img-8{background:#e8f8f8;}
+</style>
+
+<div class="app">
+  <div class="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-mark"><i class="ti ti-leaf" aria-hidden="true"></i></div>
+      <span class="logo-text">Vida Nova</span>
+    </div>
+    <div class="sidebar-nav">
+      <div class="nav-item active">
+        <i class="ti ti-home" aria-hidden="true"></i>
+        <span>Início</span>
+        <div class="nav-accent"></div>
+      </div>
+      <div class="nav-item">
+        <i class="ti ti-users" aria-hidden="true"></i>
+        <span>Comunidade</span>
+        <div class="nav-accent"></div>
+      </div>
+      <div class="nav-item">
+        <i class="ti ti-user" aria-hidden="true"></i>
+        <span>Perfil</span>
+        <div class="nav-accent"></div>
+      </div>
+      <div style="margin-top:8px;padding:8px 12px 4px;">
+        <div style="font-size:9px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:#d4b8c4;">Módulos</div>
+      </div>
+      <div class="nav-item">
+        <i class="ti ti-calendar" aria-hidden="true"></i>
+        <span>Agenda</span>
+        <div class="nav-accent"></div>
+      </div>
+      <div class="nav-item">
+        <i class="ti ti-coin" aria-hidden="true"></i>
+        <span>Finanças</span>
+        <div class="nav-accent"></div>
+      </div>
+      <div class="nav-item">
+        <i class="ti ti-heart" aria-hidden="true"></i>
+        <span>Saúde</span>
+        <div class="nav-accent"></div>
+      </div>
+      <div class="nav-item">
+        <i class="ti ti-star" aria-hidden="true"></i>
+        <span>Sonhos</span>
+        <div class="nav-accent"></div>
+      </div>
+    </div>
+    <div class="sidebar-footer">
+      <div class="sidebar-user">
+        <div class="user-avatar">CR</div>
+        <div>
+          <div class="user-name">Camila Rocha</div>
+          <div class="user-status">Conta ativa</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="topbar">
+      <div class="topbar-greeting">Bem-vinda de volta, <strong>Camila Rocha</strong></div>
+      <div class="topbar-actions">
+        <div class="topbar-notif">
+          <i class="ti ti-bell" aria-hidden="true"></i>
+          <div class="notif-dot"></div>
+        </div>
+        <div class="topbar-profile">
+          <div class="tp-avatar">CR</div>
+          <div>
+            <div class="tp-name">Camila Rocha</div>
+            <div class="tp-status"><div class="tp-dot"></div>Conta ativa</div>
+          </div>
+          <i class="ti ti-chevron-down" style="font-size:14px;color:#c9b8c0;margin-left:2px;" aria-hidden="true"></i>
+        </div>
+        <button class="btn-sair">Sair</button>
+      </div>
+    </div>
+
+    <div class="content">
+      <div class="verse-card">
+        <div class="verse-deco">"</div>
+        <div class="verse-icon-wrap"><i class="ti ti-book" aria-hidden="true"></i></div>
+        <div>
+          <div class="verse-eyebrow">Versículo do dia</div>
+          <div class="verse-text">Este é o dia que fez o Senhor; regozijemo-nos e alegremo-nos nele.</div>
+          <div class="verse-ref">Salmos 118:24</div>
+        </div>
+        <button class="verse-btn">Trocar versículo</button>
+      </div>
+
+      <div class="modules-header">
+        <div class="modules-title">Seus módulos</div>
+        <div class="modules-link">Ver todos os módulos ›</div>
+      </div>
+
+      <div class="modules-grid">
+        <div class="mod-card">
+          <div class="mod-img mod-img-1">
+            <div style="width:100%;height:100%;background:linear-gradient(135deg,#fce4ed,#f5c8d8);"></div>
+            <div class="mod-img-overlay"><i class="ti ti-notebook" aria-hidden="true"></i></div>
+          </div>
+          <div class="mod-body">
+            <div class="mod-info">
+              <div class="mod-name">My Planner</div>
+              <div class="mod-sub">Abra e edite sua planner</div>
+            </div>
+            <div class="mod-arrow"><i class="ti ti-arrow-right" aria-hidden="true"></i></div>
+          </div>
+        </div>
+        <div class="mod-card">
+          <div class="mod-img mod-img-2">
+            <div style="width:100%;height:100%;background:linear-gradient(135deg,#fce8f2,#f8d0e4);"></div>
+            <div class="mod-img-overlay"><i class="ti ti-heart" aria-hidden="true"></i></div>
+          </div>
+          <div class="mod-body">
+            <div class="mod-info">
+              <div class="mod-name">Saúde & Beleza</div>
+              <div class="mod-sub">Autocuidado e rituais</div>
+            </div>
+            <div class="mod-arrow"><i class="ti ti-arrow-right" aria-hidden="true"></i></div>
+          </div>
+        </div>
+        <div class="mod-card">
+          <div class="mod-img mod-img-3">
+            <div style="width:100%;height:100%;background:linear-gradient(135deg,#f2e8fc,#e4d0f5);"></div>
+            <div class="mod-img-overlay"><i class="ti ti-coin" aria-hidden="true"></i></div>
+          </div>
+          <div class="mod-body">
+            <div class="mod-info">
+              <div class="mod-name">Finanças</div>
+              <div class="mod-sub">Entradas R$ 0,00</div>
+            </div>
+            <div class="mod-arrow"><i class="ti ti-arrow-right" aria-hidden="true"></i></div>
+          </div>
+        </div>
+        <div class="mod-card">
+          <div class="mod-img mod-img-4">
+            <div style="width:100%;height:100%;background:linear-gradient(135deg,#e8f0fc,#d0e0f5);"></div>
+            <div class="mod-img-overlay"><i class="ti ti-book" aria-hidden="true"></i></div>
+          </div>
+          <div class="mod-body">
+            <div class="mod-info">
+              <div class="mod-name">Estudos & Projetos</div>
+              <div class="mod-sub">Livros, cursos e projetos</div>
+            </div>
+            <div class="mod-arrow"><i class="ti ti-arrow-right" aria-hidden="true"></i></div>
+          </div>
+        </div>
+        <div class="mod-card">
+          <div class="mod-img mod-img-5">
+            <div style="width:100%;height:100%;background:linear-gradient(135deg,#e8f8f0,#d0f0e0);"></div>
+            <div class="mod-img-overlay"><i class="ti ti-home" aria-hidden="true"></i></div>
+          </div>
+          <div class="mod-body">
+            <div class="mod-info">
+              <div class="mod-name">Alimentação & Lar</div>
+              <div class="mod-sub">Casa, refeições e reparos</div>
+            </div>
+            <div class="mod-arrow"><i class="ti ti-arrow-right" aria-hidden="true"></i></div>
+          </div>
+        </div>
+        <div class="mod-card">
+          <div class="mod-img mod-img-6">
+            <div style="width:100%;height:100%;background:linear-gradient(135deg,#f8f0e8,#f0e0d0);"></div>
+            <div class="mod-img-overlay"><i class="ti ti-star" aria-hidden="true"></i></div>
+          </div>
+          <div class="mod-body">
+            <div class="mod-info">
+              <div class="mod-name">Sonhos & Metas</div>
+              <div class="mod-sub">Metas por prazo e mural</div>
+            </div>
+            <div class="mod-arrow"><i class="ti ti-arrow-right" aria-hidden="true"></i></div>
+          </div>
+        </div>
+        <div class="mod-card">
+          <div class="mod-img mod-img-7">
+            <div style="width:100%;height:100%;background:linear-gradient(135deg,#f8e8f8,#f0d0f0);"></div>
+            <div class="mod-img-overlay"><i class="ti ti-camera" aria-hidden="true"></i></div>
+          </div>
+          <div class="mod-body">
+            <div class="mod-info">
+              <div class="mod-name">Imagem & Estilo</div>
+              <div class="mod-sub">Guarda-roupa e estilo</div>
+            </div>
+            <div class="mod-arrow"><i class="ti ti-arrow-right" aria-hidden="true"></i></div>
+          </div>
+        </div>
+        <div class="mod-card">
+          <div class="mod-img mod-img-8">
+            <div style="width:100%;height:100%;background:linear-gradient(135deg,#e8f8f8,#d0f0f0);"></div>
+            <div class="mod-img-overlay"><i class="ti ti-calendar" aria-hidden="true"></i></div>
+          </div>
+          <div class="mod-body">
+            <div class="mod-info">
+              <div class="mod-name">Dia a Dia & Agenda</div>
+              <div class="mod-sub">8 de maio de 2026</div>
+            </div>
+            <div class="mod-arrow"><i class="ti ti-arrow-right" aria-hidden="true"></i></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="community-bar">
+        <div class="comm-icon"><i class="ti ti-users" aria-hidden="true"></i></div>
+        <div>
+          <div class="comm-title">Comunidade Vida Nova</div>
+          <div class="comm-sub">Compartilhe, inspire e cresça juntas</div>
+        </div>
+        <div class="comm-avatars">
+          <div class="comm-av">A</div>
+          <div class="comm-av">B</div>
+          <div class="comm-av">C</div>
+          <div class="comm-av">D</div>
+          <div class="comm-count">+1k</div>
+        </div>
+        <div style="font-size:12px;color:#8a7080;white-space:nowrap;">Mais de 1.200 mulheres</div>
+        <button class="comm-btn">Acessar comunidade ›</button>
+      </div>
+    </div>
+  </div>
+</div>

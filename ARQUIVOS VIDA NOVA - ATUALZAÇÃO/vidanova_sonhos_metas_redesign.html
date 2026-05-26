@@ -1,0 +1,351 @@
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap');
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'DM Sans',sans-serif;background:#fdf7f9;padding:24px 20px 48px;}
+
+.module-hero{background:#c9395f;border-radius:18px;padding:22px 28px;margin-bottom:20px;display:flex;align-items:center;gap:18px;position:relative;overflow:hidden;}
+.hero-deco{position:absolute;right:24px;top:-10px;font-family:'Cormorant Garamond',serif;font-size:110px;color:rgba(255,255,255,.06);pointer-events:none;}
+.hero-icon{width:44px;height:44px;min-width:44px;background:rgba(255,255,255,.15);border-radius:13px;display:flex;align-items:center;justify-content:center;}
+.hero-icon i{font-size:22px;color:#fff;}
+.hero-eye{font-size:9px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.55);margin-bottom:5px;}
+.hero-title{font-family:'Cormorant Garamond',serif;font-size:22px;font-style:italic;color:#fff;}
+
+.tabs-row{display:flex;gap:6px;margin-bottom:24px;flex-wrap:wrap;}
+.tab{font-size:12px;font-weight:500;padding:8px 18px;border-radius:60px;border:0.5px solid #e8d0da;background:#fff;color:#9a7a8a;cursor:pointer;display:flex;align-items:center;gap:6px;}
+.tab i{font-size:14px;}
+.tab.active{background:#c9395f;color:#fff;border-color:#c9395f;}
+
+.sec-title{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:500;color:#2a1f28;margin-bottom:16px;display:flex;align-items:center;gap:10px;}
+.sec-title::after{content:'';flex:1;height:0.5px;background:#f0dce6;}
+
+/* MURAL DE SONHOS */
+.mural-intro{background:#fff;border:0.5px solid #f0dce6;border-radius:16px;padding:18px 22px;margin-bottom:20px;display:flex;align-items:center;gap:16px;}
+.mural-intro-icon{width:44px;height:44px;min-width:44px;background:#fbeef3;border-radius:12px;display:flex;align-items:center;justify-content:center;}
+.mural-intro-icon i{font-size:22px;color:#c9395f;}
+.mural-intro-text{font-size:12px;color:#9a7a8a;line-height:1.6;}
+.mural-intro-title{font-size:14px;font-weight:500;color:#2a1f28;margin-bottom:3px;}
+
+.mural-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:24px;}
+.mural-slot{border:1px dashed #f0c0d0;border-radius:14px;aspect-ratio:2/3;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;cursor:pointer;background:#fff;transition:background .15s;position:relative;overflow:hidden;}
+.mural-slot:hover{background:#fdf0f4;}
+.mural-slot-num{position:absolute;top:8px;left:10px;font-size:9px;font-weight:500;letter-spacing:.08em;color:#e0b0c0;}
+.mural-slot-icon{width:32px;height:32px;background:#fbeef3;border-radius:9px;display:flex;align-items:center;justify-content:center;}
+.mural-slot-icon i{font-size:16px;color:#e0a0b8;}
+.mural-slot-hint{font-size:9px;color:#d4b8c4;text-align:center;padding:0 8px;line-height:1.4;}
+.mural-slot-label{width:100%;padding:0 10px;}
+.mural-slot-label input{width:100%;border:none;border-top:0.5px solid #f5e8ee;background:none;font-family:'DM Sans',sans-serif;font-size:10px;color:#9a7a8a;text-align:center;outline:none;padding:6px 0 4px;}
+.mural-slot-label input::placeholder{color:#ddd;}
+
+/* METAS POR PRAZO */
+.prazo-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px;}
+.prazo-card{background:#fff;border:0.5px solid #f0dce6;border-radius:16px;overflow:hidden;}
+.prazo-header{padding:14px 16px;border-bottom:0.5px solid #f5e8ee;display:flex;align-items:center;gap:8px;}
+.prazo-badge{font-size:9px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;padding:4px 10px;border-radius:60px;}
+.prazo-badge.m3{background:#fbeef3;color:#c9395f;}
+.prazo-badge.m6{background:#fef7ec;color:#c9853f;}
+.prazo-badge.y1{background:#eef3fd;color:#3060b0;}
+.prazo-badge.y2{background:#f0ecfe;color:#7040c0;}
+.prazo-title{font-size:12px;font-weight:500;color:#2a1f28;}
+.prazo-body{padding:14px 16px;}
+.prazo-meta-input{width:100%;border:0.5px solid #f0dce6;border-radius:10px;padding:9px 12px;font-family:'DM Sans',sans-serif;font-size:12px;color:#2a1f28;background:#fdf8f9;outline:none;margin-bottom:8px;}
+.prazo-meta-input::placeholder{color:#c9b8c4;}
+.prazo-textarea{width:100%;min-height:72px;border:0.5px solid #f0dce6;border-radius:10px;padding:9px 12px;font-family:'DM Sans',sans-serif;font-size:12px;color:#2a1f28;background:#fdf8f9;resize:none;outline:none;line-height:1.5;}
+.prazo-textarea::placeholder{color:#c9b8c4;}
+.prazo-progress{margin-top:10px;}
+.prazo-progress-label{display:flex;justify-content:space-between;font-size:10px;color:#b09aa8;margin-bottom:4px;}
+.prazo-bar-wrap{background:#f5e8ee;border-radius:60px;height:6px;}
+.prazo-bar{background:#c9395f;border-radius:60px;height:6px;transition:width .3s;}
+.prazo-bar.amber{background:#c9853f;}
+.prazo-bar.blue{background:#3060b0;}
+.prazo-bar.purple{background:#7040c0;}
+.prazo-slider{width:100%;margin-top:6px;accent-color:#c9395f;}
+
+/* METAS ANUAIS */
+.annual-goals{display:flex;flex-direction:column;gap:10px;margin-bottom:24px;}
+.goal-item{background:#fff;border:0.5px solid #f0dce6;border-radius:14px;padding:14px 18px;}
+.goal-item-top{display:flex;align-items:center;gap:12px;margin-bottom:10px;}
+.goal-number{width:28px;height:28px;background:#fbeef3;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:500;color:#c9395f;flex-shrink:0;}
+.goal-name-input{flex:1;border:none;background:none;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;color:#2a1f28;outline:none;}
+.goal-name-input::placeholder{color:#c9b8c4;}
+.goal-cat-select{border:0.5px solid #f0dce6;border-radius:60px;padding:4px 10px;font-family:'DM Sans',sans-serif;font-size:10px;font-weight:500;color:#c9395f;background:#fbeef3;outline:none;cursor:pointer;}
+.goal-item-mid{display:grid;grid-template-columns:1fr 1fr 120px;gap:10px;margin-bottom:10px;}
+.goal-field-label{font-size:9px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:#b09aa8;margin-bottom:4px;}
+.goal-input{width:100%;border:0.5px solid #f0dce6;border-radius:8px;padding:7px 10px;font-family:'DM Sans',sans-serif;font-size:11px;color:#2a1f28;background:#fdf8f9;outline:none;}
+.goal-input::placeholder{color:#c9b8c4;}
+.goal-item-progress{display:flex;align-items:center;gap:8px;}
+.goal-pbar-wrap{flex:1;background:#f5e8ee;border-radius:60px;height:7px;}
+.goal-pbar{background:#c9395f;border-radius:60px;height:7px;}
+.goal-pct{font-size:11px;font-weight:500;color:#c9395f;min-width:32px;text-align:right;}
+.goal-steps{display:flex;gap:4px;margin-top:8px;}
+.goal-step-pill{font-size:9px;font-weight:500;padding:4px 10px;border-radius:60px;border:0.5px solid #f0dce6;color:#9a7a8a;cursor:pointer;background:#fff;}
+.goal-step-pill.done{background:#c9395f;color:#fff;border-color:#c9395f;}
+.add-goal-btn{background:#fdf0f4;border:1px dashed #f0c0d0;border-radius:14px;padding:14px;display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;font-size:12px;font-weight:500;color:#c9395f;}
+
+/* CONQUISTAS */
+.conquistas-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:24px;}
+.conquista-card{background:#fff;border:0.5px solid #f0dce6;border-radius:14px;padding:14px;text-align:center;}
+.conquista-icon{width:40px;height:40px;background:#fbeef3;border-radius:12px;display:flex;align-items:center;justify-content:center;margin:0 auto 8px;}
+.conquista-icon i{font-size:20px;color:#c9395f;}
+.conquista-icon.unlocked{background:#c9395f;}
+.conquista-icon.unlocked i{color:#fff;}
+.conquista-title{font-size:11px;font-weight:500;color:#2a1f28;margin-bottom:3px;}
+.conquista-desc{font-size:10px;color:#b09aa8;line-height:1.4;}
+.conquista-card.locked{opacity:.5;}
+
+/* AFIRMAÇÕES */
+.afirmacoes-card{background:#2a1f28;border-radius:16px;padding:22px 24px;margin-bottom:24px;}
+.afirmacoes-header{display:flex;align-items:center;gap:10px;margin-bottom:16px;}
+.afirmacoes-header i{font-size:18px;color:rgba(255,255,255,.6);}
+.afirmacoes-header span{font-size:13px;font-weight:500;color:rgba(255,255,255,.8);}
+.afirmacoes-list{display:flex;flex-direction:column;gap:8px;}
+.afirmacao-item{display:flex;align-items:center;gap:10px;}
+.afirmacao-num{width:20px;height:20px;background:rgba(255,255,255,.1);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:500;color:rgba(255,255,255,.5);flex-shrink:0;}
+.afirmacao-input{flex:1;background:rgba(255,255,255,.07);border:0.5px solid rgba(255,255,255,.12);border-radius:8px;padding:8px 12px;font-family:'Cormorant Garamond',serif;font-size:14px;font-style:italic;color:rgba(255,255,255,.85);outline:none;}
+.afirmacao-input::placeholder{color:rgba(255,255,255,.25);}
+
+/* GRATIDÃO */
+.gratidao-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:24px;}
+.gratidao-card{background:#fff;border:0.5px solid #f0dce6;border-radius:16px;padding:16px 18px;}
+.gratidao-label{display:flex;align-items:center;gap:8px;margin-bottom:10px;}
+.grat-icon{width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;}
+.grat-icon.rose{background:#fbeef3;} .grat-icon.rose i{font-size:14px;color:#c9395f;}
+.grat-icon.amber{background:#fef7ec;} .grat-icon.amber i{font-size:14px;color:#c9853f;}
+.grat-icon.sage{background:#eef5f0;} .grat-icon.sage i{font-size:14px;color:#4a9a6a;}
+.grat-icon.blue{background:#eef3fd;} .grat-icon.blue i{font-size:14px;color:#3060b0;}
+.gratidao-title{font-size:12px;font-weight:500;color:#2a1f28;}
+.grat-textarea{width:100%;min-height:80px;border:0.5px solid #f0dce6;border-radius:10px;padding:10px 12px;font-family:'DM Sans',sans-serif;font-size:12px;color:#2a1f28;background:#fdf8f9;resize:none;outline:none;line-height:1.6;}
+.grat-textarea::placeholder{color:#c9b8c4;}
+</style>
+
+<div>
+
+<div class="module-hero">
+  <div class="hero-deco">✦</div>
+  <div class="hero-icon"><i class="ti ti-star" aria-hidden="true"></i></div>
+  <div>
+    <div class="hero-eye">Sonhos & Metas</div>
+    <div class="hero-title">Construindo a vida que você merece</div>
+  </div>
+</div>
+
+<div class="tabs-row">
+  <div class="tab active"><i class="ti ti-photo" aria-hidden="true"></i>Mural dos sonhos</div>
+  <div class="tab"><i class="ti ti-target" aria-hidden="true"></i>Metas por prazo</div>
+  <div class="tab"><i class="ti ti-list-check" aria-hidden="true"></i>Metas anuais</div>
+  <div class="tab"><i class="ti ti-award" aria-hidden="true"></i>Conquistas</div>
+  <div class="tab"><i class="ti ti-heart" aria-hidden="true"></i>Afirmações</div>
+</div>
+
+<div class="sec-title">Mural de visão</div>
+<div class="mural-intro">
+  <div class="mural-intro-icon"><i class="ti ti-sparkles" aria-hidden="true"></i></div>
+  <div>
+    <div class="mural-intro-title">Seu quadro dos sonhos</div>
+    <div class="mural-intro-text">Adicione imagens que representam seus objetivos de vida. Veja este mural todos os dias para manter o foco no que realmente importa para você.</div>
+  </div>
+</div>
+<div class="mural-grid">
+  <div class="mural-slot"><div class="mural-slot-num">01</div><div class="mural-slot-icon"><i class="ti ti-photo-plus" aria-hidden="true"></i></div><div class="mural-slot-hint">Toque para adicionar</div><div class="mural-slot-label"><input type="text" placeholder="Meu sonho..."/></div></div>
+  <div class="mural-slot"><div class="mural-slot-num">02</div><div class="mural-slot-icon"><i class="ti ti-photo-plus" aria-hidden="true"></i></div><div class="mural-slot-hint">Toque para adicionar</div><div class="mural-slot-label"><input type="text" placeholder="Meu sonho..."/></div></div>
+  <div class="mural-slot"><div class="mural-slot-num">03</div><div class="mural-slot-icon"><i class="ti ti-photo-plus" aria-hidden="true"></i></div><div class="mural-slot-hint">Toque para adicionar</div><div class="mural-slot-label"><input type="text" placeholder="Meu sonho..."/></div></div>
+  <div class="mural-slot"><div class="mural-slot-num">04</div><div class="mural-slot-icon"><i class="ti ti-photo-plus" aria-hidden="true"></i></div><div class="mural-slot-hint">Toque para adicionar</div><div class="mural-slot-label"><input type="text" placeholder="Meu sonho..."/></div></div>
+  <div class="mural-slot"><div class="mural-slot-num">05</div><div class="mural-slot-icon"><i class="ti ti-photo-plus" aria-hidden="true"></i></div><div class="mural-slot-hint">Toque para adicionar</div><div class="mural-slot-label"><input type="text" placeholder="Meu sonho..."/></div></div>
+  <div class="mural-slot"><div class="mural-slot-num">06</div><div class="mural-slot-icon"><i class="ti ti-photo-plus" aria-hidden="true"></i></div><div class="mural-slot-hint">Toque para adicionar</div><div class="mural-slot-label"><input type="text" placeholder="Meu sonho..."/></div></div>
+  <div class="mural-slot"><div class="mural-slot-num">07</div><div class="mural-slot-icon"><i class="ti ti-photo-plus" aria-hidden="true"></i></div><div class="mural-slot-hint">Toque para adicionar</div><div class="mural-slot-label"><input type="text" placeholder="Meu sonho..."/></div></div>
+  <div class="mural-slot"><div class="mural-slot-num">08</div><div class="mural-slot-icon"><i class="ti ti-photo-plus" aria-hidden="true"></i></div><div class="mural-slot-hint">Toque para adicionar</div><div class="mural-slot-label"><input type="text" placeholder="Meu sonho..."/></div></div>
+  <div class="mural-slot"><div class="mural-slot-num">09</div><div class="mural-slot-icon"><i class="ti ti-photo-plus" aria-hidden="true"></i></div><div class="mural-slot-hint">Toque para adicionar</div><div class="mural-slot-label"><input type="text" placeholder="Meu sonho..."/></div></div>
+  <div class="mural-slot"><div class="mural-slot-num">10</div><div class="mural-slot-icon"><i class="ti ti-photo-plus" aria-hidden="true"></i></div><div class="mural-slot-hint">Toque para adicionar</div><div class="mural-slot-label"><input type="text" placeholder="Meu sonho..."/></div></div>
+</div>
+
+<div class="sec-title">Metas por prazo</div>
+<div class="prazo-grid" style="margin-bottom:24px;">
+  <div class="prazo-card">
+    <div class="prazo-header"><span class="prazo-badge m3">3 meses</span><span class="prazo-title">Curto prazo</span></div>
+    <div class="prazo-body">
+      <input class="prazo-meta-input" type="text" placeholder="Qual é a sua meta?"/>
+      <textarea class="prazo-textarea" placeholder="Como vou alcançar? Quais passos?"></textarea>
+      <div class="prazo-progress">
+        <div class="prazo-progress-label"><span>Progresso</span><span id="p3m">0%</span></div>
+        <div class="prazo-bar-wrap"><div class="prazo-bar" id="pb3m" style="width:0%"></div></div>
+        <input type="range" class="prazo-slider" min="0" max="100" value="0" oninput="document.getElementById('p3m').textContent=this.value+'%';document.getElementById('pb3m').style.width=this.value+'%'"/>
+      </div>
+    </div>
+  </div>
+  <div class="prazo-card">
+    <div class="prazo-header"><span class="prazo-badge m6">6 meses</span><span class="prazo-title">Médio prazo</span></div>
+    <div class="prazo-body">
+      <input class="prazo-meta-input" type="text" placeholder="Qual é a sua meta?"/>
+      <textarea class="prazo-textarea" placeholder="Como vou alcançar? Quais passos?"></textarea>
+      <div class="prazo-progress">
+        <div class="prazo-progress-label"><span>Progresso</span><span id="p6m">0%</span></div>
+        <div class="prazo-bar-wrap"><div class="prazo-bar amber" id="pb6m" style="width:0%"></div></div>
+        <input type="range" class="prazo-slider" min="0" max="100" value="0" style="accent-color:#c9853f;" oninput="document.getElementById('p6m').textContent=this.value+'%';document.getElementById('pb6m').style.width=this.value+'%'"/>
+      </div>
+    </div>
+  </div>
+  <div class="prazo-card">
+    <div class="prazo-header"><span class="prazo-badge y1">1 ano</span><span class="prazo-title">Longo prazo</span></div>
+    <div class="prazo-body">
+      <input class="prazo-meta-input" type="text" placeholder="Qual é a sua meta?"/>
+      <textarea class="prazo-textarea" placeholder="Como vou alcançar? Quais passos?"></textarea>
+      <div class="prazo-progress">
+        <div class="prazo-progress-label"><span>Progresso</span><span id="p1y">0%</span></div>
+        <div class="prazo-bar-wrap"><div class="prazo-bar blue" id="pb1y" style="width:0%"></div></div>
+        <input type="range" class="prazo-slider" min="0" max="100" value="0" style="accent-color:#3060b0;" oninput="document.getElementById('p1y').textContent=this.value+'%';document.getElementById('pb1y').style.width=this.value+'%'"/>
+      </div>
+    </div>
+  </div>
+  <div class="prazo-card">
+    <div class="prazo-header"><span class="prazo-badge y2">2 anos</span><span class="prazo-title">Visão de futuro</span></div>
+    <div class="prazo-body">
+      <input class="prazo-meta-input" type="text" placeholder="Qual é a sua meta?"/>
+      <textarea class="prazo-textarea" placeholder="Como vou alcançar? Quais passos?"></textarea>
+      <div class="prazo-progress">
+        <div class="prazo-progress-label"><span>Progresso</span><span id="p2y">0%</span></div>
+        <div class="prazo-bar-wrap"><div class="prazo-bar purple" id="pb2y" style="width:0%"></div></div>
+        <input type="range" class="prazo-slider" min="0" max="100" value="0" style="accent-color:#7040c0;" oninput="document.getElementById('p2y').textContent=this.value+'%';document.getElementById('pb2y').style.width=this.value+'%'"/>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="sec-title">Metas anuais com acompanhamento</div>
+<div class="annual-goals">
+  <div class="goal-item">
+    <div class="goal-item-top">
+      <div class="goal-number">1</div>
+      <input class="goal-name-input" type="text" placeholder="Nome da meta..."/>
+      <select class="goal-cat-select">
+        <option>Saúde</option><option>Carreira</option><option>Finanças</option>
+        <option>Relacionamentos</option><option>Espiritualidade</option><option>Educação</option><option>Lazer</option>
+      </select>
+    </div>
+    <div class="goal-item-mid">
+      <div><div class="goal-field-label">Por que essa meta importa?</div><input class="goal-input" type="text" placeholder="Seu motivo profundo..."/></div>
+      <div><div class="goal-field-label">Prazo</div><input class="goal-input" type="text" placeholder="dd/mm/aaaa"/></div>
+      <div><div class="goal-field-label">Valor necessário</div><input class="goal-input" type="text" placeholder="R$ 0,00"/></div>
+    </div>
+    <div class="goal-item-progress">
+      <div class="goal-pbar-wrap"><div class="goal-pbar" id="gp1" style="width:30%;"></div></div>
+      <span class="goal-pct" id="gpt1">30%</span>
+    </div>
+    <input type="range" style="width:100%;margin-top:6px;accent-color:#c9395f;" min="0" max="100" value="30" oninput="document.getElementById('gp1').style.width=this.value+'%';document.getElementById('gpt1').textContent=this.value+'%'"/>
+    <div class="goal-steps">
+      <div class="goal-step-pill done">Planejado</div>
+      <div class="goal-step-pill done">Iniciado</div>
+      <div class="goal-step-pill">Em progresso</div>
+      <div class="goal-step-pill">Quase lá</div>
+      <div class="goal-step-pill">Concluído</div>
+    </div>
+  </div>
+  <div class="goal-item">
+    <div class="goal-item-top">
+      <div class="goal-number">2</div>
+      <input class="goal-name-input" type="text" placeholder="Nome da meta..."/>
+      <select class="goal-cat-select">
+        <option>Saúde</option><option>Carreira</option><option>Finanças</option>
+        <option>Relacionamentos</option><option>Espiritualidade</option><option>Educação</option><option>Lazer</option>
+      </select>
+    </div>
+    <div class="goal-item-mid">
+      <div><div class="goal-field-label">Por que essa meta importa?</div><input class="goal-input" type="text" placeholder="Seu motivo profundo..."/></div>
+      <div><div class="goal-field-label">Prazo</div><input class="goal-input" type="text" placeholder="dd/mm/aaaa"/></div>
+      <div><div class="goal-field-label">Valor necessário</div><input class="goal-input" type="text" placeholder="R$ 0,00"/></div>
+    </div>
+    <div class="goal-item-progress">
+      <div class="goal-pbar-wrap"><div class="goal-pbar" id="gp2" style="width:0%;"></div></div>
+      <span class="goal-pct" id="gpt2">0%</span>
+    </div>
+    <input type="range" style="width:100%;margin-top:6px;accent-color:#c9395f;" min="0" max="100" value="0" oninput="document.getElementById('gp2').style.width=this.value+'%';document.getElementById('gpt2').textContent=this.value+'%'"/>
+    <div class="goal-steps">
+      <div class="goal-step-pill">Planejado</div>
+      <div class="goal-step-pill">Iniciado</div>
+      <div class="goal-step-pill">Em progresso</div>
+      <div class="goal-step-pill">Quase lá</div>
+      <div class="goal-step-pill">Concluído</div>
+    </div>
+  </div>
+  <div class="add-goal-btn"><i class="ti ti-plus" aria-hidden="true"></i>Adicionar nova meta</div>
+</div>
+
+<div class="sec-title">Conquistas desbloqueadas</div>
+<div class="conquistas-grid" style="margin-bottom:24px;">
+  <div class="conquista-card">
+    <div class="conquista-icon unlocked"><i class="ti ti-star" aria-hidden="true"></i></div>
+    <div class="conquista-title">Primeira meta</div>
+    <div class="conquista-desc">Criou sua primeira meta no planner</div>
+  </div>
+  <div class="conquista-card">
+    <div class="conquista-icon unlocked"><i class="ti ti-flame" aria-hidden="true"></i></div>
+    <div class="conquista-title">7 dias seguidos</div>
+    <div class="conquista-desc">Acessou o app por 7 dias consecutivos</div>
+  </div>
+  <div class="conquista-card locked">
+    <div class="conquista-icon"><i class="ti ti-trophy" aria-hidden="true"></i></div>
+    <div class="conquista-title">Meta concluída</div>
+    <div class="conquista-desc">Conclua sua primeira meta anual</div>
+  </div>
+  <div class="conquista-card locked">
+    <div class="conquista-icon"><i class="ti ti-mural" aria-hidden="true"></i></div>
+    <div class="conquista-title">Mural completo</div>
+    <div class="conquista-desc">Preencha todos os 10 espaços do mural</div>
+  </div>
+  <div class="conquista-card locked">
+    <div class="conquista-icon"><i class="ti ti-currency-dollar" aria-hidden="true"></i></div>
+    <div class="conquista-title">Meta financeira</div>
+    <div class="conquista-desc">Alcance 100% de uma meta financeira</div>
+  </div>
+  <div class="conquista-card locked">
+    <div class="conquista-icon"><i class="ti ti-heart" aria-hidden="true"></i></div>
+    <div class="conquista-title">Gratidão diária</div>
+    <div class="conquista-desc">Registre gratidão por 30 dias</div>
+  </div>
+  <div class="conquista-card locked">
+    <div class="conquista-icon"><i class="ti ti-bolt" aria-hidden="true"></i></div>
+    <div class="conquista-title">Superação</div>
+    <div class="conquista-desc">Supere uma meta antes do prazo</div>
+  </div>
+  <div class="conquista-card locked">
+    <div class="conquista-icon"><i class="ti ti-crown" aria-hidden="true"></i></div>
+    <div class="conquista-title">Vida Nova</div>
+    <div class="conquista-desc">Conclua 5 metas em um ano</div>
+  </div>
+</div>
+
+<div class="sec-title">Afirmações & palavra do dia</div>
+<div class="afirmacoes-card" style="margin-bottom:24px;">
+  <div class="afirmacoes-header">
+    <i class="ti ti-quote" aria-hidden="true"></i>
+    <span>Suas afirmações diárias</span>
+  </div>
+  <div class="afirmacoes-list">
+    <div class="afirmacao-item"><div class="afirmacao-num">1</div><input class="afirmacao-input" type="text" placeholder="Ex.: Eu sou capaz de alcançar tudo que desejo..."/></div>
+    <div class="afirmacao-item"><div class="afirmacao-num">2</div><input class="afirmacao-input" type="text" placeholder="Ex.: Eu mereço abundância e paz..."/></div>
+    <div class="afirmacao-item"><div class="afirmacao-num">3</div><input class="afirmacao-input" type="text" placeholder="Ex.: Cada dia eu me torno a melhor versão de mim..."/></div>
+    <div class="afirmacao-item"><div class="afirmacao-num">4</div><input class="afirmacao-input" type="text" placeholder="Ex.: Deus tem planos perfeitos para a minha vida..."/></div>
+    <div class="afirmacao-item"><div class="afirmacao-num">5</div><input class="afirmacao-input" type="text" placeholder="Ex.: Eu sou grata por tudo que tenho e por tudo que vem..."/></div>
+  </div>
+</div>
+
+<div class="sec-title">Diário de gratidão & reflexão</div>
+<div class="gratidao-grid">
+  <div class="gratidao-card">
+    <div class="gratidao-label"><div class="grat-icon rose"><i class="ti ti-sun" aria-hidden="true"></i></div><span class="gratidao-title">Pelo que sou grata hoje</span></div>
+    <textarea class="grat-textarea" placeholder="Liste 3 coisas pelas quais você é grata hoje..."></textarea>
+  </div>
+  <div class="gratidao-card">
+    <div class="gratidao-label"><div class="grat-icon amber"><i class="ti ti-sparkles" aria-hidden="true"></i></div><span class="gratidao-title">Vitória da semana</span></div>
+    <textarea class="grat-textarea" placeholder="Qual foi a sua maior vitória dessa semana?"></textarea>
+  </div>
+  <div class="gratidao-card">
+    <div class="gratidao-label"><div class="grat-icon sage"><i class="ti ti-leaf" aria-hidden="true"></i></div><span class="gratidao-title">O que aprendi</span></div>
+    <textarea class="grat-textarea" placeholder="Que lição importante você aprendeu recentemente?"></textarea>
+  </div>
+  <div class="gratidao-card">
+    <div class="gratidao-label"><div class="grat-icon blue"><i class="ti ti-arrow-right" aria-hidden="true"></i></div><span class="gratidao-title">Próximo passo corajoso</span></div>
+    <textarea class="grat-textarea" placeholder="Qual ação corajosa você vai tomar essa semana?"></textarea>
+  </div>
+</div>
+
+</div>

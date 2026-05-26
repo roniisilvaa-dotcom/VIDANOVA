@@ -1,0 +1,483 @@
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap');
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'DM Sans',sans-serif;background:#fdf7f9;padding:24px 20px 48px;}
+
+.module-hero{background:#c9395f;border-radius:18px;padding:22px 28px;margin-bottom:20px;display:flex;align-items:center;gap:18px;position:relative;overflow:hidden;}
+.hero-deco{position:absolute;right:20px;top:-10px;font-family:'Cormorant Garamond',serif;font-size:110px;color:rgba(255,255,255,.06);pointer-events:none;}
+.hero-icon{width:44px;height:44px;min-width:44px;background:rgba(255,255,255,.15);border-radius:13px;display:flex;align-items:center;justify-content:center;}
+.hero-icon i{font-size:22px;color:#fff;}
+.hero-eye{font-size:9px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.55);margin-bottom:5px;}
+.hero-title{font-family:'Cormorant Garamond',serif;font-size:22px;font-style:italic;color:#fff;font-weight:400;}
+
+.tabs-row{display:flex;gap:6px;margin-bottom:24px;flex-wrap:wrap;}
+.tab{font-size:12px;font-weight:500;letter-spacing:.04em;padding:8px 18px;border-radius:60px;border:0.5px solid #e8d0da;background:#fff;color:#9a7a8a;cursor:pointer;}
+.tab.active{background:#c9395f;color:#fff;border-color:#c9395f;}
+
+.section-title{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:500;color:#2a1f28;margin-bottom:16px;display:flex;align-items:center;gap:10px;}
+.section-title::after{content:'';flex:1;height:0.5px;background:#f0dce6;}
+
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px;}
+.card{background:#fff;border:0.5px solid #f0dce6;border-radius:16px;overflow:hidden;}
+.card-header{padding:14px 18px;display:flex;align-items:center;gap:10px;border-bottom:0.5px solid #f5e8ee;}
+.card-header.rose{background:#fdf0f4;}
+.card-header.sage{background:#f0f7f3;}
+.ch-icon{width:30px;height:30px;border-radius:9px;display:flex;align-items:center;justify-content:center;}
+.ch-icon.rose{background:#fbeef3;}
+.ch-icon.rose i{color:#c9395f;font-size:15px;}
+.ch-icon.sage{background:#e4f2ea;}
+.ch-icon.sage i{color:#4a9a6a;font-size:15px;}
+.ch-badge{font-size:11px;font-weight:500;}
+.ch-badge.rose{color:#c9395f;}
+.ch-badge.sage{color:#4a9a6a;}
+.card-body{padding:16px 18px;}
+
+.field-row{margin-bottom:12px;}
+.field-label{font-size:10px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:#b09aa8;margin-bottom:5px;}
+.field-input{width:100%;border:0.5px solid #f0dce6;border-radius:10px;padding:9px 12px;font-family:'DM Sans',sans-serif;font-size:12px;color:#2a1f28;background:#fdf8f9;outline:none;}
+.field-input::placeholder{color:#c9b8c4;}
+.field-textarea{width:100%;min-height:72px;border:0.5px solid #f0dce6;border-radius:10px;padding:10px 12px;font-family:'DM Sans',sans-serif;font-size:12px;color:#2a1f28;background:#fdf8f9;outline:none;resize:none;line-height:1.5;}
+.field-textarea::placeholder{color:#c9b8c4;}
+.photo-slot{border:1px dashed #f0c0d0;border-radius:12px;padding:14px;display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;background:#fdf8f9;}
+.photo-slot i{font-size:18px;color:#e0a0b8;}
+.photo-slot span{font-size:11px;color:#c9b8c4;}
+
+.measures-card{background:#fff;border:0.5px solid #f0dce6;border-radius:16px;overflow:hidden;margin-bottom:24px;}
+.measures-header{background:#fdf0f4;padding:14px 20px;border-bottom:0.5px solid #f5e8ee;display:flex;align-items:center;gap:10px;}
+.measures-header i{font-size:18px;color:#c9395f;}
+.measures-header span{font-size:13px;font-weight:500;color:#c9395f;}
+.measures-table{width:100%;border-collapse:collapse;font-size:11px;}
+.measures-table th{padding:10px 8px;text-align:left;font-size:9px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:#b09aa8;border-bottom:0.5px solid #f5e8ee;white-space:nowrap;}
+.measures-table th:first-child{padding-left:20px;min-width:100px;}
+.measures-table td{padding:8px;border-bottom:0.5px solid #fdf0f4;}
+.measures-table td:first-child{padding-left:20px;font-size:12px;font-weight:500;color:#2a1f28;}
+.measures-table tr:last-child td{border-bottom:none;}
+.m-input{width:52px;border:0.5px solid #f0dce6;border-radius:7px;padding:5px 6px;font-family:'DM Sans',sans-serif;font-size:11px;color:#2a1f28;background:#fdf8f9;outline:none;text-align:center;}
+.m-input::placeholder{color:#ddd;}
+
+.workout-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:24px;}
+.workout-card{background:#fff;border:0.5px solid #f0dce6;border-radius:16px;overflow:hidden;}
+.workout-header{background:#c9395f;padding:11px 14px;}
+.workout-day{font-size:11px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:#fff;}
+.workout-body{padding:12px 14px;}
+.workout-name-input{width:100%;border:0.5px solid #f0dce6;border-radius:8px;padding:7px 10px;font-family:'DM Sans',sans-serif;font-size:11px;color:#6a5060;background:#fdf0f4;outline:none;margin-bottom:10px;}
+.workout-name-input::placeholder{color:#c9b8c4;}
+.workout-cols{display:grid;grid-template-columns:1fr 80px 24px;gap:6px;margin-bottom:6px;align-items:center;}
+.workout-col-label{font-size:9px;font-weight:500;letter-spacing:.07em;text-transform:uppercase;color:#b09aa8;}
+.workout-row{display:grid;grid-template-columns:1fr 80px 24px;gap:6px;margin-bottom:4px;align-items:center;}
+.w-input{border:0.5px solid #f0dce6;border-radius:7px;padding:6px 8px;font-family:'DM Sans',sans-serif;font-size:11px;color:#2a1f28;background:#fdf8f9;outline:none;width:100%;}
+.w-cb{width:16px;height:16px;accent-color:#c9395f;cursor:pointer;margin:0 auto;display:block;}
+
+.library-card{background:#fff;border:0.5px solid #f0dce6;border-radius:16px;overflow:hidden;margin-bottom:24px;}
+.library-header{background:#fdf0f4;padding:14px 20px;border-bottom:0.5px solid #f5e8ee;display:flex;align-items:center;gap:10px;}
+.library-header i{font-size:18px;color:#c9395f;}
+.library-header span{font-size:13px;font-weight:500;color:#c9395f;}
+.library-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0;}
+.library-item{padding:14px 18px;border-bottom:0.5px solid #fdf0f4;border-right:0.5px solid #fdf0f4;}
+.library-item:nth-child(3n){border-right:none;}
+.lib-name{border:none;border-bottom:0.5px solid #f0dce6;padding:5px 0;font-family:'DM Sans',sans-serif;font-size:12px;color:#2a1f28;background:none;outline:none;width:100%;margin-bottom:6px;}
+.lib-name::placeholder{color:#c9b8c4;}
+.lib-link{display:flex;align-items:center;gap:6px;border:none;padding:4px 0;font-family:'DM Sans',sans-serif;font-size:11px;color:#b09aa8;background:none;outline:none;width:100%;}
+.lib-link i{font-size:13px;color:#e0a0b8;}
+
+.health-card{background:#fff;border:0.5px solid #f0dce6;border-radius:16px;overflow:hidden;margin-bottom:24px;}
+.health-section{padding:16px 20px;border-bottom:0.5px solid #f5e8ee;}
+.health-section:last-child{border-bottom:none;}
+.hs-title{display:flex;align-items:center;gap:8px;margin-bottom:12px;}
+.hs-title i{font-size:16px;color:#c9395f;}
+.hs-title span{font-size:13px;font-weight:500;color:#2a1f28;}
+.check-list{display:flex;flex-direction:column;gap:0;}
+.check-item{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:0.5px solid #fdf0f4;}
+.check-item:last-child{border-bottom:none;}
+.check-item input[type=checkbox]{width:16px;height:16px;accent-color:#c9395f;flex-shrink:0;}
+.check-item input[type=text]{flex:1;border:none;font-family:'DM Sans',sans-serif;font-size:12px;color:#2a1f28;background:none;outline:none;}
+.check-item input[type=text]::placeholder{color:#c9b8c4;}
+
+.consult-table{width:100%;border-collapse:collapse;font-size:11px;}
+.consult-table th{padding:8px 10px;text-align:left;font-size:9px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:#b09aa8;border-bottom:0.5px solid #f5e8ee;}
+.consult-table td{padding:7px 8px;border-bottom:0.5px solid #fdf0f4;}
+.consult-table tr:last-child td{border-bottom:none;}
+.ct-input{border:0.5px solid #f0dce6;border-radius:7px;padding:5px 8px;font-family:'DM Sans',sans-serif;font-size:11px;color:#2a1f28;background:#fdf8f9;outline:none;width:100%;}
+.ct-input::placeholder{color:#ddd;}
+
+.pill-badge{display:inline-flex;align-items:center;gap:5px;background:#fbeef3;border:0.5px solid #f0c0d0;border-radius:60px;padding:5px 12px;font-size:11px;font-weight:500;color:#c9395f;margin-bottom:12px;}
+.pill-badge i{font-size:13px;}
+.pill-badge.amber{background:#fef7ec;border-color:#f5dca0;color:#c9853f;}
+.pill-badge.sage{background:#eef5f0;border-color:#b0d8bc;color:#4a9a6a;}
+.pill-badge.purple{background:#f0eefe;border-color:#c8c0f0;color:#6050c0;}
+
+.beauty-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px;}
+.beauty-card{background:#fff;border:0.5px solid #f0dce6;border-radius:16px;overflow:hidden;}
+.beauty-card-header{background:#c9395f;padding:13px 18px;display:flex;align-items:center;gap:8px;}
+.beauty-card-header i{font-size:17px;color:#fff;}
+.beauty-card-header span{font-size:12px;font-weight:500;color:#fff;letter-spacing:.04em;}
+.beauty-card-body{padding:14px 18px;}
+.sub-section{margin-bottom:14px;}
+.sub-section:last-child{margin-bottom:0;}
+
+.gap{margin-bottom:24px;}
+</style>
+
+<div>
+
+<div class="module-hero">
+  <div class="hero-deco">✦</div>
+  <div class="hero-icon"><i class="ti ti-heart" aria-hidden="true"></i></div>
+  <div>
+    <div class="hero-eye">Corpo e autocuidado</div>
+    <div class="hero-title">Gestão completa do autocuidado</div>
+  </div>
+</div>
+
+<div class="tabs-row gap">
+  <div class="tab active">Progresso de medidas</div>
+  <div class="tab">Cronograma de exercícios</div>
+  <div class="tab">Cuidados de saúde</div>
+  <div class="tab">Rituais de beleza</div>
+</div>
+
+<div class="section-title">Antes & depois</div>
+<div class="two-col gap">
+  <div class="card">
+    <div class="card-header rose">
+      <div class="ch-icon rose"><i class="ti ti-clock" aria-hidden="true"></i></div>
+      <span class="ch-badge rose">Antes — Dia 1</span>
+    </div>
+    <div class="card-body">
+      <div class="field-row">
+        <div class="field-label">Data</div>
+        <input class="field-input" type="text" placeholder="dd/mm/aaaa" />
+      </div>
+      <div class="field-row">
+        <div class="field-label">Peso inicial</div>
+        <input class="field-input" type="text" placeholder="Ex.: 57,1 kg" />
+      </div>
+      <div class="field-row">
+        <div class="photo-slot">
+          <i class="ti ti-camera" aria-hidden="true"></i>
+          <span>Foto antes — toque para adicionar</span>
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field-label">Estou insatisfeita com...</div>
+        <textarea class="field-textarea" placeholder="Ex.: Falta de definição muscular, gordura localizada..."></textarea>
+      </div>
+      <div class="field-row" style="margin-bottom:0;">
+        <div class="field-label">Meu maior desafio</div>
+        <textarea class="field-textarea" placeholder="Ex.: Manter a dieta sem açúcar"></textarea>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-header sage">
+      <div class="ch-icon sage"><i class="ti ti-sparkles" aria-hidden="true"></i></div>
+      <span class="ch-badge sage">Depois — Dia 90</span>
+    </div>
+    <div class="card-body">
+      <div class="field-row">
+        <div class="field-label">Data</div>
+        <input class="field-input" type="text" placeholder="dd/mm/aaaa" />
+      </div>
+      <div class="field-row">
+        <div class="field-label">Peso atual</div>
+        <input class="field-input" type="text" placeholder="Ex.: 51 kg" />
+      </div>
+      <div class="field-row">
+        <div class="photo-slot">
+          <i class="ti ti-camera" aria-hidden="true"></i>
+          <span>Foto depois — toque para adicionar</span>
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field-label">O que mudou?</div>
+        <textarea class="field-textarea" placeholder="Ex.: Autoestima, disposição física, menos ansiedade..."></textarea>
+      </div>
+      <div class="field-row" style="margin-bottom:0;">
+        <div class="field-label">Meu maior desafio</div>
+        <textarea class="field-textarea" placeholder="Ex.: Controlar a alimentação"></textarea>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section-title">Progresso de medidas</div>
+<div class="measures-card gap">
+  <div class="measures-header">
+    <i class="ti ti-ruler" aria-hidden="true"></i>
+    <span>Acompanhamento semanal (cm / kg)</span>
+  </div>
+  <div style="overflow-x:auto;padding:0 4px;">
+    <table class="measures-table">
+      <thead>
+        <tr>
+          <th>Medida</th>
+          <th>Início</th>
+          <th>Sem 2</th>
+          <th>Sem 4</th>
+          <th>Sem 6</th>
+          <th>Sem 8</th>
+          <th>Sem 10</th>
+          <th>Sem 12</th>
+          <th>Sem 14</th>
+          <th>Sem 16</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Cintura</td><td><input class="m-input" placeholder="—"/></td><td><input class="m-input" placeholder="—"/></td><td><input class="m-input" placeholder="—"/></td><td><input class="m-input" placeholder="—"/></td><td><input class="m-input" placeholder="—"/></td><td><input class="m-input" placeholder="—"/></td><td><input class="m-input" placeholder="—"/></td><td><input class="m-input" placeholder="—"/></td><td><input class="m-input" placeholder="—"/></td></tr>
+        <tr><td>Quadril</td><td><input class="m-input" placeholder="—"/></td><td><input class="m-input" placeholder="—"/></td><td><input class="m-input" placeholder="—"/></td><td><input class="m-input" placeholder="—"/></td><td><input class="m-input" placeholder="—"/></td><td><input class="m-input" placeholder="—"/></td><td><input class="m-input" placeholder="—"/></td><td><input class="m-input" placeholder="—"/></td><td><input class="m-input" placeholder="—"/></td></tr>
+        <tr><td>Coxa D</td><td><input class="m-input" placeholder="—"/></td><td><input class="m-input" placeholder="—"/></td><td><input class="m-input" placeholder="—"/></td><td><input class="m-input" placeholder="—"/></td><td><input class="m-input" placeholder="—"/></td><td><input class="m-input" placeholder="—"/></td><td><input class="m-input" placeholder="—"/></td><td><input class="m-input" placeholder="—"/></td><td><input class="m-input" placeholder="—"/></td></tr>
+        <tr><td>Busto</td><td><input class="m-input" placeholder="—"/></td><td><input class="m-input" placeholder="—"/></td><td><input class="m-input" placeholder="—"/></td><td><input class="m-input" placeholder="—"/></td><td><input class="m-input" placeholder="—"/></td><td><input class="m-input" placeholder="—"/></td><td><input class="m-input" placeholder="—"/></td><td><input class="m-input" placeholder="—"/></td><td><input class="m-input" placeholder="—"/></td></tr>
+        <tr><td>Braço D</td><td><input class="m-input" placeholder="—"/></td><td><input class="m-input" placeholder="—"/></td><td><input class="m-input" placeholder="—"/></td><td><input class="m-input" placeholder="—"/></td><td><input class="m-input" placeholder="—"/></td><td><input class="m-input" placeholder="—"/></td><td><input class="m-input" placeholder="—"/></td><td><input class="m-input" placeholder="—"/></td><td><input class="m-input" placeholder="—"/></td></tr>
+        <tr><td>Peso (kg)</td><td><input class="m-input" placeholder="—"/></td><td><input class="m-input" placeholder="—"/></td><td><input class="m-input" placeholder="—"/></td><td><input class="m-input" placeholder="—"/></td><td><input class="m-input" placeholder="—"/></td><td><input class="m-input" placeholder="—"/></td><td><input class="m-input" placeholder="—"/></td><td><input class="m-input" placeholder="—"/></td><td><input class="m-input" placeholder="—"/></td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="section-title">Cronograma de exercícios</div>
+<div class="workout-grid gap">
+  <div class="workout-card">
+    <div class="workout-header"><div class="workout-day">Segunda</div></div>
+    <div class="workout-body">
+      <input class="workout-name-input" type="text" placeholder="Nome do treino (ex.: Superior + Cardio)" />
+      <div class="workout-cols">
+        <div class="workout-col-label">Exercício</div>
+        <div class="workout-col-label">Rep. e Carga</div>
+        <div class="workout-col-label" style="text-align:center;">✓</div>
+      </div>
+      <div class="workout-row"><input class="w-input" placeholder=""/><input class="w-input" placeholder=""/><input type="checkbox" class="w-cb"/></div>
+      <div class="workout-row"><input class="w-input" placeholder=""/><input class="w-input" placeholder=""/><input type="checkbox" class="w-cb"/></div>
+      <div class="workout-row"><input class="w-input" placeholder=""/><input class="w-input" placeholder=""/><input type="checkbox" class="w-cb"/></div>
+      <div class="workout-row"><input class="w-input" placeholder=""/><input class="w-input" placeholder=""/><input type="checkbox" class="w-cb"/></div>
+      <div class="workout-row"><input class="w-input" placeholder=""/><input class="w-input" placeholder=""/><input type="checkbox" class="w-cb"/></div>
+    </div>
+  </div>
+  <div class="workout-card">
+    <div class="workout-header"><div class="workout-day">Terça</div></div>
+    <div class="workout-body">
+      <input class="workout-name-input" type="text" placeholder="Nome do treino (ex.: Inferior)" />
+      <div class="workout-cols">
+        <div class="workout-col-label">Exercício</div>
+        <div class="workout-col-label">Rep. e Carga</div>
+        <div class="workout-col-label" style="text-align:center;">✓</div>
+      </div>
+      <div class="workout-row"><input class="w-input" placeholder=""/><input class="w-input" placeholder=""/><input type="checkbox" class="w-cb"/></div>
+      <div class="workout-row"><input class="w-input" placeholder=""/><input class="w-input" placeholder=""/><input type="checkbox" class="w-cb"/></div>
+      <div class="workout-row"><input class="w-input" placeholder=""/><input class="w-input" placeholder=""/><input type="checkbox" class="w-cb"/></div>
+      <div class="workout-row"><input class="w-input" placeholder=""/><input class="w-input" placeholder=""/><input type="checkbox" class="w-cb"/></div>
+      <div class="workout-row"><input class="w-input" placeholder=""/><input class="w-input" placeholder=""/><input type="checkbox" class="w-cb"/></div>
+    </div>
+  </div>
+  <div class="workout-card">
+    <div class="workout-header"><div class="workout-day">Quarta</div></div>
+    <div class="workout-body">
+      <input class="workout-name-input" type="text" placeholder="Nome do treino (ex.: Superior + Cardio)" />
+      <div class="workout-cols">
+        <div class="workout-col-label">Exercício</div>
+        <div class="workout-col-label">Rep. e Carga</div>
+        <div class="workout-col-label" style="text-align:center;">✓</div>
+      </div>
+      <div class="workout-row"><input class="w-input" placeholder=""/><input class="w-input" placeholder=""/><input type="checkbox" class="w-cb"/></div>
+      <div class="workout-row"><input class="w-input" placeholder=""/><input class="w-input" placeholder=""/><input type="checkbox" class="w-cb"/></div>
+      <div class="workout-row"><input class="w-input" placeholder=""/><input class="w-input" placeholder=""/><input type="checkbox" class="w-cb"/></div>
+      <div class="workout-row"><input class="w-input" placeholder=""/><input class="w-input" placeholder=""/><input type="checkbox" class="w-cb"/></div>
+      <div class="workout-row"><input class="w-input" placeholder=""/><input class="w-input" placeholder=""/><input type="checkbox" class="w-cb"/></div>
+    </div>
+  </div>
+  <div class="workout-card">
+    <div class="workout-header"><div class="workout-day">Quinta</div></div>
+    <div class="workout-body">
+      <input class="workout-name-input" type="text" placeholder="Nome do treino (ex.: Descanso ativo)" />
+      <div class="workout-cols">
+        <div class="workout-col-label">Exercício</div>
+        <div class="workout-col-label">Rep. e Carga</div>
+        <div class="workout-col-label" style="text-align:center;">✓</div>
+      </div>
+      <div class="workout-row"><input class="w-input" placeholder=""/><input class="w-input" placeholder=""/><input type="checkbox" class="w-cb"/></div>
+      <div class="workout-row"><input class="w-input" placeholder=""/><input class="w-input" placeholder=""/><input type="checkbox" class="w-cb"/></div>
+      <div class="workout-row"><input class="w-input" placeholder=""/><input class="w-input" placeholder=""/><input type="checkbox" class="w-cb"/></div>
+      <div class="workout-row"><input class="w-input" placeholder=""/><input class="w-input" placeholder=""/><input type="checkbox" class="w-cb"/></div>
+      <div class="workout-row"><input class="w-input" placeholder=""/><input class="w-input" placeholder=""/><input type="checkbox" class="w-cb"/></div>
+    </div>
+  </div>
+  <div class="workout-card">
+    <div class="workout-header"><div class="workout-day">Sexta</div></div>
+    <div class="workout-body">
+      <input class="workout-name-input" type="text" placeholder="Nome do treino (ex.: Inferior + Glúteos)" />
+      <div class="workout-cols">
+        <div class="workout-col-label">Exercício</div>
+        <div class="workout-col-label">Rep. e Carga</div>
+        <div class="workout-col-label" style="text-align:center;">✓</div>
+      </div>
+      <div class="workout-row"><input class="w-input" placeholder=""/><input class="w-input" placeholder=""/><input type="checkbox" class="w-cb"/></div>
+      <div class="workout-row"><input class="w-input" placeholder=""/><input class="w-input" placeholder=""/><input type="checkbox" class="w-cb"/></div>
+      <div class="workout-row"><input class="w-input" placeholder=""/><input class="w-input" placeholder=""/><input type="checkbox" class="w-cb"/></div>
+      <div class="workout-row"><input class="w-input" placeholder=""/><input class="w-input" placeholder=""/><input type="checkbox" class="w-cb"/></div>
+      <div class="workout-row"><input class="w-input" placeholder=""/><input class="w-input" placeholder=""/><input type="checkbox" class="w-cb"/></div>
+    </div>
+  </div>
+  <div class="workout-card">
+    <div class="workout-header"><div class="workout-day">Sábado</div></div>
+    <div class="workout-body">
+      <input class="workout-name-input" type="text" placeholder="Nome do treino (ex.: Cardio livre)" />
+      <div class="workout-cols">
+        <div class="workout-col-label">Exercício</div>
+        <div class="workout-col-label">Rep. e Carga</div>
+        <div class="workout-col-label" style="text-align:center;">✓</div>
+      </div>
+      <div class="workout-row"><input class="w-input" placeholder=""/><input class="w-input" placeholder=""/><input type="checkbox" class="w-cb"/></div>
+      <div class="workout-row"><input class="w-input" placeholder=""/><input class="w-input" placeholder=""/><input type="checkbox" class="w-cb"/></div>
+      <div class="workout-row"><input class="w-input" placeholder=""/><input class="w-input" placeholder=""/><input type="checkbox" class="w-cb"/></div>
+      <div class="workout-row"><input class="w-input" placeholder=""/><input class="w-input" placeholder=""/><input type="checkbox" class="w-cb"/></div>
+      <div class="workout-row"><input class="w-input" placeholder=""/><input class="w-input" placeholder=""/><input type="checkbox" class="w-cb"/></div>
+    </div>
+  </div>
+</div>
+
+<div class="section-title">Biblioteca de treinos</div>
+<div class="library-card gap">
+  <div class="library-header">
+    <i class="ti ti-video" aria-hidden="true"></i>
+    <span>Vídeos e referências</span>
+  </div>
+  <div class="library-grid">
+    <div class="library-item"><input class="lib-name" type="text" placeholder="Nome do vídeo / treino"/><div class="lib-link"><i class="ti ti-link" aria-hidden="true"></i><input type="text" style="border:none;background:none;font-family:'DM Sans',sans-serif;font-size:11px;color:#b09aa8;outline:none;width:100%;" placeholder="Link (YouTube, etc.)"/></div></div>
+    <div class="library-item"><input class="lib-name" type="text" placeholder="Nome do vídeo / treino"/><div class="lib-link"><i class="ti ti-link" aria-hidden="true"></i><input type="text" style="border:none;background:none;font-family:'DM Sans',sans-serif;font-size:11px;color:#b09aa8;outline:none;width:100%;" placeholder="Link (YouTube, etc.)"/></div></div>
+    <div class="library-item"><input class="lib-name" type="text" placeholder="Nome do vídeo / treino"/><div class="lib-link"><i class="ti ti-link" aria-hidden="true"></i><input type="text" style="border:none;background:none;font-family:'DM Sans',sans-serif;font-size:11px;color:#b09aa8;outline:none;width:100%;" placeholder="Link (YouTube, etc.)"/></div></div>
+    <div class="library-item"><input class="lib-name" type="text" placeholder="Nome do vídeo / treino"/><div class="lib-link"><i class="ti ti-link" aria-hidden="true"></i><input type="text" style="border:none;background:none;font-family:'DM Sans',sans-serif;font-size:11px;color:#b09aa8;outline:none;width:100%;" placeholder="Link (YouTube, etc.)"/></div></div>
+    <div class="library-item"><input class="lib-name" type="text" placeholder="Nome do vídeo / treino"/><div class="lib-link"><i class="ti ti-link" aria-hidden="true"></i><input type="text" style="border:none;background:none;font-family:'DM Sans',sans-serif;font-size:11px;color:#b09aa8;outline:none;width:100%;" placeholder="Link (YouTube, etc.)"/></div></div>
+    <div class="library-item"><input class="lib-name" type="text" placeholder="Nome do vídeo / treino"/><div class="lib-link"><i class="ti ti-link" aria-hidden="true"></i><input type="text" style="border:none;background:none;font-family:'DM Sans',sans-serif;font-size:11px;color:#b09aa8;outline:none;width:100%;" placeholder="Link (YouTube, etc.)"/></div></div>
+  </div>
+</div>
+
+<div class="section-title">Cuidados de saúde</div>
+<div class="health-card gap">
+  <div class="health-section">
+    <div class="hs-title"><i class="ti ti-stethoscope" aria-hidden="true"></i><span>Médicos que preciso ir</span></div>
+    <div class="check-list">
+      <div class="check-item"><input type="checkbox"/><input type="text" placeholder="Especialidade / médico"/></div>
+      <div class="check-item"><input type="checkbox"/><input type="text" placeholder="Especialidade / médico"/></div>
+      <div class="check-item"><input type="checkbox"/><input type="text" placeholder="Especialidade / médico"/></div>
+      <div class="check-item"><input type="checkbox"/><input type="text" placeholder="Especialidade / médico"/></div>
+      <div class="check-item"><input type="checkbox"/><input type="text" placeholder="Especialidade / médico"/></div>
+    </div>
+  </div>
+  <div class="health-section">
+    <div class="hs-title"><i class="ti ti-alert-circle" aria-hidden="true"></i><span>Sintomas / queixas</span></div>
+    <textarea class="field-textarea" style="width:100%;" placeholder="Anote aqui dores, sintomas ou queixas para levar ao médico..."></textarea>
+  </div>
+  <div class="health-section">
+    <div class="hs-title"><i class="ti ti-clipboard-list" aria-hidden="true"></i><span>Lista de consultas</span></div>
+    <table class="consult-table">
+      <thead><tr><th>Especialidade</th><th>Data</th><th>Horário</th><th>Endereço / Plataforma</th></tr></thead>
+      <tbody>
+        <tr><td><input class="ct-input" placeholder=""/></td><td><input class="ct-input" type="text" placeholder="dd/mm/aaaa"/></td><td><input class="ct-input" placeholder="--:--"/></td><td><input class="ct-input" placeholder=""/></td></tr>
+        <tr><td><input class="ct-input" placeholder=""/></td><td><input class="ct-input" type="text" placeholder="dd/mm/aaaa"/></td><td><input class="ct-input" placeholder="--:--"/></td><td><input class="ct-input" placeholder=""/></td></tr>
+        <tr><td><input class="ct-input" placeholder=""/></td><td><input class="ct-input" type="text" placeholder="dd/mm/aaaa"/></td><td><input class="ct-input" placeholder="--:--"/></td><td><input class="ct-input" placeholder=""/></td></tr>
+        <tr><td><input class="ct-input" placeholder=""/></td><td><input class="ct-input" type="text" placeholder="dd/mm/aaaa"/></td><td><input class="ct-input" placeholder="--:--"/></td><td><input class="ct-input" placeholder=""/></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="health-section">
+    <div class="hs-title"><i class="ti ti-flask" aria-hidden="true"></i><span>Lista de exames</span></div>
+    <table class="consult-table">
+      <thead><tr><th>Exame</th><th>Data pedido</th><th>Data realizado</th><th>Local</th><th>Resultado</th></tr></thead>
+      <tbody>
+        <tr><td><input class="ct-input" placeholder=""/></td><td><input class="ct-input" placeholder="dd/mm/aaaa"/></td><td><input class="ct-input" placeholder="dd/mm/aaaa"/></td><td><input class="ct-input" placeholder=""/></td><td><input class="ct-input" placeholder=""/></td></tr>
+        <tr><td><input class="ct-input" placeholder=""/></td><td><input class="ct-input" placeholder="dd/mm/aaaa"/></td><td><input class="ct-input" placeholder="dd/mm/aaaa"/></td><td><input class="ct-input" placeholder=""/></td><td><input class="ct-input" placeholder=""/></td></tr>
+        <tr><td><input class="ct-input" placeholder=""/></td><td><input class="ct-input" placeholder="dd/mm/aaaa"/></td><td><input class="ct-input" placeholder="dd/mm/aaaa"/></td><td><input class="ct-input" placeholder=""/></td><td><input class="ct-input" placeholder=""/></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="health-section">
+    <div class="hs-title"><i class="ti ti-pill" aria-hidden="true"></i><span>Remédios e suplementos</span></div>
+    <table class="consult-table">
+      <thead><tr><th>Nome</th><th>Horário</th><th>Frequência</th><th>Observação</th></tr></thead>
+      <tbody>
+        <tr><td><input class="ct-input" placeholder="Ex.: Ômega 3"/></td><td><input class="ct-input" placeholder="Manhã no café"/></td><td><input class="ct-input" placeholder="1x ao dia"/></td><td><input class="ct-input" placeholder=""/></td></tr>
+        <tr><td><input class="ct-input" placeholder="Ex.: Vitamina D"/></td><td><input class="ct-input" placeholder="Pós-treino"/></td><td><input class="ct-input" placeholder="1x ao dia"/></td><td><input class="ct-input" placeholder=""/></td></tr>
+        <tr><td><input class="ct-input" placeholder="Ex.: Colágeno"/></td><td><input class="ct-input" placeholder=""/></td><td><input class="ct-input" placeholder=""/></td><td><input class="ct-input" placeholder=""/></td></tr>
+        <tr><td><input class="ct-input" placeholder=""/></td><td><input class="ct-input" placeholder=""/></td><td><input class="ct-input" placeholder=""/></td><td><input class="ct-input" placeholder=""/></td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="section-title">Rituais de beleza</div>
+<div class="beauty-grid gap">
+  <div class="beauty-card">
+    <div class="beauty-card-header"><i class="ti ti-droplet" aria-hidden="true"></i><span>Rotina de pele</span></div>
+    <div class="beauty-card-body">
+      <div class="sub-section">
+        <div class="pill-badge"><i class="ti ti-sun" aria-hidden="true"></i>Manhã</div>
+        <div class="check-list">
+          <div class="check-item"><input type="checkbox"/><input type="text" placeholder="Ex.: Lavar rosto"/></div>
+          <div class="check-item"><input type="checkbox"/><input type="text" placeholder="Ex.: Hidratar"/></div>
+          <div class="check-item"><input type="checkbox"/><input type="text" placeholder="Ex.: Protetor solar"/></div>
+          <div class="check-item"><input type="checkbox"/><input type="text" placeholder="Ex.: Sérum"/></div>
+        </div>
+      </div>
+      <div class="sub-section">
+        <div class="pill-badge purple"><i class="ti ti-moon" aria-hidden="true"></i>Noite</div>
+        <div class="check-list">
+          <div class="check-item"><input type="checkbox"/><input type="text" placeholder="Ex.: Lavar rosto"/></div>
+          <div class="check-item"><input type="checkbox"/><input type="text" placeholder="Ex.: Tônico"/></div>
+          <div class="check-item"><input type="checkbox"/><input type="text" placeholder="Ex.: Creme noturno"/></div>
+          <div class="check-item"><input type="checkbox"/><input type="text" placeholder="Ex.: Óleo facial"/></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="beauty-card">
+    <div class="beauty-card-header"><i class="ti ti-scissors" aria-hidden="true"></i><span>Rotina do cabelo</span></div>
+    <div class="beauty-card-body">
+      <div class="sub-section">
+        <div class="pill-badge sage"><i class="ti ti-calendar" aria-hidden="true"></i>Semanal / rotina</div>
+        <div class="check-list">
+          <div class="check-item"><input type="checkbox"/><input type="text" placeholder="Ex.: Máscara capilar"/></div>
+          <div class="check-item"><input type="checkbox"/><input type="text" placeholder="Ex.: Hidratação profunda"/></div>
+          <div class="check-item"><input type="checkbox"/><input type="text" placeholder="Ex.: Óleo finalizador"/></div>
+          <div class="check-item"><input type="checkbox"/><input type="text" placeholder="Ex.: Escovar / finalizar"/></div>
+        </div>
+      </div>
+      <div class="sub-section">
+        <div class="pill-badge amber"><i class="ti ti-sparkles" aria-hidden="true"></i>Maquiagem — dia a dia</div>
+        <div class="check-list">
+          <div class="check-item"><input type="checkbox"/><input type="text" placeholder="Ex.: Corretivo"/></div>
+          <div class="check-item"><input type="checkbox"/><input type="text" placeholder="Ex.: Base leve"/></div>
+          <div class="check-item"><input type="checkbox"/><input type="text" placeholder="Ex.: Blush"/></div>
+          <div class="check-item"><input type="checkbox"/><input type="text" placeholder="Ex.: Rímel"/></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="beauty-card">
+    <div class="beauty-card-header"><i class="ti ti-shopping-bag" aria-hidden="true"></i><span>Produtos para comprar</span></div>
+    <div class="beauty-card-body">
+      <div class="check-list">
+        <div class="check-item"><i class="ti ti-link" style="font-size:14px;color:#e0a0b8;flex-shrink:0;" aria-hidden="true"></i><input type="text" placeholder="Nome ou link do produto"/></div>
+        <div class="check-item"><i class="ti ti-link" style="font-size:14px;color:#e0a0b8;flex-shrink:0;" aria-hidden="true"></i><input type="text" placeholder="Nome ou link do produto"/></div>
+        <div class="check-item"><i class="ti ti-link" style="font-size:14px;color:#e0a0b8;flex-shrink:0;" aria-hidden="true"></i><input type="text" placeholder="Nome ou link do produto"/></div>
+        <div class="check-item"><i class="ti ti-link" style="font-size:14px;color:#e0a0b8;flex-shrink:0;" aria-hidden="true"></i><input type="text" placeholder="Nome ou link do produto"/></div>
+        <div class="check-item"><i class="ti ti-link" style="font-size:14px;color:#e0a0b8;flex-shrink:0;" aria-hidden="true"></i><input type="text" placeholder="Nome ou link do produto"/></div>
+        <div class="check-item"><i class="ti ti-link" style="font-size:14px;color:#e0a0b8;flex-shrink:0;" aria-hidden="true"></i><input type="text" placeholder="Nome ou link do produto"/></div>
+      </div>
+    </div>
+  </div>
+  <div class="beauty-card">
+    <div class="beauty-card-header"><i class="ti ti-player-play" aria-hidden="true"></i><span>Tutoriais & Vídeos</span></div>
+    <div class="beauty-card-body">
+      <div class="check-list">
+        <div class="check-item"><i class="ti ti-brand-youtube" style="font-size:14px;color:#e0a0b8;flex-shrink:0;" aria-hidden="true"></i><input type="text" placeholder="Título ou link do vídeo"/></div>
+        <div class="check-item"><i class="ti ti-brand-youtube" style="font-size:14px;color:#e0a0b8;flex-shrink:0;" aria-hidden="true"></i><input type="text" placeholder="Título ou link do vídeo"/></div>
+        <div class="check-item"><i class="ti ti-brand-youtube" style="font-size:14px;color:#e0a0b8;flex-shrink:0;" aria-hidden="true"></i><input type="text" placeholder="Título ou link do vídeo"/></div>
+        <div class="check-item"><i class="ti ti-brand-youtube" style="font-size:14px;color:#e0a0b8;flex-shrink:0;" aria-hidden="true"></i><input type="text" placeholder="Título ou link do vídeo"/></div>
+        <div class="check-item"><i class="ti ti-brand-youtube" style="font-size:14px;color:#e0a0b8;flex-shrink:0;" aria-hidden="true"></i><input type="text" placeholder="Título ou link do vídeo"/></div>
+        <div class="check-item"><i class="ti ti-brand-youtube" style="font-size:14px;color:#e0a0b8;flex-shrink:0;" aria-hidden="true"></i><input type="text" placeholder="Título ou link do vídeo"/></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div>

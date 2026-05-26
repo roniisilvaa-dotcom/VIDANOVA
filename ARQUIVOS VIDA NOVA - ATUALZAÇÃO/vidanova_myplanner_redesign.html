@@ -1,0 +1,332 @@
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap');
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'DM Sans',sans-serif;background:#fdf7f9;padding:24px 20px 40px;}
+
+.section-gap{margin-bottom:32px;}
+
+.tabs-row{display:flex;gap:6px;margin-bottom:24px;}
+.tab{font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;letter-spacing:.05em;padding:8px 20px;border-radius:60px;border:0.5px solid #e8d0da;background:#fff;color:#9a7a8a;cursor:pointer;}
+.tab.active{background:#c9395f;color:#fff;border-color:#c9395f;}
+
+.planner-hero{background:#c9395f;border-radius:18px;padding:22px 28px;margin-bottom:20px;display:flex;align-items:center;gap:18px;position:relative;overflow:hidden;}
+.planner-hero-deco{position:absolute;right:24px;top:-8px;font-family:'Cormorant Garamond',serif;font-size:110px;color:rgba(255,255,255,.06);line-height:1;pointer-events:none;}
+.hero-icon{width:42px;height:42px;min-width:42px;background:rgba(255,255,255,.15);border-radius:13px;display:flex;align-items:center;justify-content:center;}
+.hero-icon i{font-size:21px;color:#fff;}
+.hero-eyebrow{font-size:9px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.55);margin-bottom:5px;}
+.hero-title{font-family:'Cormorant Garamond',serif;font-size:22px;font-style:italic;color:#fff;font-weight:400;line-height:1.2;}
+
+.reflection-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:20px;}
+.reflection-card{background:#fff;border:0.5px solid #f0dce6;border-radius:16px;padding:16px;}
+.ref-header{display:flex;align-items:center;gap:8px;margin-bottom:10px;}
+.ref-icon{width:28px;height:28px;border-radius:9px;display:flex;align-items:center;justify-content:center;}
+.ref-icon.rose{background:#fbeef3;}
+.ref-icon.amber{background:#fef7ec;}
+.ref-icon.sage{background:#eef5f0;}
+.ref-icon.rose i{font-size:15px;color:#c9395f;}
+.ref-icon.amber i{font-size:15px;color:#c9853f;}
+.ref-icon.sage i{font-size:15px;color:#4a9a6a;}
+.ref-label{font-size:11px;font-weight:500;color:#2a1f28;}
+.ref-textarea{width:100%;min-height:90px;border:0.5px solid #f0dce6;border-radius:10px;padding:10px 12px;font-family:'DM Sans',sans-serif;font-size:12px;color:#6a5060;background:#fdf8f9;resize:none;outline:none;line-height:1.6;}
+.ref-textarea::placeholder{color:#c9b8c4;}
+
+.weeks-grid{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:12px;}
+.week-card{background:#fff;border:0.5px solid #f0dce6;border-radius:16px;overflow:hidden;}
+.week-header{background:#fdf0f4;border-bottom:0.5px solid #f0dce6;padding:12px 14px;display:flex;align-items:center;justify-content:space-between;}
+.week-title{font-size:12px;font-weight:500;color:#c9395f;}
+.week-icon{width:22px;height:22px;background:#fbeef3;border-radius:7px;display:flex;align-items:center;justify-content:center;}
+.week-icon i{font-size:12px;color:#c9395f;}
+.week-body{padding:12px 14px;}
+.week-input-row{display:flex;gap:6px;margin-bottom:10px;}
+.week-input{flex:1;border:0.5px solid #f0dce6;border-radius:8px;padding:7px 10px;font-family:'DM Sans',sans-serif;font-size:11px;color:#2a1f28;background:#fdf8f9;outline:none;}
+.week-input::placeholder{color:#c9b8c4;}
+.week-add-btn{background:#c9395f;color:#fff;border:none;border-radius:8px;padding:7px 10px;font-size:11px;font-weight:500;cursor:pointer;white-space:nowrap;}
+.week-empty{font-size:11px;color:#c9b8c4;line-height:1.5;font-style:italic;}
+
+.divider-label{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:500;color:#2a1f28;margin-bottom:16px;display:flex;align-items:center;gap:10px;}
+.divider-label::after{content:'';flex:1;height:0.5px;background:#f0dce6;}
+
+.cal-wrap{background:#fff;border:0.5px solid #f0dce6;border-radius:18px;overflow:hidden;}
+.cal-header{padding:18px 20px 14px;display:flex;align-items:center;justify-content:space-between;border-bottom:0.5px solid #f5e8ee;}
+.cal-nav{display:flex;align-items:center;gap:10px;}
+.cal-arrow{width:30px;height:30px;background:#fdf0f4;border-radius:9px;border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;}
+.cal-arrow i{font-size:15px;color:#c9395f;}
+.cal-month{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:500;color:#2a1f28;}
+.cal-sub{font-size:11px;color:#b09aa8;margin-top:1px;}
+.cal-today-btn{background:#fdf0f4;border:0.5px solid #f0c0d0;border-radius:60px;padding:6px 16px;font-size:11px;font-weight:500;color:#c9395f;cursor:pointer;}
+.cal-view-tabs{display:flex;gap:4px;padding:12px 20px;border-bottom:0.5px solid #f5e8ee;}
+.cal-tab{font-size:11px;font-weight:400;padding:5px 12px;border-radius:60px;color:#9a7a8a;cursor:pointer;border:none;background:none;}
+.cal-tab.active{background:#c9395f;color:#fff;font-weight:500;}
+.cal-grid{padding:14px 20px;}
+.cal-days-header{display:grid;grid-template-columns:repeat(7,1fr);margin-bottom:6px;}
+.cal-day-name{font-size:10px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:#c9b8c4;text-align:center;padding:4px 0;}
+.cal-days{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;}
+.cal-cell{min-height:52px;padding:6px 4px;border-radius:10px;cursor:pointer;}
+.cal-cell:hover{background:#fdf0f4;}
+.cal-cell.today{background:#fbeef3;border:1px solid #f0c0d0;}
+.cal-cell.other-month .cal-num{color:#ddd;}
+.cal-num{font-size:13px;font-weight:500;color:#2a1f28;text-align:center;margin-bottom:2px;}
+.cal-cell.today .cal-num{color:#c9395f;}
+.cal-free{font-size:9px;color:#d4b8c4;text-align:center;}
+.cal-notes{padding:14px 20px;border-top:0.5px solid #f5e8ee;display:flex;gap:10px;align-items:center;}
+.cal-notes-input{flex:1;border:0.5px solid #f0dce6;border-radius:10px;padding:10px 14px;font-family:'DM Sans',sans-serif;font-size:12px;color:#2a1f28;background:#fdf8f9;outline:none;}
+.cal-notes-input::placeholder{color:#c9b8c4;}
+.cal-add-btn{width:34px;height:34px;background:#c9395f;border:none;border-radius:10px;display:flex;align-items:center;justify-content:center;cursor:pointer;}
+.cal-add-btn i{font-size:17px;color:#fff;}
+
+.mural-hero{background:#c9395f;border-radius:18px;padding:16px 22px;margin-bottom:18px;display:flex;align-items:center;justify-content:space-between;}
+.mural-hero-left{display:flex;align-items:center;gap:10px;}
+.mural-hero-icon{width:32px;height:32px;background:rgba(255,255,255,.15);border-radius:10px;display:flex;align-items:center;justify-content:center;}
+.mural-hero-icon i{font-size:16px;color:#fff;}
+.mural-hero-title{font-family:'Cormorant Garamond',serif;font-size:16px;font-style:italic;color:#fff;font-weight:400;}
+.mural-hero-sub{font-size:10px;color:rgba(255,255,255,.6);margin-top:1px;}
+
+.mural-title-block{margin-bottom:14px;}
+.mural-title{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:500;color:#2a1f28;margin-bottom:3px;}
+.mural-sub{font-size:12px;color:#b09aa8;font-weight:300;}
+
+.mural-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
+.mural-slot{background:#fff;border:1px dashed #f0c0d0;border-radius:16px;aspect-ratio:3/4;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;cursor:pointer;transition:background .15s;}
+.mural-slot:hover{background:#fdf0f4;}
+.mural-slot-icon{width:36px;height:36px;background:#fbeef3;border-radius:10px;display:flex;align-items:center;justify-content:center;}
+.mural-slot-icon i{font-size:18px;color:#e0a0b8;}
+.mural-slot-num{font-size:10px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:#d4b8c4;}
+.mural-slot-hint{font-size:10px;color:#d4b8c4;text-align:center;padding:0 12px;line-height:1.4;}
+</style>
+
+<div>
+
+<div class="tabs-row section-gap">
+  <div class="tab active">Planejamento semanal</div>
+  <div class="tab">Agenda</div>
+  <div class="tab">Mural dos sonhos</div>
+</div>
+
+<div class="section-gap">
+  <div class="planner-hero">
+    <div class="planner-hero-deco">"</div>
+    <div class="hero-icon"><i class="ti ti-layout-board" aria-hidden="true"></i></div>
+    <div>
+      <div class="hero-eyebrow">Planejamento semanal</div>
+      <div class="hero-title">Quais serão as prioridades de cada semana?</div>
+    </div>
+  </div>
+
+  <div class="reflection-grid">
+    <div class="reflection-card">
+      <div class="ref-header">
+        <div class="ref-icon rose"><i class="ti ti-flag" aria-hidden="true"></i></div>
+        <span class="ref-label">Foco do mês</span>
+      </div>
+      <textarea class="ref-textarea" placeholder="Escreva os focos principais deste mês..."></textarea>
+    </div>
+    <div class="reflection-card">
+      <div class="ref-header">
+        <div class="ref-icon amber"><i class="ti ti-check" aria-hidden="true"></i></div>
+        <span class="ref-label">O que eu consegui fazer?</span>
+      </div>
+      <textarea class="ref-textarea" placeholder="Registre avanços, constância, pequenas vitórias..."></textarea>
+    </div>
+    <div class="reflection-card">
+      <div class="ref-header">
+        <div class="ref-icon sage"><i class="ti ti-refresh" aria-hidden="true"></i></div>
+        <span class="ref-label">O que vou melhorar ou adiar?</span>
+      </div>
+      <textarea class="ref-textarea" placeholder="Liste o que precisa melhorar ou reorganizar..."></textarea>
+    </div>
+  </div>
+
+  <div class="weeks-grid">
+    <div class="week-card">
+      <div class="week-header">
+        <span class="week-title">Semana 1</span>
+        <div class="week-icon"><i class="ti ti-pencil" aria-hidden="true"></i></div>
+      </div>
+      <div class="week-body">
+        <div class="week-input-row">
+          <input class="week-input" type="text" placeholder="Adicionar tarefa..." />
+          <button class="week-add-btn">+ Add</button>
+        </div>
+        <div class="week-empty">Nenhuma tarefa ainda. Adicione a primeira prioridade.</div>
+      </div>
+    </div>
+    <div class="week-card">
+      <div class="week-header">
+        <span class="week-title">Semana 2</span>
+        <div class="week-icon"><i class="ti ti-pencil" aria-hidden="true"></i></div>
+      </div>
+      <div class="week-body">
+        <div class="week-input-row">
+          <input class="week-input" type="text" placeholder="Adicionar tarefa..." />
+          <button class="week-add-btn">+ Add</button>
+        </div>
+        <div class="week-empty">Nenhuma tarefa ainda. Adicione a primeira prioridade.</div>
+      </div>
+    </div>
+    <div class="week-card">
+      <div class="week-header">
+        <span class="week-title">Semana 3</span>
+        <div class="week-icon"><i class="ti ti-pencil" aria-hidden="true"></i></div>
+      </div>
+      <div class="week-body">
+        <div class="week-input-row">
+          <input class="week-input" type="text" placeholder="Adicionar tarefa..." />
+          <button class="week-add-btn">+ Add</button>
+        </div>
+        <div class="week-empty">Nenhuma tarefa ainda. Adicione a primeira prioridade.</div>
+      </div>
+    </div>
+    <div class="week-card">
+      <div class="week-header">
+        <span class="week-title">Semana 4</span>
+        <div class="week-icon"><i class="ti ti-pencil" aria-hidden="true"></i></div>
+      </div>
+      <div class="week-body">
+        <div class="week-input-row">
+          <input class="week-input" type="text" placeholder="Adicionar tarefa..." />
+          <button class="week-add-btn">+ Add</button>
+        </div>
+        <div class="week-empty">Nenhuma tarefa ainda. Adicione a primeira prioridade.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="divider-label section-gap" style="margin-top:32px;">Agenda</div>
+
+<div class="cal-wrap section-gap">
+  <div class="cal-header">
+    <div class="cal-nav">
+      <button class="cal-arrow"><i class="ti ti-chevron-left" aria-hidden="true"></i></button>
+      <div>
+        <div class="cal-month">maio de 2026</div>
+        <div class="cal-sub">Sex. 8</div>
+      </div>
+      <button class="cal-arrow"><i class="ti ti-chevron-right" aria-hidden="true"></i></button>
+    </div>
+    <button class="cal-today-btn">Hoje</button>
+  </div>
+  <div class="cal-view-tabs">
+    <button class="cal-tab">Lista</button>
+    <button class="cal-tab">Dia</button>
+    <button class="cal-tab">Semana</button>
+    <button class="cal-tab active">Mês</button>
+    <button class="cal-tab">Ano</button>
+  </div>
+  <div class="cal-grid">
+    <div class="cal-days-header">
+      <div class="cal-day-name">Dom</div>
+      <div class="cal-day-name">Seg</div>
+      <div class="cal-day-name">Ter</div>
+      <div class="cal-day-name">Qua</div>
+      <div class="cal-day-name">Qui</div>
+      <div class="cal-day-name">Sex</div>
+      <div class="cal-day-name">Sáb</div>
+    </div>
+    <div class="cal-days">
+      <div class="cal-cell other-month"><div class="cal-num"></div></div>
+      <div class="cal-cell other-month"><div class="cal-num"></div></div>
+      <div class="cal-cell other-month"><div class="cal-num"></div></div>
+      <div class="cal-cell other-month"><div class="cal-num"></div></div>
+      <div class="cal-cell other-month"><div class="cal-num"></div></div>
+      <div class="cal-cell"><div class="cal-num">1</div><div class="cal-free">livre</div></div>
+      <div class="cal-cell"><div class="cal-num">2</div><div class="cal-free">livre</div></div>
+      <div class="cal-cell"><div class="cal-num">3</div><div class="cal-free">livre</div></div>
+      <div class="cal-cell"><div class="cal-num">4</div><div class="cal-free">livre</div></div>
+      <div class="cal-cell"><div class="cal-num">5</div><div class="cal-free">livre</div></div>
+      <div class="cal-cell"><div class="cal-num">6</div><div class="cal-free">livre</div></div>
+      <div class="cal-cell"><div class="cal-num">7</div><div class="cal-free">livre</div></div>
+      <div class="cal-cell today"><div class="cal-num">8</div><div class="cal-free">livre</div></div>
+      <div class="cal-cell"><div class="cal-num">9</div><div class="cal-free">livre</div></div>
+      <div class="cal-cell"><div class="cal-num">10</div><div class="cal-free">livre</div></div>
+      <div class="cal-cell"><div class="cal-num">11</div><div class="cal-free">livre</div></div>
+      <div class="cal-cell"><div class="cal-num">12</div><div class="cal-free">livre</div></div>
+      <div class="cal-cell"><div class="cal-num">13</div><div class="cal-free">livre</div></div>
+      <div class="cal-cell"><div class="cal-num">14</div><div class="cal-free">livre</div></div>
+      <div class="cal-cell"><div class="cal-num">15</div><div class="cal-free">livre</div></div>
+      <div class="cal-cell"><div class="cal-num">16</div><div class="cal-free">livre</div></div>
+      <div class="cal-cell"><div class="cal-num">17</div><div class="cal-free">livre</div></div>
+      <div class="cal-cell"><div class="cal-num">18</div><div class="cal-free">livre</div></div>
+      <div class="cal-cell"><div class="cal-num">19</div><div class="cal-free">livre</div></div>
+      <div class="cal-cell"><div class="cal-num">20</div><div class="cal-free">livre</div></div>
+      <div class="cal-cell"><div class="cal-num">21</div><div class="cal-free">livre</div></div>
+      <div class="cal-cell"><div class="cal-num">22</div><div class="cal-free">livre</div></div>
+      <div class="cal-cell"><div class="cal-num">23</div><div class="cal-free">livre</div></div>
+      <div class="cal-cell"><div class="cal-num">24</div><div class="cal-free">livre</div></div>
+      <div class="cal-cell"><div class="cal-num">25</div><div class="cal-free">livre</div></div>
+      <div class="cal-cell"><div class="cal-num">26</div><div class="cal-free">livre</div></div>
+      <div class="cal-cell"><div class="cal-num">27</div><div class="cal-free">livre</div></div>
+      <div class="cal-cell"><div class="cal-num">28</div><div class="cal-free">livre</div></div>
+      <div class="cal-cell"><div class="cal-num">29</div><div class="cal-free">livre</div></div>
+      <div class="cal-cell"><div class="cal-num">30</div><div class="cal-free">livre</div></div>
+      <div class="cal-cell"><div class="cal-num">31</div><div class="cal-free">livre</div></div>
+    </div>
+  </div>
+  <div class="cal-notes">
+    <input class="cal-notes-input" type="text" placeholder="Notas do dia, foco e prioridades..." />
+    <button class="cal-add-btn"><i class="ti ti-plus" aria-hidden="true"></i></button>
+  </div>
+</div>
+
+<div class="divider-label" style="margin-top:32px;margin-bottom:16px;">Mural dos sonhos</div>
+
+<div class="mural-hero">
+  <div class="mural-hero-left">
+    <div class="mural-hero-icon"><i class="ti ti-sparkles" aria-hidden="true"></i></div>
+    <div>
+      <div class="mural-hero-title">Mural dos sonhos</div>
+      <div class="mural-hero-sub">Seu quadro de visão pessoal</div>
+    </div>
+  </div>
+</div>
+
+<div class="mural-title-block">
+  <div class="mural-title">Meu quadro dos sonhos</div>
+  <div class="mural-sub">Escolha imagens do dispositivo e monte um mosaico com 10 objetivos visuais.</div>
+</div>
+
+<div class="mural-grid">
+  <div class="mural-slot">
+    <div class="mural-slot-icon"><i class="ti ti-photo-plus" aria-hidden="true"></i></div>
+    <div class="mural-slot-num">Espaço 1</div>
+    <div class="mural-slot-hint">Toque para escolher uma imagem</div>
+  </div>
+  <div class="mural-slot">
+    <div class="mural-slot-icon"><i class="ti ti-photo-plus" aria-hidden="true"></i></div>
+    <div class="mural-slot-num">Espaço 2</div>
+    <div class="mural-slot-hint">Toque para escolher uma imagem</div>
+  </div>
+  <div class="mural-slot">
+    <div class="mural-slot-icon"><i class="ti ti-photo-plus" aria-hidden="true"></i></div>
+    <div class="mural-slot-num">Espaço 3</div>
+    <div class="mural-slot-hint">Toque para escolher uma imagem</div>
+  </div>
+  <div class="mural-slot">
+    <div class="mural-slot-icon"><i class="ti ti-photo-plus" aria-hidden="true"></i></div>
+    <div class="mural-slot-num">Espaço 4</div>
+    <div class="mural-slot-hint">Toque para escolher uma imagem</div>
+  </div>
+  <div class="mural-slot">
+    <div class="mural-slot-icon"><i class="ti ti-photo-plus" aria-hidden="true"></i></div>
+    <div class="mural-slot-num">Espaço 5</div>
+    <div class="mural-slot-hint">Toque para escolher uma imagem</div>
+  </div>
+  <div class="mural-slot">
+    <div class="mural-slot-icon"><i class="ti ti-photo-plus" aria-hidden="true"></i></div>
+    <div class="mural-slot-num">Espaço 6</div>
+    <div class="mural-slot-hint">Toque para escolher uma imagem</div>
+  </div>
+  <div class="mural-slot">
+    <div class="mural-slot-icon"><i class="ti ti-photo-plus" aria-hidden="true"></i></div>
+    <div class="mural-slot-num">Espaço 7</div>
+    <div class="mural-slot-hint">Toque para escolher uma imagem</div>
+  </div>
+  <div class="mural-slot">
+    <div class="mural-slot-icon"><i class="ti ti-photo-plus" aria-hidden="true"></i></div>
+    <div class="mural-slot-num">Espaço 8</div>
+    <div class="mural-slot-hint">Toque para escolher uma imagem</div>
+  </div>
+</div>
+
+</div>
