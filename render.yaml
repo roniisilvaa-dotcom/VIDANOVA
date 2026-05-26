@@ -1,8 +1,11 @@
 version: 1
 services:
-- type: web
-  name: vida-nova
-  env: node
-  buildCommand: npm install
-  startCommand: npm start
-  branch: main
+  - type: web
+    name: vida-nova
+    env: node
+    plan: free
+    branch: main
+    autoDeploy: true
+    buildCommand: npm ci
+    startCommand: npm start
+    healthCheckPath: /api/health
