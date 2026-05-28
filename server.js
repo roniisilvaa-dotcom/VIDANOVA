@@ -33,6 +33,7 @@ const APPLE_KEY_ID = process.env.APPLE_KEY_ID || "";
 const APPLE_PRIVATE_KEY = (process.env.APPLE_PRIVATE_KEY || "").replace(/\\n/g, "\n");
 const APPLE_REDIRECT_URI = process.env.APPLE_REDIRECT_URI || "";
 const DATA_FILE = path.join(__dirname, "vida-nova-fallback.json");
+let serverlessStore = getDefaultStore();
 
 const VAPID_PUBLIC_KEY = process.env.VAPID_PUBLIC_KEY || "BEXjy4tVUIHgrOsny2mSdzm9LQknr7RmsB749yLH84ULm4cr2pz3ZyL_xgb6bs9qdilkDw6rcpDgMvuHIgLVb7I";
 const VAPID_PRIVATE_KEY = process.env.VAPID_PRIVATE_KEY || "eVU7F8kgQp1XxGs6AgfePksCVhoSIJGiPDJ4CF8m8bo";
@@ -356,12 +357,19 @@ async function ensureFallbackFile() {
 }
 
 async function readStore() {
+  if (process.env.VERCEL && !isUsingDatabase) {
+    return serverlessStore;
+  }
   await ensureFallbackFile();
   const raw = await fsp.readFile(DATA_FILE, "utf8");
   return raw ? JSON.parse(raw) : getDefaultStore();
 }
 
 async function writeStore(store) {
+  if (process.env.VERCEL && !isUsingDatabase) {
+    serverlessStore = store;
+    return;
+  }
   await fsp.writeFile(DATA_FILE, JSON.stringify(store, null, 2));
 }
 
