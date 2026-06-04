@@ -16194,3 +16194,579 @@ body:not(.agenda-tab-active) .workspace-card-cover::after {
     max-height: none;
   }
 }
+
+/* ================================================================
+   MODULE UX AND ACCESSIBILITY POLISH
+   Visual refinements only: preserves existing flows and behavior.
+   ================================================================ */
+
+:where(button, a, input, select, textarea, [tabindex]):focus-visible {
+  outline: 3px solid rgba(143, 178, 244, 0.58);
+  outline-offset: 3px;
+  box-shadow: 0 0 0 6px rgba(143, 178, 244, 0.16);
+}
+
+:where(.primary-button, .ghost-button, .btn, .planner-tab, .agenda-view-tab, .casa-tab, .admin-shell-link, .community-feed-tab, .community-icon-button) {
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease,
+    border-color 0.18s ease,
+    background-color 0.18s ease,
+    opacity 0.18s ease;
+}
+
+:where(.primary-button, .ghost-button, .btn, .planner-tab, .agenda-view-tab, .casa-tab, .admin-shell-link, .community-feed-tab):hover {
+  transform: translateY(-1px);
+}
+
+:where(.primary-button, .ghost-button, .btn, .planner-tab, .agenda-view-tab, .casa-tab, .admin-shell-link, .community-feed-tab):active {
+  transform: translateY(0);
+  opacity: 0.9;
+}
+
+:where(input, select, textarea) {
+  line-height: 1.35;
+}
+
+:where(input, select, textarea)::placeholder {
+  color: color-mix(in srgb, var(--muted), transparent 18%);
+}
+
+.panel-heading,
+.module-card-header,
+.planner-card-header,
+.calendar-google-header,
+.fin-mensal-header,
+.corpo-workout-header {
+  gap: 12px;
+  min-width: 0;
+}
+
+.panel-heading h3,
+.panel-heading h4,
+.module-card-header h4,
+.planner-card-header strong,
+.fin-section-title,
+.study-section-title,
+.casa-section-title,
+.corpo-measures-wrap h4,
+.corpo-library-wrap h4 {
+  overflow-wrap: anywhere;
+  line-height: 1.18;
+}
+
+.workspace-card {
+  isolation: isolate;
+}
+
+.workspace-card:hover,
+.workspace-card:focus-visible {
+  border-color: rgba(143, 178, 244, 0.38);
+  box-shadow: 0 18px 42px rgba(83, 53, 79, 0.14);
+}
+
+.workspace-card-cover {
+  background-size: cover;
+  background-position: center;
+}
+
+.workspace-cover-upload,
+.dream-upload,
+.project-upload-field,
+.planner-dream-slot-upload {
+  cursor: pointer;
+}
+
+.workspace-cover-upload:focus-within,
+.dream-upload:focus-within,
+.project-upload-field:focus-within,
+.planner-dream-slot-upload:focus-within {
+  outline: 3px solid rgba(143, 178, 244, 0.5);
+  outline-offset: 3px;
+}
+
+.home-community-banner {
+  align-items: center;
+  gap: 18px;
+}
+
+.home-community-cta,
+.community-publish-btn,
+.module-open-button,
+.agenda-create-button,
+.agenda-fab,
+.fin-add-row-btn,
+.fin-add-meta-btn,
+.travel-modal-footer button {
+  min-height: 44px;
+}
+
+.planner-tab-ribbon,
+.tab-buttons,
+.casa-tab-ribbon,
+.finance-chip-row,
+.fin-cc-tabs,
+.community-feed-tabs,
+.community-story-strip,
+.agenda-view-tabs {
+  scrollbar-width: thin;
+  scroll-snap-type: x proximity;
+}
+
+.planner-tab,
+.tab-buttons > button,
+.casa-tab,
+.finance-chip,
+.fin-cc-tab-btn,
+.community-feed-tab,
+.community-story,
+.agenda-view-tab {
+  scroll-snap-align: start;
+}
+
+.planner-page-shell,
+.agenda-panel,
+.finance-card,
+.home-card,
+.body-card,
+.travel-card,
+.spiritual-card,
+.wardrobe-card {
+  gap: 18px;
+}
+
+.planner-task-card,
+.planner-goal-card,
+.agenda-event-item,
+.schedule-event-card,
+.finance-summary-card,
+.fin-summary-card,
+.fin-metas-card,
+.corpo-saude-card,
+.corpo-beleza-card,
+.corpo-workout-day,
+.casa-clean-card,
+.casa-room-card,
+.travel-trip-card,
+.community-post-card,
+.community-composer {
+  border: 1px solid rgba(143, 178, 244, 0.14);
+  box-shadow: 0 12px 28px rgba(83, 53, 79, 0.08);
+}
+
+.planner-task-card:hover,
+.agenda-event-item:hover,
+.schedule-event-card:hover,
+.finance-summary-card:hover,
+.fin-summary-card:hover,
+.corpo-saude-card:hover,
+.corpo-beleza-card:hover,
+.corpo-workout-day:hover,
+.casa-clean-card:hover,
+.casa-room-card:hover,
+.community-post-card:hover {
+  border-color: rgba(143, 178, 244, 0.28);
+}
+
+.planner-task-card {
+  grid-template-columns: auto minmax(0, 1fr) auto;
+}
+
+.planner-task-text,
+.task-text,
+.schedule-event-card,
+.community-post-card,
+.admin-user-client strong,
+.admin-user-client small {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.planner-dream-slot {
+  min-width: 0;
+}
+
+.planner-dream-slot-image,
+.community-photo-preview img,
+.corpo-photo-img {
+  object-fit: cover;
+}
+
+.planner-dream-slot-actions {
+  align-items: center;
+}
+
+.agenda-mob-header,
+.agenda-view-tabs,
+.agenda-week-strip-scroll,
+.agenda-sync-bar {
+  border-color: rgba(143, 178, 244, 0.14);
+}
+
+.agenda-mob-nav,
+.agenda-mob-back-btn,
+.agenda-mob-today-btn,
+.agenda-view-tab {
+  min-height: 40px;
+}
+
+.agenda-fab {
+  display: inline-grid;
+  place-items: center;
+  box-shadow: 0 16px 34px rgba(143, 178, 244, 0.3);
+}
+
+.app-color-preset-grid {
+  gap: 8px;
+}
+
+.app-color-preset-grid button,
+.color-preset-button,
+[data-color-preset-grid] button {
+  min-width: 34px;
+  min-height: 34px;
+  border-radius: 999px;
+}
+
+.study-books-grid,
+.study-main-grid,
+.project-grid {
+  align-items: stretch;
+}
+
+.study-books-card,
+.study-cursos-card,
+.project-card {
+  min-width: 0;
+}
+
+.project-card {
+  display: grid;
+  gap: 10px;
+  align-content: start;
+}
+
+.project-card :where(input, select, textarea),
+.study-books-table :where(input, select, textarea),
+.home-table :where(input, select, textarea) {
+  min-height: 38px;
+}
+
+.home-table-shell,
+.study-table-shell,
+.fin-table-scroll,
+.finance-table-shell {
+  border-radius: 14px;
+  border: 1px solid rgba(143, 178, 244, 0.12);
+}
+
+.home-table,
+.study-books-table,
+.fin-annual-table,
+.fin-desejos-table,
+.fin-mensal-table,
+.finance-table,
+.corpo-measures-table,
+.corpo-saude-table,
+.corpo-exercise-table {
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+:where(.home-table, .study-books-table, .fin-annual-table, .fin-desejos-table, .fin-mensal-table, .finance-table, .corpo-measures-table, .corpo-saude-table, .corpo-exercise-table) th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+:where(.home-table, .study-books-table, .fin-annual-table, .fin-desejos-table, .fin-mensal-table, .finance-table, .corpo-measures-table, .corpo-saude-table, .corpo-exercise-table) td,
+:where(.home-table, .study-books-table, .fin-annual-table, .fin-desejos-table, .fin-mensal-table, .finance-table, .corpo-measures-table, .corpo-saude-table, .corpo-exercise-table) th {
+  vertical-align: middle;
+}
+
+.fin-summary-cards,
+.fin-balanco-grid,
+.finance-comparison-grid {
+  align-items: stretch;
+}
+
+.fin-summary-card,
+.fin-balanco-item {
+  min-width: 0;
+}
+
+.fin-card-value,
+.fin-balanco-item strong,
+#finance-balance-display {
+  overflow-wrap: anywhere;
+}
+
+.finance-chip,
+.fin-add-row-btn,
+.fin-add-meta-btn {
+  border-radius: 12px;
+}
+
+.casa-tab-ribbon,
+.casa-market-complete,
+.casa-clean-cards,
+.casa-room-cards,
+.corpo-workout-grid,
+.corpo-library-grid,
+.corpo-saude-grid,
+.corpo-beleza-grid {
+  gap: 12px;
+}
+
+.casa-tab {
+  min-height: 42px;
+  border-radius: 12px;
+}
+
+.casa-tab-panel,
+.corpo-tab-content {
+  min-width: 0;
+}
+
+.corpo-photo-area {
+  min-height: 150px;
+  display: grid;
+  place-items: center;
+  text-align: center;
+}
+
+.corpo-beleza-check,
+.corpo-checklist-item,
+.casa-market-chk,
+.casa-clean-chk {
+  min-height: 42px;
+}
+
+.corpo-beleza-check input[type="text"],
+.corpo-checklist-item input[type="text"],
+.casa-market-chk input[type="text"],
+.casa-clean-chk input[type="text"] {
+  min-width: 0;
+}
+
+.cycle-inline-panel {
+  overflow: hidden;
+}
+
+.cycle-inline-frame {
+  display: block;
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.module-open-card {
+  min-height: 260px;
+}
+
+.module-open-card .panel-heading {
+  align-items: start;
+}
+
+.module-preview-list {
+  min-width: 0;
+}
+
+.travel-trips-bar {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+  scrollbar-width: thin;
+}
+
+.travel-empty-state {
+  display: grid;
+  place-items: center;
+  gap: 8px;
+  min-height: 260px;
+  text-align: center;
+}
+
+.travel-empty-icon {
+  display: grid;
+  place-items: center;
+  width: 64px;
+  height: 64px;
+  border-radius: 18px;
+  background: rgba(143, 178, 244, 0.13);
+}
+
+.travel-modal-box,
+.fin-cc-modal-box,
+.fin-meta-modal-box,
+.editor-sheet {
+  max-width: min(680px, calc(100vw - 24px));
+}
+
+.community-app-shell {
+  min-width: 0;
+}
+
+.community-topbar,
+.community-hero-row,
+.community-composer-top,
+.community-composer-actions {
+  gap: 12px;
+}
+
+.community-icon-button,
+.community-composer-media-btn,
+.community-format-btn {
+  min-width: 42px;
+  min-height: 42px;
+}
+
+.community-post-form textarea {
+  min-height: 98px;
+}
+
+.community-feed {
+  display: grid;
+  gap: 14px;
+}
+
+.community-story-avatar,
+.community-composer-avatar {
+  flex: 0 0 auto;
+}
+
+@media (max-width: 980px) {
+  .study-books-grid,
+  .project-grid,
+  .fin-desejos-columns,
+  .fin-balanco-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .fin-summary-cards {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+}
+
+@media (max-width: 767px) {
+  .panel-heading {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    align-items: start !important;
+  }
+
+  .panel-heading > :last-child:not(:first-child) {
+    justify-self: start;
+  }
+
+  .home-community-banner {
+    grid-template-columns: 1fr !important;
+    text-align: left;
+  }
+
+  .home-community-center,
+  .home-community-right {
+    justify-self: stretch;
+  }
+
+  .home-community-cta {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .planner-task-card {
+    grid-template-columns: auto minmax(0, 1fr) !important;
+  }
+
+  .planner-task-card .task-remove {
+    grid-column: 1 / -1;
+    justify-self: stretch;
+  }
+
+  .planner-dream-slot-frame {
+    min-height: 210px !important;
+  }
+
+  .agenda-mob-header {
+    grid-template-columns: auto auto minmax(0, 1fr) auto auto;
+  }
+
+  .agenda-mob-month,
+  .agenda-mob-day-label {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .fin-summary-cards,
+  .fin-balanco-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .project-card,
+  .agenda-events-card,
+  .agenda-summary-card,
+  .corpo-saude-card,
+  .corpo-beleza-card,
+  .corpo-workout-day,
+  .casa-clean-card,
+  .casa-room-card {
+    padding: 14px !important;
+    border-radius: 14px !important;
+  }
+
+  .corpo-photo-area {
+    min-height: 126px;
+  }
+
+  .community-topbar {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+  }
+
+  .community-top-actions {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+  }
+
+  .community-composer-top {
+    align-items: start;
+  }
+
+  .community-composer-actions {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .community-publish-btn {
+    flex: 1 1 160px;
+  }
+}
+
+@media (max-width: 430px) {
+  .fin-summary-cards,
+  .planner-dream-board-grid,
+  .workspace-card-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .agenda-mob-header {
+    grid-template-columns: auto minmax(0, 1fr) auto;
+  }
+
+  .agenda-mob-back-btn,
+  .agenda-mob-today-btn {
+    display: none !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
