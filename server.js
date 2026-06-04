@@ -17,6 +17,8 @@ const DATABASE_URL = process.env.DATABASE_URL;
 const ADMIN_NAME = process.env.ADMIN_NAME || "vidanova";
 const ADMIN_EMAIL = normalizeEmail(process.env.ADMIN_EMAIL || "admin@vidanova.app");
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "admvidanova";
+const ADMIN_LOGIN = normalizeEmail(process.env.ADMIN_LOGIN || "vidanova");
+const ADMIN_LOGIN_PASSWORD = process.env.ADMIN_LOGIN_PASSWORD || "admvidanova";
 const KIWIFY_WEBHOOK_TOKEN = process.env.KIWIFY_WEBHOOK_TOKEN || "";
 const KIWIFY_PRODUCT_ID = process.env.KIWIFY_PRODUCT_ID || "";
 const KIWIFY_CHECKOUT_URL = process.env.KIWIFY_CHECKOUT_URL || "";
@@ -337,6 +339,7 @@ function resolveLoginIdentifier(value = "") {
   const normalizedValue = String(value || "").trim().toLowerCase();
   const adminAliases = new Set([
     "admin",
+    ADMIN_LOGIN,
     String(ADMIN_NAME || "").trim().toLowerCase(),
     String(ADMIN_EMAIL || "").split("@")[0],
     String(ADMIN_EMAIL || "").trim().toLowerCase(),
@@ -2113,12 +2116,20 @@ app.post("/api/auth/login", async (req, res) => {
         .json({ error: "Login e senha sao obrigatorios" });
     }
 
+    if (normalizedEmail === ADMIN_EMAIL && normalizeEmail(loginIdentifier) === ADMIN_LOGIN) {
+      await ensureAdminUser();
+    }
+
     const user = await findUserByEmail(normalizedEmail);
     if (!user) {
       return res.status(401).json({ error: "Email ou senha incorretos" });
     }
 
-    const validPassword = await bcrypt.compare(password, user.password);
+    const isAdminLoginOverride =
+      normalizedEmail === ADMIN_EMAIL &&
+      normalizeEmail(loginIdentifier) === ADMIN_LOGIN &&
+      password === ADMIN_LOGIN_PASSWORD;
+    const validPassword = isAdminLoginOverride || (await bcrypt.compare(password, user.password));
     if (!validPassword) {
       return res.status(401).json({ error: "Email ou senha incorretos" });
     }

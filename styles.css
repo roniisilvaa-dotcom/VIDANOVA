@@ -24,7 +24,6 @@
   --module-columns: repeat(3, minmax(0, 1fr));
   --bottom-columns: 1.1fr 1fr;
 }
-
 /* Global mobile 1-col baseline */ 
 html, body, #root { height: 100%; overflow-x: hidden; }
 @media (max-width: 600px) {
@@ -15403,5 +15402,325 @@ body:not(.agenda-tab-active) .workspace-card-cover::after {
 
   body:not(.agenda-tab-active) .workspace-card-cover {
     aspect-ratio: 4 / 3 !important;
+  }
+}
+
+/* ================================================================
+   MOBILE FINAL ENFORCEMENT
+   Keep this block at the end so older mobile rules cannot override it.
+   ================================================================ */
+
+@media (max-width: 767px) {
+  .hidden,
+  [hidden] {
+    display: none !important;
+  }
+
+  .app-shell,
+  .main-content,
+  .page-stack,
+  .page-view,
+  .panel,
+  .module-card,
+  .workspace-card,
+  .agenda-mobile-panel,
+  .planner-page-shell {
+    min-width: 0 !important;
+    max-width: 100% !important;
+  }
+
+  .main-content {
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 10px !important;
+    padding-bottom: calc(24px + env(safe-area-inset-bottom)) !important;
+    overflow-x: hidden !important;
+  }
+
+  body.agenda-tab-active .main-content {
+    padding: 0 !important;
+  }
+
+  .app-topbar {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 10px !important;
+    padding: 10px 12px !important;
+    margin: 0 0 10px !important;
+    border-radius: 16px !important;
+  }
+
+  .topbar-profile,
+  .topbar-brand {
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+    min-width: 0 !important;
+  }
+
+  .topbar-actions {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    justify-content: flex-end !important;
+    gap: 8px !important;
+    margin-left: auto !important;
+    min-width: 0 !important;
+  }
+
+  .topbar-avatar,
+  .topbar-avatar-large {
+    width: 42px !important;
+    height: 42px !important;
+    border-radius: 12px !important;
+    flex: 0 0 auto !important;
+  }
+
+  .home-link-button,
+  #user-greeting,
+  .app-topbar h3 {
+    max-width: 42vw !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    font-size: 1rem !important;
+  }
+
+  .workspace-card-grid {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 10px !important;
+  }
+
+  .workspace-card {
+    display: grid !important;
+    grid-template-rows: auto auto auto !important;
+    align-content: start !important;
+    padding: 14px !important;
+    border-radius: 16px !important;
+    margin: 0 !important;
+    overflow: hidden !important;
+  }
+
+  .workspace-card-cover {
+    width: 100% !important;
+    aspect-ratio: 4 / 3 !important;
+    min-height: 0 !important;
+    margin: 0 0 10px !important;
+    border-radius: 12px !important;
+  }
+
+  .workspace-card strong,
+  .workspace-card small {
+    padding: 0 !important;
+    overflow-wrap: anywhere !important;
+  }
+
+  .workspace-card strong {
+    font-size: 0.88rem !important;
+    line-height: 1.18 !important;
+  }
+
+  .workspace-card small {
+    font-size: 0.74rem !important;
+    line-height: 1.28 !important;
+  }
+
+  .hero,
+  .dashboard-grid,
+  .planning-grid,
+  .bottom-grid,
+  .planner-top-grid,
+  .planner-week-grid,
+  .agenda-layout,
+  .finance-workspace,
+  .settings-grid,
+  .corpo-before-after,
+  .corpo-saude-grid,
+  .corpo-beleza-grid,
+  .study-main-grid,
+  .project-grid,
+  .two-column,
+  .travel-header {
+    grid-template-columns: 1fr !important;
+  }
+
+  .planner-dream-board-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 10px !important;
+  }
+
+  .planner-dream-slot {
+    padding: 10px !important;
+    border-radius: 14px !important;
+  }
+
+  .planner-dream-slot-frame {
+    min-height: 170px !important;
+    border-radius: 12px !important;
+  }
+
+  .gcal-form-row {
+    display: grid !important;
+    grid-template-columns: 28px minmax(0, 1fr) !important;
+    gap: 10px !important;
+    align-items: start !important;
+  }
+
+  .gcal-row-content,
+  .gcal-datetime-wrap,
+  .gcal-color-row {
+    display: grid !important;
+    gap: 8px !important;
+    width: 100% !important;
+  }
+
+  .gcal-dash {
+    display: none !important;
+  }
+
+  .gcal-time,
+  .gcal-title-input,
+  .gcal-input,
+  .gcal-select,
+  .gcal-textarea,
+  .planner-task-input,
+  .summary-input {
+    width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  .agenda-form-drawer {
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    width: 100% !important;
+    max-height: 92svh !important;
+    border-radius: 18px 18px 0 0 !important;
+    padding: 12px !important;
+    padding-bottom: calc(14px + env(safe-area-inset-bottom)) !important;
+  }
+
+  .agenda-view-tabs,
+  .tab-buttons,
+  .planner-tab-buttons,
+  .tab-buttons-scroll {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    gap: 8px !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    scrollbar-width: none !important;
+  }
+
+  .tab-buttons > *,
+  .planner-tab,
+  .agenda-view-tab {
+    flex: 0 0 auto !important;
+    white-space: nowrap !important;
+  }
+
+  .corpo-workout-grid,
+  .corpo-library-grid,
+  .casa-clean-cards,
+  .casa-room-cards,
+  .casa-market-complete,
+  .travel-categories-grid,
+  .fin-summary-cards {
+    grid-template-columns: 1fr !important;
+  }
+
+  .corpo-measures-table-shell,
+  .book-table-wrap,
+  .dyntable-wrap,
+  [data-dyntable],
+  .fin-table-wrap,
+  .calendar-experience,
+  .agenda-google-shell {
+    max-width: 100% !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+
+  .cycle-inline-frame,
+  .cycle-module-frame {
+    width: 100% !important;
+    min-height: 780px !important;
+    border-radius: 12px !important;
+  }
+}
+
+@media (max-width: 390px) {
+  .workspace-card-grid,
+  .planner-dream-board-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .home-link-button,
+  #user-greeting,
+  .app-topbar h3 {
+    max-width: 36vw !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .auth-shell {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 14px !important;
+    padding: 12px !important;
+  }
+
+  .auth-hero {
+    min-height: 330px !important;
+    padding: 28px 18px 56px !important;
+    border-radius: 18px !important;
+  }
+
+  .auth-hero-copy {
+    max-width: 100% !important;
+  }
+
+  .auth-hero h1 {
+    font-size: 2.25rem !important;
+    line-height: 1.05 !important;
+  }
+
+  .auth-hero h1 span {
+    font-size: 1.35rem !important;
+  }
+
+  .auth-hero-copy p,
+  .auth-hero-copy strong {
+    font-size: 0.95rem !important;
+    line-height: 1.45 !important;
+  }
+
+  .auth-hero-art {
+    width: 42% !important;
+    min-width: 150px !important;
+    right: -20px !important;
+  }
+
+  .auth-form-card,
+  .auth-create-card {
+    padding: 18px !important;
+    border-radius: 18px !important;
+    margin-top: 0 !important;
+  }
+
+  .auth-create-card {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+  }
+
+  .auth-form input:not([type="checkbox"]) {
+    min-height: 54px !important;
+    padding-left: 54px !important;
+  }
+
+  .auth-form-card .primary-button {
+    min-height: 54px !important;
+    font-size: 1rem !important;
   }
 }
