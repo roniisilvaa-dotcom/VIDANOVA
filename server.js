@@ -14,9 +14,9 @@ const PORT = process.env.PORT || 3000;
 const JWT_SECRET =
   process.env.JWT_SECRET || "sua_chave_secreta_super_segura_mudar_em_producao";
 const DATABASE_URL = process.env.DATABASE_URL;
-const ADMIN_NAME = process.env.ADMIN_NAME || "Admin";
+const ADMIN_NAME = process.env.ADMIN_NAME || "vidanova";
 const ADMIN_EMAIL = normalizeEmail(process.env.ADMIN_EMAIL || "admin@vidanova.app");
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "@CARO26";
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "admvidanova";
 const KIWIFY_WEBHOOK_TOKEN = process.env.KIWIFY_WEBHOOK_TOKEN || "";
 const KIWIFY_PRODUCT_ID = process.env.KIWIFY_PRODUCT_ID || "";
 const KIWIFY_CHECKOUT_URL = process.env.KIWIFY_CHECKOUT_URL || "";
